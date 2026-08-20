@@ -131,9 +131,9 @@ export const CraftTimelineTracker = ({ initialOrder, onPrintInvoice }) => {
                 <Truck className="w-5 h-5 text-bloom-600 dark:text-bloom-400" />
                 <div>
                   <span className="text-xs font-bold text-warmgray-900 dark:text-white block">
-                    USPS Tracking: <span className="font-mono text-bloom-600 dark:text-bloom-400">{order.trackingNumber}</span>
+                    AWB Tracking: <span className="font-mono text-bloom-600 dark:text-bloom-400">{order.trackingNumber}</span>
                   </span>
-                  <span className="text-[11px] text-warmgray-500">Shipped via {order.shippingMethod}</span>
+                  <span className="text-[11px] text-warmgray-500">Shipped via {order.shippingMethod} (Delhivery / BlueDart)</span>
                 </div>
               </div>
               <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
@@ -177,7 +177,7 @@ export const CraftTimelineTracker = ({ initialOrder, onPrintInvoice }) => {
                       <p className="text-[11px] text-warmgray-500">{item.selectedColor} · Qty {item.quantity}</p>
                     </div>
                     <span className="text-xs font-bold text-warmgray-900 dark:text-white">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ₹{(item.price * item.quantity).toLocaleString('en-IN')}
                     </span>
                   </div>
                 ))}

@@ -32,14 +32,14 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/80 dark:bg-warmgray-800/80 backdrop-blur-md text-warmgray-500 hover:text-warmgray-900 dark:hover:text-white"
+          className="absolute top-3 right-3 z-20 p-2 rounded-full bg-white/80 dark:bg-warmgray-800/80 backdrop-blur-md text-warmgray-500 hover:text-warmgray-900 dark:hover:text-white"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
         {/* Image Column */}
-        <div className="md:w-1/2 bg-warmgray-100 dark:bg-warmgray-800 p-6 flex flex-col justify-between">
-          <div className="aspect-square rounded-2xl overflow-hidden mb-4 bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
+        <div className="md:w-1/2 bg-warmgray-100 dark:bg-warmgray-800 p-5 flex flex-col justify-between">
+          <div className="aspect-square rounded-2xl overflow-hidden mb-3 bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
             <img src={selectedImage} alt={product.name} className="w-full h-full object-cover" />
           </div>
 
@@ -49,7 +49,7 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(img)}
-                  className={`w-14 h-14 rounded-xl overflow-hidden border-2 transition-all ${
+                  className={`w-12 h-12 rounded-xl overflow-hidden border-2 transition-all ${
                     selectedImage === img ? 'border-bloom-500 scale-105' : 'border-transparent opacity-70'
                   }`}
                 >
@@ -61,49 +61,49 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
         </div>
 
         {/* Content Column */}
-        <div className="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
+        <div className="md:w-1/2 p-5 sm:p-6 flex flex-col justify-between overflow-y-auto">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300">
                 {product.yarnMaterial}
               </span>
               <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                 <span>{product.rating}</span>
-                <span className="text-warmgray-400">({product.reviewCount})</span>
+                <span className="text-warmgray-400 font-normal">({product.reviewCount})</span>
               </div>
             </div>
 
-            <h3 className="font-serif font-bold text-xl text-warmgray-900 dark:text-white leading-tight mb-2">
+            <h3 className="font-serif font-bold text-lg text-warmgray-900 dark:text-white leading-tight mb-1.5">
               {product.name}
             </h3>
 
-            <div className="flex items-baseline gap-2 mb-3">
-              <span className="text-2xl font-serif font-bold text-warmgray-900 dark:text-white">
-                ${product.price.toFixed(2)}
+            <div className="flex items-baseline gap-2 mb-2">
+              <span className="text-xl font-serif font-bold text-warmgray-900 dark:text-white">
+                ₹{product.price?.toLocaleString('en-IN')}
               </span>
               {product.originalPrice && (
-                <span className="text-sm text-warmgray-400 line-through">
-                  ${product.originalPrice.toFixed(2)}
+                <span className="text-xs text-warmgray-400 line-through">
+                  ₹{product.originalPrice?.toLocaleString('en-IN')}
                 </span>
               )}
             </div>
 
             {product.craftTimeHours > 0 && (
-              <div className="inline-flex items-center gap-1.5 text-xs text-bloom-700 dark:text-bloom-300 font-semibold mb-4 px-3 py-1 bg-bloom-50 dark:bg-warmgray-800 rounded-lg">
+              <div className="inline-flex items-center gap-1.5 text-xs text-bloom-700 dark:text-bloom-300 font-semibold mb-3 px-2.5 py-0.5 bg-bloom-50 dark:bg-warmgray-800 rounded-lg">
                 <Clock className="w-3.5 h-3.5 text-bloom-500" />
                 <span>Handcrafted in ~{product.craftTimeHours} hours</span>
               </div>
             )}
 
-            <p className="text-xs text-warmgray-600 dark:text-warmgray-400 leading-relaxed line-clamp-3 mb-4">
+            <p className="text-xs text-warmgray-600 dark:text-warmgray-400 leading-relaxed line-clamp-3 mb-3">
               {product.description}
             </p>
 
             {/* Colors */}
             {product.colors && product.colors.length > 0 && (
-              <div className="mb-4">
-                <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
+              <div className="mb-3">
+                <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">
                   Color Palette: <span className="font-normal text-bloom-600">{selectedColor}</span>
                 </label>
                 <div className="flex gap-2">
@@ -112,7 +112,7 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
                       style={{ backgroundColor: color.hex }}
-                      className={`w-6 h-6 rounded-full border-2 transition-transform ${
+                      className={`w-5 h-5 rounded-full border-2 transition-transform ${
                         selectedColor === color.name ? 'ring-2 ring-bloom-500 scale-110 border-white' : 'border-warmgray-300'
                       }`}
                       title={color.name}
@@ -124,16 +124,16 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
 
             {/* Sizes */}
             {product.sizes && product.sizes.length > 1 && (
-              <div className="mb-4">
-                <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
+              <div className="mb-3">
+                <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">
                   Selection Option
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {product.sizes.map(size => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${
+                      className={`px-2.5 py-1 rounded-xl text-xs font-medium border transition-all ${
                         selectedSize === size
                           ? 'border-bloom-500 bg-bloom-50 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300 font-bold'
                           : 'border-warmgray-200 dark:border-warmgray-700 text-warmgray-700 dark:text-warmgray-300'
@@ -148,11 +148,11 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
           </div>
 
           {/* Action Row */}
-          <div className="space-y-3 pt-4 border-t border-warmgray-100 dark:border-warmgray-800">
-            <div className="flex gap-3">
+          <div className="space-y-2.5 pt-3 border-t border-warmgray-100 dark:border-warmgray-800">
+            <div className="flex gap-2.5">
               <button
                 onClick={handleAddToCart}
-                className={`flex-1 py-3 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-cozy transition-all ${
+                className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-cozy transition-all ${
                   isAdded ? 'bg-emerald-600 text-white' : 'bg-bloom-500 hover:bg-bloom-600 text-white'
                 }`}
               >
@@ -164,14 +164,14 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
                 ) : (
                   <>
                     <ShoppingBag className="w-4 h-4" />
-                    <span>Add to Basket · ${(product.price * quantity).toFixed(2)}</span>
+                    <span>Add to Basket · ₹{((product.price || 0) * quantity).toLocaleString('en-IN')}</span>
                   </>
                 )}
               </button>
 
               <button
                 onClick={() => toggleWishlist(product)}
-                className="p-3 rounded-2xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 transition-colors"
+                className="p-2.5 rounded-xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 transition-colors"
               >
                 <Heart className={`w-4 h-4 ${inWishlist ? 'fill-rosewood-500 text-rosewood-500' : ''}`} />
               </button>

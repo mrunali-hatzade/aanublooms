@@ -107,17 +107,17 @@ export const CartProvider = ({ children }) => {
     return items.reduce((sum, item) => sum + item.quantity, 0);
   }, [items]);
 
-  const freeShippingThreshold = 50.00;
+  const freeShippingThreshold = 999;
   const freeShippingRemaining = Math.max(0, freeShippingThreshold - subtotal);
   const freeShippingProgress = Math.min(100, (subtotal / freeShippingThreshold) * 100);
 
-  const giftWrapFee = giftWrap ? 4.99 : 0.00;
+  const giftWrapFee = giftWrap ? 99 : 0;
 
   // Coupon discount calculation
   const discountAmount = useMemo(() => {
     if (!appliedCoupon) return 0;
     if (appliedCoupon.discountType === 'percentage') {
-      return Number(((subtotal * appliedCoupon.value) / 100).toFixed(2));
+      return Math.round((subtotal * appliedCoupon.value) / 100);
     }
     if (appliedCoupon.discountType === 'fixed') {
       return Math.min(subtotal, appliedCoupon.value);
@@ -127,13 +127,13 @@ export const CartProvider = ({ children }) => {
 
   // Shipping calculation
   const isFreeShipping = subtotal >= freeShippingThreshold || appliedCoupon?.discountType === 'shipping';
-  const shippingFee = items.length === 0 ? 0 : isFreeShipping ? 0.00 : 5.00;
+  const shippingFee = items.length === 0 ? 0 : isFreeShipping ? 0 : 80;
 
   // Total
   const total = useMemo(() => {
     if (items.length === 0) return 0;
     const calculated = subtotal - discountAmount + giftWrapFee + shippingFee;
-    return Number(Math.max(0, calculated).toFixed(2));
+    return Math.max(0, calculated);
   }, [subtotal, discountAmount, giftWrapFee, shippingFee, items]);
 
   const applyCoupon = async (code) => {

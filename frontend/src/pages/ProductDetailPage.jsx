@@ -152,11 +152,11 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
             {/* Price */}
             <div className="flex items-baseline gap-3 mt-3">
               <span className="text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
-                ${product.price.toFixed(2)}
+                ₹{product.price?.toLocaleString('en-IN')}
               </span>
               {product.originalPrice && (
                 <span className="text-base text-warmgray-400 line-through">
-                  ${product.originalPrice.toFixed(2)}
+                  ₹{product.originalPrice?.toLocaleString('en-IN')}
                 </span>
               )}
               {product.stock > 0 && (
@@ -273,7 +273,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
                 ) : (
                   <>
                     <ShoppingBag className="w-4 h-4" />
-                    <span>Add to Basket · ${(product.price * quantity).toFixed(2)}</span>
+                    <span>Add to Basket · ₹{((product.price || 0) * quantity).toLocaleString('en-IN')}</span>
                   </>
                 )}
               </button>
@@ -300,7 +300,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           <div className="pt-4 border-t border-warmgray-100 dark:border-warmgray-800 space-y-2 text-xs text-warmgray-600 dark:text-warmgray-400">
             <div className="flex items-center gap-2">
               <Truck className="w-4 h-4 text-bloom-500 shrink-0" />
-              <span>Free craft shipping on orders over $50</span>
+              <span>Free delivery across India on orders over ₹999</span>
             </div>
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />

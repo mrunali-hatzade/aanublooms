@@ -3,32 +3,32 @@
     "code": "AANU15",
     "discountType": "percentage",
     "value": 15,
-    "minOrder": 30.00,
-    "description": "15% off orders over $30",
+    "minOrder": 699,
+    "description": "15% off orders over ₹699",
     "isActive": true
   },
   {
     "code": "BLOOM20",
     "discountType": "percentage",
     "value": 20,
-    "minOrder": 60.00,
-    "description": "20% off orders over $60",
+    "minOrder": 1499,
+    "description": "20% off orders over ₹1,499",
     "isActive": true
   },
   {
     "code": "FREESHIP",
     "discountType": "shipping",
     "value": 100,
-    "minOrder": 0.00,
-    "description": "Free Standard Craft Shipping",
+    "minOrder": 0,
+    "description": "Free Craft Delivery Across India",
     "isActive": true
   },
   {
-    "code": "WELCOME10",
+    "code": "WELCOME100",
     "discountType": "fixed",
-    "value": 10.00,
-    "minOrder": 40.00,
-    "description": "$10 off your first handmade order over $40",
+    "value": 100,
+    "minOrder": 799,
+    "description": "₹100 off your first handmade order over ₹799",
     "isActive": true
   }
 ]

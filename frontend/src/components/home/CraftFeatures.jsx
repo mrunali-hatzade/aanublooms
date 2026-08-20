@@ -26,9 +26,9 @@ export const CraftFeatures = () => {
   ];
 
   return (
-    <section className="py-16 bg-white dark:bg-warmgray-900 border-b border-warmgray-200 dark:border-warmgray-800 transition-colors">
+    <section className="py-6 sm:py-8 bg-white dark:bg-warmgray-900 border-b border-warmgray-200 dark:border-warmgray-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {features.map((feat, idx) => {
             const Icon = feat.icon;
             return (

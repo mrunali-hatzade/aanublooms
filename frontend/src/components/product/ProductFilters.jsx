@@ -1,5 +1,5 @@
 import React from 'react';
-import { Filter, RotateCcw, Sparkles, Check } from 'lucide-react';
+import { Filter, RotateCcw } from 'lucide-react';
 
 export const ProductFilters = ({
   categories = [],
@@ -32,11 +32,11 @@ export const ProductFilters = ({
   ];
 
   return (
-    <aside aria-label="Filters" className="bg-white dark:bg-warmgray-900 rounded-3xl p-6 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft space-y-6">
+    <aside aria-label="Filters" className="bg-white dark:bg-warmgray-900 rounded-3xl p-5 sm:p-6 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft space-y-5">
       
       {/* Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-warmgray-100 dark:border-warmgray-800">
-        <div className="flex items-center gap-2 font-serif font-bold text-lg text-warmgray-900 dark:text-white">
+      <div className="flex items-center justify-between pb-3 border-b border-warmgray-100 dark:border-warmgray-800">
+        <div className="flex items-center gap-2 font-serif font-bold text-base sm:text-lg text-warmgray-900 dark:text-white">
           <Filter className="w-4 h-4 text-bloom-500" />
           <span>Filter Stitches</span>
         </div>
@@ -51,13 +51,13 @@ export const ProductFilters = ({
 
       {/* Category List */}
       <div>
-        <h4 className="font-semibold text-xs uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400 mb-3">
+        <h4 className="font-semibold text-[11px] uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400 mb-2">
           Categories
         </h4>
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           <button
             onClick={() => onSelectCategory('all')}
-            className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-all ${
+            className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
               selectedCategory === 'all'
                 ? 'bg-bloom-500 text-white font-bold shadow-cozy'
                 : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800'
@@ -69,7 +69,7 @@ export const ProductFilters = ({
             <button
               key={cat.id}
               onClick={() => onSelectCategory(cat.id)}
-              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-all ${
+              className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
                 selectedCategory === cat.id
                   ? 'bg-bloom-500 text-white font-bold shadow-cozy'
                   : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800'
@@ -81,40 +81,40 @@ export const ProductFilters = ({
         </div>
       </div>
 
-      {/* Price Range Slider */}
+      {/* Price Range Slider in INR */}
       <div className="pt-2 border-t border-warmgray-100 dark:border-warmgray-800">
         <div className="flex items-center justify-between text-xs font-semibold text-warmgray-900 dark:text-white mb-2">
           <span>Max Price</span>
           <span className="text-bloom-600 dark:text-bloom-400 font-bold font-serif text-sm">
-            ${priceRange}
+            ₹{priceRange?.toLocaleString('en-IN')}
           </span>
         </div>
         <input
           type="range"
-          min="5"
-          max="150"
-          step="5"
+          min="100"
+          max="5000"
+          step="100"
           value={priceRange}
           onChange={(e) => onPriceChange(Number(e.target.value))}
           className="w-full accent-bloom-500 cursor-pointer h-1.5 bg-warmgray-200 dark:bg-warmgray-700 rounded-lg"
         />
-        <div className="flex justify-between text-[11px] text-warmgray-400 mt-1">
-          <span>$5</span>
-          <span>$75</span>
-          <span>$150+</span>
+        <div className="flex justify-between text-[10px] text-warmgray-400 mt-1 font-mono">
+          <span>₹100</span>
+          <span>₹2,500</span>
+          <span>₹5,000+</span>
         </div>
       </div>
 
       {/* Yarn Material */}
       <div className="pt-2 border-t border-warmgray-100 dark:border-warmgray-800">
-        <h4 className="font-semibold text-xs uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400 mb-2.5">
+        <h4 className="font-semibold text-[11px] uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400 mb-2">
           Yarn & Material
         </h4>
         <div className="space-y-1.5">
           {yarnMaterials.map(yarn => (
             <label
               key={yarn.value}
-              className="flex items-center gap-2.5 text-xs text-warmgray-700 dark:text-warmgray-300 cursor-pointer hover:text-bloom-600 transition-colors"
+              className="flex items-center gap-2 text-xs text-warmgray-700 dark:text-warmgray-300 cursor-pointer hover:text-bloom-600 transition-colors"
             >
               <input
                 type="radio"
@@ -131,14 +131,14 @@ export const ProductFilters = ({
 
       {/* Difficulty Level */}
       <div className="pt-2 border-t border-warmgray-100 dark:border-warmgray-800">
-        <h4 className="font-semibold text-xs uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400 mb-2.5">
+        <h4 className="font-semibold text-[11px] uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400 mb-2">
           Craft Level
         </h4>
         <div className="space-y-1.5">
           {difficulties.map(diff => (
             <label
               key={diff.value}
-              className="flex items-center gap-2.5 text-xs text-warmgray-700 dark:text-warmgray-300 cursor-pointer hover:text-bloom-600 transition-colors"
+              className="flex items-center gap-2 text-xs text-warmgray-700 dark:text-warmgray-300 cursor-pointer hover:text-bloom-600 transition-colors"
             >
               <input
                 type="radio"
@@ -157,7 +157,7 @@ export const ProductFilters = ({
       <div className="pt-2 border-t border-warmgray-100 dark:border-warmgray-800">
         <label className="flex items-center justify-between cursor-pointer">
           <span className="text-xs font-semibold text-warmgray-800 dark:text-warmgray-200">
-            In-Stock Ready to Ship
+            In-Stock Ready to Dispatch
           </span>
           <input
             type="checkbox"

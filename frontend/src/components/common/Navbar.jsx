@@ -85,20 +85,18 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
   const navLinks = [
     { label: 'Home', page: 'home' },
     { label: 'Shop All', page: 'shop' },
-    { label: 'Forever Blooms', page: 'shop', params: { category: 'forever-blooms' } },
-    { label: 'Amigurumi', page: 'shop', params: { category: 'amigurumi-plushies' } },
-    { label: 'Wearables', page: 'shop', params: { category: 'wearables-apparel' } },
     { label: 'Custom Orders', page: 'custom-order' },
     { label: 'DIY Kits', page: 'shop', params: { category: 'diy-kits-patterns' } },
     { label: 'Our Story', page: 'about' },
+    { label: 'Feedback', page: 'feedback' },
     { label: 'Contact Us', page: 'contact' },
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-warmgray-900/95 backdrop-blur-md border-b border-warmgray-200/80 dark:border-warmgray-800 transition-colors shadow-sm">
+    <header className="sticky top-0 z-40 bg-white/95 dark:bg-warmgray-900/95 backdrop-blur-md border-b border-warmgray-200/80 dark:border-warmgray-800 transition-colors shadow-xs">
       {/* Main Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-4">
+        <div className="flex items-center justify-between h-16 gap-3">
           
           {/* Mobile menu toggle */}
           <div className="flex items-center lg:hidden">
@@ -182,7 +180,7 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-warmgray-900 dark:text-warmgray-100 truncate">{item.name}</p>
-                          <p className="text-xs text-bloom-600 dark:text-bloom-400 font-semibold">${item.price.toFixed(2)} · <span className="text-warmgray-400 font-normal">{item.yarnMaterial}</span></p>
+                          <p className="text-xs text-bloom-600 dark:text-bloom-400 font-semibold">₹{item.price?.toLocaleString('en-IN')} · <span className="text-warmgray-400 font-normal">{item.yarnMaterial}</span></p>
                         </div>
                       </button>
                     ))}
@@ -366,8 +364,8 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
         </div>
 
         {/* Desktop Category Bar */}
-        <nav className="hidden lg:flex items-center justify-between py-2.5 border-t border-warmgray-100 dark:border-warmgray-800/80 text-sm font-medium">
-          <div className="flex items-center gap-7">
+        <nav className="hidden lg:flex items-center justify-between py-1.5 border-t border-warmgray-100 dark:border-warmgray-800/80 text-xs sm:text-sm font-medium">
+          <div className="flex items-center gap-6">
             {navLinks.map((link, idx) => (
               <button
                 key={idx}

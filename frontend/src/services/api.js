@@ -157,5 +157,23 @@ export const api = {
     const res = await fetch(`${API_BASE_URL}/contact`);
     if (!res.ok) throw new Error('Failed to fetch messages');
     return res.json();
+  },
+
+  // Feedback
+  async getFeedbacks() {
+    const res = await fetch(`${API_BASE_URL}/feedback`);
+    if (!res.ok) throw new Error('Failed to fetch feedbacks');
+    return res.json();
+  },
+
+  async sendFeedback(feedbackData) {
+    const res = await fetch(`${API_BASE_URL}/feedback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(feedbackData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to submit feedback');
+    return data;
   }
 };

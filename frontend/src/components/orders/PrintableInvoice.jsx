@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flower2, Printer, X, CheckCircle2 } from 'lucide-react';
+import { Flower2, Printer, X } from 'lucide-react';
 
 export const PrintableInvoice = ({ order, onClose }) => {
   if (!order) return null;
@@ -37,12 +37,12 @@ export const PrintableInvoice = ({ order, onClose }) => {
             </div>
             <div>
               <h2 className="font-serif font-bold text-xl text-warmgray-900">AanuBlooms Studio</h2>
-              <p className="text-[11px] text-warmgray-500">Handcrafted Crochet & Forever Blooms</p>
+              <p className="text-[11px] text-warmgray-500">Handcrafted Crochet & Forever Blooms (India)</p>
             </div>
           </div>
 
           <div className="text-right">
-            <h3 className="font-serif font-bold text-base text-warmgray-900">INVOICE RECEIPT</h3>
+            <h3 className="font-serif font-bold text-base text-warmgray-900">TAX INVOICE RECEIPT</h3>
             <p className="font-mono text-xs font-bold text-bloom-600 mt-0.5">#{order.id}</p>
             <p className="text-[11px] text-warmgray-500">
               Date: {new Date(order.createdAt).toLocaleDateString()}
@@ -51,14 +51,15 @@ export const PrintableInvoice = ({ order, onClose }) => {
         </div>
 
         {/* Billed To & Status */}
-        <div className="grid grid-cols-2 gap-6 my-8 p-4 rounded-2xl bg-warmgray-50 border border-warmgray-100 text-xs">
+        <div className="grid grid-cols-2 gap-6 my-6 p-4 rounded-2xl bg-warmgray-50 border border-warmgray-100 text-xs">
           <div>
             <span className="font-bold text-warmgray-400 uppercase tracking-wider block text-[10px] mb-1">
-              Billed & Shipped To
+              Billed & Delivered To
             </span>
             <p className="font-bold text-warmgray-900">{order.customer?.name}</p>
             <p className="text-warmgray-600">{order.customer?.address}</p>
-            <p className="text-warmgray-600">{order.customer?.city}, {order.customer?.state} {order.customer?.zip}</p>
+            <p className="text-warmgray-600">{order.customer?.city}, {order.customer?.state} - {order.customer?.zip}</p>
+            <p className="text-warmgray-600">Phone: {order.customer?.phone}</p>
             <p className="text-warmgray-600">{order.customer?.email}</p>
           </div>
 
@@ -70,7 +71,7 @@ export const PrintableInvoice = ({ order, onClose }) => {
             <p><strong className="text-warmgray-900">Method:</strong> {order.paymentMethod}</p>
             <p><strong className="text-warmgray-900">Shipping:</strong> {order.shippingMethod}</p>
             {order.trackingNumber && (
-              <p><strong className="text-warmgray-900">Tracking:</strong> {order.trackingNumber}</p>
+              <p><strong className="text-warmgray-900">AWB Tracking:</strong> {order.trackingNumber}</p>
             )}
           </div>
         </div>
@@ -93,9 +94,9 @@ export const PrintableInvoice = ({ order, onClose }) => {
                   <p className="text-[11px] text-warmgray-500">{item.selectedColor} · {item.selectedSize}</p>
                 </td>
                 <td className="py-3 text-center text-warmgray-700">{item.quantity}</td>
-                <td className="py-3 text-right text-warmgray-700">${item.price?.toFixed(2)}</td>
+                <td className="py-3 text-right text-warmgray-700">₹{item.price?.toLocaleString('en-IN')}</td>
                 <td className="py-3 text-right font-bold text-warmgray-900">
-                  ${(item.price * item.quantity).toFixed(2)}
+                  ₹{(item.price * item.quantity).toLocaleString('en-IN')}
                 </td>
               </tr>
             ))}
@@ -106,42 +107,42 @@ export const PrintableInvoice = ({ order, onClose }) => {
         <div className="w-64 ml-auto space-y-1.5 text-xs text-warmgray-700 pt-4 border-t border-warmgray-200">
           <div className="flex justify-between">
             <span>Subtotal</span>
-            <span>${order.subtotal?.toFixed(2)}</span>
+            <span>₹{order.subtotal?.toLocaleString('en-IN')}</span>
           </div>
           {order.discount > 0 && (
             <div className="flex justify-between text-emerald-600 font-semibold">
               <span>Coupon ({order.appliedCoupon})</span>
-              <span>-${order.discount?.toFixed(2)}</span>
+              <span>-₹{order.discount?.toLocaleString('en-IN')}</span>
             </div>
           )}
           {order.giftWrap && (
             <div className="flex justify-between">
               <span>Gift Box & Card</span>
-              <span>+${order.giftWrapFee?.toFixed(2)}</span>
+              <span>+₹{order.giftWrapFee?.toLocaleString('en-IN')}</span>
             </div>
           )}
           <div className="flex justify-between">
-            <span>Shipping</span>
-            <span>{order.shipping === 0 ? 'FREE' : `$${order.shipping?.toFixed(2)}`}</span>
+            <span>Delivery</span>
+            <span>{order.shipping === 0 ? 'FREE' : `₹${order.shipping?.toLocaleString('en-IN')}`}</span>
           </div>
           <div className="flex justify-between text-sm font-bold text-warmgray-900 pt-2 border-t border-warmgray-200">
             <span>Grand Total Paid</span>
             <span className="text-base text-bloom-600 font-serif font-bold">
-              ${order.total?.toFixed(2)}
+              ₹{order.total?.toLocaleString('en-IN')}
             </span>
           </div>
         </div>
 
         {/* Gift Message Note if any */}
         {order.giftWrap && order.giftMessage && (
-          <div className="mt-8 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-xs">
-            <p className="font-bold text-rose-900 mb-1">🎁 Handwritten Gift Message Attached:</p>
+          <div className="mt-6 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs">
+            <p className="font-bold text-rose-900 mb-0.5">🎁 Handwritten Gift Message Attached:</p>
             <p className="italic text-rose-800">"{order.giftMessage}"</p>
           </div>
         )}
 
         {/* Footer */}
-        <div className="mt-10 pt-6 border-t border-warmgray-200 text-center text-xs text-warmgray-500 space-y-1">
+        <div className="mt-8 pt-4 border-t border-warmgray-200 text-center text-xs text-warmgray-500 space-y-1">
           <p className="font-serif font-bold text-warmgray-800">Thank you for supporting slow artisan craft!</p>
           <p>Questions? Reach Artisan Aanu at <span className="underline">maker@aanublooms.com</span></p>
         </div>

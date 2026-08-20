@@ -21,6 +21,7 @@ import { OrderTrackingPage } from './pages/OrderTrackingPage';
 import { AboutMakerPage } from './pages/AboutMakerPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { ContactPage } from './pages/ContactPage';
+import { FeedbackPage } from './pages/FeedbackPage';
 
 function AppContent() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -105,6 +106,10 @@ function AppContent() {
 
         {currentPage === 'contact' && (
           <ContactPage onNavigate={navigateTo} />
+        )}
+
+        {currentPage === 'feedback' && (
+          <FeedbackPage onNavigate={navigateTo} />
         )}
 
         {currentPage === 'admin' && (

@@ -8,6 +8,7 @@ import customRequestsRoutes from './routes/customRequests.js';
 import couponsRoutes from './routes/coupons.js';
 import analyticsRoutes from './routes/analytics.js';
 import contactRoutes from './routes/contact.js';
+import feedbackRoutes from './routes/feedback.js';
 
 dotenv.config();
 
@@ -26,12 +27,13 @@ app.use('/api/custom-requests', customRequestsRoutes);
 app.use('/api/coupons', couponsRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
-    brand: 'AanuBlooms - Handcrafted Crochet & Floral Creations',
+    brand: 'AanuBlooms - Handcrafted Crochet & Floral Creations (India)',
     timestamp: new Date().toISOString()
   });
 });
