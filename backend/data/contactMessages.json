@@ -1,0 +1,12 @@
+[
+  {
+    "id": "MSG-1787241098533",
+    "createdAt": "2026-08-20T15:51:38.533Z",
+    "name": "Hannah Baker",
+    "email": "hannah@example.com",
+    "subject": "Custom Commission Question",
+    "orderId": null,
+    "message": "I would like to order 3 matching tulip bouquets for my bridesmaids!",
+    "status": "unread"
+  }
+]

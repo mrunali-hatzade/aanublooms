@@ -1,0 +1,176 @@
+[
+  {
+    "id": "AANU-86831",
+    "createdAt": "2026-08-20T15:23:12.881Z",
+    "customer": {
+      "name": "Aanu (Artisan Founder)",
+      "email": "aanu@aanublooms.com",
+      "phone": "+1 (555) 234-5678",
+      "address": "124 Blossom Lane, Apt 3B",
+      "city": "Portland",
+      "state": "OR",
+      "zip": "97201",
+      "country": "United States"
+    },
+    "items": [
+      {
+        "id": "prod-1",
+        "name": "Everlasting Pink Tulip & Daisy Handcrafted Bouquet",
+        "slug": "everlasting-pink-tulip-daisy-bouquet",
+        "price": 44.99,
+        "originalPrice": 54.99,
+        "image": "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80",
+        "category": "forever-blooms",
+        "craftTimeHours": 8,
+        "yarnMaterial": "100% Combed Milk Cotton Yarn",
+        "selectedColor": "Blush Pink & White",
+        "selectedSize": "Petite (5 Stems)",
+        "customNotes": "",
+        "quantity": 1
+      }
+    ],
+    "subtotal": 44.99,
+    "discount": 0,
+    "appliedCoupon": null,
+    "giftWrap": false,
+    "giftWrapFee": 0,
+    "giftMessage": "",
+    "shipping": 5,
+    "shippingMethod": "Standard Craft Delivery",
+    "total": 49.99,
+    "status": "placed",
+    "trackingNumber": "USPS-AANU86831",
+    "statusHistory": [
+      {
+        "status": "placed",
+        "time": "2026-08-20T15:23:12.881Z",
+        "note": "Order confirmed! Artisan Aanu has received your order."
+      }
+    ],
+    "paymentMethod": "Cash on Delivery",
+    "paymentStatus": "Paid"
+  },
+  {
+    "id": "AANU-89421",
+    "createdAt": "2026-08-18T14:22:00Z",
+    "customer": {
+      "name": "Emily Watson",
+      "email": "emily.w@example.com",
+      "phone": "+1 (555) 349-2918",
+      "address": "742 Evergreen Terrace",
+      "city": "Springfield",
+      "state": "OR",
+      "zip": "97477",
+      "country": "United States"
+    },
+    "items": [
+      {
+        "id": "prod-1",
+        "name": "Everlasting Pink Tulip & Daisy Handcrafted Bouquet",
+        "price": 44.99,
+        "quantity": 1,
+        "selectedColor": "Blush Pink & White",
+        "selectedSize": "Classic (9 Stems)",
+        "image": "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "prod-2",
+        "name": "Sunny Sunshine Crochet Sunflower in Ceramic Pot",
+        "price": 28.5,
+        "quantity": 1,
+        "selectedColor": "Warm Golden Yellow",
+        "selectedSize": "Single Bloom Pot",
+        "image": "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    "subtotal": 73.49,
+    "discount": 11.02,
+    "appliedCoupon": "AANU15",
+    "giftWrap": true,
+    "giftWrapFee": 4.99,
+    "giftMessage": "Happy 25th Birthday Chloe! Wishing you a year as bright as these blooms! - Love, Em",
+    "shipping": 0,
+    "shippingMethod": "Standard Craft Delivery",
+    "total": 67.46,
+    "status": "packaging",
+    "statusHistory": [
+      {
+        "status": "placed",
+        "time": "2026-08-18T14:22:00Z",
+        "note": "Order confirmed and yarn skeins reserved."
+      },
+      {
+        "status": "handcrafting",
+        "time": "2026-08-19T09:15:00Z",
+        "note": "Artisan Aanu is hand-stitching your flower petals with love."
+      },
+      {
+        "status": "packaging",
+        "time": "2026-08-20T15:08:05.495Z",
+        "note": "Artisan updated stage to packaging"
+      }
+    ],
+    "paymentMethod": "Credit Card (•••• 4242)",
+    "paymentStatus": "Paid"
+  },
+  {
+    "id": "AANU-78103",
+    "createdAt": "2026-08-15T11:05:00Z",
+    "customer": {
+      "name": "David Martinez",
+      "email": "david.m@example.com",
+      "phone": "+1 (555) 782-9901",
+      "address": "404 Blossom Blvd",
+      "city": "Austin",
+      "state": "TX",
+      "zip": "78701",
+      "country": "United States"
+    },
+    "items": [
+      {
+        "id": "prod-3",
+        "name": "Strawberry Milk Chubby Amigurumi Bunny Plushie",
+        "price": 38,
+        "quantity": 1,
+        "selectedColor": "Strawberry Pink & Cream",
+        "selectedSize": "Classic Medium (25cm)",
+        "image": "https://images.unsplash.com/photo-1558877385-81a1c7e67d72?auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    "subtotal": 38,
+    "discount": 0,
+    "appliedCoupon": null,
+    "giftWrap": false,
+    "giftWrapFee": 0,
+    "giftMessage": "",
+    "shipping": 5,
+    "shippingMethod": "Standard Craft Delivery",
+    "total": 43,
+    "status": "shipped",
+    "trackingNumber": "USPS940011189922334455",
+    "statusHistory": [
+      {
+        "status": "placed",
+        "time": "2026-08-15T11:05:00Z",
+        "note": "Order confirmed."
+      },
+      {
+        "status": "handcrafting",
+        "time": "2026-08-15T16:00:00Z",
+        "note": "Stitching in progress."
+      },
+      {
+        "status": "packaging",
+        "time": "2026-08-16T10:30:00Z",
+        "note": "Quality checked and packaged with fragrant lavender sachet."
+      },
+      {
+        "status": "shipped",
+        "time": "2026-08-17T08:00:00Z",
+        "note": "Carrier picked up package."
+      }
+    ],
+    "paymentMethod": "PayPal",
+    "paymentStatus": "Paid"
+  }
+]

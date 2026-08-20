@@ -1,0 +1,50 @@
+[
+  {
+    "id": "forever-blooms",
+    "name": "Forever Blooms & Pots",
+    "description": "Never-wilting hand-crocheted floral bouquets and aesthetic potted plants.",
+    "icon": "Flower2",
+    "image": "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=600&q=80",
+    "itemCount": 18
+  },
+  {
+    "id": "amigurumi-plushies",
+    "name": "Amigurumi Plushies",
+    "description": "Squishy, cuddly, handcrafted crochet plush companions in velvet & chenille.",
+    "icon": "Heart",
+    "image": "https://images.unsplash.com/photo-1558877385-81a1c7e67d72?auto=format&fit=crop&w=600&q=80",
+    "itemCount": 24
+  },
+  {
+    "id": "bags-accessories",
+    "name": "Bags & Accessories",
+    "description": "Handmade daisy totes, crossbody pouches, and velvet scrunchies.",
+    "icon": "ShoppingBag",
+    "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80",
+    "itemCount": 15
+  },
+  {
+    "id": "wearables-apparel",
+    "name": "Wearables & Cardigans",
+    "description": "Artisan hexagon cardigans, wildflower bucket hats, and cozy knit beanies.",
+    "icon": "Sparkles",
+    "image": "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=600&q=80",
+    "itemCount": 12
+  },
+  {
+    "id": "home-living",
+    "name": "Cozy Home & Living",
+    "description": "Botanical coaster sets, macrame plant hangers, and chunky textured blankets.",
+    "icon": "Home",
+    "image": "https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&w=600&q=80",
+    "itemCount": 16
+  },
+  {
+    "id": "diy-kits-patterns",
+    "name": "DIY Kits & Patterns",
+    "description": "Beginner friendly crochet starter boxes with video guides and instant PDF patterns.",
+    "icon": "BookOpen",
+    "image": "https://images.unsplash.com/photo-1606103836293-0a0bf1220a25?auto=format&fit=crop&w=600&q=80",
+    "itemCount": 10
+  }
+]

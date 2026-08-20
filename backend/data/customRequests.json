@@ -1,0 +1,14 @@
+[
+  {
+    "id": "COMM-101",
+    "createdAt": "2026-08-19T10:00:00Z",
+    "customerName": "Samantha Reed",
+    "customerEmail": "samantha.r@example.com",
+    "itemType": "Custom Wedding Bouquet",
+    "colorPalette": ["#E8D8C8", "#F4B6C2", "#9EB29C"],
+    "yarnPreference": "Organic Combed Cotton",
+    "specialNotes": "I would like 7 White Roses, 4 Pink Peonies, and Baby's Breath for my anniversary ceremony with a personalized dusty rose silk ribbon that says 'Forever S&M'.",
+    "estimatedBudget": "$80 - $110",
+    "status": "pending_review"
+  }
+]

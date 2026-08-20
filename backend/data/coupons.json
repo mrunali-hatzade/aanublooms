@@ -1,0 +1,34 @@
+[
+  {
+    "code": "AANU15",
+    "discountType": "percentage",
+    "value": 15,
+    "minOrder": 30.00,
+    "description": "15% off orders over $30",
+    "isActive": true
+  },
+  {
+    "code": "BLOOM20",
+    "discountType": "percentage",
+    "value": 20,
+    "minOrder": 60.00,
+    "description": "20% off orders over $60",
+    "isActive": true
+  },
+  {
+    "code": "FREESHIP",
+    "discountType": "shipping",
+    "value": 100,
+    "minOrder": 0.00,
+    "description": "Free Standard Craft Shipping",
+    "isActive": true
+  },
+  {
+    "code": "WELCOME10",
+    "discountType": "fixed",
+    "value": 10.00,
+    "minOrder": 40.00,
+    "description": "$10 off your first handmade order over $40",
+    "isActive": true
+  }
+]

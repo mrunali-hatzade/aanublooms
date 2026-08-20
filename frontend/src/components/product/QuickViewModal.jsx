@@ -1,0 +1,197 @@
+import React, { useState } from 'react';
+import { X, Star, ShoppingBag, Heart, Clock, Sparkles, Check, ArrowRight } from 'lucide-react';
+import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
+
+export const QuickViewModal = ({ product, onClose, onNavigate }) => {
+  const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
+  const [selectedImage, setSelectedImage] = useState(product?.images?.[0] || product?.image);
+  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0]?.name || '');
+  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || 'Standard');
+  const [quantity, setQuantity] = useState(1);
+  const [isAdded, setIsAdded] = useState(false);
+
+  if (!product) return null;
+
+  const inWishlist = isInWishlist(product.id);
+
+  const handleAddToCart = () => {
+    addToCart(product, quantity, { selectedColor, selectedSize });
+    setIsAdded(true);
+    setTimeout(() => setIsAdded(false), 2000);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-xs" onClick={onClose} />
+      
+      <div className="relative bg-white dark:bg-warmgray-900 rounded-3xl max-w-3xl w-full border border-warmgray-200 dark:border-warmgray-800 shadow-2xl z-10 overflow-hidden animate-in zoom-in-95 max-h-[90vh] flex flex-col md:flex-row">
+        
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/80 dark:bg-warmgray-800/80 backdrop-blur-md text-warmgray-500 hover:text-warmgray-900 dark:hover:text-white"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Image Column */}
+        <div className="md:w-1/2 bg-warmgray-100 dark:bg-warmgray-800 p-6 flex flex-col justify-between">
+          <div className="aspect-square rounded-2xl overflow-hidden mb-4 bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
+            <img src={selectedImage} alt={product.name} className="w-full h-full object-cover" />
+          </div>
+
+          {product.images && product.images.length > 1 && (
+            <div className="flex gap-2 justify-center">
+              {product.images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedImage(img)}
+                  className={`w-14 h-14 rounded-xl overflow-hidden border-2 transition-all ${
+                    selectedImage === img ? 'border-bloom-500 scale-105' : 'border-transparent opacity-70'
+                  }`}
+                >
+                  <img src={img} alt="thumb" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Content Column */}
+        <div className="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300">
+                {product.yarnMaterial}
+              </span>
+              <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
+                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                <span>{product.rating}</span>
+                <span className="text-warmgray-400">({product.reviewCount})</span>
+              </div>
+            </div>
+
+            <h3 className="font-serif font-bold text-xl text-warmgray-900 dark:text-white leading-tight mb-2">
+              {product.name}
+            </h3>
+
+            <div className="flex items-baseline gap-2 mb-3">
+              <span className="text-2xl font-serif font-bold text-warmgray-900 dark:text-white">
+                ${product.price.toFixed(2)}
+              </span>
+              {product.originalPrice && (
+                <span className="text-sm text-warmgray-400 line-through">
+                  ${product.originalPrice.toFixed(2)}
+                </span>
+              )}
+            </div>
+
+            {product.craftTimeHours > 0 && (
+              <div className="inline-flex items-center gap-1.5 text-xs text-bloom-700 dark:text-bloom-300 font-semibold mb-4 px-3 py-1 bg-bloom-50 dark:bg-warmgray-800 rounded-lg">
+                <Clock className="w-3.5 h-3.5 text-bloom-500" />
+                <span>Handcrafted in ~{product.craftTimeHours} hours</span>
+              </div>
+            )}
+
+            <p className="text-xs text-warmgray-600 dark:text-warmgray-400 leading-relaxed line-clamp-3 mb-4">
+              {product.description}
+            </p>
+
+            {/* Colors */}
+            {product.colors && product.colors.length > 0 && (
+              <div className="mb-4">
+                <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
+                  Color Palette: <span className="font-normal text-bloom-600">{selectedColor}</span>
+                </label>
+                <div className="flex gap-2">
+                  {product.colors.map(color => (
+                    <button
+                      key={color.name}
+                      onClick={() => setSelectedColor(color.name)}
+                      style={{ backgroundColor: color.hex }}
+                      className={`w-6 h-6 rounded-full border-2 transition-transform ${
+                        selectedColor === color.name ? 'ring-2 ring-bloom-500 scale-110 border-white' : 'border-warmgray-300'
+                      }`}
+                      title={color.name}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Sizes */}
+            {product.sizes && product.sizes.length > 1 && (
+              <div className="mb-4">
+                <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
+                  Selection Option
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {product.sizes.map(size => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${
+                        selectedSize === size
+                          ? 'border-bloom-500 bg-bloom-50 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300 font-bold'
+                          : 'border-warmgray-200 dark:border-warmgray-700 text-warmgray-700 dark:text-warmgray-300'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Action Row */}
+          <div className="space-y-3 pt-4 border-t border-warmgray-100 dark:border-warmgray-800">
+            <div className="flex gap-3">
+              <button
+                onClick={handleAddToCart}
+                className={`flex-1 py-3 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-cozy transition-all ${
+                  isAdded ? 'bg-emerald-600 text-white' : 'bg-bloom-500 hover:bg-bloom-600 text-white'
+                }`}
+              >
+                {isAdded ? (
+                  <>
+                    <Check className="w-4 h-4" />
+                    <span>Added to Basket!</span>
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag className="w-4 h-4" />
+                    <span>Add to Basket · ${(product.price * quantity).toFixed(2)}</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={() => toggleWishlist(product)}
+                className="p-3 rounded-2xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 transition-colors"
+              >
+                <Heart className={`w-4 h-4 ${inWishlist ? 'fill-rosewood-500 text-rosewood-500' : ''}`} />
+              </button>
+            </div>
+
+            <button
+              onClick={() => {
+                onClose();
+                onNavigate('product-detail', { id: product.id });
+              }}
+              className="w-full text-center text-xs font-semibold text-bloom-600 dark:text-bloom-400 hover:underline flex items-center justify-center gap-1"
+            >
+              <span>View Full Craft Details & Care Guide</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};

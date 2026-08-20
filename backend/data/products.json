@@ -1,0 +1,398 @@
+[
+  {
+    "id": "prod-1",
+    "name": "Everlasting Pink Tulip & Daisy Handcrafted Bouquet",
+    "slug": "everlasting-pink-tulip-daisy-bouquet",
+    "category": "forever-blooms",
+    "price": 1299,
+    "originalPrice": 1599,
+    "rating": 4.95,
+    "reviewCount": 128,
+    "shortDescription": "Romantic hand-crocheted bouquet of blushing pink tulips, chamomile daisies, and eucalyptus stems.",
+    "description": "Never wilting, always blooming. Each blossom in this bouquet is meticulously hand-crocheted using 100% premium combed milk cotton yarn. Mounted on flexible floral wire stems, you can shape and arrange the bouquet effortlessly in any vase. Wrapped in kraft wrapping paper and finished with a satin ribbon bow, it arrives completely gift-ready for birthdays, anniversaries, graduations, or home styling.",
+    "craftTimeHours": 8,
+    "yarnMaterial": "100% Combed Milk Cotton Yarn",
+    "difficulty": "Artisan Masterpiece",
+    "dimensions": "Height: 35cm (13.8in), Width: 22cm (8.7in)",
+    "careInstructions": "Gently dust with a soft brush or hairdryer on cool setting. Spot clean with a damp cloth if needed. Avoid prolonged direct sunlight to maintain vibrant color.",
+    "images": [
+      "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1591886960571-74d43a9d4166?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Blush Pink & White", "hex": "#F4B6C2", "inStock": true },
+      { "name": "Pastel Lavender & Cream", "hex": "#D8BFD8", "inStock": true },
+      { "name": "Sunset Peach & Coral", "hex": "#F7A38B", "inStock": true }
+    ],
+    "sizes": ["Petite (5 Stems)", "Classic (9 Stems)", "Deluxe Luxe (15 Stems)"],
+    "stock": 18,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": false,
+    "tags": ["Everlasting", "Bouquet", "Gift Ready", "Bestseller", "Milk Cotton"],
+    "reviews": [
+      {
+        "id": "rev-1",
+        "author": "Ananya Sharma",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+        "rating": 5,
+        "date": "2026-07-12",
+        "title": "Breathtaking in person! Never wilts!",
+        "comment": "I gifted this to my mom for her birthday in Bangalore and she loved it. The stitches are so uniform and tight!",
+        "verifiedPurchase": true,
+        "helpfulCount": 34
+      },
+      {
+        "id": "rev-2",
+        "author": "Rohan Verma",
+        "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80",
+        "rating": 5,
+        "date": "2026-07-28",
+        "title": "Perfect 1st anniversary flower",
+        "comment": "My partner loves flowers but hated seeing them wilt. This bouquet looks amazing on our table.",
+        "verifiedPurchase": true,
+        "helpfulCount": 19
+      }
+    ]
+  },
+  {
+    "id": "prod-2",
+    "name": "Sunny Sunshine Crochet Sunflower in Ceramic Pot",
+    "slug": "sunny-sunshine-crochet-sunflower-pot",
+    "category": "forever-blooms",
+    "price": 699,
+    "originalPrice": 849,
+    "rating": 4.98,
+    "reviewCount": 94,
+    "shortDescription": "Cheerful blooming sunflower inside a mini terracotta ceramic base with textured seed center.",
+    "description": "Brighten up any study desk, office, or windowsill with this vibrant handcrafted sunflower pot. Made with rich golden honey yarn, detailed chocolate seed centers, and structured green leaves that can be bent into natural postures. It comes pre-potted and never needs watering!",
+    "craftTimeHours": 4,
+    "yarnMaterial": "100% Organic Soft Cotton",
+    "difficulty": "Intermediate",
+    "dimensions": "Height: 18cm, Pot Diameter: 8cm",
+    "careInstructions": "Dust occasionally with a soft duster. Keep away from excessive moisture.",
+    "images": [
+      "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Warm Golden Yellow", "hex": "#F5B025", "inStock": true },
+      { "name": "Amber Sunrise", "hex": "#E67E22", "inStock": true }
+    ],
+    "sizes": ["Single Bloom Pot", "Twin Bloom Duo"],
+    "stock": 24,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": false,
+    "tags": ["Desk Decor", "Sunflower", "Gift", "Handmade"],
+    "reviews": [
+      {
+        "id": "rev-3",
+        "author": "Pooja Hegde",
+        "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80",
+        "rating": 5,
+        "date": "2026-08-01",
+        "title": "Such a mood booster for my work desk",
+        "comment": "Everyone in my office compliments this little sunflower. Sturdy pot and cheerful blooms!",
+        "verifiedPurchase": true,
+        "helpfulCount": 15
+      }
+    ]
+  },
+  {
+    "id": "prod-3",
+    "name": "Strawberry Milk Chubby Amigurumi Bunny Plushie",
+    "slug": "strawberry-milk-chubby-bunny-plushie",
+    "category": "amigurumi-plushies",
+    "price": 999,
+    "originalPrice": 1299,
+    "rating": 4.96,
+    "reviewCount": 167,
+    "shortDescription": "Ultra-soft squishy handmade bunny crocheted with premium chenille velvet yarn with strawberry backpack.",
+    "description": "Meet Berry! This irresistibly cute bunny is handcrafted from high-density plush chenille velvet yarn that feels like a cloud to hug. Filled with hypoallergenic polyfill and fitted with safety-locked bead eyes (or embroidered eyes upon request for babies). Features floppy ears and an adorable removable strawberry backpack.",
+    "craftTimeHours": 6,
+    "yarnMaterial": "Super-Soft Chenille Velvet Yarn",
+    "difficulty": "Artisan Masterpiece",
+    "dimensions": "Height: 25cm seated",
+    "careInstructions": "Hand wash with baby shampoo in lukewarm water. Gently squeeze (do not wring) and air dry on a mesh rack.",
+    "images": [
+      "https://images.unsplash.com/photo-1558877385-81a1c7e67d72?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Strawberry Pink & Cream", "hex": "#F8C8DC", "inStock": true },
+      { "name": "Matcha Latte Green & Cream", "hex": "#C5E1A5", "inStock": true },
+      { "name": "Boba Brown & Milk", "hex": "#D7CCC8", "inStock": true }
+    ],
+    "sizes": ["Small (18cm)", "Classic Medium (25cm)", "Jumbo Huggable (38cm)"],
+    "stock": 14,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Amigurumi", "Plushie", "Chenille", "Velvet", "Bunny"],
+    "reviews": [
+      {
+        "id": "rev-4",
+        "author": "Sneha Patel",
+        "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80",
+        "rating": 5,
+        "date": "2026-07-19",
+        "title": "So incredibly soft and squishy!",
+        "comment": "The chenille yarn is so luxurious. The strawberry backpack is functional and holds tiny trinkets. Love Aanu's work!",
+        "verifiedPurchase": true,
+        "helpfulCount": 27
+      }
+    ]
+  },
+  {
+    "id": "prod-4",
+    "name": "Bumble & Buzz Chubby Velvet Crochet Honeybee",
+    "slug": "bumble-buzz-velvet-crochet-honeybee",
+    "category": "amigurumi-plushies",
+    "price": 549,
+    "originalPrice": 699,
+    "rating": 4.92,
+    "reviewCount": 89,
+    "shortDescription": "Chubby round honeybee amigurumi with delicate translucent white wings and blush pink cheeks.",
+    "description": "Hand-crocheted in velvety textured yarn with alternating golden amber and rich charcoal stripes. Finished with stitched blush cheeks and embroidered smiles. Makes an ideal gift for nature lovers and plushie collectors.",
+    "craftTimeHours": 3,
+    "yarnMaterial": "Plush Velvet Chenille Yarn",
+    "difficulty": "Beginner Friendly",
+    "dimensions": "Length: 16cm, Width: 12cm",
+    "careInstructions": "Surface wash only with damp cloth and mild soap.",
+    "images": [
+      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1558877385-81a1c7e67d72?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Classic Honeybee", "hex": "#FFD54F", "inStock": true },
+      { "name": "Pastel Pink Bee", "hex": "#FFCDD2", "inStock": true }
+    ],
+    "sizes": ["Pocket Size (10cm)", "Classic Chubby (16cm)"],
+    "stock": 30,
+    "featured": false,
+    "isBestseller": true,
+    "isNew": false,
+    "tags": ["Bee", "Amigurumi", "Velvet", "Cute"],
+    "reviews": []
+  },
+  {
+    "id": "prod-5",
+    "name": "Pastel Daisy Garden Granny Square Market Tote",
+    "slug": "pastel-daisy-garden-granny-square-tote",
+    "category": "bags-accessories",
+    "price": 1499,
+    "originalPrice": 1899,
+    "rating": 4.97,
+    "reviewCount": 112,
+    "shortDescription": "Vintage-inspired handmade floral tote composed of 18 intricate daisy squares with cotton lining.",
+    "description": "Each square is carefully hand-stitched with raised 3D daisy petals, framed in sage green and soft ivory borders, and reinforced with an inner cotton canvas lining to ensure no stretching when carrying heavy items. Strong shoulder straps guarantee all-day comfort.",
+    "craftTimeHours": 12,
+    "yarnMaterial": "100% Heavy-Duty Organic Cotton Yarn",
+    "difficulty": "Artisan Masterpiece",
+    "dimensions": "Width: 38cm, Height: 40cm, Handle Drop: 28cm",
+    "careInstructions": "Machine wash cold inside a mesh laundry bag on delicate cycle. Air dry flat.",
+    "images": [
+      "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Sage Green Garden", "hex": "#8FA68F", "inStock": true },
+      { "name": "Mocha Latte Earth", "hex": "#B59E8C", "inStock": true }
+    ],
+    "sizes": ["Standard Market Size (Fits 14-inch Laptop)", "Oversized Beach Tote"],
+    "stock": 12,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Tote Bag", "Granny Square", "Daisy", "Cotton", "Artisan"],
+    "reviews": []
+  },
+  {
+    "id": "prod-6",
+    "name": "Blooming Tulip Crossbody Messenger Pouch",
+    "slug": "blooming-tulip-crossbody-pouch",
+    "category": "bags-accessories",
+    "price": 849,
+    "originalPrice": 1099,
+    "rating": 4.89,
+    "reviewCount": 63,
+    "shortDescription": "Compact aesthetic phone bag with 3D tulip stitch pattern, magnetic snap closure, and braided strap.",
+    "description": "Keep your essentials stylishly close. Designed to comfortably fit any large smartphone, cardholder, lip balm, and keys. The unique tulip stitch produces a raised floral texture.",
+    "craftTimeHours": 5,
+    "yarnMaterial": "Premium Mercerized Cotton Yarn",
+    "difficulty": "Intermediate",
+    "dimensions": "Height: 20cm, Width: 14cm, Strap: 115cm",
+    "careInstructions": "Spot clean with gentle soap.",
+    "images": [
+      "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Blush & Ivory", "hex": "#EBB3B3", "inStock": true },
+      { "name": "Forest Fern & Coral", "hex": "#58725C", "inStock": true }
+    ],
+    "sizes": ["Standard (Fits All Smartphones)"],
+    "stock": 16,
+    "featured": false,
+    "isBestseller": false,
+    "isNew": true,
+    "tags": ["Crossbody", "Phone Bag", "Tulip", "Summer"],
+    "reviews": []
+  },
+  {
+    "id": "prod-7",
+    "name": "Cozy Meadow Oversized Hexagon Crochet Cardigan",
+    "slug": "cozy-meadow-oversized-hexagon-cardigan",
+    "category": "wearables-apparel",
+    "price": 3299,
+    "originalPrice": 3999,
+    "rating": 4.99,
+    "reviewCount": 58,
+    "shortDescription": "Showstopper chunky oversized cardigan featuring dreamy pastel blocks and billowing balloon sleeves.",
+    "description": "Our signature wearable masterpiece. Handcrafted from two continuous hexagons seamlessly joined with soft acrylic-wool blend yarn that offers warmth without heaviness. Features dramatic bishop sleeves, cozy drop shoulders, and ribbed elastic cuffs and hem.",
+    "craftTimeHours": 24,
+    "yarnMaterial": "Cloud-Soft Merino Wool & Acrylic Blend",
+    "difficulty": "Artisan Masterpiece",
+    "dimensions": "Relaxed oversized fit (Free Size / Custom Fit)",
+    "careInstructions": "Hand wash cold with wool wash. Lay flat on dry towels to block and dry.",
+    "images": [
+      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Pastel Sunset Blend", "hex": "#F6D1D8", "inStock": true },
+      { "name": "Earthy Forest", "hex": "#829580", "inStock": true }
+    ],
+    "sizes": ["S/M (Free Size)", "L/XL (Relaxed)", "Custom Tailored"],
+    "stock": 6,
+    "featured": true,
+    "isBestseller": false,
+    "isNew": true,
+    "tags": ["Cardigan", "Wearable", "Hexagon Cardigan", "Oversized", "Wool"],
+    "reviews": []
+  },
+  {
+    "id": "prod-8",
+    "name": "Wildflower Embroidered Crochet Bucket Hat",
+    "slug": "wildflower-crochet-bucket-hat",
+    "category": "wearables-apparel",
+    "price": 799,
+    "originalPrice": 999,
+    "rating": 4.91,
+    "reviewCount": 75,
+    "shortDescription": "Breathable 100% cotton summer bucket hat adorned with hand-embroidered wildflower blossoms.",
+    "description": "The quintessential summer festival and travel accessory. Crocheted with cooling breathable organic cotton in a gentle dome silhouette with structured flared brim.",
+    "craftTimeHours": 4,
+    "yarnMaterial": "100% Breathable Organic Cotton",
+    "difficulty": "Intermediate",
+    "dimensions": "Head Circumference: 56-58cm (Universal Stretch Fit)",
+    "careInstructions": "Hand wash cold, reshape and dry flat.",
+    "images": [
+      "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Ivory Cream with Wildflowers", "hex": "#FBF6EE", "inStock": true },
+      { "name": "Sage Moss with Chamomiles", "hex": "#9EB29C", "inStock": true }
+    ],
+    "sizes": ["Standard Adult (56-58cm)"],
+    "stock": 20,
+    "featured": false,
+    "isBestseller": true,
+    "isNew": false,
+    "tags": ["Bucket Hat", "Cotton", "Summer", "Handmade"],
+    "reviews": []
+  },
+  {
+    "id": "prod-9",
+    "name": "Handmade Botanical Flower Coaster Set of 4 with Basket",
+    "slug": "botanical-flower-coaster-set-with-basket",
+    "category": "home-living",
+    "price": 599,
+    "originalPrice": 799,
+    "rating": 4.94,
+    "reviewCount": 141,
+    "shortDescription": "Set of 4 absorbent floral mug rugs shaped like blooming flowers inside a hand-crocheted basket.",
+    "description": "Transform your coffee table into a flourishing flower garden. Each thick, absorbent coaster absorbs condensation while shielding wooden and glass surfaces from heat.",
+    "craftTimeHours": 3,
+    "yarnMaterial": "Thick 100% Combed Cotton Yarn",
+    "difficulty": "Beginner Friendly",
+    "dimensions": "Coaster Diameter: 12cm, Basket: 13cm",
+    "careInstructions": "Machine washable in mesh wash bag. Lay flat to dry.",
+    "images": [
+      "https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Spring Pastels", "hex": "#FAD2E1", "inStock": true },
+      { "name": "Warm Earth Tones", "hex": "#DDA15E", "inStock": true }
+    ],
+    "sizes": ["Set of 4 + Pot Basket", "Set of 6 + Pot Basket"],
+    "stock": 35,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": false,
+    "tags": ["Coaster", "Home Decor", "Coffee", "Gift Set"],
+    "reviews": []
+  },
+  {
+    "id": "prod-10",
+    "name": "Beginner Complete Crochet Amigurumi Starter Kit",
+    "slug": "beginner-complete-crochet-starter-kit",
+    "category": "diy-kits-patterns",
+    "price": 899,
+    "originalPrice": 1199,
+    "rating": 4.97,
+    "reviewCount": 210,
+    "shortDescription": "Everything you need to crochet your first plushie! Includes custom no-split yarn, hook, and video tutorials.",
+    "description": "Learn to crochet with confidence! Includes 1 Ergonomic 3.5mm Crochet Hook, 3 skeins of custom yarn, safety eyes, tapestry needle, stitch markers, stuffing, printed guidebook, and exclusive password access to video tutorials.",
+    "craftTimeHours": 0,
+    "yarnMaterial": "Beginner Non-Fraying Easy Cotton-Nylon Yarn",
+    "difficulty": "Beginner Friendly",
+    "dimensions": "Gift Box: 22cm x 16cm x 8cm",
+    "careInstructions": "Store tools in the included canvas zippered pouch.",
+    "images": [
+      "https://images.unsplash.com/photo-1606103836293-0a0bf1220a25?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Strawberry Bunny Kit", "hex": "#F48FB1", "inStock": true },
+      { "name": "Oliver Dino Kit", "hex": "#81C784", "inStock": true }
+    ],
+    "sizes": ["Single Character Starter Box", "Trio Master Box"],
+    "stock": 40,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": false,
+    "tags": ["DIY Kit", "Beginner", "Learn to Crochet", "Craft", "Gift"],
+    "reviews": []
+  },
+  {
+    "id": "prod-11",
+    "name": "Digital PDF Pattern: Forever Blooming Flower Bouquet",
+    "slug": "digital-pattern-forever-blooming-bouquet",
+    "category": "diy-kits-patterns",
+    "price": 249,
+    "originalPrice": 399,
+    "rating": 4.96,
+    "reviewCount": 184,
+    "shortDescription": "Instant digital download! 24-page step-by-step PDF crochet pattern with 60+ photo tutorials.",
+    "description": "Download instantly and start stitching today! Includes full instructions for 5 flower varieties: Dutch Tulip, Wild Chamomile, French Lavender, Sunburst Daisy, and Silver Eucalyptus leaves.",
+    "craftTimeHours": 0,
+    "yarnMaterial": "Digital PDF Download (Instant Access)",
+    "difficulty": "Intermediate",
+    "dimensions": "Instant PDF File (Printable & Phone Optimized)",
+    "careInstructions": "Instant download sent to email upon checkout.",
+    "images": [
+      "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Standard PDF (English)", "hex": "#3B82F6", "inStock": true }
+    ],
+    "sizes": ["Digital PDF Download"],
+    "stock": 999,
+    "featured": false,
+    "isBestseller": true,
+    "isNew": false,
+    "tags": ["PDF Pattern", "Digital", "Flower Pattern", "Instant Download"],
+    "reviews": []
+  }
+]
