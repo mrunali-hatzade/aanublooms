@@ -179,35 +179,35 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
   const finalTotal = subtotal - discountAmount + (giftWrap ? giftWrapFee : 0) + shippingSpeedFee;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
       
       {/* Title & Trust Banner */}
-      <div className="mb-8 text-center sm:text-left">
-        <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider mb-2">
+      <div className="mb-9 text-center sm:text-left">
+        <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider mb-2.5">
           <ShieldCheck className="w-4 h-4" />
           Frictionless 1-Step Guest Checkout (No Account Needed)
         </span>
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-warmgray-900 dark:text-white">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-warmgray-900 dark:text-white">
           Complete Your Order
         </h1>
-        <p className="text-sm sm:text-base text-warmgray-600 dark:text-warmgray-400 mt-1.5">
+        <p className="text-sm sm:text-base text-warmgray-600 dark:text-warmgray-400 mt-2 max-w-3xl">
           Handcrafted with love by artisan Aanu. Free delivery in Pune & across India on orders over ₹999.
         </p>
       </div>
 
-      <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
         
         {/* Left Column: Form Details (7 cols) */}
-        <div className="lg:col-span-7 space-y-6">
+        <div className="lg:col-span-7 space-y-7">
           
           {/* 1. Contact Information */}
-          <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-7 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-4">
-            <div className="flex items-center justify-between border-b border-warmgray-100 dark:border-warmgray-800 pb-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-bloom-100 dark:bg-bloom-900/50 text-bloom-700 dark:text-bloom-300 flex items-center justify-center text-sm font-extrabold">
+          <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-7 sm:p-9 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-5">
+            <div className="flex items-center justify-between border-b border-warmgray-100 dark:border-warmgray-800 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-bloom-100 dark:bg-bloom-900/50 text-bloom-700 dark:text-bloom-300 flex items-center justify-center text-sm font-extrabold">
                   01
                 </div>
-                <h2 className="text-lg sm:text-xl font-serif font-bold text-warmgray-900 dark:text-white">
+                <h2 className="text-xl sm:text-2xl font-serif font-bold text-warmgray-900 dark:text-white">
                   Contact Information
                 </h2>
               </div>
@@ -272,13 +272,13 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
           </div>
 
           {/* 2. Delivery Address */}
-          <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-7 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-4">
-            <div className="flex items-center justify-between border-b border-warmgray-100 dark:border-warmgray-800 pb-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-bloom-100 dark:bg-bloom-900/50 text-bloom-700 dark:text-bloom-300 flex items-center justify-center text-sm font-extrabold">
+          <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-7 sm:p-9 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-5">
+            <div className="flex items-center justify-between border-b border-warmgray-100 dark:border-warmgray-800 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-bloom-100 dark:bg-bloom-900/50 text-bloom-700 dark:text-bloom-300 flex items-center justify-center text-sm font-extrabold">
                   02
                 </div>
-                <h2 className="text-lg sm:text-xl font-serif font-bold text-warmgray-900 dark:text-white">
+                <h2 className="text-xl sm:text-2xl font-serif font-bold text-warmgray-900 dark:text-white">
                   Delivery Address
                 </h2>
               </div>
@@ -367,12 +367,12 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
           </div>
 
           {/* 3. Shipping Speed */}
-          <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-7 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-4">
-            <div className="flex items-center gap-2.5 border-b border-warmgray-100 dark:border-warmgray-800 pb-3">
-              <div className="w-8 h-8 rounded-full bg-bloom-100 dark:bg-bloom-900/50 text-bloom-700 dark:text-bloom-300 flex items-center justify-center text-sm font-extrabold">
+          <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-7 sm:p-9 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-5">
+            <div className="flex items-center gap-3 border-b border-warmgray-100 dark:border-warmgray-800 pb-4">
+              <div className="w-9 h-9 rounded-full bg-bloom-100 dark:bg-bloom-900/50 text-bloom-700 dark:text-bloom-300 flex items-center justify-center text-sm font-extrabold">
                 03
               </div>
-              <h2 className="text-lg sm:text-xl font-serif font-bold text-warmgray-900 dark:text-white">
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-warmgray-900 dark:text-white">
                 Shipping Method
               </h2>
             </div>
@@ -380,7 +380,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
             <div className="space-y-3">
               <label
                 onClick={() => handleShippingSelect(isFreeEligible ? 'Free Handcrafted Delivery (Pune & India)' : 'Standard Handcrafted Delivery', isFreeEligible ? 0 : 80)}
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
+                className={`flex items-center justify-between p-4.5 rounded-2xl border cursor-pointer transition-all ${
                   shippingSpeedFee === (isFreeEligible ? 0 : 80)
                     ? 'border-bloom-500 bg-bloom-50/40 dark:bg-bloom-950/20'
                     : 'border-warmgray-200 dark:border-warmgray-700 hover:border-warmgray-300'
@@ -395,7 +395,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
                     className="text-bloom-600 focus:ring-bloom-400 w-4 h-4"
                   />
                   <div>
-                    <p className="text-sm font-bold text-warmgray-900 dark:text-white">
+                    <p className="text-sm sm:text-base font-bold text-warmgray-900 dark:text-white">
                       {isFreeEligible ? '🌸 Free Handcrafted Delivery' : '📦 Standard Handcrafted Delivery'}
                     </p>
                     <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">
@@ -403,14 +403,14 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
                     </p>
                   </div>
                 </div>
-                <span className="text-sm font-bold text-bloom-600">
+                <span className="text-sm sm:text-base font-bold text-bloom-600">
                   {isFreeEligible ? 'FREE' : '₹80'}
                 </span>
               </label>
 
               <label
                 onClick={() => handleShippingSelect('Express Studio Dispatch (Priority Stitches)', 150)}
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
+                className={`flex items-center justify-between p-4.5 rounded-2xl border cursor-pointer transition-all ${
                   shippingSpeedFee === 150
                     ? 'border-bloom-500 bg-bloom-50/40 dark:bg-bloom-950/20'
                     : 'border-warmgray-200 dark:border-warmgray-700 hover:border-warmgray-300'
@@ -425,7 +425,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
                     className="text-bloom-600 focus:ring-bloom-400 w-4 h-4"
                   />
                   <div>
-                    <p className="text-sm font-bold text-warmgray-900 dark:text-white">
+                    <p className="text-sm sm:text-base font-bold text-warmgray-900 dark:text-white">
                       ⚡ Priority Studio Dispatch (Pune Same/Next Day Dispatch)
                     </p>
                     <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">
@@ -433,18 +433,18 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
                     </p>
                   </div>
                 </div>
-                <span className="text-sm font-bold text-warmgray-900 dark:text-white">₹150</span>
+                <span className="text-sm sm:text-base font-bold text-warmgray-900 dark:text-white">₹150</span>
               </label>
             </div>
           </div>
 
           {/* 4. Payment Selection */}
-          <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-7 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-4">
-            <div className="flex items-center gap-2.5 border-b border-warmgray-100 dark:border-warmgray-800 pb-3">
-              <div className="w-8 h-8 rounded-full bg-bloom-100 dark:bg-bloom-900/50 text-bloom-700 dark:text-bloom-300 flex items-center justify-center text-sm font-extrabold">
+          <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-7 sm:p-9 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-5">
+            <div className="flex items-center gap-3 border-b border-warmgray-100 dark:border-warmgray-800 pb-4">
+              <div className="w-9 h-9 rounded-full bg-bloom-100 dark:bg-bloom-900/50 text-bloom-700 dark:text-bloom-300 flex items-center justify-center text-sm font-extrabold">
                 04
               </div>
-              <h2 className="text-lg sm:text-xl font-serif font-bold text-warmgray-900 dark:text-white">
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-warmgray-900 dark:text-white">
                 Payment Method
               </h2>
             </div>
@@ -453,7 +453,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('upi')}
-                className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 ${
+                className={`p-4.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 ${
                   paymentMethod === 'upi'
                     ? 'border-bloom-500 bg-bloom-50/50 dark:bg-bloom-950/30 text-bloom-900 dark:text-bloom-100 shadow-xs'
                     : 'border-warmgray-200 dark:border-warmgray-700 hover:border-warmgray-300'
@@ -472,7 +472,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('card')}
-                className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 ${
+                className={`p-4.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 ${
                   paymentMethod === 'card'
                     ? 'border-bloom-500 bg-bloom-50/50 dark:bg-bloom-950/30 text-bloom-900 dark:text-bloom-100 shadow-xs'
                     : 'border-warmgray-200 dark:border-warmgray-700 hover:border-warmgray-300'
@@ -491,7 +491,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('cod')}
-                className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 ${
+                className={`p-4.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 ${
                   paymentMethod === 'cod'
                     ? 'border-bloom-500 bg-bloom-50/50 dark:bg-bloom-950/30 text-bloom-900 dark:text-bloom-100 shadow-xs'
                     : 'border-warmgray-200 dark:border-warmgray-700 hover:border-warmgray-300'
@@ -514,8 +514,8 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
         {/* Right Column: Order Summary & Place Order (5 cols) */}
         <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-5">
           
-          <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-7 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-4">
-            <h2 className="text-lg sm:text-xl font-serif font-bold text-warmgray-900 dark:text-white border-b border-warmgray-100 dark:border-warmgray-800 pb-3">
+          <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-7 sm:p-9 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-5">
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-warmgray-900 dark:text-white border-b border-warmgray-100 dark:border-warmgray-800 pb-4">
               Order Summary ({items.length} {items.length === 1 ? 'item' : 'items'})
             </h2>
 
