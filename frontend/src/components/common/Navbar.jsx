@@ -10,7 +10,8 @@ import {
   Flower2,
   Package,
   MapPin,
-  Truck
+  Truck,
+  Shield
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';

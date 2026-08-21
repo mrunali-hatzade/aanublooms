@@ -14,6 +14,7 @@ import {
   ShieldAlert,
   ShieldCheck,
   MessageSquare,
+  Mail,
   Star,
   IndianRupee,
   Sparkles,
