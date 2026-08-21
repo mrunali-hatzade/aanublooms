@@ -770,20 +770,39 @@ export const AdminDashboard = ({ onNavigate }) => {
               </span>
             </button>
 
+            {/* Contact Us Enquiries Tab */}
             <button
-              onClick={() => { setActiveTab('enquiries'); setSidebarOpen(false); }}
+              onClick={() => { setActiveTab('contact-messages'); setSidebarOpen(false); }}
               className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'enquiries'
+                activeTab === 'contact-messages'
                   ? 'bg-[#D96C65] text-white font-semibold'
                   : 'text-white/80 hover:bg-white/10 hover:text-white'
               }`}
             >
               <div className="flex items-center gap-3">
-                <MessageSquareHeart className="w-4 h-4" />
-                <span>Enquiries</span>
+                <Mail className="w-4 h-4" />
+                <span>Contact Enquiries</span>
               </div>
               <span className="px-2 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-bold">
-                {contactMessages.length || 3}
+                {contactMessages.length}
+              </span>
+            </button>
+
+            {/* Customer Feedbacks Tab */}
+            <button
+              onClick={() => { setActiveTab('customer-feedbacks'); setSidebarOpen(false); }}
+              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
+                activeTab === 'customer-feedbacks'
+                  ? 'bg-[#D96C65] text-white font-semibold'
+                  : 'text-white/80 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Star className="w-4 h-4 text-amber-400" />
+                <span>Customer Feedbacks</span>
+              </div>
+              <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold">
+                {feedbacks.length}
               </span>
             </button>
           </div>
@@ -1864,18 +1883,85 @@ export const AdminDashboard = ({ onNavigate }) => {
         )}
 
         {/* ========================================================= */}
-        {/* TAB: CUSTOMER FEEDBACK & ENQUIRIES */}
+        {/* TAB: CONTACT US ENQUIRIES */}
         {/* ========================================================= */}
-        {activeTab === 'enquiries' && (
+        {activeTab === 'contact-messages' && (
           <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
             <div className="bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <h2 className="text-xl font-serif font-bold text-[#3E2B25]">
-                    Real Customer Feedbacks & Reviews ({feedbacks.length})
+                  <h2 className="text-xl font-serif font-bold text-[#3E2B25] flex items-center gap-2">
+                    <Mail className="w-5 h-5 text-[#D96C65]" />
+                    <span>Contact Us Form Messages ({contactMessages.length})</span>
                   </h2>
                   <p className="text-xs text-[#756A65] mt-0.5">
-                    View and moderate live feedback submitted by real customers on your store.
+                    Direct inquiries and customer notes submitted through the Contact Us form on the store.
+                  </p>
+                </div>
+              </div>
+
+              {contactMessages.length === 0 ? (
+                <div className="p-8 text-center bg-[#F8F6F3] rounded-2xl border border-[#E9E2DC]">
+                  <p className="text-xs text-[#756A65]">
+                    No contact messages received yet. Once visitors submit the Contact Us form, their messages will appear here!
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                  {contactMessages.map(msg => (
+                    <div key={msg.id} className="p-4 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-3">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-bold text-sm text-[#3E2B25]">{msg.name}</h4>
+                          <p className="text-xs text-[#756A65]">{msg.email}</p>
+                          {msg.orderId && (
+                            <span className="inline-block mt-1 text-[10px] font-mono font-bold text-[#D96C65] bg-white px-2 py-0.5 rounded border border-[#E9E2DC]">
+                              Order #{msg.orderId}
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-[10px] font-semibold bg-white px-2 py-0.5 rounded-md border border-[#E9E2DC] text-[#756A65]">
+                          {msg.subject || 'General Inquiry'}
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-[#3E2B25] bg-white p-3 rounded-lg border border-[#E9E2DC] leading-relaxed">
+                        "{msg.message}"
+                      </p>
+
+                      <div className="flex justify-between items-center text-[10px] text-[#756A65] pt-1">
+                        <span>Submitted on {msg.date || new Date().toLocaleDateString()}</span>
+                        <div className="flex gap-2">
+                          <a
+                            href={`mailto:${msg.email}?subject=Re:%20${encodeURIComponent(msg.subject || 'AanuBlooms Inquiry')}`}
+                            className="px-2.5 py-1 bg-[#D96C65] text-white rounded-md font-bold text-[10px] hover:bg-[#c85b54] transition-colors"
+                          >
+                            Reply via Email
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </main>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB: REAL CUSTOMER FEEDBACK & REVIEWS */}
+        {/* ========================================================= */}
+        {activeTab === 'customer-feedbacks' && (
+          <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
+            <div className="bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-serif font-bold text-[#3E2B25] flex items-center gap-2">
+                    <Star className="w-5 h-5 text-amber-500 fill-amber-400" />
+                    <span>Real Customer Feedbacks & Product Reviews ({feedbacks.length})</span>
+                  </h2>
+                  <p className="text-xs text-[#756A65] mt-0.5">
+                    Live product reviews, ratings, and quotes submitted by real buyers on your website.
                   </p>
                 </div>
               </div>
@@ -1897,7 +1983,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                               <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                             ))}
                           </div>
-                          <h4 className="font-bold text-sm text-[#3E2B25] mt-1">{fb.author} ({fb.city || 'India'})</h4>
+                          <h4 className="font-bold text-sm text-[#3E2B25] mt-1">{fb.author || fb.name} ({fb.city || 'India'})</h4>
                           {fb.email && <p className="text-xs text-[#756A65]">{fb.email}</p>}
                         </div>
                         <span className="text-[10px] font-semibold bg-white px-2 py-0.5 rounded-md border border-[#E9E2DC] text-[#756A65]">
@@ -1912,23 +1998,24 @@ export const AdminDashboard = ({ onNavigate }) => {
                       )}
 
                       <p className="text-xs text-[#3E2B25] bg-white p-3 rounded-lg border border-[#E9E2DC] leading-relaxed italic">
-                        "{fb.comment}"
+                        "{fb.comment || fb.message}"
                       </p>
 
                       <div className="flex justify-between items-center text-[10px] text-[#756A65] pt-1">
                         <span>Submitted on {fb.date || 'Recent'}</span>
                         <button
                           onClick={() => {
-                            if (window.confirm('Delete this feedback entry?')) {
+                            if (window.confirm('Delete this feedback entry from website?')) {
                               const updated = feedbacks.filter(f => f.id !== fb.id);
                               setFeedbacks(updated);
                               localStorage.setItem('aanublooms_feedbacks', JSON.stringify(updated));
+                              window.dispatchEvent(new Event('aanublooms_data_updated'));
                               addToast('Feedback removed', 'info');
                             }
                           }}
                           className="text-red-500 hover:underline font-semibold"
                         >
-                          Delete
+                          Delete Review
                         </button>
                       </div>
                     </div>
