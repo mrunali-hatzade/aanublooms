@@ -494,35 +494,57 @@ export const api = {
 
   // Real Customer Feedback
   async getFeedbacks() {
+    const saved = localStorage.getItem('aanublooms_feedbacks');
+    if (saved !== null) {
+      try {
+        const list = JSON.parse(saved);
+        return { success: true, count: list.length, data: list };
+      } catch {
+        return { success: true, count: 0, data: [] };
+      }
+    }
     try {
       const res = await fetch(`${API_BASE_URL}/feedback`);
       if (!res.ok) throw new Error('API request failed');
-      return await res.json();
+      const data = await res.json();
+      if (data.data && Array.isArray(data.data)) {
+        localStorage.setItem('aanublooms_feedbacks', JSON.stringify(data.data));
+      }
+      return data;
     } catch {
-      const saved = localStorage.getItem('aanublooms_feedbacks');
-      const list = saved ? JSON.parse(saved) : [];
-      return { success: true, count: list.length, data: list };
+      return { success: true, count: 0, data: [] };
     }
   },
 
   async sendFeedback(feedbackData) {
+    const authorName = feedbackData.author || feedbackData.name || 'Valued Customer';
+    const commentText = feedbackData.comment || feedbackData.message || '';
+
     const newFeedback = {
       id: `fb-${Date.now()}`,
-      author: feedbackData.author || feedbackData.name || 'Valued Customer',
+      author: authorName,
+      name: authorName,
       email: feedbackData.email || '',
       city: feedbackData.city || 'India',
       rating: Number(feedbackData.rating || 5),
       productCategory: feedbackData.productCategory || 'Handcrafted Blooms',
       highlight: feedbackData.highlight || 'Wonderful Handcrafted Quality',
-      comment: feedbackData.comment || feedbackData.message || '',
+      comment: commentText,
+      message: commentText,
       verified: true,
       date: new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
       createdAt: new Date().toISOString()
     };
 
-    const existing = JSON.parse(localStorage.getItem('aanublooms_feedbacks') || '[]');
+    const saved = localStorage.getItem('aanublooms_feedbacks');
+    const existing = saved ? JSON.parse(saved) : [];
     const updated = [newFeedback, ...existing];
     localStorage.setItem('aanublooms_feedbacks', JSON.stringify(updated));
+
+    // Notify all components across website live
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('aanublooms_data_updated'));
+    }
 
     try {
       await fetch(`${API_BASE_URL}/feedback`, {
@@ -530,9 +552,8 @@ export const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newFeedback),
       }).catch(() => {});
-      return { success: true, message: 'Thank you! Your feedback is now live on the website.', data: newFeedback };
-    } catch {
-      return { success: true, message: 'Thank you! Your feedback is now live on the website.', data: newFeedback };
-    }
+    } catch {}
+
+    return { success: true, message: 'Thank you! Your feedback is now live on the website.', data: newFeedback };
   }
 };

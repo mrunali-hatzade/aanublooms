@@ -18,6 +18,14 @@ export const CustomerFeedbackSection = ({ onNavigate }) => {
       }
     };
     fetchFeedbacks();
+
+    const handleUpdate = () => fetchFeedbacks();
+    window.addEventListener('aanublooms_data_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('aanublooms_data_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
   }, []);
 
   return (
