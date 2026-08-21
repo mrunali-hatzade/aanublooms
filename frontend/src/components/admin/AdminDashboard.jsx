@@ -60,15 +60,8 @@ import { useToast } from '../../context/ToastContext';
 import { StoreSettingsModule } from './settings/StoreSettingsModule';
 
 export const AdminDashboard = ({ onNavigate }) => {
-  const { user, login } = useAuth();
+  const { user } = useAuth();
   const { addToast } = useToast();
-
-  // Auto-grant access to admin portal when visiting /admin so dashboard is always 100% visible
-  useEffect(() => {
-    if (!user || user.role !== 'admin') {
-      login('admin@aanublooms.com', 'adminpassword123');
-    }
-  }, [user, login]);
 
   // Admin Access Verification
   const isAdmin = true; // Always visible in admin view
