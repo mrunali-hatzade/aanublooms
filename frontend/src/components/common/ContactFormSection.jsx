@@ -3,7 +3,7 @@ import { Send, CheckCircle2, MessageSquare, Mail, Phone, Clock, Sparkles } from 
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 
-export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", subtitle = "Send a note to our studio for custom color palettes, order tracking, or maker inquiries." }) => {
+export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", subtitle = "" }) => {
   const { addToast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -59,9 +59,11 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
             {title}
           </h2>
-          <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
-            {subtitle}
-          </p>
+          {subtitle && (
+            <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
+              {subtitle}
+            </p>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
