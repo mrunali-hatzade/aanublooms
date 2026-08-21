@@ -1,6 +1,6 @@
 {
   "general": {
-    "storeName": "Stitch & Love",
+    "storeName": "AanuBloom",
     "tagline": "Handmade with Love, One Stitch at a Time.",
     "description": "Beautiful handmade crochet creations crafted with care, forever floral bouquets, cuddly amigurumi, and bespoke gifts.",
     "storeOpen": true,
@@ -140,12 +140,30 @@
     "sitemapStatus": "Active & Auto-Generated"
   },
   "legal": {
-    "privacyPolicy": { "status": "Published", "lastUpdated": "2026-08-01" },
-    "termsAndConditions": { "status": "Published", "lastUpdated": "2026-08-01" },
-    "shippingPolicy": { "status": "Published", "lastUpdated": "2026-08-01" },
-    "refundPolicy": { "status": "Published", "lastUpdated": "2026-08-01" },
-    "cancellationPolicy": { "status": "Published", "lastUpdated": "2026-08-01" },
-    "customOrderPolicy": { "status": "Published", "lastUpdated": "2026-08-01" }
+    "privacyPolicy": {
+      "status": "Published",
+      "lastUpdated": "2026-08-01"
+    },
+    "termsAndConditions": {
+      "status": "Published",
+      "lastUpdated": "2026-08-01"
+    },
+    "shippingPolicy": {
+      "status": "Published",
+      "lastUpdated": "2026-08-01"
+    },
+    "refundPolicy": {
+      "status": "Published",
+      "lastUpdated": "2026-08-01"
+    },
+    "cancellationPolicy": {
+      "status": "Published",
+      "lastUpdated": "2026-08-01"
+    },
+    "customOrderPolicy": {
+      "status": "Published",
+      "lastUpdated": "2026-08-01"
+    }
   },
   "maintenance": {
     "enabled": false,
@@ -159,5 +177,6 @@
     "trackRawMaterialInventory": true,
     "trackFinishedProductInventory": true,
     "lowStockThreshold": 3
-  }
+  },
+  "updatedAt": "2026-08-21T21:03:02.642Z"
 }

@@ -124,58 +124,63 @@ const getStoredProducts = () => {
 
 // Helper for Persistent Admin Categories
 const getStoredCategories = () => {
-  const saved = localStorage.getItem('aanublooms_categories');
-  if (saved !== null) {
-    try {
-      return JSON.parse(saved);
-    } catch {
-      return [];
-    }
-  }
   const initial = [
     {
-      id: 'forever-blooms',
-      name: 'Flowers',
-      description: 'Handcrafted crochet flowers and everlasting bouquets.',
+      id: 'flower',
+      name: 'Flower',
+      description: 'Handcrafted crochet flowers.',
       image: '/images/category/1st_category_flower.jpeg',
       itemCount: 18
     },
     {
-      id: 'keychains-bag-charms',
-      name: 'Keychains',
-      description: 'Dainty pocket-sized crochet keychains and bag charms.',
+      id: 'keychain',
+      name: 'Keychain',
+      description: 'Dainty pocket-sized crochet keychains.',
       image: '/images/category/2nd_category_keychain.jpeg',
       itemCount: 12
     },
     {
-      id: 'home-living',
-      name: 'Flower Pots',
-      description: 'Aesthetic desk flower pots and potted plants.',
+      id: 'flowerpot',
+      name: 'Flowerpot',
+      description: 'Aesthetic desk flower pots.',
       image: '/images/category/3rd_category_flowerpot.jpeg',
       itemCount: 14
     },
     {
-      id: 'bouquets',
-      name: 'Forever Bouquets',
-      description: 'Everlasting floral bouquets wrapped with satin ribbon.',
+      id: 'bouquet',
+      name: 'Bouquet',
+      description: 'Everlasting floral bouquets.',
       image: '/images/category/4th_category_bouquet.jpeg',
       itemCount: 10
     },
     {
-      id: 'diy-kits-patterns',
-      name: 'Handmade Gifts',
-      description: 'Curated gift hampers and handmade surprise sets.',
+      id: 'handmadegifts',
+      name: 'Handmadegifts',
+      description: 'Curated gift hampers.',
       image: '/images/category/5th_category_handmadegifts.jpeg',
       itemCount: 9
     },
     {
-      id: 'bags-accessories',
-      name: 'Home Decor',
-      description: 'Slow-stitched decor pieces, coasters, and room accents.',
+      id: 'homedecor',
+      name: 'Homedecor',
+      description: 'Slow-stitched decor pieces.',
       image: '/images/category/5th_category_homedecor.jpeg',
       itemCount: 11
     }
   ];
+
+  const saved = localStorage.getItem('aanublooms_categories');
+  if (saved !== null) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed.length > 0 && parsed.some(c => c.name === 'Flower')) {
+        return parsed;
+      }
+    } catch {
+      // ignore
+    }
+  }
+  
   localStorage.setItem('aanublooms_categories', JSON.stringify(initial));
   return initial;
 };

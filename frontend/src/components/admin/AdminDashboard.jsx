@@ -58,6 +58,8 @@ import {
 import { api } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
+import { MediaLibraryManager } from './MediaLibraryManager';
+import { CollectionsManager } from './CollectionsManager';
 import { StoreSettingsModule } from './settings/StoreSettingsModule';
 
 export const AdminDashboard = ({ onNavigate }) => {
@@ -245,6 +247,40 @@ export const AdminDashboard = ({ onNavigate }) => {
     { label: 'Lavender & Lily Stems Duo', url: '/images/lavender-lily-stems.jpeg' },
     { label: 'Sunflower Handheld Stem', url: '/images/sunflower-stem-handheld.jpeg' }
   ];
+
+  // Coupons Manager State
+  const [showCouponModal, setShowCouponModal] = useState(false);
+  const [editingCoupon, setEditingCoupon] = useState(null);
+  const [couponForm, setCouponForm] = useState({
+    code: '',
+    discount: '',
+    desc: ''
+  });
+
+  const handleSaveCoupon = (e) => {
+    e.preventDefault();
+    if (!couponForm.code.trim()) return;
+
+    let updatedCoupons;
+    if (editingCoupon) {
+      updatedCoupons = coupons.map(c => c.code === editingCoupon.code ? couponForm : c);
+      addToast('Coupon updated successfully!', 'success');
+    } else {
+      updatedCoupons = [...coupons, couponForm];
+      addToast('New coupon created!', 'success');
+    }
+    setCoupons(updatedCoupons);
+    setShowCouponModal(false);
+    setEditingCoupon(null);
+    setCouponForm({ code: '', discount: '', desc: '' });
+  };
+
+  const handleDeleteCoupon = (code) => {
+    if (window.confirm(`Are you sure you want to delete coupon ${code}?`)) {
+      setCoupons(coupons.filter(c => c.code !== code));
+      addToast('Coupon deleted.', 'info');
+    }
+  };
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -700,9 +736,9 @@ export const AdminDashboard = ({ onNavigate }) => {
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-serif font-bold text-base tracking-tight text-white">
-                  STITCH & LOVE
+                  AanuBlooms
                 </span>
-                <span className="text-[#D96C65] text-xs">♡</span>
+                <span className="text-[#D96C65] text-xs">✨</span>
               </div>
               <span className="text-[9px] uppercase tracking-widest text-[#E9E2DC]/60 font-semibold block">
                 ADMIN STUDIO
@@ -1863,6 +1899,40 @@ export const AdminDashboard = ({ onNavigate }) => {
         )}
 
         {/* ========================================================= */}
+        {/* TAB: COLLECTIONS */}
+        {/* ========================================================= */}
+        {activeTab === 'collections' && (
+          <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
+            <CollectionsManager />
+          </main>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB: INVENTORY */}
+        {/* ========================================================= */}
+        {activeTab === 'inventory' && (
+          <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
+            <div className="bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-4">
+              <div>
+                <h2 className="text-xl font-serif font-bold text-[#3E2B25]">
+                  Inventory Management
+                </h2>
+                <p className="text-xs text-[#756A65] mt-0.5">
+                  Track raw materials, packaging, and yarn stock levels.
+                </p>
+              </div>
+
+              <div className="p-8 text-center bg-[#F8F6F3] rounded-2xl border border-[#E9E2DC]">
+                <BarChart3 className="w-8 h-8 text-[#756A65]/40 mx-auto mb-2" />
+                <p className="text-xs text-[#756A65]">
+                  Advanced raw material inventory tracking is coming soon. Keep an eye out for updates!
+                </p>
+              </div>
+            </div>
+          </main>
+        )}
+
+        {/* ========================================================= */}
         {/* TAB: ALL ORDERS (SEGMENTED ORDERS WORKFLOW) */}
         {/* ========================================================= */}
         {activeTab === 'orders' && (
@@ -2344,29 +2414,76 @@ export const AdminDashboard = ({ onNavigate }) => {
         {activeTab === 'coupons' && (
           <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
             <div className="bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-4">
-              <div>
-                <h2 className="text-xl font-serif font-bold text-[#3E2B25]">
-                  Coupons & Promotional Offers
-                </h2>
-                <p className="text-xs text-[#756A65] mt-0.5">
-                  Manage discount codes and seasonal craft promotions.
-                </p>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-serif font-bold text-[#3E2B25]">
+                    Coupons & Promotional Offers
+                  </h2>
+                  <p className="text-xs text-[#756A65] mt-0.5">
+                    Manage discount codes and seasonal craft promotions.
+                  </p>
+                </div>
+                <button
+                  onClick={() => { setEditingCoupon(null); setCouponForm({ code: '', discount: '', desc: '' }); setShowCouponModal(true); }}
+                  className="px-4 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-semibold shadow-2xs flex items-center gap-1.5 transition-colors self-start sm:self-auto"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>+ Create Coupon</span>
+                </button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                {[
+                {(coupons.length > 0 ? coupons : [
                   { code: 'AANU15', discount: '15% OFF', desc: 'Welcome first order coupon' },
                   { code: 'FLOWER10', discount: '10% OFF', desc: 'Forever blooms orders above ₹999' },
                   { code: 'FREESHIP', discount: 'Free Shipping', desc: 'Pan-India free delivery promo' }
-                ].map(cp => (
-                  <div key={cp.code} className="p-4 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-2">
+                ]).map(cp => (
+                  <div key={cp.code} className="p-4 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-2 relative group">
                     <span className="px-3 py-1 bg-[#D96C65]/15 text-[#D96C65] font-mono font-bold text-sm rounded-lg inline-block">
                       {cp.code}
                     </span>
                     <p className="font-bold text-xs text-[#4F9D69]">{cp.discount}</p>
                     <p className="text-[11px] text-[#756A65]">{cp.desc}</p>
+                    <div className="absolute top-3 right-3 flex opacity-0 group-hover:opacity-100 transition-opacity gap-1">
+                      <button onClick={() => { setEditingCoupon(cp); setCouponForm(cp); setShowCouponModal(true); }} className="p-1 rounded hover:bg-[#E9E2DC] text-[#756A65]" title="Edit Coupon"><Edit2 className="w-3.5 h-3.5" /></button>
+                      <button onClick={() => handleDeleteCoupon(cp.code)} className="p-1 rounded hover:bg-red-50 text-red-500" title="Delete Coupon"><Trash2 className="w-3.5 h-3.5" /></button>
+                    </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          </main>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB: MEDIA LIBRARY */}
+        {/* ========================================================= */}
+        {activeTab === 'media' && (
+          <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
+            <MediaLibraryManager />
+          </main>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB: REPORTS */}
+        {/* ========================================================= */}
+        {activeTab === 'reports' && (
+          <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
+            <div className="bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-4">
+              <div>
+                <h2 className="text-xl font-serif font-bold text-[#3E2B25]">
+                  Advanced Reports
+                </h2>
+                <p className="text-xs text-[#756A65] mt-0.5">
+                  View detailed sales analytics, product performance, and customer trends.
+                </p>
+              </div>
+
+              <div className="p-8 text-center bg-[#F8F6F3] rounded-2xl border border-[#E9E2DC]">
+                <BarChart3 className="w-8 h-8 text-[#756A65]/40 mx-auto mb-2" />
+                <p className="text-xs text-[#756A65]">
+                  Comprehensive analytics and exportable reports are being developed. Check back later!
+                </p>
               </div>
             </div>
           </main>
@@ -2780,6 +2897,81 @@ export const AdminDashboard = ({ onNavigate }) => {
                   className="px-5 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-bold shadow-xs transition-colors"
                 >
                   Add Category 🌸
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Coupon Add/Edit Modal */}
+      {showCouponModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="relative bg-white rounded-3xl max-w-md w-full border border-[#E9E2DC] shadow-2xl p-6 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E9E2DC]">
+              <h3 className="font-serif font-bold text-lg text-[#3E2B25]">
+                {editingCoupon ? 'Edit Coupon 🎟️' : 'Create New Coupon 🎟️'}
+              </h3>
+              <button onClick={() => setShowCouponModal(false)} className="p-1 text-[#756A65] hover:text-[#3E2B25]">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveCoupon} className="space-y-3">
+              <div>
+                <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
+                  Coupon Code *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={couponForm.code}
+                  onChange={(e) => setCouponForm({ ...couponForm, code: e.target.value.toUpperCase() })}
+                  placeholder="e.g. AANU15"
+                  className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] font-semibold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
+                  Discount Value *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={couponForm.discount}
+                  onChange={(e) => setCouponForm({ ...couponForm, discount: e.target.value })}
+                  placeholder="e.g. 15% OFF or ₹200 OFF"
+                  className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
+                  Description
+                </label>
+                <textarea
+                  rows={2}
+                  value={couponForm.desc}
+                  onChange={(e) => setCouponForm({ ...couponForm, desc: e.target.value })}
+                  placeholder="Welcome first order coupon"
+                  className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-[#E9E2DC]">
+                <button
+                  type="button"
+                  onClick={() => setShowCouponModal(false)}
+                  className="px-4 py-2 text-xs font-semibold text-[#756A65]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-bold shadow-xs transition-colors"
+                >
+                  {editingCoupon ? 'Update Coupon' : 'Create Coupon'}
                 </button>
               </div>
             </form>
