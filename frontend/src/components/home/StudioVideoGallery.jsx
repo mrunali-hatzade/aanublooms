@@ -16,13 +16,30 @@ export const StudioVideoGallery = ({ onNavigate }) => {
       url: '/images/artisan-craft-video.mp4',
       poster: '/images/aanu-blooms-signature-set.jpeg',
       tag: '🌸 Studio Reel'
+    },
+    {
+      id: 'vid-2',
+      title: 'Sunflower & Daisy Stems Assembly',
+      caption: 'Handcrafted floral wire framing with combed milk cotton yarn.',
+      url: '/images/artisan-craft-video.mp4',
+      poster: '/images/sunflower-stem-handheld.jpeg',
+      tag: '✨ Flower Assembly'
+    },
+    {
+      id: 'vid-3',
+      title: 'Pastel Garden Cupcake Blossom Pots',
+      caption: 'Everlasting desk blooms made with love in our Pune craft workshop.',
+      url: '/images/artisan-craft-video.mp4',
+      poster: '/images/blossom-pots-collection.jpeg',
+      tag: '🧶 Behind The Stitches'
     }
   ];
 
   const [videos, setVideos] = useState(() => {
     try {
       const saved = localStorage.getItem('aanublooms_studio_videos');
-      return saved ? JSON.parse(saved) : defaultVideos;
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultVideos;
     } catch {
       return defaultVideos;
     }
