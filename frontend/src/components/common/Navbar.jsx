@@ -264,7 +264,7 @@ export const Navbar = ({ onNavigate, currentPage }) => {
         </div>
 
         {/* Desktop Category Bar */}
-        <nav className="hidden lg:flex items-center justify-between py-2.5 border-t border-warmgray-100 dark:border-warmgray-800/80 text-sm font-semibold">
+        <nav className="hidden lg:flex items-center justify-start py-2.5 border-t border-warmgray-100 dark:border-warmgray-800/80 text-sm font-semibold">
           <div className="flex items-center gap-7">
             {navLinks.map((link, idx) => (
               <button
@@ -279,16 +279,6 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                 {link.label}
               </button>
             ))}
-          </div>
-
-          <div className="flex items-center gap-3 text-sm font-semibold text-warmgray-500 dark:text-warmgray-400">
-            <button
-              onClick={() => onNavigate('track-order')}
-              className="text-warmgray-700 dark:text-warmgray-300 font-semibold hover:text-bloom-600 flex items-center gap-1.5 transition-colors"
-            >
-              <Truck className="w-4 h-4 text-bloom-500" />
-              <span>Track Dispatch</span>
-            </button>
           </div>
         </nav>
       </div>
