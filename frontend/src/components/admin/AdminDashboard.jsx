@@ -1608,8 +1608,17 @@ export const AdminDashboard = ({ onNavigate }) => {
                     placeholder="Search by product name, category..."
                     value={productSearch}
                     onChange={(e) => setProductSearch(e.target.value)}
-                    className="w-full text-xs py-2 pl-9 pr-3 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]"
+                    className="w-full text-xs py-2 pl-9 pr-8 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]"
                   />
+                  {productSearch && (
+                    <button
+                      onClick={() => setProductSearch('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-[#756A65] hover:text-[#3E2B25] rounded-full"
+                      title="Clear search"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
 
                 <div className="flex gap-1.5 overflow-x-auto pb-1">

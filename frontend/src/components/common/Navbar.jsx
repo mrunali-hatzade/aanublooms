@@ -211,9 +211,23 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => searchQuery.trim() && setShowSearchDropdown(true)}
-                className="w-full bg-warmgray-100/80 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 rounded-full py-2 pl-10 pr-4 text-xs focus:outline-none focus:ring-2 focus:ring-bloom-400 focus:bg-white dark:focus:bg-warmgray-900 text-warmgray-900 dark:text-warmgray-100 transition-all"
+                className="w-full bg-warmgray-100/80 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 rounded-full py-2 pl-10 pr-9 text-xs focus:outline-none focus:ring-2 focus:ring-bloom-400 focus:bg-white dark:focus:bg-warmgray-900 text-warmgray-900 dark:text-warmgray-100 transition-all"
               />
               <Search className="w-4 h-4 text-warmgray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setShowSearchDropdown(false);
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-warmgray-400 hover:text-warmgray-700 dark:hover:text-warmgray-200 rounded-full transition-colors"
+                  aria-label="Clear search"
+                  title="Clear text"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </form>
 
             {/* Dropdown Results */}
@@ -338,9 +352,20 @@ export const Navbar = ({ onNavigate, currentPage }) => {
               placeholder="Search handmade creations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 rounded-xl py-2 pl-9 pr-4 text-xs focus:outline-none focus:ring-2 focus:ring-bloom-400 text-warmgray-900 dark:text-warmgray-100"
+              className="w-full bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 rounded-xl py-2 pl-9 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-bloom-400 text-warmgray-900 dark:text-warmgray-100"
             />
             <Search className="w-4 h-4 text-warmgray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-warmgray-400 hover:text-warmgray-700 dark:hover:text-warmgray-200 rounded-full transition-colors"
+                aria-label="Clear search"
+                title="Clear text"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </form>
 
           {/* Navigation Links */}
