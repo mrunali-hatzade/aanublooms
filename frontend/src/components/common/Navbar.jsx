@@ -210,32 +210,32 @@ export const Navbar = ({ onNavigate, currentPage }) => {
             {/* Custom Order Button */}
             <button
               onClick={() => onNavigate('custom-order')}
-              className="hidden xl:flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-rosewood-100/80 hover:bg-rosewood-200/80 text-rosewood-800 dark:bg-rosewood-950/60 dark:text-rosewood-200 dark:hover:bg-rosewood-900/60 transition-colors border border-rosewood-200 dark:border-rosewood-800"
+              className="hidden xl:flex items-center gap-1.5 px-4 py-1.5 text-sm font-semibold rounded-full bg-rosewood-100/80 hover:bg-rosewood-200/80 text-rosewood-800 dark:bg-rosewood-950/60 dark:text-rosewood-200 dark:hover:bg-rosewood-900/60 transition-colors border border-rosewood-200 dark:border-rosewood-800"
             >
-              <Palette className="w-3.5 h-3.5 text-rosewood-600 dark:text-rosewood-400" />
+              <Palette className="w-4 h-4 text-rosewood-600 dark:text-rosewood-400" />
               <span>Custom Order</span>
             </button>
 
             {/* Track Order Quick Button */}
             <button
               onClick={() => onNavigate('track-order')}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-warmgray-100 dark:bg-warmgray-800 hover:bg-warmgray-200 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 transition-colors border border-warmgray-200 dark:border-warmgray-700"
+              className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-full bg-warmgray-100 dark:bg-warmgray-800 hover:bg-warmgray-200 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 transition-colors border border-warmgray-200 dark:border-warmgray-700"
               title="Track Your Order"
             >
-              <Package className="w-3.5 h-3.5 text-bloom-600 dark:text-bloom-400" />
+              <Package className="w-4 h-4 text-bloom-600 dark:text-bloom-400" />
               <span>Track Order</span>
             </button>
 
             {/* Wishlist Button */}
             <button
               onClick={() => onNavigate('wishlist')}
-              className="p-2 rounded-full text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors relative"
+              className="p-2.5 rounded-full text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors relative"
               title="View Wishlist"
               aria-label="Wishlist"
             >
-              <Heart className={`w-4 h-4 ${wishlistCount > 0 ? 'text-rosewood-500 fill-rosewood-500' : ''}`} />
+              <Heart className={`w-5 h-5 ${wishlistCount > 0 ? 'text-rosewood-500 fill-rosewood-500' : ''}`} />
               {wishlistCount > 0 && (
-                <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-rosewood-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-rosewood-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                   {wishlistCount}
                 </span>
               )}
@@ -244,18 +244,18 @@ export const Navbar = ({ onNavigate, currentPage }) => {
             {/* Cart / Basket Button */}
             <button
               onClick={openCart}
-              className="flex items-center gap-1.5 p-2 sm:px-3.5 sm:py-2 rounded-full bg-bloom-500 hover:bg-bloom-600 text-white shadow-cozy transition-all duration-200 transform hover:scale-[1.02]"
+              className="flex items-center gap-2 p-2 sm:px-4 sm:py-2.5 rounded-full bg-bloom-500 hover:bg-bloom-600 text-white shadow-cozy transition-all duration-200 transform hover:scale-[1.02]"
               aria-label="Shopping Cart"
             >
               <div className="relative">
-                <ShoppingBag className="w-4 h-4" />
+                <ShoppingBag className="w-4.5 h-4.5" />
                 {totalItemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 w-3.5 h-3.5 bg-white text-bloom-600 text-[9px] font-extrabold rounded-full flex items-center justify-center shadow">
+                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-white text-bloom-600 text-[10px] font-extrabold rounded-full flex items-center justify-center shadow">
                     {totalItemCount}
                   </span>
                 )}
               </div>
-              <span className="hidden sm:inline text-xs font-bold tracking-wide">
+              <span className="hidden sm:inline text-sm font-bold tracking-wide">
                 Basket {totalItemCount > 0 ? `(${totalItemCount})` : ''}
               </span>
             </button>
@@ -264,13 +264,13 @@ export const Navbar = ({ onNavigate, currentPage }) => {
         </div>
 
         {/* Desktop Category Bar */}
-        <nav className="hidden lg:flex items-center justify-between py-1.5 border-t border-warmgray-100 dark:border-warmgray-800/80 text-xs font-medium">
-          <div className="flex items-center gap-5">
+        <nav className="hidden lg:flex items-center justify-between py-2.5 border-t border-warmgray-100 dark:border-warmgray-800/80 text-sm font-semibold">
+          <div className="flex items-center gap-7">
             {navLinks.map((link, idx) => (
               <button
                 key={idx}
                 onClick={() => onNavigate(link.page, link.params)}
-                className={`hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors py-0.5 relative ${
+                className={`hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors py-1 relative text-sm font-semibold ${
                   currentPage === link.page && (!link.params || JSON.stringify(link.params) === '{}')
                     ? 'text-bloom-600 dark:text-bloom-400 font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-bloom-500 after:rounded-full'
                     : 'text-warmgray-700 dark:text-warmgray-300'
@@ -281,12 +281,12 @@ export const Navbar = ({ onNavigate, currentPage }) => {
             ))}
           </div>
 
-          <div className="flex items-center gap-3 text-xs font-medium text-warmgray-500 dark:text-warmgray-400">
+          <div className="flex items-center gap-3 text-sm font-semibold text-warmgray-500 dark:text-warmgray-400">
             <button
               onClick={() => onNavigate('track-order')}
-              className="text-warmgray-600 dark:text-warmgray-300 font-semibold hover:text-bloom-600 flex items-center gap-1.5 transition-colors"
+              className="text-warmgray-700 dark:text-warmgray-300 font-semibold hover:text-bloom-600 flex items-center gap-1.5 transition-colors"
             >
-              <Truck className="w-3.5 h-3.5 text-bloom-500" />
+              <Truck className="w-4 h-4 text-bloom-500" />
               <span>Track Dispatch</span>
             </button>
           </div>
