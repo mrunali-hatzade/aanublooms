@@ -52,9 +52,6 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
             Explore by Category
           </h2>
-          <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-1">
-            Discover our slow-stitched forever blooms, plushies, hair accessories & gift hampers.
-          </p>
         </div>
 
         {/* Compact 6-Card Category Row */}

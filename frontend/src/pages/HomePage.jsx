@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { HeroSection } from '../components/home/HeroSection';
-import { WhatWouldYouLikeSection } from '../components/home/WhatWouldYouLikeSection';
 import { CategoryShowcase } from '../components/home/CategoryShowcase';
 import { StudioVideoGallery } from '../components/home/StudioVideoGallery';
 import { MeetTheMaker } from '../components/home/MeetTheMaker';
@@ -46,10 +45,7 @@ export const HomePage = ({ onNavigate }) => {
       {/* 1. Hero Section */}
       <HeroSection onNavigate={onNavigate} />
 
-      {/* 2. "What would you like?" Circular Aesthetic Bubbles Section */}
-      <WhatWouldYouLikeSection categories={categories} onNavigate={onNavigate} />
-
-      {/* 3. Categories Showcase */}
+      {/* 2. Categories Showcase */}
       <CategoryShowcase categories={categories} onNavigate={onNavigate} />
 
       {/* 5. Centered "Best Sellers" Section (Matching Reference Design) */}
