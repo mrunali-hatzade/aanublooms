@@ -155,6 +155,7 @@ export const AdminDashboard = ({ onNavigate }) => {
     const updated = [...categories.filter(c => c.id !== catId), newCat];
     setCategories(updated);
     localStorage.setItem('aanublooms_categories', JSON.stringify(updated));
+    window.dispatchEvent(new Event('aanublooms_data_updated'));
     setShowCategoryModal(false);
     setCategoryForm({ name: '', slug: '', description: '', image: '/images/category/1st_category_flower.jpeg' });
     addToast('🌸 New category added successfully!', 'success');
@@ -165,6 +166,7 @@ export const AdminDashboard = ({ onNavigate }) => {
       const updated = categories.filter(c => c.id !== catId);
       setCategories(updated);
       localStorage.setItem('aanublooms_categories', JSON.stringify(updated));
+      window.dispatchEvent(new Event('aanublooms_data_updated'));
       addToast('Category removed from website', 'info');
     }
   };
@@ -461,6 +463,7 @@ export const AdminDashboard = ({ onNavigate }) => {
       }
       setProducts(updatedProducts);
       localStorage.setItem('aanublooms_products', JSON.stringify(updatedProducts));
+      window.dispatchEvent(new Event('aanublooms_data_updated'));
       setShowProductModal(false);
       setEditingProduct(null);
     } catch (err) {
@@ -480,6 +483,7 @@ export const AdminDashboard = ({ onNavigate }) => {
         const updated = products.filter(p => p.id !== productId);
         setProducts(updated);
         localStorage.setItem('aanublooms_products', JSON.stringify(updated));
+        window.dispatchEvent(new Event('aanublooms_data_updated'));
         addToast(`"${productName}" removed from store`, 'info');
       } catch (err) {
         addToast('Could not delete product', 'error');

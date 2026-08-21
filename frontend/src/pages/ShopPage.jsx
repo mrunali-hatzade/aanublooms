@@ -46,12 +46,20 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
         setCategories(catsRes.data || []);
         setProducts(prodsRes.data || []);
       } catch (err) {
-        console.error('Catalog error:', err);
+        console.error('Error fetching catalog:', err);
       } finally {
         setIsLoading(false);
       }
     };
     fetchCatalog();
+
+    const handleUpdate = () => fetchCatalog();
+    window.addEventListener('aanublooms_data_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('aanublooms_data_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
   }, [selectedCategory, searchQuery, priceRange, selectedYarn, selectedDifficulty, inStockOnly, sortOption]);
 
   const handleResetFilters = () => {
