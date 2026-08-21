@@ -9,6 +9,8 @@ import { QuickViewModal } from '../components/product/QuickViewModal';
 import { Sparkles, ArrowRight, Flower2 } from 'lucide-react';
 import { api } from '../services/api';
 
+import { ContactFormSection } from '../components/common/ContactFormSection';
+
 export const HomePage = ({ onNavigate }) => {
   const [categories, setCategories] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -140,6 +142,11 @@ export const HomePage = ({ onNavigate }) => {
           </div>
         </div>
       </section>
+
+      {/* 12. Contact Us Form Section */}
+      <div id="footer-contact">
+        <ContactFormSection />
+      </div>
 
       {/* Quick View Modal */}
       {quickViewProduct && (
