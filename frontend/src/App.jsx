@@ -47,12 +47,46 @@ function AppContent() {
     navigateTo('order-success', { order: orderData });
   };
 
+  const { settings } = useSettings();
+  const { isAdmin } = useAuth();
+
   // If in Admin Mode, render the dedicated standalone Admin Application Shell
   if (currentPage === 'admin') {
     return (
       <div className="min-h-screen bg-[#F8F6F3] text-warmgray-900 transition-colors">
         <AdminDashboardPage onNavigate={navigateTo} />
         <AuthModal />
+      </div>
+    );
+  }
+
+  // Customer Maintenance Mode Gate
+  if (settings?.maintenance?.enabled && !isAdmin) {
+    return (
+      <div className="min-h-screen bg-[#F8F6F3] flex items-center justify-center p-6 text-center font-sans antialiased">
+        <div className="max-w-md bg-white rounded-3xl p-8 border border-[#E9E2DC] shadow-xl space-y-4 animate-in zoom-in-95">
+          <div className="w-16 h-16 rounded-2xl bg-[#D96C65]/15 text-[#D96C65] mx-auto flex items-center justify-center">
+            <Sparkles className="w-8 h-8" />
+          </div>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-[#D96C65]">
+            {settings?.general?.storeName || 'Stitch & Love'}
+          </span>
+          <h1 className="text-2xl font-serif font-bold text-[#3E2B25]">
+            Under Studio Maintenance
+          </h1>
+          <p className="text-xs text-[#756A65] leading-relaxed">
+            {settings?.maintenance?.message || "We're preparing something beautiful. Please check back soon."}
+          </p>
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={() => navigateTo('admin')}
+              className="text-[11px] font-semibold text-[#756A65] hover:text-[#D96C65] underline transition-colors"
+            >
+              Artisan Admin Access →
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

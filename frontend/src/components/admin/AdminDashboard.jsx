@@ -57,6 +57,7 @@ import {
 import { api } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
+import { StoreSettingsModule } from './settings/StoreSettingsModule';
 
 export const AdminDashboard = ({ onNavigate }) => {
   const { user, login } = useAuth();
@@ -1723,6 +1724,15 @@ export const AdminDashboard = ({ onNavigate }) => {
                 ))}
               </div>
             </div>
+          </main>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB: STORE SETTINGS */}
+        {/* ========================================================= */}
+        {activeTab === 'settings' && (
+          <main className="p-5 sm:p-7 max-w-7xl w-full">
+            <StoreSettingsModule />
           </main>
         )}
 
