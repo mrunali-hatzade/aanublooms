@@ -30,19 +30,72 @@ import { Floating3DBackground } from './components/common/Floating3DBackground';
 import { SparkleClickEffect } from './components/common/SparkleClickEffect';
 import { ScrollToTopButton } from './components/common/ScrollToTopButton';
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('App ErrorBoundary caught error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-[#F8F6F3] flex items-center justify-center p-6 text-center font-sans">
+          <div className="max-w-md bg-white rounded-3xl p-8 border border-[#E9E2DC] shadow-xl space-y-4">
+            <div className="w-16 h-16 rounded-2xl bg-[#D96C65]/15 text-[#D96C65] mx-auto flex items-center justify-center font-serif text-2xl font-bold">
+              🌸
+            </div>
+            <h1 className="text-2xl font-serif font-bold text-[#3E2B25]">
+              AanuBlooms Studio
+            </h1>
+            <p className="text-xs text-[#756A65] leading-relaxed">
+              We encountered a temporary display issue. Click below to refresh the storefront.
+            </p>
+            <div className="pt-2 flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  try {
+                    sessionStorage.removeItem('aanublooms_active_page');
+                  } catch {}
+                  window.location.href = '/';
+                }}
+                className="w-full py-2.5 px-4 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl font-bold text-xs shadow-sm transition-all"
+              >
+                Reload Home Page 🌸
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = '/admin';
+                }}
+                className="w-full py-2.5 px-4 bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#3E2B25] rounded-xl font-bold text-xs transition-all"
+              >
+                Open Admin Dashboard 👑
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 const parseRouteFromLocation = () => {
   try {
     const pathname = window.location.pathname.replace(/^\/|\/$/g, '');
     const searchParams = new URLSearchParams(window.location.search);
 
     if (!pathname || pathname === '') {
-      const saved = sessionStorage.getItem('aanublooms_active_page');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.page && parsed.page !== 'home') {
-          return { page: parsed.page, params: parsed.params || {} };
-        }
-      }
       return { page: 'home', params: {} };
     }
 
@@ -292,20 +345,22 @@ function AppContent() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <SettingsProvider>
-          <AuthProvider>
-            <LocationProvider>
-              <WishlistProvider>
-                <CartProvider>
-                  <AppContent />
-                </CartProvider>
-              </WishlistProvider>
-            </LocationProvider>
-          </AuthProvider>
-        </SettingsProvider>
-      </ToastProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <ToastProvider>
+          <SettingsProvider>
+            <AuthProvider>
+              <LocationProvider>
+                <WishlistProvider>
+                  <CartProvider>
+                    <AppContent />
+                  </CartProvider>
+                </WishlistProvider>
+              </LocationProvider>
+            </AuthProvider>
+          </SettingsProvider>
+        </ToastProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
