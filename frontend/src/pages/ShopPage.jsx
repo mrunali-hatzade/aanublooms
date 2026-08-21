@@ -78,9 +78,6 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
             <h1 className="text-3xl sm:text-4xl font-serif font-bold text-warmgray-900 dark:text-white">
               {activeCategoryObj ? activeCategoryObj.name : 'All Handmade Creations'}
             </h1>
-            <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-1 max-w-2xl">
-              {activeCategoryObj ? activeCategoryObj.description : 'Explore beautiful handmade flowers, flower pots, bouquets, decorative pieces, and thoughtful creations — each carefully crafted by hand with love and creativity.'}
-            </p>
           </div>
 
           {/* Sort & View toggles */}

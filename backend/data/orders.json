@@ -1,5 +1,107 @@
 [
   {
+    "id": "AANU-86101",
+    "createdAt": "2026-08-21T16:02:24.128Z",
+    "customer": {
+      "name": "Mrunali Hatzade",
+      "email": "mrunalihatzade353@gmail.com",
+      "phone": "+917218405826",
+      "address": "matru smruti nagar, khat road, bhan",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "zip": "411035",
+      "country": "India"
+    },
+    "items": [
+      {
+        "id": "prod-103",
+        "name": "Purple Lavender Daisy Blossom Velvet Cupcake Pot",
+        "slug": "purple-lavender-daisy-cupcake-pot",
+        "price": 499,
+        "originalPrice": 649,
+        "image": "/images/lavender-daisy-cupcake-pot.jpeg",
+        "category": "forever-blooms",
+        "craftTimeHours": 3.5,
+        "yarnMaterial": "Velvet Chenille Yarn",
+        "selectedColor": "Pastel Lavender",
+        "selectedSize": "Single Daisy Cupcake Pot",
+        "customNotes": "",
+        "quantity": 1
+      }
+    ],
+    "subtotal": 499,
+    "discount": 0,
+    "appliedCoupon": null,
+    "giftWrap": false,
+    "giftWrapFee": 0,
+    "giftMessage": "",
+    "shipping": 80,
+    "shippingMethod": "Standard Handcrafted Delivery",
+    "total": 579,
+    "status": "placed",
+    "trackingNumber": "USPS-AANU86101",
+    "statusHistory": [
+      {
+        "status": "placed",
+        "time": "2026-08-21T16:02:24.128Z",
+        "note": "Order confirmed! Artisan Aanu has received your order."
+      }
+    ],
+    "paymentMethod": "UPI (Google Pay / PhonePe / Paytm / QR)",
+    "paymentStatus": "Paid"
+  },
+  {
+    "id": "AANU-88914",
+    "createdAt": "2026-08-21T16:00:22.199Z",
+    "customer": {
+      "name": "Mrunali Hatzade",
+      "email": "mrunalihatzade353@gmail.com",
+      "phone": "+917218405826",
+      "address": "matru smruti nagar, khat road, bhan",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "zip": "411035",
+      "country": "India"
+    },
+    "items": [
+      {
+        "id": "prod-102",
+        "name": "Sunny Sunshine Velvet Sunflower Mini Cupcake Pot",
+        "slug": "sunny-sunshine-velvet-sunflower-cupcake-pot",
+        "price": 499,
+        "originalPrice": 649,
+        "image": "/images/sunflower-cupcake-pot.jpeg",
+        "category": "forever-blooms",
+        "craftTimeHours": 3.5,
+        "yarnMaterial": "Plush Velvet Chenille & Cotton",
+        "selectedColor": "Golden Honey Yellow",
+        "selectedSize": "Single Cupcake Pot",
+        "customNotes": "",
+        "quantity": 1
+      }
+    ],
+    "subtotal": 499,
+    "discount": 0,
+    "appliedCoupon": null,
+    "giftWrap": true,
+    "giftWrapFee": 99,
+    "giftMessage": "",
+    "shipping": 80,
+    "shippingMethod": "Standard Handcrafted Delivery",
+    "total": 678,
+    "status": "placed",
+    "trackingNumber": "USPS-AANU88914",
+    "statusHistory": [
+      {
+        "status": "placed",
+        "time": "2026-08-21T16:00:22.200Z",
+        "note": "Order confirmed! Artisan Aanu has received your order."
+      }
+    ],
+    "paymentMethod": "UPI (Google Pay / PhonePe / Paytm / QR)",
+    "paymentStatus": "Paid"
+  },
+  {
     "id": "AANU-11456",
     "createdAt": "2026-08-21T15:17:39.359Z",
     "customer": {
