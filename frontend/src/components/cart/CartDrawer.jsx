@@ -44,6 +44,20 @@ export const CartDrawer = ({ onNavigate }) => {
 
   const [couponCodeInput, setCouponCodeInput] = useState('');
 
+  React.useEffect(() => {
+    if (!isCartOpen) return;
+
+    window.history.pushState({ modal: 'cart' }, '');
+    const handlePop = () => {
+      closeCart();
+    };
+
+    window.addEventListener('popstate', handlePop);
+    return () => {
+      window.removeEventListener('popstate', handlePop);
+    };
+  }, [isCartOpen]);
+
   if (!isCartOpen) return null;
 
   const handleApplyCoupon = async (e) => {

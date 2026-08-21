@@ -123,10 +123,23 @@ function AppContent() {
   };
 
   useEffect(() => {
-    const handlePopState = () => {
+    const initial = parseRouteFromLocation();
+    if (!window.history.state || !window.history.state.page) {
+      window.history.replaceState(
+        { page: initial.page, params: initial.params },
+        '',
+        window.location.pathname + window.location.search
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    const handlePopState = (e) => {
+      if (e.state?.modal) return;
       const route = parseRouteFromLocation();
       setCurrentPage(route.page);
       setNavParams(route.params);
+      sessionStorage.setItem('aanublooms_active_page', JSON.stringify(route));
     };
 
     window.addEventListener('popstate', handlePopState);

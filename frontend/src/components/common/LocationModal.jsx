@@ -16,6 +16,20 @@ export const LocationModal = () => {
   const [cityInput, setCityInput] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
+  React.useEffect(() => {
+    if (!isLocationModalOpen) return;
+
+    window.history.pushState({ modal: 'location' }, '');
+    const handlePop = () => {
+      closeLocationModal();
+    };
+
+    window.addEventListener('popstate', handlePop);
+    return () => {
+      window.removeEventListener('popstate', handlePop);
+    };
+  }, [isLocationModalOpen]);
+
   if (!isLocationModalOpen) return null;
 
   // Common Indian PIN Code / Metro Lookup Table
