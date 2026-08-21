@@ -540,6 +540,19 @@ export const AdminDashboard = ({ onNavigate }) => {
 
               <button
                 type="button"
+                onClick={() => {
+                  setAdminEmail('admin@aanublooms.com');
+                  setAdminPassword('adminpassword123');
+                  login('admin@aanublooms.com', 'adminpassword123');
+                }}
+                className="w-full py-2 px-3 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-800 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                <span>⚡ 1-Click Fill & Sign In as Admin</span>
+              </button>
+
+              <button
+                type="button"
                 onClick={() => onNavigate('home')}
                 className="w-full py-2.5 px-4 bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#3E2B25] rounded-xl font-semibold text-xs transition-colors"
               >
