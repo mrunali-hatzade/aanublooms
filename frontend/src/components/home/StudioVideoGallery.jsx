@@ -3,37 +3,131 @@ import { Play, Pause, Volume2, VolumeX, Plus, Upload, Trash2, Video, Sparkles, X
 import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
 
+const defaultVideos = [
+  {
+    id: 'vid-1',
+    title: 'Slow-Crafted Velvet Flowers & Pots',
+    caption: 'Watch the artisan stitching of our 5-piece cupcake blossom garden set.',
+    url: '/images/whatsapp-craft-video.mp4',
+    poster: '/images/aanu-blooms-signature-set.jpeg',
+    tag: '🌸 Studio Reel'
+  },
+  {
+    id: 'vid-2',
+    title: 'Sunflower & Daisy Stems Assembly',
+    caption: 'Handcrafted floral wire framing with combed milk cotton yarn.',
+    url: '/images/artisan-craft-video.mp4',
+    poster: '/images/sunflower-stem-handheld.jpeg',
+    tag: '✨ Flower Assembly'
+  },
+  {
+    id: 'vid-3',
+    title: 'Pastel Garden Cupcake Blossom Pots',
+    caption: 'Everlasting desk blooms made with love in our Pune craft workshop.',
+    url: '/images/whatsapp-craft-video.mp4',
+    poster: '/images/blossom-pots-collection.jpeg',
+    tag: '🧶 Behind The Stitches'
+  }
+];
+
+const VideoCard = ({ vid, isPlaying, onTogglePlay, isMuted, onToggleMute, isAdmin, onDelete }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn('Video playback error:', err);
+        });
+      }
+    } else {
+      videoRef.current.pause();
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
+  return (
+    <div
+      onClick={onTogglePlay}
+      className="group relative rounded-3xl overflow-hidden bg-black aspect-[9/14] sm:aspect-[9/13] max-h-[480px] shadow-lg border border-warmgray-200/80 dark:border-warmgray-800 flex flex-col justify-between p-4 cursor-pointer select-none"
+    >
+      {/* Background Video */}
+      <video
+        ref={videoRef}
+        src={vid.url}
+        poster={vid.poster}
+        loop
+        playsInline
+        preload="metadata"
+        muted={isMuted}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+
+      {/* Dark Gradient Overlay */}
+      <div className={`absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40 pointer-events-none transition-opacity duration-300 ${isPlaying ? 'opacity-40 hover:opacity-75' : 'opacity-80'}`} />
+
+      {/* Top Bar: Tag & Audio / Delete */}
+      <div className="relative z-10 flex items-center justify-between pointer-events-auto">
+        <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-xs text-white text-[11px] font-bold">
+          {vid.tag}
+        </span>
+
+        <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+          <button
+            onClick={onToggleMute}
+            className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-xs text-white flex items-center justify-center hover:bg-black/90 transition-colors"
+            title={isMuted ? 'Unmute' : 'Mute'}
+          >
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          </button>
+
+          {isAdmin && (
+            <button
+              onClick={(e) => onDelete(vid.id, e)}
+              className="w-8 h-8 rounded-full bg-red-600/80 backdrop-blur-xs text-white flex items-center justify-center hover:bg-red-700 transition-colors opacity-0 group-hover:opacity-100"
+              title="Remove video"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Center Play / Pause Button */}
+      <div className="relative z-10 flex justify-center items-center pointer-events-none my-auto">
+        <div
+          className={`w-14 h-14 rounded-full bg-bloom-500 hover:bg-bloom-600 text-white flex items-center justify-center shadow-xl transform transition-all ${
+            isPlaying ? 'opacity-0 group-hover:opacity-100 scale-90' : 'opacity-100 scale-100'
+          }`}
+        >
+          {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-0.5" />}
+        </div>
+      </div>
+
+      {/* Bottom Title & Caption */}
+      <div className="relative z-10 text-white space-y-1">
+        <h3 className="font-serif font-bold text-sm sm:text-base leading-tight drop-shadow">
+          {vid.title}
+        </h3>
+        <p className="text-[11px] text-white/80 line-clamp-2 leading-relaxed">
+          {vid.caption}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 export const StudioVideoGallery = ({ onNavigate }) => {
   const { addToast } = useToast();
   const { user } = useAuth();
   const isAdmin = user && (user.role === 'admin' || user.email === 'aanu@aanublooms.com' || user.name?.toLowerCase().includes('aanu') || user.name?.toLowerCase().includes('admin'));
-
-  const defaultVideos = [
-    {
-      id: 'vid-1',
-      title: 'Slow-Crafted Velvet Flowers & Pots',
-      caption: 'Watch the artisan stitching of our 5-piece cupcake blossom garden set.',
-      url: '/images/artisan-craft-video.mp4',
-      poster: '/images/aanu-blooms-signature-set.jpeg',
-      tag: '🌸 Studio Reel'
-    },
-    {
-      id: 'vid-2',
-      title: 'Sunflower & Daisy Stems Assembly',
-      caption: 'Handcrafted floral wire framing with combed milk cotton yarn.',
-      url: '/images/artisan-craft-video.mp4',
-      poster: '/images/sunflower-stem-handheld.jpeg',
-      tag: '✨ Flower Assembly'
-    },
-    {
-      id: 'vid-3',
-      title: 'Pastel Garden Cupcake Blossom Pots',
-      caption: 'Everlasting desk blooms made with love in our Pune craft workshop.',
-      url: '/images/artisan-craft-video.mp4',
-      poster: '/images/blossom-pots-collection.jpeg',
-      tag: '🧶 Behind The Stitches'
-    }
-  ];
 
   const [videos, setVideos] = useState(() => {
     try {
@@ -58,6 +152,10 @@ export const StudioVideoGallery = ({ onNavigate }) => {
   useEffect(() => {
     localStorage.setItem('aanublooms_studio_videos', JSON.stringify(videos));
   }, [videos]);
+
+  const handleTogglePlay = (vidId) => {
+    setActivePlayingId((prev) => (prev === vidId ? null : vidId));
+  };
 
   const handleFileUpload = (e) => {
     const file = e.target.files?.[0];
@@ -150,79 +248,18 @@ export const StudioVideoGallery = ({ onNavigate }) => {
 
         {/* Video Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-          {videos.map((vid) => {
-            const isThisPlaying = activePlayingId === vid.id;
-
-            return (
-              <div
-                key={vid.id}
-                className="group relative rounded-3xl overflow-hidden bg-black aspect-[9/14] sm:aspect-[9/13] max-h-[480px] shadow-lg border border-warmgray-200/80 dark:border-warmgray-800 flex flex-col justify-between p-4"
-              >
-                {/* Background Video */}
-                <video
-                  src={vid.url}
-                  poster={vid.poster}
-                  loop
-                  playsInline
-                  muted={isMuted}
-                  autoPlay={isThisPlaying}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-
-                {/* Dark Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40 pointer-events-none" />
-
-                {/* Top Bar: Tag & Audio / Delete (Delete only if Admin) */}
-                <div className="relative z-10 flex items-center justify-between pointer-events-auto">
-                  <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-xs text-white text-[11px] font-bold">
-                    {vid.tag}
-                  </span>
-
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      onClick={() => setIsMuted(!isMuted)}
-                      className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-xs text-white flex items-center justify-center hover:bg-black/90 transition-colors"
-                      title={isMuted ? 'Unmute' : 'Mute'}
-                    >
-                      {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                    </button>
-
-                    {isAdmin && (
-                      <button
-                        onClick={(e) => handleDeleteVideo(vid.id, e)}
-                        className="w-8 h-8 rounded-full bg-red-600/80 backdrop-blur-xs text-white flex items-center justify-center hover:bg-red-700 transition-colors opacity-0 group-hover:opacity-100"
-                        title="Remove video"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {/* Center Play / Pause Button */}
-                <div className="relative z-10 flex justify-center items-center pointer-events-auto my-auto">
-                  <button
-                    onClick={() => setActivePlayingId(isThisPlaying ? null : vid.id)}
-                    className={`w-14 h-14 rounded-full bg-bloom-500/90 hover:bg-bloom-600 text-white flex items-center justify-center shadow-xl transform transition-all hover:scale-110 ${
-                      isThisPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100 scale-100'
-                    }`}
-                  >
-                    {isThisPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-0.5" />}
-                  </button>
-                </div>
-
-                {/* Bottom Title & Caption */}
-                <div className="relative z-10 text-white space-y-1">
-                  <h3 className="font-serif font-bold text-sm sm:text-base leading-tight drop-shadow">
-                    {vid.title}
-                  </h3>
-                  <p className="text-[11px] text-white/80 line-clamp-2 leading-relaxed">
-                    {vid.caption}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+          {videos.map((vid) => (
+            <VideoCard
+              key={vid.id}
+              vid={vid}
+              isPlaying={activePlayingId === vid.id}
+              onTogglePlay={() => handleTogglePlay(vid.id)}
+              isMuted={isMuted}
+              onToggleMute={() => setIsMuted(!isMuted)}
+              isAdmin={isAdmin}
+              onDelete={handleDeleteVideo}
+            />
+          ))}
         </div>
 
       </div>
