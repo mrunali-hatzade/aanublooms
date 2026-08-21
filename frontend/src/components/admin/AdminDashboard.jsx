@@ -130,6 +130,56 @@ export const AdminDashboard = ({ onNavigate }) => {
     { id: 'mat-3', name: 'Artisan Packaging Boxes', count: '5 remaining', type: 'Packaging', urgency: 'medium' }
   ]);
 
+  // Category Manager State
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [categoryForm, setCategoryForm] = useState({
+    name: '',
+    slug: '',
+    description: '',
+    image: '/images/category/1st_category_flower.jpeg'
+  });
+
+  const handleAddCategory = (e) => {
+    e.preventDefault();
+    if (!categoryForm.name.trim()) return;
+
+    const catId = categoryForm.slug || categoryForm.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    const newCat = {
+      id: catId,
+      name: categoryForm.name,
+      description: categoryForm.description || 'Handcrafted crochet collection.',
+      image: categoryForm.image || '/images/category/1st_category_flower.jpeg',
+      itemCount: 0
+    };
+
+    const updated = [...categories.filter(c => c.id !== catId), newCat];
+    setCategories(updated);
+    localStorage.setItem('aanublooms_categories', JSON.stringify(updated));
+    setShowCategoryModal(false);
+    setCategoryForm({ name: '', slug: '', description: '', image: '/images/category/1st_category_flower.jpeg' });
+    addToast('🌸 New category added successfully!', 'success');
+  };
+
+  const handleDeleteCategory = (catId) => {
+    if (window.confirm('Are you sure you want to remove this category?')) {
+      const updated = categories.filter(c => c.id !== catId);
+      setCategories(updated);
+      localStorage.setItem('aanublooms_categories', JSON.stringify(updated));
+      addToast('Category removed from website', 'info');
+    }
+  };
+
+  const handleCategoryPhotoUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setCategoryForm(prev => ({ ...prev, image: event.target.result }));
+      addToast('Category photo uploaded!', 'success');
+    };
+    reader.readAsDataURL(file);
+  };
+
   // Notifications dropdown toggle
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -1639,6 +1689,72 @@ export const AdminDashboard = ({ onNavigate }) => {
         )}
 
         {/* ========================================================= */}
+        {/* TAB: CATEGORIES (BOUTIQUE CATEGORY MANAGEMENT) */}
+        {/* ========================================================= */}
+        {activeTab === 'categories' && (
+          <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
+            <div className="bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-serif font-bold text-[#3E2B25]">
+                    Categories Management ({categories.length})
+                  </h2>
+                  <p className="text-xs text-[#756A65] mt-0.5">
+                    Add, edit, remove, and manage featured storefront categories live on the main page.
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setShowCategoryModal(true)}
+                  className="px-4 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-semibold shadow-2xs flex items-center gap-1.5 transition-colors self-start sm:self-auto"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>+ Add New Category</span>
+                </button>
+              </div>
+
+              {/* Categories Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                {categories.map((cat) => {
+                  const prodCount = products.filter(p => p.category === cat.id).length;
+                  return (
+                    <div
+                      key={cat.id}
+                      className="bg-[#F8F6F3] rounded-2xl p-4 border border-[#E9E2DC] flex items-center gap-3 relative group"
+                    >
+                      <img
+                        src={cat.image || '/images/category/1st_category_flower.jpeg'}
+                        alt={cat.name}
+                        className="w-16 h-16 rounded-xl object-cover border border-[#E9E2DC] bg-white shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-serif font-bold text-sm text-[#3E2B25] truncate">
+                          {cat.name}
+                        </h4>
+                        <p className="text-[11px] text-[#756A65] truncate mt-0.5">
+                          ID: <span className="font-mono text-[#D96C65]">{cat.id}</span>
+                        </p>
+                        <span className="inline-block mt-1 px-2 py-0.5 bg-white rounded-md text-[10px] font-bold text-[#756A65] border border-[#E9E2DC]">
+                          {prodCount} Products
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={() => handleDeleteCategory(cat.id)}
+                        className="p-2 rounded-xl text-red-500 hover:bg-red-50 transition-colors"
+                        title="Remove category"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </main>
+        )}
+
+        {/* ========================================================= */}
         {/* TAB: ALL ORDERS (SEGMENTED ORDERS WORKFLOW) */}
         {/* ========================================================= */}
         {activeTab === 'orders' && (
@@ -2310,6 +2426,111 @@ export const AdminDashboard = ({ onNavigate }) => {
               </button>
             </div>
 
+          </div>
+        </div>
+      )}
+
+      {/* Category Add/Edit Modal */}
+      {showCategoryModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="relative bg-white rounded-3xl max-w-md w-full border border-[#E9E2DC] shadow-2xl p-6 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E9E2DC]">
+              <h3 className="font-serif font-bold text-lg text-[#3E2B25]">
+                Add New Category 🌸
+              </h3>
+              <button onClick={() => setShowCategoryModal(false)} className="p-1 text-[#756A65] hover:text-[#3E2B25]">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddCategory} className="space-y-3">
+              <div>
+                <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
+                  Category Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={categoryForm.name}
+                  onChange={(e) => {
+                    const name = e.target.value;
+                    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+                    setCategoryForm({ ...categoryForm, name, slug });
+                  }}
+                  placeholder="e.g. Forever Bouquets"
+                  className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] font-semibold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
+                  Category Slug / ID
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={categoryForm.slug}
+                  onChange={(e) => setCategoryForm({ ...categoryForm, slug: e.target.value })}
+                  placeholder="e.g. forever-bouquets"
+                  className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] font-mono text-[#3E2B25]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
+                  Description
+                </label>
+                <textarea
+                  rows={2}
+                  value={categoryForm.description}
+                  onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })}
+                  placeholder="Handcrafted crochet floral bouquets..."
+                  className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]"
+                />
+              </div>
+
+              {/* Photo Upload */}
+              <div>
+                <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
+                  Category Image
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={categoryForm.image}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, image: e.target.value })}
+                    placeholder="/images/category/1st_category_flower.jpeg"
+                    className="flex-1 text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] font-mono"
+                  />
+                  <label className="cursor-pointer px-3.5 py-2.5 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-bold shrink-0 flex items-center gap-1 transition-colors">
+                    <Camera className="w-3.5 h-3.5" />
+                    <span>Upload</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleCategoryPhotoUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-[#E9E2DC]">
+                <button
+                  type="button"
+                  onClick={() => setShowCategoryModal(false)}
+                  className="px-4 py-2 text-xs font-semibold text-[#756A65]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-bold shadow-xs transition-colors"
+                >
+                  Add Category 🌸
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
