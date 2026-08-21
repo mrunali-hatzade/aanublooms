@@ -1851,6 +1851,82 @@ export const AdminDashboard = ({ onNavigate }) => {
         )}
 
         {/* ========================================================= */}
+        {/* TAB: CUSTOMER FEEDBACK & ENQUIRIES */}
+        {/* ========================================================= */}
+        {activeTab === 'enquiries' && (
+          <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
+            <div className="bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-serif font-bold text-[#3E2B25]">
+                    Real Customer Feedbacks & Reviews ({feedbacks.length})
+                  </h2>
+                  <p className="text-xs text-[#756A65] mt-0.5">
+                    View and moderate live feedback submitted by real customers on your store.
+                  </p>
+                </div>
+              </div>
+
+              {feedbacks.length === 0 ? (
+                <div className="p-8 text-center bg-[#F8F6F3] rounded-2xl border border-[#E9E2DC]">
+                  <p className="text-xs text-[#756A65]">
+                    No real customer feedback submitted yet. Once customers submit reviews on the site, they will appear here live!
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                  {feedbacks.map(fb => (
+                    <div key={fb.id} className="p-4 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-3">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <div className="flex items-center gap-1 text-amber-500 text-xs">
+                            {[...Array(fb.rating || 5)].map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                            ))}
+                          </div>
+                          <h4 className="font-bold text-sm text-[#3E2B25] mt-1">{fb.author} ({fb.city || 'India'})</h4>
+                          {fb.email && <p className="text-xs text-[#756A65]">{fb.email}</p>}
+                        </div>
+                        <span className="text-[10px] font-semibold bg-white px-2 py-0.5 rounded-md border border-[#E9E2DC] text-[#756A65]">
+                          {fb.productCategory || 'General'}
+                        </span>
+                      </div>
+
+                      {fb.highlight && (
+                        <p className="text-xs font-bold text-[#D96C65]">
+                          ✨ "{fb.highlight}"
+                        </p>
+                      )}
+
+                      <p className="text-xs text-[#3E2B25] bg-white p-3 rounded-lg border border-[#E9E2DC] leading-relaxed italic">
+                        "{fb.comment}"
+                      </p>
+
+                      <div className="flex justify-between items-center text-[10px] text-[#756A65] pt-1">
+                        <span>Submitted on {fb.date || 'Recent'}</span>
+                        <button
+                          onClick={() => {
+                            if (window.confirm('Delete this feedback entry?')) {
+                              const updated = feedbacks.filter(f => f.id !== fb.id);
+                              setFeedbacks(updated);
+                              localStorage.setItem('aanublooms_feedbacks', JSON.stringify(updated));
+                              addToast('Feedback removed', 'info');
+                            }
+                          }}
+                          className="text-red-500 hover:underline font-semibold"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </main>
+        )}
+
+        {/* ========================================================= */}
         {/* TAB: CUSTOM ORDERS WORKFLOW */}
         {/* ========================================================= */}
         {activeTab === 'custom-orders' && (
