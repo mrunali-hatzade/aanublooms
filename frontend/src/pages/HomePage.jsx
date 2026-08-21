@@ -105,19 +105,19 @@ export const HomePage = ({ onNavigate }) => {
           <div className="max-w-xl relative z-10">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-xs font-bold uppercase tracking-wider mb-2">
               <Flower2 className="w-3.5 h-3.5" />
-              Bespoke Studio Commissions
+              Custom Orders
             </span>
             <h3 className="text-2xl sm:text-3xl font-serif font-bold mb-2">
               Need a personalized floral bouquet or plushie?
             </h3>
             <p className="text-rose-100 text-sm sm:text-base leading-relaxed mb-4">
-              Pick your favorite flower stems, color palette & embroidered ribbon messages for gifts & celebrations.
+              Pick your favorite flower stems, color palette & embroidered ribbon messages.
             </p>
             <button
               onClick={() => onNavigate('custom-order')}
               className="px-6 py-3 bg-white hover:bg-rosewood-50 text-warmgray-900 rounded-full font-bold text-sm shadow-md transition-transform hover:scale-105"
             >
-              Start Custom Design ✨
+              Start Custom Order ✨
             </button>
           </div>
 

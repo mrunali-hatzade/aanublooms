@@ -22,7 +22,7 @@ export const ContactPage = ({ onNavigate }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: 'Custom Commission Question',
+    subject: 'Custom Order Question',
     orderId: '',
     message: ''
   });
@@ -42,7 +42,7 @@ export const ContactPage = ({ onNavigate }) => {
     },
     {
       q: 'Can I request specific color palettes for weddings or gifts?',
-      a: 'Absolutely! You can use our interactive Custom Commission Builder or send a note through this contact form with your event color scheme, flower preferences, and custom ribbon messages.'
+      a: 'Absolutely! You can use our interactive Custom Order Builder or send a note through this contact form with your event color scheme, flower preferences, and custom ribbon messages.'
     },
     {
       q: 'How do I clean or dust my crochet plushies & flowers?',
@@ -164,7 +164,7 @@ export const ContactPage = ({ onNavigate }) => {
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
                   >
-                    <option value="Custom Commission Question">Custom Commission Question</option>
+                    <option value="Custom Order Question">Custom Order Question</option>
                     <option value="Order Status / Tracking Inquiry">Order Status / Tracking Inquiry</option>
                     <option value="Wholesale / Wedding Bulk Orders">Wholesale / Wedding Bulk Orders</option>
                     <option value="Pattern & DIY Kit Help">Pattern & DIY Kit Help</option>

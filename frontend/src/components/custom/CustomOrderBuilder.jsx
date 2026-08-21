@@ -103,17 +103,17 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
   const handleAddToCart = () => {
     const customProduct = {
       id: `custom-${Date.now()}`,
-      name: `Custom Commission: ${creationType}`,
-      slug: 'custom-artisan-commission',
+      name: `Custom Order: ${creationType}`,
+      slug: 'custom-artisan-order',
       price: estimatedPrice,
       originalPrice: null,
       images: [currentTypeObj.image],
-      category: 'custom-commissions',
+      category: 'custom-orders',
       craftTimeHours: 10,
       yarnMaterial: yarnPreference,
       colors: selectedColors.map(c => ({ name: c, hex: c })),
       sizes: [stemCount],
-      description: `Custom Commission with palette [${selectedColors.join(', ')}], flowers: [${selectedFlowers.join(', ')}], ribbon message: "${ribbonMessage}". Notes: ${specialNotes}`
+      description: `Custom Order with palette [${selectedColors.join(', ')}], flowers: [${selectedFlowers.join(', ')}], ribbon message: "${ribbonMessage}". Notes: ${specialNotes}`
     };
 
     addToCart(customProduct, 1, {
@@ -122,7 +122,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       customNotes: `Ribbon: "${ribbonMessage}" | Flowers: ${selectedFlowers.join(', ')} | Yarn: ${yarnPreference} | Notes: ${specialNotes}`
     });
 
-    addToast('🌸 Custom commission added to your yarn basket!', 'success');
+    addToast('🌸 Custom order added to your basket!', 'success');
     onNavigate('checkout');
   };
 
@@ -145,7 +145,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
         estimatedBudget: `₹${estimatedPrice.toLocaleString('en-IN')}`
       });
 
-      addToast('🌸 Custom commission inquiry sent to Aanu! She will contact you within 24 hours.', 'success');
+      addToast('🌸 Custom order inquiry sent to Aanu! She will contact you within 24 hours.', 'success');
       setStep(4);
     } catch (err) {
       addToast(err.message || 'Could not submit inquiry', 'error');
@@ -161,14 +161,11 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       <div className="text-center max-w-2xl mx-auto mb-8">
         <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rosewood-100 dark:bg-rosewood-950 text-rosewood-800 dark:text-rosewood-300 text-xs font-bold uppercase tracking-wider mb-2">
           <Palette className="w-3.5 h-3.5" />
-          Interactive Studio Commission Builder
+          Custom Order Builder
         </span>
         <h1 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
-          Design Your Bespoke Crochet Piece
+          Create Your Custom Order
         </h1>
-        <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-400 mt-1.5">
-          Personalize yarn colors, flower combinations, sizes, and personalized ribbon messages handcrafted specially for you across India.
-        </p>
       </div>
 
       {/* Step Indicators */}

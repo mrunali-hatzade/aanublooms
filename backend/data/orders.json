@@ -1,5 +1,56 @@
 [
   {
+    "id": "AANU-11456",
+    "createdAt": "2026-08-21T15:17:39.359Z",
+    "customer": {
+      "name": "Mrunali Hatzade",
+      "email": "mrunalihatzade353@gmail.com",
+      "phone": "+917218405826",
+      "address": "matru smruti nagar, khat road, bhan",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "zip": "411035",
+      "country": "India"
+    },
+    "items": [
+      {
+        "id": "prod-104",
+        "name": "Golden Star Lily Blossom Velvet Cupcake Pot",
+        "slug": "golden-star-lily-velvet-cupcake-pot",
+        "price": 499,
+        "originalPrice": 649,
+        "image": "/images/golden-lily-cupcake-pot.jpeg",
+        "category": "forever-blooms",
+        "craftTimeHours": 3.5,
+        "yarnMaterial": "Plush Velvet & Pearl Accent",
+        "selectedColor": "Canary Star Yellow",
+        "selectedSize": "Single Star Lily Pot",
+        "customNotes": "",
+        "quantity": 1
+      }
+    ],
+    "subtotal": 499,
+    "discount": 0,
+    "appliedCoupon": null,
+    "giftWrap": false,
+    "giftWrapFee": 0,
+    "giftMessage": "",
+    "shipping": 80,
+    "shippingMethod": "Standard Handcrafted Delivery",
+    "total": 579,
+    "status": "placed",
+    "trackingNumber": "USPS-AANU11456",
+    "statusHistory": [
+      {
+        "status": "placed",
+        "time": "2026-08-21T15:17:39.359Z",
+        "note": "Order confirmed! Artisan Aanu has received your order."
+      }
+    ],
+    "paymentMethod": "Cash on Delivery (COD)",
+    "paymentStatus": "Paid"
+  },
+  {
     "id": "AANU-26890",
     "createdAt": "2026-08-21T09:55:56.838Z",
     "customer": {

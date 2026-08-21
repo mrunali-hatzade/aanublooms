@@ -207,13 +207,13 @@ export const Navbar = ({ onNavigate, currentPage }) => {
 
           {/* Action Icons */}
           <div className="flex items-center gap-1 sm:gap-2.5">
-            {/* Custom Commission Button */}
+            {/* Custom Order Button */}
             <button
               onClick={() => onNavigate('custom-order')}
               className="hidden xl:flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-rosewood-100/80 hover:bg-rosewood-200/80 text-rosewood-800 dark:bg-rosewood-950/60 dark:text-rosewood-200 dark:hover:bg-rosewood-900/60 transition-colors border border-rosewood-200 dark:border-rosewood-800"
             >
               <Palette className="w-3.5 h-3.5 text-rosewood-600 dark:text-rosewood-400" />
-              <span>Custom Commission</span>
+              <span>Custom Order</span>
             </button>
 
             {/* Track Order Quick Button */}
