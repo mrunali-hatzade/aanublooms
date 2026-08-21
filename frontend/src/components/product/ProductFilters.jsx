@@ -51,10 +51,13 @@ export const ProductFilters = ({
 
       {/* Category List */}
       <div>
-        <h4 className="font-bold text-xs uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400 mb-2">
-          Categories
-        </h4>
-        <div className="space-y-1">
+        <div className="flex items-center justify-between mb-2">
+          <h4 className="font-bold text-xs uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400">
+            Categories ({categories.length + 1})
+          </h4>
+          <span className="text-[10px] text-warmgray-400">Scroll for more ↓</span>
+        </div>
+        <div className="max-h-52 overflow-y-auto pr-1.5 space-y-1 scrollbar-thin scrollbar-thumb-bloom-300 dark:scrollbar-thumb-warmgray-600 hover:scrollbar-thumb-bloom-500">
           <button
             onClick={() => onSelectCategory('all')}
             className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${

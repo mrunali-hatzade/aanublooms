@@ -159,7 +159,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8 items-start">
         
         {/* Desktop Sidebar Filters (Sticky) */}
-        <div className="hidden lg:block lg:col-span-1 sticky top-24">
+        <div className="hidden lg:block lg:col-span-1 sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-warmgray-200 dark:scrollbar-thumb-warmgray-700">
           <ProductFilters
             categories={categories}
             selectedCategory={selectedCategory}
