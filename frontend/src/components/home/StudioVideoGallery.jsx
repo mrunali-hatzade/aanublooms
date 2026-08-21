@@ -221,7 +221,7 @@ export const StudioVideoGallery = ({ onNavigate }) => {
     <section className="py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header & Add Video Button (Admin Only) */}
+        {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-bloom-600 dark:text-bloom-400 block mb-0.5">
@@ -234,16 +234,6 @@ export const StudioVideoGallery = ({ onNavigate }) => {
               Watch authentic handmade crochet tutorials, flower assembly, and studio stories.
             </p>
           </div>
-
-          {isAdmin && (
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="px-4 py-2.5 bg-warmgray-900 hover:bg-black text-white dark:bg-white dark:text-warmgray-900 rounded-2xl font-bold text-xs shadow-cozy flex items-center gap-2 self-start sm:self-auto transform hover:scale-102 transition-transform"
-            >
-              <Plus className="w-4 h-4 text-bloom-400" />
-              <span>+ Add Video from PC / Phone</span>
-            </button>
-          )}
         </div>
 
         {/* Video Cards Grid */}
