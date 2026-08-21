@@ -285,14 +285,14 @@ export const Navbar = ({ onNavigate, currentPage }) => {
               <span>Track Order</span>
             </button>
 
-            {/* Direct Admin Dashboard Link Button */}
+            {/* Direct Admin Link Button */}
             <button
               onClick={() => onNavigate('admin')}
               className="hidden lg:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rosewood-600 hover:bg-rosewood-700 text-white font-bold text-xs transition-all shadow-2xs transform hover:scale-102"
-              title="Open Admin Dashboard"
+              title="Open Admin"
             >
               <Shield className="w-3.5 h-3.5" />
-              <span>Admin Dashboard 👑</span>
+              <span>Admin</span>
             </button>
 
             {/* Wishlist Button */}
@@ -403,7 +403,7 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                 className="text-left px-3 py-2.5 rounded-xl text-white bg-rosewood-600 font-bold transition-colors flex items-center gap-2"
               >
                 <Shield className="w-4 h-4" />
-                <span>Admin Dashboard 👑</span>
+                <span>Admin</span>
               </button>
 
               <button

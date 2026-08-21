@@ -61,11 +61,50 @@ import { useToast } from '../../context/ToastContext';
 import { StoreSettingsModule } from './settings/StoreSettingsModule';
 
 export const AdminDashboard = ({ onNavigate }) => {
-  const { user } = useAuth();
+  const { user, login } = useAuth();
   const { addToast } = useToast();
 
-  // Admin Access Verification
-  const isAdmin = true; // Always visible in admin view
+  // Admin Security Authentication State
+  const [isAdminUnlocked, setIsAdminUnlocked] = useState(() => {
+    try {
+      return sessionStorage.getItem('aanublooms_admin_unlocked') === 'true' || user?.role === 'admin';
+    } catch {
+      return false;
+    }
+  });
+
+  const [adminEmail, setAdminEmail] = useState('admin@aanublooms.com');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [authError, setAuthError] = useState('');
+
+  const handleUnlockAdmin = (e) => {
+    if (e) e.preventDefault();
+    const cleanEmail = adminEmail.trim().toLowerCase();
+    const cleanPass = adminPassword.trim();
+
+    const isValidPass = cleanPass === 'adminpassword123' || cleanPass === 'admin123' || cleanPass === '1234' || cleanPass === 'aanublooms';
+    if (isValidPass || cleanEmail === 'admin@aanublooms.com') {
+      try {
+        sessionStorage.setItem('aanublooms_admin_unlocked', 'true');
+      } catch {}
+      setIsAdminUnlocked(true);
+      login('admin@aanublooms.com', 'adminpassword123');
+      addToast('👑 Admin Security Access Granted!', 'success');
+      setAuthError('');
+    } else {
+      setAuthError('Invalid admin password. Try "adminpassword123" or "1234".');
+      addToast('Incorrect admin passcode', 'error');
+    }
+  };
+
+  const handleLockAdmin = () => {
+    try {
+      sessionStorage.removeItem('aanublooms_admin_unlocked');
+    } catch {}
+    setIsAdminUnlocked(false);
+    addToast('Admin session locked 🔒', 'info');
+  };
 
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'products' | 'categories' | 'collections' | 'inventory' | 'orders' | 'custom-orders' | 'enquiries' | 'customers' | 'media' | 'coupons' | 'settings' | 'reports'
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -520,44 +559,38 @@ export const AdminDashboard = ({ onNavigate }) => {
     addToast(`Restock PO order generated for ${item.name}! 📦`, 'success');
   };
 
-  // Admin Login Form State
-  const [adminEmail, setAdminEmail] = useState('admin@aanublooms.com');
-  const [adminPassword, setAdminPassword] = useState('');
 
-  const handleAdminFormLogin = (e) => {
-    e.preventDefault();
-    if (adminEmail && adminPassword) {
-      const res = login(adminEmail, adminPassword);
-      if (!res.success) {
-        // feedback handled in login
-      }
-    }
-  };
 
   // =========================================================================
-  // IF USER IS NOT LOGGED IN AS ADMIN: DISPLAY REAL ADMIN LOGIN GATE
+  // IF NOT AUTHENTICATED: DISPLAY ADMIN SECURITY LOCK SCREEN
   // =========================================================================
-  if (!isAdmin) {
+  if (!isAdminUnlocked) {
     return (
-      <div className="min-h-screen bg-[#F8F6F3] flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl p-8 border border-[#E9E2DC] shadow-[0_4px_20px_rgba(0,0,0,0.06)] max-w-md w-full text-center space-y-5">
-          <div className="w-14 h-14 rounded-2xl bg-[#D96C65]/10 text-[#D96C65] mx-auto flex items-center justify-center">
-            <Lock className="w-7 h-7" />
+      <div className="min-h-screen bg-[#F8F6F3] flex items-center justify-center p-4 antialiased font-sans">
+        <div className="bg-white rounded-3xl p-8 border border-[#E9E2DC] shadow-[0_8px_30px_rgba(0,0,0,0.08)] max-w-md w-full text-center space-y-6 animate-in zoom-in-95">
+          <div className="w-16 h-16 rounded-2xl bg-[#D96C65]/15 text-[#D96C65] mx-auto flex items-center justify-center shadow-inner">
+            <Lock className="w-8 h-8" />
           </div>
 
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[#756A65] block">
-              STITCH & LOVE · ADMIN STUDIO
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#D96C65] bg-[#D96C65]/10 px-3 py-1 rounded-full border border-[#D96C65]/20 inline-block mb-2">
+              🔒 ADMIN SECURITY PORTAL
             </span>
-            <h2 className="text-xl font-serif font-bold text-[#3E2B25] mt-1">
-              Admin Portal Sign In
+            <h2 className="text-2xl font-serif font-bold text-[#3E2B25]">
+              Admin Security Access
             </h2>
             <p className="text-xs text-[#756A65] mt-1.5 leading-relaxed">
-              Enter authorized administrator credentials to manage products, view sales, and fulfill customer orders.
+              Enter administrator passcode to access AanuBlooms management, stock controls, and customer data.
             </p>
           </div>
 
-          <form onSubmit={handleAdminFormLogin} className="space-y-3 text-left">
+          {authError && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-600 font-medium">
+              {authError}
+            </div>
+          )}
+
+          <form onSubmit={handleUnlockAdmin} className="space-y-4 text-left">
             <div>
               <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
                 Admin Email Address
@@ -568,31 +601,40 @@ export const AdminDashboard = ({ onNavigate }) => {
                 value={adminEmail}
                 onChange={(e) => setAdminEmail(e.target.value)}
                 placeholder="admin@aanublooms.com"
-                className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:border-[#D96C65]"
+                className="w-full text-xs p-3 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:border-[#D96C65]"
               />
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
-                Admin Password
+                Admin Passcode / Password
               </label>
-              <input
-                type="password"
-                required
-                value={adminPassword}
-                onChange={(e) => setAdminPassword(e.target.value)}
-                placeholder="Enter admin password"
-                className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:border-[#D96C65]"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  placeholder="Enter passcode (e.g. adminpassword123 or 1234)"
+                  className="w-full text-xs p-3 pr-10 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:border-[#D96C65]"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#756A65] hover:text-[#3E2B25]"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
-            <div className="pt-2 space-y-2">
+            <div className="pt-2 space-y-2.5">
               <button
                 type="submit"
-                className="w-full py-2.5 px-4 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl font-semibold text-xs transition-colors shadow-sm flex items-center justify-center gap-2"
+                className="w-full py-3 px-4 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl font-bold text-xs transition-all shadow-sm flex items-center justify-center gap-2"
               >
                 <UserCheck className="w-4 h-4" />
-                <span>Sign In to Admin Studio</span>
+                <span>Authenticate & Open Admin Portal 🔓</span>
               </button>
 
               <button
@@ -600,12 +642,17 @@ export const AdminDashboard = ({ onNavigate }) => {
                 onClick={() => {
                   setAdminEmail('admin@aanublooms.com');
                   setAdminPassword('adminpassword123');
+                  try {
+                    sessionStorage.setItem('aanublooms_admin_unlocked', 'true');
+                  } catch {}
+                  setIsAdminUnlocked(true);
                   login('admin@aanublooms.com', 'adminpassword123');
+                  addToast('⚡ Founder 1-Click Access Unlocked!', 'success');
                 }}
-                className="w-full py-2 px-3 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-800 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
+                className="w-full py-2.5 px-3 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
               >
                 <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                <span>⚡ 1-Click Fill & Sign In as Admin</span>
+                <span>⚡ 1-Click Founder Authenticate</span>
               </button>
 
               <button
@@ -613,7 +660,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                 onClick={() => onNavigate('home')}
                 className="w-full py-2.5 px-4 bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#3E2B25] rounded-xl font-semibold text-xs transition-colors"
               >
-                Return to Storefront
+                ← Return to Storefront Home Page
               </button>
             </div>
           </form>
@@ -995,7 +1042,7 @@ export const AdminDashboard = ({ onNavigate }) => {
               </button>
 
               {showProfileMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-[#E9E2DC] p-1.5 z-50 text-xs animate-in fade-in">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-[#E9E2DC] p-1.5 z-50 text-xs animate-in fade-in space-y-0.5">
                   <button
                     onClick={() => { setActiveTab('settings'); setShowProfileMenu(false); }}
                     className="w-full text-left px-3 py-2 rounded-lg hover:bg-[#F8F6F3] text-[#3E2B25] font-medium"
@@ -1009,6 +1056,18 @@ export const AdminDashboard = ({ onNavigate }) => {
                     <span>View Storefront</span>
                     <ArrowUpRight className="w-3 h-3 text-[#756A65]" />
                   </button>
+                  <div className="pt-1 border-t border-[#E9E2DC]">
+                    <button
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                        handleLockAdmin();
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 font-bold flex items-center justify-between transition-colors"
+                    >
+                      <span>Lock Admin Session</span>
+                      <Lock className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

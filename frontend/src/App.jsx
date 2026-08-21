@@ -78,7 +78,7 @@ class ErrorBoundary extends React.Component {
                 }}
                 className="w-full py-2.5 px-4 bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#3E2B25] rounded-xl font-bold text-xs transition-all"
               >
-                Open Admin Dashboard 👑
+                Open Admin
               </button>
             </div>
           </div>
