@@ -116,9 +116,6 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                   AanuBlooms
                   <Sparkles className="w-3.5 h-3.5 text-bloom-500 fill-bloom-300" />
                 </span>
-                <span className="block text-[9px] uppercase font-semibold tracking-widest text-bloom-600 dark:text-bloom-400">
-                  Handcrafted Blooms & Creations
-                </span>
               </div>
             </button>
 
