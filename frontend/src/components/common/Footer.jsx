@@ -61,9 +61,11 @@ export const Footer = ({ onNavigate }) => {
               onClick={() => onNavigate('home')}
               className="flex items-center gap-2.5 group text-left"
             >
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-bloom-500 to-rosewood-400 flex items-center justify-center text-white shadow-cozy">
-                <Flower2 className="w-5 h-5" />
-              </div>
+              <img
+                src="/images/logo.png"
+                alt="AanuBlooms Logo"
+                className="w-10 h-10 rounded-2xl object-cover shadow-cozy border border-bloom-100 dark:border-warmgray-700 bg-white"
+              />
               <div>
                 <span className="text-xl font-bold font-serif tracking-tight text-warmgray-900 dark:text-white">
                   AanuBlooms

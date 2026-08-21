@@ -108,9 +108,11 @@ export const Navbar = ({ onNavigate, currentPage }) => {
               onClick={() => onNavigate('home')}
               className="flex items-center gap-2.5 group text-left"
             >
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-bloom-500 via-rosewood-400 to-amber-300 flex items-center justify-center text-white shadow-cozy group-hover:scale-105 transition-transform duration-300">
-                <Flower2 className="w-5 h-5" />
-              </div>
+              <img
+                src="/images/logo.png"
+                alt="AanuBlooms Logo"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl object-cover shadow-cozy group-hover:scale-105 transition-transform duration-300 border border-bloom-100 dark:border-warmgray-700 bg-white"
+              />
               <div>
                 <span className="text-xl sm:text-2xl font-bold font-serif tracking-tight text-warmgray-900 dark:text-white flex items-center gap-1">
                   AanuBlooms
