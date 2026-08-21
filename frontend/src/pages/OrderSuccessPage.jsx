@@ -78,11 +78,11 @@ export const OrderSuccessPage = ({ order, onNavigate }) => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
           <button
-            onClick={() => onNavigate('customer-dashboard')}
+            onClick={() => onNavigate('track-order', { orderId: order.id })}
             className="w-full sm:w-auto px-7 py-3 bg-gradient-to-r from-bloom-500 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-full font-bold text-xs shadow-cozy flex items-center justify-center gap-2"
           >
-            <User className="w-4 h-4" />
-            <span>View My Orders & Account</span>
+            <Truck className="w-4 h-4" />
+            <span>Track My Order</span>
             <ArrowRight className="w-4 h-4" />
           </button>
 
@@ -91,7 +91,7 @@ export const OrderSuccessPage = ({ order, onNavigate }) => {
             className="w-full sm:w-auto px-4 py-3 bg-warmgray-100 hover:bg-warmgray-200 dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 rounded-full font-bold text-xs flex items-center justify-center gap-1.5"
           >
             <Printer className="w-4 h-4" />
-            <span>Receipt</span>
+            <span>Print Receipt</span>
           </button>
         </div>
 

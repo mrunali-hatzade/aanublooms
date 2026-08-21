@@ -26,8 +26,6 @@ import { OrderTrackingPage } from './pages/OrderTrackingPage';
 import { AboutMakerPage } from './pages/AboutMakerPage';
 import { ContactPage } from './pages/ContactPage';
 import { FeedbackPage } from './pages/FeedbackPage';
-import { CustomerDashboardPage } from './pages/CustomerDashboardPage';
-import { AuthModal } from './components/auth/AuthModal';
 import { Floating3DBackground } from './components/common/Floating3DBackground';
 import { SparkleClickEffect } from './components/common/SparkleClickEffect';
 import { ScrollToTopButton } from './components/common/ScrollToTopButton';
@@ -56,7 +54,6 @@ function AppContent() {
     return (
       <div className="min-h-screen bg-[#F8F6F3] text-warmgray-900 transition-colors">
         <AdminDashboardPage onNavigate={navigateTo} />
-        <AuthModal onNavigate={navigateTo} />
       </div>
     );
   }
@@ -171,17 +168,10 @@ function AppContent() {
         {currentPage === 'feedback' && (
           <FeedbackPage onNavigate={navigateTo} />
         )}
-
-        {currentPage === 'customer-dashboard' && (
-          <CustomerDashboardPage onNavigate={navigateTo} initialTab={navParams.tab || 'overview'} />
-        )}
       </main>
 
       {/* Slide-out Cart Drawer */}
       <CartDrawer onNavigate={navigateTo} />
-
-      {/* Global Auth Modal for Login & Signup */}
-      <AuthModal onNavigate={navigateTo} />
 
       {/* Delivery Location & GPS Modal */}
       <LocationModal />

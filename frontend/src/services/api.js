@@ -173,6 +173,17 @@ export const api = {
     return res.json();
   },
 
+  async trackOrder(orderId, phone) {
+    const res = await fetch(`${API_BASE_URL}/orders/track`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId, phone }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Unable to track order');
+    return data;
+  },
+
   async updateOrderStatus(orderId, status, note) {
     const res = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
       method: 'PATCH',

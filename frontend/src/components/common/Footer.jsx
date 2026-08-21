@@ -135,6 +135,11 @@ export const Footer = ({ onNavigate }) => {
             </h4>
             <ul className="space-y-2 text-sm text-warmgray-600 dark:text-warmgray-300">
               <li>
+                <button onClick={() => onNavigate('track-order')} className="hover:text-bloom-600 dark:text-bloom-400 font-semibold text-bloom-700 transition-colors flex items-center gap-1.5">
+                  <span>📦 Track Your Order</span>
+                </button>
+              </li>
+              <li>
                 <button onClick={() => onNavigate('custom-order')} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
                   Custom Orders
                 </button>
@@ -193,9 +198,14 @@ export const Footer = ({ onNavigate }) => {
         <div className="pt-6 border-t border-warmgray-200 dark:border-warmgray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-warmgray-500 dark:text-warmgray-400">
           <p>© {new Date().getFullYear()} AanuBlooms Studio. All creations handcrafted with love & care.</p>
           <div className="flex items-center gap-4 sm:gap-6">
-            <span>Handcrafted with Care</span>
             <span>Pune & PCMC Delivery</span>
             <span>UPI & Card Secure Checkout</span>
+            <button
+              onClick={() => onNavigate('admin')}
+              className="text-warmgray-400 hover:text-warmgray-600 dark:hover:text-warmgray-200 transition-colors text-[11px] underline"
+            >
+              Artisan Admin
+            </button>
           </div>
         </div>
 

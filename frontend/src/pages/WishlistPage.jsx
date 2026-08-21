@@ -23,6 +23,9 @@ export const WishlistPage = ({ onNavigate }) => {
           <h1 className="text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
             Handcrafted Wishlist ({wishlist.length})
           </h1>
+          <p className="text-[11px] text-warmgray-500 dark:text-warmgray-400 mt-1">
+            🌸 Your wishlist is saved locally on this device.
+          </p>
         </div>
 
         {wishlist.length > 0 && (
@@ -92,7 +95,7 @@ export const WishlistPage = ({ onNavigate }) => {
                     {item.name}
                   </h3>
                   <p className="font-serif font-bold text-base text-bloom-600 dark:text-bloom-400 mt-2">
-                    ${item.price?.toFixed(2)}
+                    ₹{item.price}
                   </p>
                 </div>
               </div>

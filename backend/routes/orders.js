@@ -46,6 +46,51 @@ router.get('/', (req, res) => {
   });
 });
 
+// POST /api/orders/track (Secure Guest Order Tracking)
+router.post('/track', (req, res) => {
+  const { orderId, phone } = req.body;
+
+  if (!orderId || !phone) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please provide both your Order ID and phone number used during checkout.'
+    });
+  }
+
+  const cleanId = orderId.trim().toUpperCase().replace('#', '');
+  const cleanPhone = phone.trim().replace(/[^0-9]/g, '');
+
+  const orders = getOrders();
+  const order = orders.find(o => {
+    const idMatch = o.id.toUpperCase().replace('#', '') === cleanId;
+    const orderPhone = (o.customer?.phone || '').replace(/[^0-9]/g, '');
+    const phoneMatch = orderPhone && (orderPhone.endsWith(cleanPhone) || cleanPhone.endsWith(orderPhone) || orderPhone.includes(cleanPhone) || cleanPhone.includes(orderPhone));
+    return idMatch && phoneMatch;
+  });
+
+  if (!order) {
+    return res.status(404).json({
+      success: false,
+      message: 'No order found matching this Order ID and phone number. Please verify your receipt details.'
+    });
+  }
+
+  // Mask sensitive info for privacy
+  const maskedPhone = order.customer?.phone ? order.customer.phone.replace(/(\d{2})\d+(\d{2})/, '$1******$2') : '******';
+  const safeOrder = {
+    ...order,
+    customer: {
+      name: order.customer?.name || 'Valued Customer',
+      city: order.customer?.city || 'Pune',
+      state: order.customer?.state || 'Maharashtra',
+      zip: order.customer?.zip || '411038',
+      phone: maskedPhone
+    }
+  };
+
+  res.json({ success: true, data: safeOrder });
+});
+
 // GET /api/orders/:id
 router.get('/:id', (req, res) => {
   const orders = getOrders();

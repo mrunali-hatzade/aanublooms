@@ -1,31 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { CraftTimelineTracker } from '../components/orders/CraftTimelineTracker';
 import { PrintableInvoice } from '../components/orders/PrintableInvoice';
-import { Search, Package, ArrowRight, Sparkles } from 'lucide-react';
+import { Search, Package, Phone, ArrowRight, Sparkles, CheckCircle2, Truck, ShieldCheck } from 'lucide-react';
 import { api } from '../services/api';
 import { useToast } from '../context/ToastContext';
 
 export const OrderTrackingPage = ({ orderId, onNavigate }) => {
   const { addToast } = useToast();
-  const [searchInput, setSearchInput] = useState(orderId || 'AANU-89421');
+  const [orderIdInput, setOrderIdInput] = useState(orderId || '');
+  const [phoneInput, setPhoneInput] = useState('');
   const [currentOrder, setCurrentOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPrintModal, setShowPrintModal] = useState(false);
 
-  const fetchOrder = async (idToSearch) => {
+  const fetchOrder = async (idToSearch, phoneToVerify = '') => {
     if (!idToSearch) return;
     setIsLoading(true);
     try {
-      const res = await api.getOrderById(idToSearch.trim());
-      if (res.success && res.data) {
-        setCurrentOrder(res.data);
+      if (phoneToVerify.trim()) {
+        const res = await api.trackOrder(idToSearch.trim(), phoneToVerify.trim());
+        if (res.success && res.data) {
+          setCurrentOrder(res.data);
+          addToast('🌸 Order verified successfully!', 'success');
+        } else {
+          setCurrentOrder(null);
+          addToast('No order found matching this Order ID and phone number.', 'error');
+        }
       } else {
-        setCurrentOrder(null);
-        addToast(`Order "${idToSearch}" not found. Try searching for AANU-89421 or AANU-78103`, 'error');
+        // Fallback direct fetch by ID (or recent receipt lookup)
+        const res = await api.getOrderById(idToSearch.trim());
+        if (res.success && res.data) {
+          setCurrentOrder(res.data);
+        } else {
+          setCurrentOrder(null);
+          addToast(`Order "${idToSearch}" not found.`, 'error');
+        }
       }
     } catch (err) {
       setCurrentOrder(null);
-      addToast(`Order "${idToSearch}" not found. Try searching for AANU-89421 or AANU-78103`, 'error');
+      addToast(err.message || `Order "${idToSearch}" not found.`, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -33,18 +46,18 @@ export const OrderTrackingPage = ({ orderId, onNavigate }) => {
 
   useEffect(() => {
     if (orderId) {
-      setSearchInput(orderId);
+      setOrderIdInput(orderId);
       fetchOrder(orderId);
-    } else {
-      fetchOrder('AANU-89421'); // Seed default
     }
   }, [orderId]);
 
-  const handleSearch = (e) => {
+  const handleTrackSubmit = (e) => {
     e.preventDefault();
-    if (searchInput.trim()) {
-      fetchOrder(searchInput.trim());
+    if (!orderIdInput.trim()) {
+      addToast('Please enter your Order ID (e.g. SL-1025 or AANU-89421)', 'error');
+      return;
     }
+    fetchOrder(orderIdInput.trim(), phoneInput.trim());
   };
 
   return (
@@ -52,57 +65,96 @@ export const OrderTrackingPage = ({ orderId, onNavigate }) => {
       
       {/* Search Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider">
-          <Package className="w-3.5 h-3.5" />
-          Live Crafting & Delivery Tracker
+        <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-bloom-100 dark:bg-bloom-950/80 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider">
+          <Truck className="w-3.5 h-3.5" />
+          Handmade Order & Crafting Tracker
         </span>
         <h1 className="text-3xl sm:text-4xl font-serif font-bold text-warmgray-900 dark:text-white">
-          Track Your Stitches
+          Track Your Order 🧶
         </h1>
-        <p className="text-xs text-warmgray-500 dark:text-warmgray-400">
-          Watch your order progress live from yarn selection to ribbon packaging and shipping.
+        <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-400">
+          Enter your Order ID and mobile number to see live crafting, packaging, and delivery updates.
         </p>
 
         {/* Search Bar Form */}
-        <form onSubmit={handleSearch} className="flex gap-2 max-w-md mx-auto pt-2">
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 text-warmgray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Enter Order ID (e.g. AANU-89421)"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full text-xs py-3 pl-10 pr-4 rounded-2xl bg-white dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white font-mono uppercase focus:ring-2 focus:ring-bloom-400"
-            />
+        <form onSubmit={handleTrackSubmit} className="bg-white dark:bg-warmgray-800 p-4 rounded-3xl border border-warmgray-200 dark:border-warmgray-700 shadow-soft-lg space-y-3 mt-4 text-left max-w-lg mx-auto">
+          <div>
+            <label className="block text-[11px] font-bold uppercase text-warmgray-500 dark:text-warmgray-400 mb-1">
+              Order ID *
+            </label>
+            <div className="relative">
+              <Package className="w-4 h-4 text-warmgray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="e.g. SL-1025 or AANU-89421"
+                value={orderIdInput}
+                onChange={(e) => setOrderIdInput(e.target.value)}
+                required
+                className="w-full text-xs py-2.5 pl-10 pr-4 rounded-xl bg-warmgray-50 dark:bg-warmgray-900 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white font-mono uppercase focus:ring-2 focus:ring-bloom-400"
+              />
+            </div>
           </div>
+
+          <div>
+            <label className="block text-[11px] font-bold uppercase text-warmgray-500 dark:text-warmgray-400 mb-1">
+              Mobile Number (Used at Checkout)
+            </label>
+            <div className="relative">
+              <Phone className="w-4 h-4 text-warmgray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="tel"
+                placeholder="e.g. 9876543210"
+                value={phoneInput}
+                onChange={(e) => setPhoneInput(e.target.value)}
+                className="w-full text-xs py-2.5 pl-10 pr-4 rounded-xl bg-warmgray-50 dark:bg-warmgray-900 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:ring-2 focus:ring-bloom-400"
+              />
+            </div>
+          </div>
+
           <button
             type="submit"
             disabled={isLoading}
-            className="px-6 py-3 bg-bloom-500 hover:bg-bloom-600 text-white rounded-2xl font-bold text-xs shadow-cozy transition-colors disabled:opacity-50"
+            className="w-full py-3 bg-bloom-500 hover:bg-bloom-600 text-white rounded-xl font-bold text-xs shadow-cozy transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            {isLoading ? 'Searching...' : 'Track'}
+            <Search className="w-4 h-4" />
+            <span>{isLoading ? 'Verifying Order...' : 'Track My Order'}</span>
           </button>
         </form>
 
-        {/* Quick Demo links */}
-        <div className="flex items-center justify-center gap-2 text-xs text-warmgray-400">
-          <span>Try demo orders:</span>
-          <button onClick={() => { setSearchInput('AANU-89421'); fetchOrder('AANU-89421'); }} className="text-bloom-600 dark:text-bloom-400 font-mono font-bold underline">
+        {/* Demo order badge */}
+        <div className="flex items-center justify-center gap-2 text-xs text-warmgray-400 pt-1">
+          <span>Try demo order:</span>
+          <button
+            type="button"
+            onClick={() => {
+              setOrderIdInput('AANU-89421');
+              setPhoneInput('9876543210');
+              fetchOrder('AANU-89421', '9876543210');
+            }}
+            className="text-bloom-600 dark:text-bloom-400 font-mono font-bold underline"
+          >
             AANU-89421
-          </button>
-          <span>·</span>
-          <button onClick={() => { setSearchInput('AANU-78103'); fetchOrder('AANU-78103'); }} className="text-bloom-600 dark:text-bloom-400 font-mono font-bold underline">
-            AANU-78103
           </button>
         </div>
       </div>
 
       {/* Tracker Content */}
       {currentOrder && (
-        <CraftTimelineTracker
-          initialOrder={currentOrder}
-          onPrintInvoice={() => setShowPrintModal(true)}
-        />
+        <div className="space-y-6">
+          <CraftTimelineTracker
+            initialOrder={currentOrder}
+            onPrintInvoice={() => setShowPrintModal(true)}
+          />
+
+          <div className="text-center pt-4">
+            <button
+              onClick={() => onNavigate('shop')}
+              className="px-6 py-2.5 rounded-full bg-warmgray-900 hover:bg-black text-white dark:bg-white dark:text-warmgray-900 text-xs font-bold transition-all shadow"
+            >
+              Continue Shopping 🌸
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Printable Invoice Modal */}

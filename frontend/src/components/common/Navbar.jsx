@@ -6,25 +6,20 @@ import {
   Menu,
   X,
   Sparkles,
-  User,
-  Shield,
   Palette,
   Flower2,
-  ChevronDown,
-  LogOut,
   Package,
-  MapPin
+  MapPin,
+  Truck
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
-import { useAuth } from '../../context/AuthContext';
 import { useLocation } from '../../context/LocationContext';
 import { api } from '../../services/api';
 
 export const Navbar = ({ onNavigate, currentPage }) => {
   const { totalItemCount, openCart } = useCart();
   const { count: wishlistCount } = useWishlist();
-  const { user, isAdmin, openAuthModal, logout, switchToAdmin, switchToCustomer } = useAuth();
   const { location, openLocationModal } = useLocation();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,10 +27,8 @@ export const Navbar = ({ onNavigate, currentPage }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   const searchRef = useRef(null);
-  const userDropdownRef = useRef(null);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -226,6 +219,16 @@ export const Navbar = ({ onNavigate, currentPage }) => {
               <span>Custom Commission</span>
             </button>
 
+            {/* Track Order Quick Button */}
+            <button
+              onClick={() => onNavigate('track-order')}
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-warmgray-100 dark:bg-warmgray-800 hover:bg-warmgray-200 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 transition-colors border border-warmgray-200 dark:border-warmgray-700"
+              title="Track Your Order"
+            >
+              <Package className="w-3.5 h-3.5 text-bloom-600 dark:text-bloom-400" />
+              <span>Track Order</span>
+            </button>
+
             {/* Wishlist Button */}
             <button
               onClick={() => onNavigate('wishlist')}
@@ -260,129 +263,6 @@ export const Navbar = ({ onNavigate, currentPage }) => {
               </span>
             </button>
 
-            {/* User Account Button & Dropdown */}
-            <div ref={userDropdownRef} className="relative">
-              {user ? (
-                <button
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-1.5 p-1 pl-2 pr-2.5 rounded-full bg-warmgray-100 dark:bg-warmgray-800 hover:bg-warmgray-200 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 transition-colors border border-warmgray-200 dark:border-warmgray-700"
-                  aria-label="User profile menu"
-                >
-                  <img
-                    src={user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name || 'User')}`}
-                    alt={user.name || 'User'}
-                    className="w-6 h-6 rounded-full object-cover border border-bloom-400"
-                  />
-                  <span className="text-xs font-bold max-w-[80px] truncate hidden md:inline">
-                    {user.name ? (user.name.split(' ')[0] || user.name) : 'Account'}
-                  </span>
-                  <ChevronDown className="w-3 h-3 text-warmgray-400" />
-                </button>
-              ) : (
-                <button
-                  onClick={() => openAuthModal('login')}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-warmgray-900 hover:bg-black text-white dark:bg-white dark:text-warmgray-900 text-xs font-bold shadow-xs transition-all"
-                >
-                  <User className="w-3.5 h-3.5" />
-                  <span>Sign In</span>
-                </button>
-              )}
-
-              {/* User Dropdown Menu */}
-              {userDropdownOpen && user && (
-                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-warmgray-800 rounded-2xl shadow-2xl border border-warmgray-200 dark:border-warmgray-700 py-2 z-50 animate-in fade-in">
-                  <div className="px-4 py-2.5 border-b border-warmgray-100 dark:border-warmgray-700">
-                    <p className="text-[10px] uppercase font-bold text-warmgray-400">Signed in as</p>
-                    <p className="text-xs font-bold text-warmgray-900 dark:text-white truncate">{user.name}</p>
-                    <p className="text-[11px] text-warmgray-500 truncate">{user.email}</p>
-                  </div>
-
-                  <div className="py-1">
-                    <button
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        onNavigate('customer-dashboard', { tab: 'overview' });
-                      }}
-                      className="w-full px-4 py-2 text-left text-xs font-bold text-bloom-600 dark:text-bloom-400 hover:bg-bloom-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
-                    >
-                      <User className="w-3.5 h-3.5" />
-                      <span>My Account (Overview)</span>
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        onNavigate('customer-dashboard', { tab: 'orders' });
-                      }}
-                      className="w-full px-4 py-2 text-left text-xs text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
-                    >
-                      <Package className="w-3.5 h-3.5" />
-                      <span>My Orders</span>
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        onNavigate('customer-dashboard', { tab: 'custom-orders' });
-                      }}
-                      className="w-full px-4 py-2 text-left text-xs text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
-                    >
-                      <Palette className="w-3.5 h-3.5" />
-                      <span>Custom Orders</span>
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        onNavigate('customer-dashboard', { tab: 'wishlist' });
-                      }}
-                      className="w-full px-4 py-2 text-left text-xs text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
-                    >
-                      <Heart className="w-3.5 h-3.5" />
-                      <span>Wishlist ({wishlistCount})</span>
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        onNavigate('customer-dashboard', { tab: 'profile' });
-                      }}
-                      className="w-full px-4 py-2 text-left text-xs text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
-                    >
-                      <Settings className="w-3.5 h-3.5" />
-                      <span>Profile Settings</span>
-                    </button>
-
-                    {user?.role === 'admin' && (
-                      <button
-                        onClick={() => {
-                          setUserDropdownOpen(false);
-                          onNavigate('admin');
-                        }}
-                        className="w-full px-4 py-2 text-left text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-warmgray-700 flex items-center gap-2 border-t border-warmgray-100 dark:border-warmgray-700 mt-1 pt-1.5"
-                      >
-                        <Shield className="w-3.5 h-3.5" />
-                        <span>Admin Studio Dashboard</span>
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Sign out */}
-                  <div className="pt-1 border-t border-warmgray-100 dark:border-warmgray-700">
-                    <button
-                      onClick={() => {
-                        logout();
-                        setUserDropdownOpen(false);
-                      }}
-                      className="w-full px-4 py-2 text-left text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 flex items-center gap-2"
-                    >
-                      <LogOut className="w-3.5 h-3.5" />
-                      <span>Sign Out</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
         </div>
 
@@ -405,21 +285,13 @@ export const Navbar = ({ onNavigate, currentPage }) => {
           </div>
 
           <div className="flex items-center gap-3 text-xs font-medium text-warmgray-500 dark:text-warmgray-400">
-            {user ? (
-              <button
-                onClick={() => onNavigate('customer-dashboard')}
-                className="text-warmgray-600 dark:text-warmgray-300 font-semibold hover:text-bloom-600 flex items-center gap-1"
-              >
-                <span>My Orders</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => openAuthModal('signup')}
-                className="text-bloom-600 dark:text-bloom-400 font-bold hover:underline"
-              >
-                Join Cozy Club (Get ₹150 Off)
-              </button>
-            )}
+            <button
+              onClick={() => onNavigate('track-order')}
+              className="text-warmgray-600 dark:text-warmgray-300 font-semibold hover:text-bloom-600 flex items-center gap-1.5 transition-colors"
+            >
+              <Truck className="w-3.5 h-3.5 text-bloom-500" />
+              <span>Track Dispatch</span>
+            </button>
           </div>
         </nav>
       </div>
@@ -454,29 +326,29 @@ export const Navbar = ({ onNavigate, currentPage }) => {
               </button>
             ))}
 
-            {user ? (
+            <div className="pt-2 border-t border-warmgray-100 dark:border-warmgray-800 flex flex-col gap-1">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  onNavigate('customer-dashboard');
+                  onNavigate('track-order');
                 }}
-                className="text-left px-3 py-2 rounded-xl text-bloom-600 dark:text-bloom-400 bg-bloom-50 dark:bg-warmgray-800 font-bold transition-colors flex items-center gap-1.5"
+                className="text-left px-3 py-2.5 rounded-xl text-bloom-600 dark:text-bloom-400 bg-bloom-50/70 dark:bg-warmgray-800 font-bold transition-colors flex items-center gap-2"
               >
-                <User className="w-3.5 h-3.5" />
-                <span>My Account & Orders Dashboard</span>
+                <Package className="w-4 h-4" />
+                <span>Track Your Order</span>
               </button>
-            ) : (
+
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  openAuthModal('login');
+                  onNavigate('wishlist');
                 }}
-                className="text-left px-3 py-2 rounded-xl text-bloom-600 dark:text-bloom-400 bg-bloom-50 dark:bg-warmgray-800 font-bold transition-colors flex items-center gap-1.5"
+                className="text-left px-3 py-2 rounded-xl text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 font-medium transition-colors flex items-center gap-2"
               >
-                <User className="w-3.5 h-3.5" />
-                <span>Sign In / Create Account</span>
+                <Heart className="w-4 h-4 text-rosewood-500" />
+                <span>Wishlist ({wishlistCount})</span>
               </button>
-            )}
+            </div>
           </div>
         </div>
       )}
