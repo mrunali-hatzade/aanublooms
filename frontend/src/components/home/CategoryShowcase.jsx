@@ -40,6 +40,23 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
     <section className="py-6 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
+        {/* Section Header */}
+        <div className="text-center max-w-xl mx-auto mb-6">
+          <div className="flex items-center justify-center gap-2 text-[#D96C65] mb-1">
+            <span className="h-px w-8 bg-[#D96C65]/30"></span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#D96C65]">
+              Handcrafted Collections
+            </span>
+            <span className="h-px w-8 bg-[#D96C65]/30"></span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
+            Explore by Category
+          </h2>
+          <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-1">
+            Discover our slow-stitched forever blooms, plushies, hair accessories & gift hampers.
+          </p>
+        </div>
+
         {/* Compact 6-Card Category Row */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
           {displayCategories.map((cat) => (

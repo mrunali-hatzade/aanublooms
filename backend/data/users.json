@@ -1,0 +1,17 @@
+[
+  {
+    "id": "admin-primary",
+    "name": "Aanu (Artisan Founder)",
+    "email": "admin@aanublooms.com",
+    "password": "adminpassword123",
+    "phone": "+91 98765 43210",
+    "role": "admin",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "zip": "400050",
+    "address": "AanuBlooms Craft Studio, Bandra West",
+    "savedAddresses": [],
+    "createdAt": "2026-08-01T10:00:00.000Z"
+  }
+]

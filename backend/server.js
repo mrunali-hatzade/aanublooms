@@ -9,6 +9,8 @@ import couponsRoutes from './routes/coupons.js';
 import analyticsRoutes from './routes/analytics.js';
 import contactRoutes from './routes/contact.js';
 import feedbackRoutes from './routes/feedback.js';
+import authRoutes from './routes/auth.js';
+import settingsRoutes from './routes/settings.js';
 
 dotenv.config();
 
@@ -21,6 +23,8 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/settings', settingsRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/custom-requests', customRequestsRoutes);

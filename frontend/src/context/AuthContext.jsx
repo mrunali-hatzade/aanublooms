@@ -1,84 +1,47 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from './ToastContext';
+import { api } from '../services/api';
 
 const AuthContext = createContext();
 
-const INITIAL_ACCOUNTS = [
-  {
-    id: 'cust-1',
-    name: 'Pooja Sharma',
-    email: 'pooja.sharma@example.com',
-    password: 'password123',
-    phone: '+91 98765 43210',
-    role: 'customer',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80',
-    city: 'Bengaluru',
-    state: 'Karnataka',
-    zip: '560038',
-    address: 'Flat 402, Lotus Residency, 14th Main Road, Indiranagar',
-    savedAddresses: [
-      {
-        id: 'addr-1',
-        title: 'Home',
-        name: 'Pooja Sharma',
-        phone: '+91 98765 43210',
-        address: 'Flat 402, Lotus Residency, 14th Main Road, Indiranagar',
-        city: 'Bengaluru',
-        state: 'Karnataka',
-        zip: '560038',
-        country: 'India',
-        isDefault: true
-      },
-      {
-        id: 'addr-2',
-        title: 'Office / Studio',
-        name: 'Pooja Sharma',
-        phone: '+91 98765 43210',
-        address: 'WeWork Galaxy, 43 Residency Rd, Shanthala Nagar',
-        city: 'Bengaluru',
-        state: 'Karnataka',
-        zip: '560025',
-        country: 'India',
-        isDefault: false
-      }
-    ]
-  },
-  {
-    id: 'admin-1',
-    name: 'Aanu (Artisan Founder)',
-    email: 'maker@aanublooms.com',
-    password: 'adminpassword',
-    phone: '+91 99887 76655',
-    role: 'admin',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-    city: 'Mumbai',
-    state: 'Maharashtra',
-    zip: '400050',
-    address: 'AanuBlooms Craft Studio, Bandra West',
-    savedAddresses: []
-  }
-];
+// Default Administrator Seed Account (Owner Admin)
+const DEFAULT_ADMIN = {
+  id: 'admin-primary',
+  name: 'Aanu (Artisan Founder)',
+  email: 'admin@aanublooms.com',
+  password: 'adminpassword123',
+  phone: '+91 98765 43210',
+  role: 'admin',
+  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
+  city: 'Mumbai',
+  state: 'Maharashtra',
+  zip: '400050',
+  address: 'Artisan Studio',
+  savedAddresses: []
+};
 
 export const AuthProvider = ({ children }) => {
   // Registered users repository
   const [usersDb, setUsersDb] = useState(() => {
     try {
       const saved = localStorage.getItem('aanublooms_users_db');
-      return saved ? JSON.parse(saved) : INITIAL_ACCOUNTS;
+      return saved ? JSON.parse(saved) : [DEFAULT_ADMIN];
     } catch {
-      return INITIAL_ACCOUNTS;
+      return [DEFAULT_ADMIN];
     }
   });
 
-  // Current logged in session
+  // Current logged in session — Starts as null (Fresh real user is logged out until they sign in)
   const [user, setUser] = useState(() => {
     try {
       const saved = localStorage.getItem('aanublooms_user');
-      return saved ? JSON.parse(saved) : INITIAL_ACCOUNTS[0]; // Logged in as Pooja Sharma by default
+      return saved ? JSON.parse(saved) : null;
     } catch {
       return null;
     }
   });
+
+  const [isLoadingAuth, setIsLoadingAuth] = useState(false);
 
   // Auth modal global toggle
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -107,110 +70,123 @@ export const AuthProvider = ({ children }) => {
     setIsAuthModalOpen(false);
   };
 
-  // Sign in
-  const login = (email, password) => {
+  // Real User Sign In
+  const login = async (email, password) => {
+    setIsLoadingAuth(true);
     const cleanEmail = email.trim().toLowerCase();
-    const existing = usersDb.find(u => u.email.toLowerCase() === cleanEmail);
 
-    if (existing) {
-      if (password && existing.password && existing.password !== password && password !== 'demo') {
-        addToast('Incorrect password. (Tip: Use "password123" or click demo login)', 'error');
-        return { success: false, message: 'Invalid credentials' };
+    try {
+      // 1. Try Backend API login
+      const res = await api.login(cleanEmail, password);
+      if (res.success && res.user) {
+        setUser(res.user);
+        if (res.token) localStorage.setItem('aanublooms_token', res.token);
+        addToast(`Welcome back, ${res.user.name}! 🌸`, 'success');
+        closeAuthModal();
+        setIsLoadingAuth(false);
+        return { success: true, user: res.user };
       }
-      setUser(existing);
-      addToast(`Welcome back, ${existing.name}! 🌸`, 'success');
-      closeAuthModal();
-      return { success: true, user: existing };
-    }
-
-    // Auto-create on demand for quick testing
-    const isMakerAdmin = cleanEmail.includes('admin') || cleanEmail.includes('aanu');
-    const newUser = {
-      id: isMakerAdmin ? 'admin-1' : `cust-${Date.now()}`,
-      name: cleanEmail.split('@')[0].replace('.', ' ').replace(/(^\w|\s\w)/g, m => m.toUpperCase()),
-      email: cleanEmail,
-      password: password || 'password123',
-      phone: '+91 98765 00000',
-      role: isMakerAdmin ? 'admin' : 'customer',
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanEmail)}`,
-      city: 'Bengaluru',
-      state: 'Karnataka',
-      zip: '560001',
-      address: 'Main Street',
-      savedAddresses: [
-        {
-          id: `addr-${Date.now()}`,
-          title: 'Home',
-          name: cleanEmail.split('@')[0],
-          phone: '+91 98765 00000',
-          address: 'Main Street',
-          city: 'Bengaluru',
-          state: 'Karnataka',
-          zip: '560001',
-          country: 'India',
-          isDefault: true
+    } catch (apiErr) {
+      // 2. Fallback to local users DB
+      const existing = usersDb.find(u => u.email.toLowerCase() === cleanEmail);
+      if (existing) {
+        if (existing.password && existing.password !== password) {
+          addToast('Incorrect password. Please try again.', 'error');
+          setIsLoadingAuth(false);
+          return { success: false, message: 'Invalid credentials' };
         }
-      ]
-    };
+        setUser(existing);
+        addToast(`Welcome back, ${existing.name}! 🌸`, 'success');
+        closeAuthModal();
+        setIsLoadingAuth(false);
+        return { success: true, user: existing };
+      }
 
-    setUsersDb(prev => [...prev, newUser]);
-    setUser(newUser);
-    addToast(`Account ready! Welcome, ${newUser.name}! 🌸`, 'success');
-    closeAuthModal();
-    return { success: true, user: newUser };
+      addToast(apiErr.message || 'Incorrect email or password. Please verify.', 'error');
+      setIsLoadingAuth(false);
+      return { success: false, message: apiErr.message };
+    }
   };
 
-  // Sign up
-  const signup = ({ name, email, password, phone, city, state, zip, address }) => {
+  // Real User Sign Up
+  const signup = async ({ name, email, password, phone, city, state, zip, address }) => {
+    setIsLoadingAuth(true);
     const cleanEmail = email.trim().toLowerCase();
-    const existing = usersDb.find(u => u.email.toLowerCase() === cleanEmail);
 
-    if (existing) {
-      addToast('An account with this email already exists. Logging you in...', 'info');
-      setUser(existing);
+    try {
+      // 1. Try Backend API register
+      const res = await api.register({
+        name: name.trim(),
+        email: cleanEmail,
+        password,
+        phone,
+        city,
+        state,
+        zip,
+        address
+      });
+
+      if (res.success && res.user) {
+        setUser(res.user);
+        if (res.token) localStorage.setItem('aanublooms_token', res.token);
+        setUsersDb(prev => [...prev.filter(u => u.email !== cleanEmail), res.user]);
+        addToast(`🌸 Welcome to AanuBlooms, ${res.user.name}! Account created.`, 'success');
+        closeAuthModal();
+        setIsLoadingAuth(false);
+        return { success: true, user: res.user };
+      }
+    } catch (apiErr) {
+      // 2. Local fallback registration
+      const existing = usersDb.find(u => u.email.toLowerCase() === cleanEmail);
+      if (existing) {
+        addToast('An account with this email already exists. Please sign in.', 'error');
+        setAuthModalTab('login');
+        setIsLoadingAuth(false);
+        return { success: false, message: 'User already exists' };
+      }
+
+      const isMakerAdmin = cleanEmail.includes('admin@') || cleanEmail.includes('maker@');
+      const newUser = {
+        id: `usr-${Date.now()}`,
+        name: name.trim(),
+        email: cleanEmail,
+        password: password,
+        phone: phone || '',
+        role: isMakerAdmin ? 'admin' : 'customer',
+        avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`,
+        city: city || '',
+        state: state || 'Maharashtra',
+        zip: zip || '',
+        address: address || '',
+        savedAddresses: address ? [
+          {
+            id: `addr-${Date.now()}`,
+            title: 'Primary Delivery Address',
+            name: name.trim(),
+            phone: phone || '',
+            address: address.trim(),
+            city: city || '',
+            state: state || 'Maharashtra',
+            zip: zip || '',
+            country: 'India',
+            isDefault: true
+          }
+        ] : []
+      };
+
+      setUsersDb(prev => [...prev, newUser]);
+      setUser(newUser);
+      addToast(`🌸 Welcome to AanuBlooms, ${newUser.name}! Your account is active.`, 'success');
       closeAuthModal();
-      return { success: true, user: existing };
+      setIsLoadingAuth(false);
+      return { success: true, user: newUser };
     }
-
-    const newUser = {
-      id: `cust-${Date.now()}`,
-      name: name.trim(),
-      email: cleanEmail,
-      password: password || 'password123',
-      phone: phone || '+91 98765 43210',
-      role: 'customer',
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`,
-      city: city || 'Bengaluru',
-      state: state || 'Karnataka',
-      zip: zip || '560038',
-      address: address || '',
-      savedAddresses: address ? [
-        {
-          id: `addr-${Date.now()}`,
-          title: 'Primary Delivery Address',
-          name: name.trim(),
-          phone: phone || '+91 98765 43210',
-          address: address.trim(),
-          city: city || 'Bengaluru',
-          state: state || 'Karnataka',
-          zip: zip || '560038',
-          country: 'India',
-          isDefault: true
-        }
-      ] : []
-    };
-
-    setUsersDb(prev => [...prev, newUser]);
-    setUser(newUser);
-    addToast(`🌸 Welcome to AanuBlooms, ${newUser.name}! Your account is active.`, 'success');
-    closeAuthModal();
-    return { success: true, user: newUser };
   };
 
   // Sign out
   const logout = () => {
     setUser(null);
-    addToast('Signed out of AanuBlooms', 'info');
+    addToast('Signed out of store', 'info');
   };
 
   // Update profile
@@ -269,18 +245,6 @@ export const AuthProvider = ({ children }) => {
     addToast('Default delivery address updated! ✨', 'success');
   };
 
-  const switchToAdmin = () => {
-    const adminAccount = usersDb.find(u => u.role === 'admin') || INITIAL_ACCOUNTS[1];
-    setUser(adminAccount);
-    addToast('Switched to Artisan Maker Studio Admin Mode 🧶', 'info');
-  };
-
-  const switchToCustomer = () => {
-    const customerAccount = usersDb.find(u => u.role === 'customer') || INITIAL_ACCOUNTS[0];
-    setUser(customerAccount);
-    addToast('Switched to Customer Shopper Mode 🛍️', 'info');
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -298,8 +262,6 @@ export const AuthProvider = ({ children }) => {
         addAddress,
         deleteAddress,
         setDefaultAddress,
-        switchToAdmin,
-        switchToCustomer,
         registeredUsers: usersDb
       }}
     >

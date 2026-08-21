@@ -33,9 +33,9 @@ export const AuthModal = () => {
     phone: '',
     password: '',
     address: '',
-    city: 'Bengaluru',
-    state: 'Karnataka',
-    zip: '560038'
+    city: '',
+    state: 'Maharashtra',
+    zip: ''
   });
 
   const indianStates = [
@@ -48,24 +48,16 @@ export const AuthModal = () => {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    if (loginEmail) {
+    if (loginEmail && loginPassword) {
       login(loginEmail, loginPassword);
     }
   };
 
   const handleSignUpSubmit = (e) => {
     e.preventDefault();
-    if (signUpForm.name && signUpForm.email) {
+    if (signUpForm.name && signUpForm.email && signUpForm.password) {
       signup(signUpForm);
     }
-  };
-
-  const handleQuickDemoCustomer = () => {
-    login('pooja.sharma@example.com', 'password123');
-  };
-
-  const handleQuickDemoAdmin = () => {
-    login('maker@aanublooms.com', 'adminpassword');
   };
 
   return (
@@ -98,12 +90,12 @@ export const AuthModal = () => {
           </div>
 
           <h3 className="font-serif font-bold text-xl text-white">
-            {activeTab === 'login' ? 'Welcome Back, Bloom Lover' : 'Create Your Boutique Account'}
+            {activeTab === 'login' ? 'Welcome Back' : 'Create Your Boutique Account'}
           </h3>
           <p className="text-xs text-rose-100 mt-0.5">
             {activeTab === 'login'
-              ? 'Sign in to track live stitches, view invoices & manage saved addresses.'
-              : 'Join our cozy yarn community & save your delivery details.'}
+              ? 'Sign in to track orders, manage saved addresses & wishlist.'
+              : 'Join our cozy handmade community & enjoy quick checkout.'}
           </p>
         </div>
 
@@ -139,14 +131,14 @@ export const AuthModal = () => {
             <form onSubmit={handleLoginSubmit} className="space-y-3.5">
               <div>
                 <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">
-                  Email Address
+                  Email Address *
                 </label>
                 <div className="relative">
                   <Mail className="w-3.5 h-3.5 text-warmgray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="email"
                     required
-                    placeholder="e.g. pooja.sharma@example.com"
+                    placeholder="name@example.com"
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
                     className="w-full text-xs py-2.5 pl-9 pr-3 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-bloom-400"
@@ -157,18 +149,15 @@ export const AuthModal = () => {
               <div>
                 <div className="flex justify-between items-center mb-1">
                   <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300">
-                    Password
+                    Password *
                   </label>
-                  <span className="text-[10px] text-bloom-600 dark:text-bloom-400 font-semibold cursor-pointer hover:underline">
-                    Forgot Password?
-                  </span>
                 </div>
                 <div className="relative">
                   <Lock className="w-3.5 h-3.5 text-warmgray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
-                    placeholder="••••••••"
+                    placeholder="Enter your password"
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                     className="w-full text-xs py-2.5 pl-9 pr-9 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-bloom-400"
@@ -191,35 +180,16 @@ export const AuthModal = () => {
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
 
-              {/* Quick Demo Access Bar */}
-              <div className="pt-2 border-t border-warmgray-100 dark:border-warmgray-800">
-                <span className="text-[10px] uppercase font-bold text-warmgray-400 tracking-wider block text-center mb-2">
-                  ⚡ 1-Click Quick Demo Customer Login
-                </span>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={handleQuickDemoCustomer}
-                    className="p-2 rounded-xl border border-warmgray-200 dark:border-warmgray-700 bg-warmgray-50 dark:bg-warmgray-800/60 hover:border-bloom-400 text-left transition-all"
-                  >
-                    <span className="text-[11px] font-bold text-warmgray-900 dark:text-white block">
-                      🛍️ Pooja Sharma
-                    </span>
-                    <span className="text-[10px] text-warmgray-500">Customer (Bengaluru)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => login('priya.nair@example.com', 'password123')}
-                    className="p-2 rounded-xl border border-warmgray-200 dark:border-warmgray-700 bg-warmgray-50 dark:bg-warmgray-800/60 hover:border-bloom-400 text-left transition-all"
-                  >
-                    <span className="text-[11px] font-bold text-warmgray-900 dark:text-white block">
-                      🛍️ Priya Nair
-                    </span>
-                    <span className="text-[10px] text-warmgray-500">Customer (Delhi NCR)</span>
-                  </button>
-                </div>
-              </div>
+              <p className="text-center text-xs text-warmgray-500 pt-1">
+                Don't have an account yet?{' '}
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('signup')}
+                  className="font-bold text-bloom-600 hover:underline"
+                >
+                  Create one now
+                </button>
+              </p>
             </form>
           )}
 
@@ -235,7 +205,7 @@ export const AuthModal = () => {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Priya Nair"
+                    placeholder="Enter your full name"
                     value={signUpForm.name}
                     onChange={(e) => setSignUpForm({ ...signUpForm, name: e.target.value })}
                     className="w-full text-xs py-2.5 pl-9 pr-3 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-bloom-400"
@@ -251,7 +221,7 @@ export const AuthModal = () => {
                   <input
                     type="email"
                     required
-                    placeholder="priya@example.com"
+                    placeholder="your.email@gmail.com"
                     value={signUpForm.email}
                     onChange={(e) => setSignUpForm({ ...signUpForm, email: e.target.value })}
                     className="w-full text-xs p-2.5 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white"
@@ -260,7 +230,7 @@ export const AuthModal = () => {
 
                 <div>
                   <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">
-                    Mobile (+91) *
+                    Mobile Number *
                   </label>
                   <input
                     type="tel"
@@ -275,7 +245,7 @@ export const AuthModal = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">
-                  Delivery Address
+                  Delivery Address (Optional)
                 </label>
                 <input
                   type="text"
@@ -293,6 +263,7 @@ export const AuthModal = () => {
                   </label>
                   <input
                     type="text"
+                    placeholder="e.g. Pune"
                     value={signUpForm.city}
                     onChange={(e) => setSignUpForm({ ...signUpForm, city: e.target.value })}
                     className="w-full text-xs p-2 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white"
@@ -321,6 +292,7 @@ export const AuthModal = () => {
                   <input
                     type="text"
                     maxLength={6}
+                    placeholder="411001"
                     value={signUpForm.zip}
                     onChange={(e) => setSignUpForm({ ...signUpForm, zip: e.target.value })}
                     className="w-full text-xs p-2 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white font-mono"
@@ -349,6 +321,17 @@ export const AuthModal = () => {
                 <Sparkles className="w-3.5 h-3.5 text-amber-200" />
                 <span>Create Account & Start Shopping</span>
               </button>
+
+              <p className="text-center text-xs text-warmgray-500 pt-1">
+                Already have an account?{' '}
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('login')}
+                  className="font-bold text-bloom-600 hover:underline"
+                >
+                  Sign in here
+                </button>
+              </p>
             </form>
           )}
 
@@ -357,7 +340,7 @@ export const AuthModal = () => {
         {/* Security Footer */}
         <div className="p-3 bg-warmgray-50 dark:bg-warmgray-800/60 border-t border-warmgray-100 dark:border-warmgray-800 text-center text-[10px] text-warmgray-500 flex items-center justify-center gap-1.5">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-          <span>Your personal information & stitches are safely encrypted.</span>
+          <span>Your personal information & orders are safely encrypted.</span>
         </div>
 
       </div>

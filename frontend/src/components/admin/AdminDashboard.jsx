@@ -394,14 +394,22 @@ export const AdminDashboard = ({ onNavigate }) => {
     addToast(`Restock PO order generated for ${item.name}! 📦`, 'success');
   };
 
-  // Quick Demo Admin Login Handler
-  const handleAdminDemoLogin = () => {
-    login('priya@stitchandlove.com', 'admin123');
-    addToast('🌸 Logged in as Store Admin (Priya Sharma)! Access granted.', 'success');
+  // Admin Login Form State
+  const [adminEmail, setAdminEmail] = useState('admin@aanublooms.com');
+  const [adminPassword, setAdminPassword] = useState('');
+
+  const handleAdminFormLogin = (e) => {
+    e.preventDefault();
+    if (adminEmail && adminPassword) {
+      const res = login(adminEmail, adminPassword);
+      if (!res.success) {
+        // feedback handled in login
+      }
+    }
   };
 
   // =========================================================================
-  // IF USER IS NOT LOGGED IN AS ADMIN: DISPLAY CLEAN SAAS ACCESS GATE
+  // IF USER IS NOT LOGGED IN AS ADMIN: DISPLAY REAL ADMIN LOGIN GATE
   // =========================================================================
   if (!isAdmin) {
     return (
@@ -416,29 +424,60 @@ export const AdminDashboard = ({ onNavigate }) => {
               STITCH & LOVE · ADMIN STUDIO
             </span>
             <h2 className="text-xl font-serif font-bold text-[#3E2B25] mt-1">
-              Admin Authentication Required
+              Admin Portal Sign In
             </h2>
             <p className="text-xs text-[#756A65] mt-1.5 leading-relaxed">
-              This dedicated dashboard is restricted to store administrators. Please authenticate to manage store sales, orders, and products.
+              Enter authorized administrator credentials to manage products, view sales, and fulfill customer orders.
             </p>
           </div>
 
-          <div className="space-y-2.5 pt-2">
-            <button
-              onClick={handleAdminDemoLogin}
-              className="w-full py-2.5 px-4 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl font-semibold text-xs transition-colors shadow-sm flex items-center justify-center gap-2"
-            >
-              <UserCheck className="w-4 h-4" />
-              <span>Log in as Store Admin (Priya)</span>
-            </button>
+          <form onSubmit={handleAdminFormLogin} className="space-y-3 text-left">
+            <div>
+              <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
+                Admin Email Address
+              </label>
+              <input
+                type="email"
+                required
+                value={adminEmail}
+                onChange={(e) => setAdminEmail(e.target.value)}
+                placeholder="admin@aanublooms.com"
+                className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:border-[#D96C65]"
+              />
+            </div>
 
-            <button
-              onClick={() => onNavigate('home')}
-              className="w-full py-2.5 px-4 bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#3E2B25] rounded-xl font-semibold text-xs transition-colors"
-            >
-              Return to Storefront
-            </button>
-          </div>
+            <div>
+              <label className="block text-xs font-semibold text-[#3E2B25] mb-1">
+                Admin Password
+              </label>
+              <input
+                type="password"
+                required
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+                placeholder="Enter admin password"
+                className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:border-[#D96C65]"
+              />
+            </div>
+
+            <div className="pt-2 space-y-2">
+              <button
+                type="submit"
+                className="w-full py-2.5 px-4 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl font-semibold text-xs transition-colors shadow-sm flex items-center justify-center gap-2"
+              >
+                <UserCheck className="w-4 h-4" />
+                <span>Sign In to Admin Studio</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onNavigate('home')}
+                className="w-full py-2.5 px-4 bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#3E2B25] rounded-xl font-semibold text-xs transition-colors"
+              >
+                Return to Storefront
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     );
@@ -791,8 +830,8 @@ export const AdminDashboard = ({ onNavigate }) => {
                   className="w-8 h-8 rounded-full object-cover border border-[#E9E2DC]"
                 />
                 <div className="hidden sm:block text-left">
-                  <p className="text-xs font-bold leading-none text-[#3E2B25]">Priya Sharma</p>
-                  <span className="text-[10px] text-[#756A65] leading-tight">Admin</span>
+                  <p className="text-xs font-bold leading-none text-[#3E2B25]">{user?.name || 'Aanu (Admin)'}</p>
+                  <span className="text-[10px] text-[#756A65] leading-tight">Store Admin</span>
                 </div>
                 <ChevronDown className="w-3.5 h-3.5 text-[#756A65]" />
               </button>

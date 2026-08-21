@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { CartProvider } from './context/CartContext';
 import { LocationProvider } from './context/LocationContext';
+import { SettingsProvider } from './context/SettingsContext';
 
 import { Banner } from './components/common/Banner';
 import { Navbar } from './components/common/Navbar';
@@ -163,15 +164,17 @@ export default function App() {
   return (
     <ThemeProvider>
       <ToastProvider>
-        <AuthProvider>
-          <LocationProvider>
-            <WishlistProvider>
-              <CartProvider>
-                <AppContent />
-              </CartProvider>
-            </WishlistProvider>
-          </LocationProvider>
-        </AuthProvider>
+        <SettingsProvider>
+          <AuthProvider>
+            <LocationProvider>
+              <WishlistProvider>
+                <CartProvider>
+                  <AppContent />
+                </CartProvider>
+              </WishlistProvider>
+            </LocationProvider>
+          </AuthProvider>
+        </SettingsProvider>
       </ToastProvider>
     </ThemeProvider>
   );

@@ -1,6 +1,79 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export const api = {
+  // Authentication
+  async register(userData) {
+    const res = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Registration failed');
+    return data;
+  },
+
+  async login(email, password) {
+    const res = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Login failed');
+    return data;
+  },
+
+  async getMe(token) {
+    const res = await fetch(`${API_BASE_URL}/auth/me`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Authentication session invalid');
+    return data;
+  },
+
+  async updateProfile(profileData) {
+    const res = await fetch(`${API_BASE_URL}/auth/profile`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(profileData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to update profile');
+    return data;
+  },
+
+  // Store Settings
+  async getSettings() {
+    const res = await fetch(`${API_BASE_URL}/settings`);
+    if (!res.ok) throw new Error('Failed to fetch store settings');
+    return res.json();
+  },
+
+  async updateSettings(settingsData) {
+    const res = await fetch(`${API_BASE_URL}/settings`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(settingsData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to update settings');
+    return data;
+  },
+
+  async testPayment(keyId) {
+    const res = await fetch(`${API_BASE_URL}/settings/test-payment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ keyId }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Payment test failed');
+    return data;
+  },
   // Products
   async getProducts(params = {}) {
     const query = new URLSearchParams();
