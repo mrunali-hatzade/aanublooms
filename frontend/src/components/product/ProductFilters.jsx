@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Filter, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { Filter, RotateCcw, Sparkles } from 'lucide-react';
 
 const boutiqueValues = [
   {
@@ -24,75 +24,34 @@ const boutiqueValues = [
   }
 ];
 
-const ValueSlider = () => {
-  const [currentIdx, setCurrentIdx] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      setCurrentIdx((prev) => (prev + 1) % boutiqueValues.length);
-    }, 3600);
-    return () => clearInterval(timer);
-  }, [isPaused]);
-
-  const slide = boutiqueValues[currentIdx];
-
+const ValueScrollList = () => {
   return (
-    <div
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      className="p-3.5 rounded-2xl bg-gradient-to-br from-bloom-50/90 via-warmgray-50 to-rosewood-50/70 dark:from-warmgray-800 dark:to-warmgray-800/80 border border-bloom-200/70 dark:border-warmgray-700 shadow-xs relative overflow-hidden transition-all"
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-white dark:bg-warmgray-700 shadow-xs flex items-center justify-center text-base shrink-0">
-            {slide.icon}
-          </div>
-          <div>
-            <h5 className="font-serif font-bold text-xs text-warmgray-900 dark:text-white">
-              {slide.title}
-            </h5>
-            <p className="text-[11px] text-warmgray-600 dark:text-warmgray-300 leading-snug mt-0.5">
-              {slide.desc}
-            </p>
-          </div>
-        </div>
+    <div className="p-3 rounded-2xl bg-gradient-to-br from-bloom-50/90 via-warmgray-50 to-rosewood-50/70 dark:from-warmgray-800 dark:to-warmgray-800/80 border border-bloom-200/70 dark:border-warmgray-700 shadow-xs">
+      <div className="flex items-center gap-1.5 pb-2 mb-2 border-b border-warmgray-200/60 dark:border-warmgray-700/60">
+        <Sparkles className="w-3.5 h-3.5 text-bloom-500" />
+        <span className="text-[11px] font-bold uppercase tracking-wider text-warmgray-700 dark:text-warmgray-200">
+          Handmade Promise
+        </span>
       </div>
 
-      {/* Slider dots and navigation controls */}
-      <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-warmgray-200/60 dark:border-warmgray-700/60">
-        <div className="flex items-center gap-1.5">
-          {boutiqueValues.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentIdx(idx)}
-              className={`h-1.5 rounded-full transition-all ${
-                currentIdx === idx
-                  ? 'w-5 bg-bloom-500'
-                  : 'w-1.5 bg-warmgray-300 dark:bg-warmgray-600 hover:bg-warmgray-400'
-              }`}
-              title={`Slide ${idx + 1}`}
-            />
-          ))}
-        </div>
-
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => setCurrentIdx((prev) => (prev === 0 ? boutiqueValues.length - 1 : prev - 1))}
-            className="p-1 rounded-md text-warmgray-400 hover:text-warmgray-800 dark:hover:text-white hover:bg-white/60 dark:hover:bg-warmgray-700 transition-colors"
-            title="Previous"
+      {/* Scrollable container with vertical scrollbar */}
+      <div className="max-h-[140px] overflow-y-auto pr-1.5 space-y-2 scrollbar-thin scrollbar-thumb-bloom-300 dark:scrollbar-thumb-warmgray-600 hover:scrollbar-thumb-bloom-500">
+        {boutiqueValues.map((item, idx) => (
+          <div
+            key={idx}
+            className="p-2 rounded-xl bg-white/80 dark:bg-warmgray-900/80 border border-warmgray-100 dark:border-warmgray-700/60 flex items-start gap-2 shadow-2xs"
           >
-            <ChevronLeft className="w-3.5 h-3.5" />
-          </button>
-          <button
-            onClick={() => setCurrentIdx((prev) => (prev + 1) % boutiqueValues.length)}
-            className="p-1 rounded-md text-warmgray-400 hover:text-warmgray-800 dark:hover:text-white hover:bg-white/60 dark:hover:bg-warmgray-700 transition-colors"
-            title="Next"
-          >
-            <ChevronRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
+            <span className="text-sm shrink-0">{item.icon}</span>
+            <div>
+              <h5 className="font-serif font-bold text-[11px] text-warmgray-900 dark:text-white leading-tight">
+                {item.title}
+              </h5>
+              <p className="text-[10px] text-warmgray-600 dark:text-warmgray-300 leading-snug mt-0.5">
+                {item.desc}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -146,8 +105,8 @@ export const ProductFilters = ({
         </button>
       </div>
 
-      {/* Handmade Values Benefit Slider */}
-      <ValueSlider />
+      {/* Handmade Values Scroll List */}
+      <ValueScrollList />
 
       {/* Category List */}
       <div>
