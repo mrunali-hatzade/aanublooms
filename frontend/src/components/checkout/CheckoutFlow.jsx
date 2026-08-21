@@ -44,8 +44,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
 
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Guest Contact & Address form
-  const [formData, setFormData] = useState({
+  const defaultFormData = {
     name: '',
     email: '',
     phone: '',
@@ -55,7 +54,23 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
     state: 'Maharashtra',
     zip: '411038',
     country: 'India'
+  };
+
+  // Guest Contact & Address form with auto-save across page refresh
+  const [formData, setFormData] = useState(() => {
+    try {
+      const saved = localStorage.getItem('aanublooms_guest_checkout_data');
+      return saved ? { ...defaultFormData, ...JSON.parse(saved) } : defaultFormData;
+    } catch {
+      return defaultFormData;
+    }
   });
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('aanublooms_guest_checkout_data', JSON.stringify(formData));
+    } catch {}
+  }, [formData]);
 
   // Shipping method
   const isFreeEligible = subtotal >= 999;

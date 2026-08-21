@@ -30,16 +30,108 @@ import { Floating3DBackground } from './components/common/Floating3DBackground';
 import { SparkleClickEffect } from './components/common/SparkleClickEffect';
 import { ScrollToTopButton } from './components/common/ScrollToTopButton';
 
+const parseRouteFromLocation = () => {
+  try {
+    const pathname = window.location.pathname.replace(/^\/|\/$/g, '');
+    const searchParams = new URLSearchParams(window.location.search);
+
+    if (!pathname || pathname === '') {
+      const saved = sessionStorage.getItem('aanublooms_active_page');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.page && parsed.page !== 'home') {
+          return { page: parsed.page, params: parsed.params || {} };
+        }
+      }
+      return { page: 'home', params: {} };
+    }
+
+    if (pathname === 'shop') {
+      return {
+        page: 'shop',
+        params: {
+          category: searchParams.get('category') || 'all',
+          search: searchParams.get('search') || ''
+        }
+      };
+    }
+
+    if (pathname.startsWith('product/')) {
+      const id = pathname.substring('product/'.length);
+      return { page: 'product-detail', params: { id } };
+    }
+    if (pathname === 'product') {
+      return { page: 'product-detail', params: { id: searchParams.get('id') } };
+    }
+
+    if (pathname === 'custom-order' || pathname === 'custom') return { page: 'custom-order', params: {} };
+    if (pathname === 'wishlist') return { page: 'wishlist', params: {} };
+    if (pathname === 'checkout') return { page: 'checkout', params: {} };
+    if (pathname === 'order-success') return { page: 'order-success', params: {} };
+    if (pathname === 'track-order' || pathname === 'track') {
+      return { page: 'track-order', params: { id: searchParams.get('id') || '' } };
+    }
+    if (pathname === 'about' || pathname === 'our-story') return { page: 'about', params: {} };
+    if (pathname === 'contact') return { page: 'contact', params: {} };
+    if (pathname === 'feedback' || pathname === 'reviews') return { page: 'feedback', params: {} };
+    if (pathname === 'admin') return { page: 'admin', params: {} };
+
+    return { page: 'home', params: {} };
+  } catch {
+    return { page: 'home', params: {} };
+  }
+};
+
 function AppContent() {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [navParams, setNavParams] = useState({});
+  const initialRoute = parseRouteFromLocation();
+  const [currentPage, setCurrentPage] = useState(initialRoute.page);
+  const [navParams, setNavParams] = useState(initialRoute.params);
   const [lastPlacedOrder, setLastPlacedOrder] = useState(null);
 
-  const navigateTo = (page, params = {}) => {
+  const navigateTo = (page, params = {}, replace = false) => {
     setCurrentPage(page);
     setNavParams(params);
+
+    try {
+      sessionStorage.setItem('aanublooms_active_page', JSON.stringify({ page, params }));
+
+      let path = '/';
+      if (page === 'shop') {
+        const sp = new URLSearchParams();
+        if (params.category && params.category !== 'all') sp.set('category', params.category);
+        if (params.search) sp.set('search', params.search);
+        const q = sp.toString();
+        path = q ? `/shop?${q}` : '/shop';
+      } else if (page === 'product-detail' && params.id) {
+        path = `/product/${params.id}`;
+      } else if (page === 'track-order') {
+        path = params.id ? `/track-order?id=${params.id}` : '/track-order';
+      } else if (page !== 'home') {
+        path = `/${page}`;
+      }
+
+      if (replace) {
+        window.history.replaceState({ page, params }, '', path);
+      } else {
+        window.history.pushState({ page, params }, '', path);
+      }
+    } catch (e) {
+      console.warn('Navigation state sync failed:', e);
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const route = parseRouteFromLocation();
+      setCurrentPage(route.page);
+      setNavParams(route.params);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const handleOrderPlaced = (orderData) => {
     setLastPlacedOrder(orderData);

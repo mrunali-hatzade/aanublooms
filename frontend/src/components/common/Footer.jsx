@@ -53,50 +53,47 @@ export const Footer = ({ onNavigate }) => {
         </div>
 
         {/* Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 mb-12">
           
-          {/* Brand Col */}
-          <div className="lg:col-span-2 space-y-3">
+          {/* Brand Col (4 cols) */}
+          <div className="lg:col-span-4 space-y-4">
             <button
               onClick={() => onNavigate('home')}
-              className="flex items-center gap-2.5 group text-left"
+              className="flex items-center gap-3 group text-left"
             >
               <img
                 src="/images/logo.png"
                 alt="AanuBlooms Logo"
-                className="w-10 h-10 rounded-2xl object-cover shadow-cozy border border-bloom-100 dark:border-warmgray-700 bg-white"
+                className="w-12 h-12 rounded-2xl object-cover shadow-cozy border border-bloom-100 dark:border-warmgray-700 bg-white"
               />
               <div>
-                <span className="text-xl font-bold font-serif tracking-tight text-warmgray-900 dark:text-white">
+                <span className="text-2xl font-bold font-serif tracking-tight text-warmgray-900 dark:text-white">
                   AanuBlooms
-                </span>
-                <span className="block text-[10px] uppercase font-semibold tracking-widest text-bloom-600 dark:text-bloom-400">
-                  Handcrafted Blooms & Creations
                 </span>
               </div>
             </button>
-            <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed max-w-sm">
-              At AanuBlooms, we create beautiful handmade flowers, charming flower pots, bouquets, decorative pieces, and unique gifts. Every creation is carefully handcrafted with love, patience, and creativity to add a little beauty and happiness to your everyday spaces.
+            <p className="text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed max-w-sm">
+              Handcrafted crochet forever flowers, charming flower pots, bouquets, and unique artisan gifts made with love in Pune.
             </p>
-            <div className="flex items-center gap-2.5 pt-1 text-warmgray-600 dark:text-warmgray-400">
-              <a href="#" className="p-2.5 rounded-full bg-warmgray-200 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors" title="Global Community">
+            <div className="flex items-center gap-3 pt-2 text-warmgray-600 dark:text-warmgray-400">
+              <a href="#" className="p-3 rounded-full bg-warmgray-200/70 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 hover:bg-white transition-all shadow-xs" title="Global Community">
                 <Globe className="w-4 h-4" />
               </a>
-              <a href="#" className="p-2.5 rounded-full bg-warmgray-200 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors" title="Chat with Maker">
+              <a href="#" className="p-3 rounded-full bg-warmgray-200/70 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 hover:bg-white transition-all shadow-xs" title="Chat with Maker">
                 <MessageCircle className="w-4 h-4" />
               </a>
-              <a href="#" className="p-2.5 rounded-full bg-warmgray-200 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors" title="Share">
+              <a href="#" className="p-3 rounded-full bg-warmgray-200/70 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 hover:bg-white transition-all shadow-xs" title="Share">
                 <Share2 className="w-4 h-4" />
               </a>
             </div>
           </div>
 
-          {/* Shop Categories */}
-          <div>
-            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base mb-3">
+          {/* Shop Collections (2 cols) */}
+          <div className="lg:col-span-2 space-y-3">
+            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base">
               Our Collections
             </h4>
-            <ul className="space-y-2 text-sm text-warmgray-600 dark:text-warmgray-300">
+            <ul className="space-y-2.5 text-sm text-warmgray-600 dark:text-warmgray-300">
               <li>
                 <button onClick={() => onNavigate('shop', { category: 'forever-blooms' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
                   🌸 Handmade Flowers
@@ -119,25 +116,25 @@ export const Footer = ({ onNavigate }) => {
               </li>
               <li>
                 <button onClick={() => onNavigate('shop', { category: 'bags-accessories' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  ✨ Decorative Creations
+                  ✨ Decorative Pieces
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('custom-order')} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  💖 Custom Creations
+                <button onClick={() => onNavigate('custom-order')} className="hover:text-bloom-600 dark:hover:text-bloom-400 font-semibold text-bloom-600 transition-colors">
+                  💖 Custom Orders
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Customer Care */}
-          <div>
-            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base mb-3">
+          {/* Customer Care (2 cols) */}
+          <div className="lg:col-span-2 space-y-3">
+            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base">
               Customer Care
             </h4>
-            <ul className="space-y-2 text-sm text-warmgray-600 dark:text-warmgray-300">
+            <ul className="space-y-2.5 text-sm text-warmgray-600 dark:text-warmgray-300">
               <li>
-                <button onClick={() => onNavigate('track-order')} className="hover:text-bloom-600 dark:text-bloom-400 font-semibold text-bloom-700 transition-colors flex items-center gap-1.5">
+                <button onClick={() => onNavigate('track-order')} className="hover:text-bloom-600 dark:text-bloom-400 font-bold text-bloom-700 dark:text-bloom-300 transition-colors flex items-center gap-1.5">
                   <span>📦 Track Your Order</span>
                 </button>
               </li>
@@ -170,27 +167,35 @@ export const Footer = ({ onNavigate }) => {
             </ul>
           </div>
 
-          {/* Our Handmade Promise */}
-          <div>
-            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base mb-3">
+          {/* Our Handmade Promise (4 cols) */}
+          <div className="lg:col-span-4 space-y-3.5">
+            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base">
               Our Handmade Promise
             </h4>
-            <div className="space-y-2.5 text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
-              <div className="flex items-start gap-2">
-                <span className="shrink-0">🌸</span>
-                <span><strong>100% Handcrafted</strong> — Every bloom is carefully made by hand.</span>
+            <div className="space-y-3 text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-300">
+              <div className="p-3 rounded-2xl bg-white/70 dark:bg-warmgray-800/70 border border-warmgray-200/60 dark:border-warmgray-700/60 shadow-xs flex items-start gap-2.5">
+                <span className="text-base shrink-0">🌸</span>
+                <p className="leading-snug">
+                  <strong className="text-warmgray-900 dark:text-white">100% Handcrafted</strong> — Every bloom is carefully made by hand.
+                </p>
               </div>
-              <div className="flex items-start gap-2">
-                <span className="shrink-0">💖</span>
-                <span><strong>Made with Love</strong> — Each creation is thoughtfully designed and assembled with care.</span>
+              <div className="p-3 rounded-2xl bg-white/70 dark:bg-warmgray-800/70 border border-warmgray-200/60 dark:border-warmgray-700/60 shadow-xs flex items-start gap-2.5">
+                <span className="text-base shrink-0">💖</span>
+                <p className="leading-snug">
+                  <strong className="text-warmgray-900 dark:text-white">Made with Love</strong> — Thoughtfully designed and assembled with care.
+                </p>
               </div>
-              <div className="flex items-start gap-2">
-                <span className="shrink-0">✨</span>
-                <span><strong>Made to Last</strong> — Our forever flowers are designed to stay beautiful without watering or maintenance.</span>
+              <div className="p-3 rounded-2xl bg-white/70 dark:bg-warmgray-800/70 border border-warmgray-200/60 dark:border-warmgray-700/60 shadow-xs flex items-start gap-2.5">
+                <span className="text-base shrink-0">✨</span>
+                <p className="leading-snug">
+                  <strong className="text-warmgray-900 dark:text-white">Made to Last</strong> — Forever flowers that stay beautiful without watering.
+                </p>
               </div>
-              <div className="flex items-start gap-2">
-                <span className="shrink-0">🎁</span>
-                <span><strong>Perfect for Gifting</strong> — A thoughtful handmade gift for birthdays, celebrations, or to make someone smile.</span>
+              <div className="p-3 rounded-2xl bg-white/70 dark:bg-warmgray-800/70 border border-warmgray-200/60 dark:border-warmgray-700/60 shadow-xs flex items-start gap-2.5">
+                <span className="text-base shrink-0">🎁</span>
+                <p className="leading-snug">
+                  <strong className="text-warmgray-900 dark:text-white">Perfect for Gifting</strong> — Heartfelt handmade gifts for birthdays & celebrations.
+                </p>
               </div>
             </div>
           </div>
