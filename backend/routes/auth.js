@@ -208,6 +208,13 @@ router.put('/profile', (req, res) => {
 
   saveUsers(users);
 
+  res.json({
+    success: true,
+    message: 'Profile updated successfully!',
+    user: sanitizeUser(users[userIndex])
+  });
+});
+
 // ==========================================
 // 5. GOOGLE DIRECT SIGN-IN / SIGN-UP
 // POST /api/auth/google

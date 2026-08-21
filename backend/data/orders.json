@@ -1,5 +1,56 @@
 [
   {
+    "id": "AANU-26890",
+    "createdAt": "2026-08-21T09:55:56.838Z",
+    "customer": {
+      "name": "Mrunali Hatzade",
+      "email": "mrunalithatzade20@gmail.com",
+      "phone": "07218405826",
+      "address": "matru smruti nagar, khat road, bhan",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "zip": "411035",
+      "country": "India"
+    },
+    "items": [
+      {
+        "id": "prod-103",
+        "name": "Purple Lavender Daisy Blossom Velvet Cupcake Pot",
+        "slug": "purple-lavender-daisy-cupcake-pot",
+        "price": 499,
+        "originalPrice": 649,
+        "image": "/images/lavender-daisy-cupcake-pot.jpeg",
+        "category": "forever-blooms",
+        "craftTimeHours": 3.5,
+        "yarnMaterial": "Velvet Chenille Yarn",
+        "selectedColor": "Pastel Lavender",
+        "selectedSize": "Single Daisy Cupcake Pot",
+        "customNotes": "",
+        "quantity": 1
+      }
+    ],
+    "subtotal": 499,
+    "discount": 0,
+    "appliedCoupon": null,
+    "giftWrap": false,
+    "giftWrapFee": 0,
+    "giftMessage": "",
+    "shipping": 80,
+    "shippingMethod": "Standard Craft Delivery",
+    "total": 579,
+    "status": "placed",
+    "trackingNumber": "USPS-AANU26890",
+    "statusHistory": [
+      {
+        "status": "placed",
+        "time": "2026-08-21T09:55:56.838Z",
+        "note": "Order confirmed! Artisan Aanu has received your order."
+      }
+    ],
+    "paymentMethod": "Cash on Delivery (COD)",
+    "paymentStatus": "Paid"
+  },
+  {
     "id": "AANU-28067",
     "createdAt": "2026-08-21T09:24:41.145Z",
     "customer": {

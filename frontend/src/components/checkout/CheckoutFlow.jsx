@@ -483,10 +483,10 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
                     />
                     <div>
                       <p className="text-xs font-bold text-warmgray-900 dark:text-white">
-                        Standard Pan-India Delivery (3-5 business days)
+                        Standard Pune Local Delivery (1-2 business days)
                       </p>
                       <p className="text-[11px] text-warmgray-500">
-                        Carefully packaged in sturdy corrugated boxes. Free on orders above ₹999.
+                        Carefully packaged in sturdy artisanal gift boxes. Free on orders above ₹999.
                       </p>
                     </div>
                   </div>

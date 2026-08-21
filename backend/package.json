@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
+    "build": "echo 'Backend ready'",
     "dev": "nodemon server.js"
   },
   "dependencies": {
@@ -13,7 +14,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^9.9.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nodemailer": "^9.0.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

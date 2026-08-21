@@ -135,11 +135,6 @@ export const Footer = ({ onNavigate }) => {
             </h4>
             <ul className="space-y-2 text-sm text-warmgray-600 dark:text-warmgray-300">
               <li>
-                <button onClick={() => onNavigate('track-order')} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  Track Your Order
-                </button>
-              </li>
-              <li>
                 <button onClick={() => onNavigate('custom-order')} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
                   Custom Orders
                 </button>
@@ -199,7 +194,7 @@ export const Footer = ({ onNavigate }) => {
           <p>© {new Date().getFullYear()} AanuBlooms Studio. All creations handcrafted with love & care.</p>
           <div className="flex items-center gap-4 sm:gap-6">
             <span>Handcrafted with Care</span>
-            <span>Pan-India Delivery</span>
+            <span>Pune & PCMC Delivery</span>
             <span>UPI & Card Secure Checkout</span>
           </div>
         </div>

@@ -96,6 +96,11 @@ export const AdminDashboard = ({ onNavigate }) => {
   const [orderStatusFilter, setOrderStatusFilter] = useState('all');
   const [orderSearchQuery, setOrderSearchQuery] = useState('');
 
+  // Customer Directory Search, Sort & Selection State
+  const [customerSearchQuery, setCustomerSearchQuery] = useState('');
+  const [customerSortBy, setCustomerSortBy] = useState('recent'); // 'recent' | 'spend' | 'orders'
+  const [selectedCustomerDetails, setSelectedCustomerDetails] = useState(null);
+
   // Selected Order for Modal View
   const [selectedOrderDetails, setSelectedOrderDetails] = useState(null);
 
@@ -269,6 +274,69 @@ export const AdminDashboard = ({ onNavigate }) => {
       addToast('Could not update stock', 'error');
     }
   };
+
+  // Derive Unique Customer Buyers List from Orders
+  const uniqueCustomersList = React.useMemo(() => {
+    const customerMap = new Map();
+
+    orders.forEach(ord => {
+      const emailKey = (ord.customer?.email || ord.customer?.name || 'unknown').toLowerCase().trim();
+      const existing = customerMap.get(emailKey);
+
+      if (existing) {
+        existing.totalOrders += 1;
+        existing.totalSpent += (ord.total || 0);
+        existing.ordersList.push(ord);
+        if (new Date(ord.createdAt || 0) > new Date(existing.latestOrderDate || 0)) {
+          existing.latestOrderDate = ord.createdAt;
+          existing.latestOrderId = ord.id;
+          existing.latestOrderStatus = ord.status;
+        }
+      } else {
+        customerMap.set(emailKey, {
+          id: `cust-${customerMap.size + 1}`,
+          name: ord.customer?.name || 'Valued Buyer',
+          email: ord.customer?.email || 'N/A',
+          phone: ord.customer?.phone || 'N/A',
+          address: ord.customer?.address || '',
+          city: ord.customer?.city || 'Pune',
+          state: ord.customer?.state || 'Maharashtra',
+          zip: ord.customer?.zip || '411038',
+          fullAddress: `${ord.customer?.address || ''}, ${ord.customer?.city || 'Pune'}, ${ord.customer?.state || 'Maharashtra'} - ${ord.customer?.zip || ''}`,
+          totalOrders: 1,
+          totalSpent: (ord.total || 0),
+          latestOrderDate: ord.createdAt || new Date().toISOString(),
+          latestOrderId: ord.id,
+          latestOrderStatus: ord.status,
+          ordersList: [ord]
+        });
+      }
+    });
+
+    let list = Array.from(customerMap.values());
+
+    // Apply Search
+    if (customerSearchQuery.trim()) {
+      const q = customerSearchQuery.toLowerCase().trim();
+      list = list.filter(c => 
+        c.name.toLowerCase().includes(q) ||
+        c.email.toLowerCase().includes(q) ||
+        c.phone.toLowerCase().includes(q) ||
+        c.city.toLowerCase().includes(q)
+      );
+    }
+
+    // Apply Sort
+    if (customerSortBy === 'spend') {
+      list.sort((a, b) => b.totalSpent - a.totalSpent);
+    } else if (customerSortBy === 'orders') {
+      list.sort((a, b) => b.totalOrders - a.totalOrders);
+    } else {
+      list.sort((a, b) => new Date(b.latestOrderDate) - new Date(a.latestOrderDate));
+    }
+
+    return list;
+  }, [orders, customerSearchQuery, customerSortBy]);
 
   // Open Add Modal
   const openAddModal = () => {
@@ -1694,6 +1762,202 @@ export const AdminDashboard = ({ onNavigate }) => {
         )}
 
         {/* ========================================================= */}
+        {/* TAB: CUSTOMERS DIRECTORY & BUYERS ROSTER */}
+        {/* ========================================================= */}
+        {activeTab === 'customers' && (
+          <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full animate-in fade-in">
+            <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-5">
+              
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E9E2DC]">
+                <div>
+                  <h2 className="text-xl font-serif font-bold text-[#3E2B25] flex items-center gap-2">
+                    <Users className="w-5 h-5 text-[#D96C65]" />
+                    <span>Customer Directory & Buyers ({uniqueCustomersList.length})</span>
+                  </h2>
+                  <p className="text-xs text-[#756A65] mt-0.5">
+                    Dedicated list of all individual customers who have placed orders on AanuBlooms.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-[#F8F6F3] text-[#756A65] border border-[#E9E2DC]">
+                    🌸 {orders.length} Total Orders Across {uniqueCustomersList.length} Clients
+                  </span>
+                </div>
+              </div>
+
+              {/* 4 Quick Stat Summary Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="p-3.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-center">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block">Unique Buyers</span>
+                  <span className="text-xl font-serif font-bold text-[#3E2B25] mt-0.5 block">{uniqueCustomersList.length}</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-center">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block">Total Orders</span>
+                  <span className="text-xl font-serif font-bold text-[#D96C65] mt-0.5 block">{orders.length}</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-center">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block">Total Revenue</span>
+                  <span className="text-xl font-serif font-bold text-[#4F9D69] mt-0.5 block">
+                    ₹{orders.reduce((sum, o) => sum + (o.total || 0), 0).toLocaleString('en-IN')}
+                  </span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-center">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block">Avg Spend / Buyer</span>
+                  <span className="text-xl font-serif font-bold text-[#3E2B25] mt-0.5 block">
+                    ₹{uniqueCustomersList.length ? Math.round(orders.reduce((sum, o) => sum + (o.total || 0), 0) / uniqueCustomersList.length).toLocaleString('en-IN') : 0}
+                  </span>
+                </div>
+              </div>
+
+              {/* Search and Sort Toolbar */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+                <div className="relative w-full sm:w-80">
+                  <Search className="w-4 h-4 text-[#756A65]/50 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    placeholder="Search buyer name, email, phone, city..."
+                    value={customerSearchQuery}
+                    onChange={(e) => setCustomerSearchQuery(e.target.value)}
+                    className="w-full text-xs py-2 pl-9 pr-3 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:ring-1 focus:ring-[#D96C65]"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                  <span className="text-xs text-[#756A65] whitespace-nowrap">Sort By:</span>
+                  <select
+                    value={customerSortBy}
+                    onChange={(e) => setCustomerSortBy(e.target.value)}
+                    className="text-xs py-2 px-3 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none"
+                  >
+                    <option value="recent">Most Recent Buyer</option>
+                    <option value="spend">Highest Lifetime Spend (₹)</option>
+                    <option value="orders">Most Orders Placed</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Customers Directory Table */}
+              {uniqueCustomersList.length > 0 ? (
+                <div className="overflow-x-auto rounded-xl border border-[#E9E2DC]">
+                  <table className="w-full text-left text-xs text-[#3E2B25]">
+                    <thead className="bg-[#F8F6F3] border-b border-[#E9E2DC] text-[10px] font-bold uppercase tracking-wider text-[#756A65]">
+                      <tr>
+                        <th className="py-3 px-4">Customer Name & Contact</th>
+                        <th className="py-3 px-3">Delivery Location</th>
+                        <th className="py-3 px-3 text-center">Orders</th>
+                        <th className="py-3 px-3 text-right">Lifetime Spend</th>
+                        <th className="py-3 px-3">Latest Purchase</th>
+                        <th className="py-3 px-4 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#E9E2DC] bg-white">
+                      {uniqueCustomersList.map((cust) => {
+                        const initials = cust.name
+                          ? cust.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+                          : 'AB';
+
+                        return (
+                          <tr key={cust.id} className="hover:bg-[#F8F6F3]/50 transition-colors">
+                            {/* Name & Contact */}
+                            <td className="py-3.5 px-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#D96C65] to-[#C45750] text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs">
+                                  {initials}
+                                </div>
+                                <div className="min-w-0">
+                                  <strong className="block text-sm text-[#3E2B25] truncate">
+                                    {cust.name}
+                                  </strong>
+                                  <span className="text-[11px] text-[#756A65] block truncate">
+                                    {cust.email}
+                                  </span>
+                                  <span className="text-[11px] text-[#756A65] block font-mono">
+                                    📞 {cust.phone}
+                                  </span>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* Delivery Address */}
+                            <td className="py-3.5 px-3 max-w-[200px]">
+                              <p className="text-xs text-[#3E2B25] line-clamp-2 leading-relaxed">
+                                {cust.address ? `${cust.address}, ` : ''}<strong>{cust.city}</strong>, {cust.state}
+                              </p>
+                              <span className="text-[10px] text-[#756A65] font-mono">PIN: {cust.zip}</span>
+                            </td>
+
+                            {/* Orders Count Badge */}
+                            <td className="py-3.5 px-3 text-center">
+                              <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]">
+                                {cust.totalOrders} {cust.totalOrders === 1 ? 'order' : 'orders'}
+                              </span>
+                            </td>
+
+                            {/* Total Spent */}
+                            <td className="py-3.5 px-3 text-right">
+                              <span className="font-serif font-bold text-sm text-[#D96C65]">
+                                ₹{cust.totalSpent.toLocaleString('en-IN')}
+                              </span>
+                            </td>
+
+                            {/* Latest Purchase */}
+                            <td className="py-3.5 px-3">
+                              <div className="space-y-0.5">
+                                <span className="font-mono text-xs font-bold text-[#3E2B25] block">
+                                  #{cust.latestOrderId}
+                                </span>
+                                <span className="text-[11px] text-[#756A65] block">
+                                  {new Date(cust.latestOrderDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                </span>
+                                <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#4F9D69]/10 text-[#4F9D69] capitalize">
+                                  {cust.latestOrderStatus}
+                                </span>
+                              </div>
+                            </td>
+
+                            {/* Actions */}
+                            <td className="py-3.5 px-4 text-right">
+                              <div className="flex items-center justify-end gap-1.5">
+                                <button
+                                  onClick={() => setSelectedCustomerDetails(cust)}
+                                  className="px-3 py-1.5 bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#3E2B25] rounded-lg text-xs font-semibold transition-colors whitespace-nowrap"
+                                >
+                                  View Orders ({cust.totalOrders})
+                                </button>
+
+                                {cust.phone && cust.phone !== 'N/A' && (
+                                  <a
+                                    href={`https://wa.me/${cust.phone.replace(/[^0-9]/g, '')}?text=Hi%20${encodeURIComponent(cust.name)}%2C%20thank%20you%20for%20ordering%20with%20AanuBlooms!`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="p-1.5 bg-[#4F9D69]/15 text-[#4F9D69] hover:bg-[#4F9D69] hover:text-white rounded-lg transition-colors"
+                                    title="WhatsApp Customer"
+                                  >
+                                    <MessageCircle className="w-4 h-4" />
+                                  </a>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="py-12 text-center text-xs text-[#756A65] space-y-2">
+                  <Users className="w-8 h-8 text-[#756A65]/40 mx-auto" />
+                  <p>No customers matching your search criteria found.</p>
+                </div>
+              )}
+
+            </div>
+          </main>
+        )}
+
+        {/* ========================================================= */}
         {/* TAB: COUPONS & MARKETING */}
         {/* ========================================================= */}
         {activeTab === 'coupons' && (
@@ -1922,6 +2186,116 @@ export const AdminDashboard = ({ onNavigate }) => {
                 </button>
               </div>
             </form>
+
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* CUSTOMER ORDER HISTORY MODAL POP-UP */}
+      {/* ========================================================= */}
+      {selectedCustomerDetails && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedCustomerDetails(null);
+          }}
+        >
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 border border-[#E9E2DC] shadow-2xl space-y-5 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+            
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3.5 border-b border-[#E9E2DC]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#D96C65] to-[#C45750] text-white font-bold text-sm flex items-center justify-center">
+                  {selectedCustomerDetails.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <h3 className="font-serif font-bold text-base text-[#3E2B25]">
+                    {selectedCustomerDetails.name}
+                  </h3>
+                  <p className="text-xs text-[#756A65]">
+                    {selectedCustomerDetails.email} · 📞 {selectedCustomerDetails.phone}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setSelectedCustomerDetails(null)}
+                className="p-1.5 rounded-full text-[#756A65] hover:text-[#3E2B25]"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Address & Lifetime Stats Card */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-xs">
+              <div>
+                <strong className="text-[#3E2B25] block mb-1">📍 Delivery Address:</strong>
+                <p className="text-[#756A65] leading-relaxed">
+                  {selectedCustomerDetails.fullAddress}
+                </p>
+              </div>
+              <div className="sm:text-right space-y-1">
+                <div>
+                  <span className="text-[#756A65]">Total Orders Placed: </span>
+                  <strong className="text-[#3E2B25]">{selectedCustomerDetails.totalOrders}</strong>
+                </div>
+                <div>
+                  <span className="text-[#756A65]">Lifetime Store Spend: </span>
+                  <strong className="font-serif font-bold text-sm text-[#D96C65]">
+                    ₹{selectedCustomerDetails.totalSpent.toLocaleString('en-IN')}
+                  </strong>
+                </div>
+              </div>
+            </div>
+
+            {/* Orders History List */}
+            <div className="space-y-3">
+              <h4 className="font-serif font-bold text-sm text-[#3E2B25]">
+                Order Purchase History ({selectedCustomerDetails.ordersList?.length || 0})
+              </h4>
+
+              <div className="space-y-2.5">
+                {selectedCustomerDetails.ordersList?.map((ord) => (
+                  <div key={ord.id} className="p-3.5 rounded-xl border border-[#E9E2DC] bg-white space-y-2 text-xs">
+                    <div className="flex justify-between items-center pb-2 border-b border-[#E9E2DC]">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-bold text-[#3E2B25]">#{ord.id}</span>
+                        <span className="text-[#756A65]">
+                          {new Date(ord.createdAt || Date.now()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-serif font-bold text-sm text-[#D96C65]">
+                          ₹{(ord.total || 0).toLocaleString('en-IN')}
+                        </span>
+                        <span className="px-2 py-0.5 rounded-md bg-[#4F9D69]/10 text-[#4F9D69] text-[10px] font-bold capitalize">
+                          {ord.status}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1 text-[#756A65]">
+                      {ord.items?.map((item, idx) => (
+                        <div key={idx} className="flex justify-between items-center">
+                          <span>{item.quantity || 1}x {item.name} {item.selectedColor ? `(${item.selectedColor})` : ''}</span>
+                          <span className="font-semibold text-[#3E2B25]">₹{((item.price || 0) * (item.quantity || 1)).toLocaleString('en-IN')}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-2 flex justify-end">
+              <button
+                onClick={() => setSelectedCustomerDetails(null)}
+                className="px-5 py-2 bg-[#3E2B25] text-white rounded-xl font-semibold text-xs hover:bg-black transition-colors"
+              >
+                Close
+              </button>
+            </div>
 
           </div>
         </div>

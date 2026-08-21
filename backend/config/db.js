@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 export const connectDB = async () => {
+  if (!process.env.MONGODB_URI) {
+    console.warn('⚠️ MONGODB_URI not found in .env. Using fallback data.');
+    return null;
+  }
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI);
     console.log(`🌿 MongoDB Atlas Connected: ${conn.connection.host}`);

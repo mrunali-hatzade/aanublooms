@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { sendOrderConfirmationToCustomer, sendNewOrderAlertToFounder } from '../services/emailService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -125,6 +126,14 @@ router.post('/', (req, res) => {
     fs.writeFileSync(productsFilePath, JSON.stringify(products, null, 2), 'utf8');
   } catch (err) {
     console.error('Error updating stock:', err);
+  }
+
+  // ✉️ Send Automated Email Notifications (Customer Confirmation + Founder Alert)
+  try {
+    sendOrderConfirmationToCustomer(newOrder);
+    sendNewOrderAlertToFounder(newOrder);
+  } catch (emailErr) {
+    console.error('Email dispatch error (non-fatal):', emailErr.message);
   }
 
   res.status(201).json({

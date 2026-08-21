@@ -5,8 +5,6 @@ import {
   Search,
   Menu,
   X,
-  Sun,
-  Moon,
   Sparkles,
   User,
   Shield,
@@ -19,7 +17,6 @@ import {
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
-import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 import { useLocation } from '../../context/LocationContext';
 import { api } from '../../services/api';
@@ -27,7 +24,6 @@ import { api } from '../../services/api';
 export const Navbar = ({ onNavigate, currentPage }) => {
   const { totalItemCount, openCart } = useCart();
   const { count: wishlistCount } = useWishlist();
-  const { isDark, toggleTheme } = useTheme();
   const { user, isAdmin, openAuthModal, logout, switchToAdmin, switchToCustomer } = useAuth();
   const { location, openLocationModal } = useLocation();
 
@@ -230,16 +226,6 @@ export const Navbar = ({ onNavigate, currentPage }) => {
               <span>Custom Commission</span>
             </button>
 
-            {/* Dark / Light Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors"
-              title={isDark ? 'Switch to Daylight Theme' : 'Switch to Cozy Moonlight Theme'}
-              aria-label="Toggle theme"
-            >
-              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-warmgray-600" />}
-            </button>
-
             {/* Wishlist Button */}
             <button
               onClick={() => onNavigate('wishlist')}
@@ -283,12 +269,12 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                   aria-label="User profile menu"
                 >
                   <img
-                    src={user.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(user.name)}`}
-                    alt={user.name}
+                    src={user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name || 'User')}`}
+                    alt={user.name || 'User'}
                     className="w-6 h-6 rounded-full object-cover border border-bloom-400"
                   />
                   <span className="text-xs font-bold max-w-[80px] truncate hidden md:inline">
-                    {user.name.split(' ')[0]}
+                    {user.name ? (user.name.split(' ')[0] || user.name) : 'Account'}
                   </span>
                   <ChevronDown className="w-3 h-3 text-warmgray-400" />
                 </button>
@@ -315,34 +301,56 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                     <button
                       onClick={() => {
                         setUserDropdownOpen(false);
-                        onNavigate('customer-dashboard');
+                        onNavigate('customer-dashboard', { tab: 'overview' });
                       }}
                       className="w-full px-4 py-2 text-left text-xs font-bold text-bloom-600 dark:text-bloom-400 hover:bg-bloom-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
                     >
                       <User className="w-3.5 h-3.5" />
-                      <span>My Account & Orders</span>
+                      <span>My Account (Overview)</span>
                     </button>
 
                     <button
                       onClick={() => {
                         setUserDropdownOpen(false);
-                        onNavigate('track-order');
+                        onNavigate('customer-dashboard', { tab: 'orders' });
                       }}
                       className="w-full px-4 py-2 text-left text-xs text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
                     >
                       <Package className="w-3.5 h-3.5" />
-                      <span>Track Live Orders</span>
+                      <span>My Orders</span>
                     </button>
 
                     <button
                       onClick={() => {
                         setUserDropdownOpen(false);
-                        onNavigate('wishlist');
+                        onNavigate('customer-dashboard', { tab: 'custom-orders' });
+                      }}
+                      className="w-full px-4 py-2 text-left text-xs text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
+                    >
+                      <Palette className="w-3.5 h-3.5" />
+                      <span>Custom Orders</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setUserDropdownOpen(false);
+                        onNavigate('customer-dashboard', { tab: 'wishlist' });
                       }}
                       className="w-full px-4 py-2 text-left text-xs text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
                     >
                       <Heart className="w-3.5 h-3.5" />
-                      <span>Saved Wishlist ({wishlistCount})</span>
+                      <span>Wishlist ({wishlistCount})</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setUserDropdownOpen(false);
+                        onNavigate('customer-dashboard', { tab: 'profile' });
+                      }}
+                      className="w-full px-4 py-2 text-left text-xs text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
+                    >
+                      <Settings className="w-3.5 h-3.5" />
+                      <span>Profile Settings</span>
                     </button>
 
                     {user?.role === 'admin' && (
@@ -351,7 +359,7 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                           setUserDropdownOpen(false);
                           onNavigate('admin');
                         }}
-                        className="w-full px-4 py-2 text-left text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
+                        className="w-full px-4 py-2 text-left text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-warmgray-700 flex items-center gap-2 border-t border-warmgray-100 dark:border-warmgray-700 mt-1 pt-1.5"
                       >
                         <Shield className="w-3.5 h-3.5" />
                         <span>Admin Studio Dashboard</span>
@@ -400,10 +408,9 @@ export const Navbar = ({ onNavigate, currentPage }) => {
             {user ? (
               <button
                 onClick={() => onNavigate('customer-dashboard')}
-                className="text-bloom-600 dark:text-bloom-400 font-bold hover:underline flex items-center gap-1"
+                className="text-warmgray-600 dark:text-warmgray-300 font-semibold hover:text-bloom-600 flex items-center gap-1"
               >
-                <User className="w-3.5 h-3.5" />
-                <span>My Dashboard</span>
+                <span>My Orders</span>
               </button>
             ) : (
               <button
@@ -413,13 +420,6 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                 Join Cozy Club (Get ₹150 Off)
               </button>
             )}
-            <span>•</span>
-            <button
-              onClick={() => onNavigate('track-order')}
-              className="text-warmgray-600 dark:text-warmgray-300 font-semibold hover:text-bloom-600"
-            >
-              Track Stitches 🧶
-            </button>
           </div>
         </nav>
       </div>
@@ -431,7 +431,7 @@ export const Navbar = ({ onNavigate, currentPage }) => {
           <form onSubmit={handleSearchSubmit} className="relative">
             <input
               type="text"
-              placeholder="Search crochet creations..."
+              placeholder="Search handmade creations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 rounded-xl py-2 pl-9 pr-4 text-xs focus:outline-none focus:ring-2 focus:ring-bloom-400 text-warmgray-900 dark:text-warmgray-100"
@@ -477,16 +477,6 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                 <span>Sign In / Create Account</span>
               </button>
             )}
-
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onNavigate('track-order');
-              }}
-              className="text-left px-3 py-2 rounded-xl text-warmgray-800 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 font-medium transition-colors"
-            >
-              📦 Track My Order
-            </button>
           </div>
         </div>
       )}

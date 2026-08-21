@@ -56,7 +56,7 @@ function AppContent() {
     return (
       <div className="min-h-screen bg-[#F8F6F3] text-warmgray-900 transition-colors">
         <AdminDashboardPage onNavigate={navigateTo} />
-        <AuthModal />
+        <AuthModal onNavigate={navigateTo} />
       </div>
     );
   }
@@ -173,7 +173,7 @@ function AppContent() {
         )}
 
         {currentPage === 'customer-dashboard' && (
-          <CustomerDashboardPage onNavigate={navigateTo} />
+          <CustomerDashboardPage onNavigate={navigateTo} initialTab={navParams.tab || 'overview'} />
         )}
       </main>
 
@@ -181,7 +181,7 @@ function AppContent() {
       <CartDrawer onNavigate={navigateTo} />
 
       {/* Global Auth Modal for Login & Signup */}
-      <AuthModal />
+      <AuthModal onNavigate={navigateTo} />
 
       {/* Delivery Location & GPS Modal */}
       <LocationModal />

@@ -264,7 +264,7 @@ export const InteractiveBouquetStudio = ({ onNavigate }) => {
                 <span className="text-emerald-600 font-semibold">Included (₹150)</span>
               </div>
               <div className="flex justify-between text-warmgray-600 dark:text-warmgray-300">
-                <span>Pan-India Shipping:</span>
+                <span>Pune Region Delivery:</span>
                 <span className="text-emerald-600 font-semibold">{totalCost >= 999 ? 'FREE' : '₹79'}</span>
               </div>
             </div>

@@ -78,20 +78,12 @@ export const OrderSuccessPage = ({ order, onNavigate }) => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
           <button
-            onClick={() => onNavigate('track-order', { id: order.id })}
-            className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-bloom-500 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-full font-bold text-xs shadow-cozy flex items-center justify-center gap-2"
-          >
-            <Truck className="w-4 h-4" />
-            <span>Track Handcrafting Timeline</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-
-          <button
             onClick={() => onNavigate('customer-dashboard')}
-            className="w-full sm:w-auto px-5 py-3 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-full font-bold text-xs shadow-xs flex items-center justify-center gap-1.5"
+            className="w-full sm:w-auto px-7 py-3 bg-gradient-to-r from-bloom-500 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-full font-bold text-xs shadow-cozy flex items-center justify-center gap-2"
           >
             <User className="w-4 h-4" />
-            <span>My Account & Orders</span>
+            <span>View My Orders & Account</span>
+            <ArrowRight className="w-4 h-4" />
           </button>
 
           <button

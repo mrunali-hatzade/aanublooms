@@ -65,7 +65,7 @@ export const MeetTheMaker = ({ onNavigate }) => {
               </div>
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">Pan-India Delivery</span>
+                <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">Pune Region Delivery</span>
               </div>
             </div>
 

@@ -13,5 +13,33 @@
     "address": "AanuBlooms Craft Studio, Bandra West",
     "savedAddresses": [],
     "createdAt": "2026-08-01T10:00:00.000Z"
+  },
+  {
+    "id": "usr-1787305703291",
+    "name": "Mrunali Hatzade",
+    "email": "mrunalithatzade20@gmail.com",
+    "password": "123456789",
+    "phone": "07218405826",
+    "role": "customer",
+    "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Mrunali%20Hatzade",
+    "city": "Pune",
+    "state": "Maharashtra",
+    "zip": "411035",
+    "address": "matru smruti nagar, khat road, bhan",
+    "savedAddresses": [
+      {
+        "id": "addr-1787305703292",
+        "title": "Primary Delivery Address",
+        "name": "Mrunali Hatzade",
+        "phone": "07218405826",
+        "address": "matru smruti nagar, khat road, bhan",
+        "city": "Pune",
+        "state": "Maharashtra",
+        "zip": "411035",
+        "country": "India",
+        "isDefault": true
+      }
+    ],
+    "createdAt": "2026-08-21T09:48:23.292Z"
   }
 ]

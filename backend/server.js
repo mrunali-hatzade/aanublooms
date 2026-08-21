@@ -13,6 +13,14 @@ import authRoutes from './routes/auth.js';
 import settingsRoutes from './routes/settings.js';
 import { connectDB } from './config/db.js';
 
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '.env') });
 dotenv.config();
 
 // Connect to MongoDB Atlas Cloud Database
@@ -37,7 +45,6 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/feedback', feedbackRoutes);
 
-// Health check
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
@@ -45,6 +52,29 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+// Serve Frontend Production Assets from Dist
+const frontendDistPath = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendDistPath)) {
+  app.use('/assets', express.static(path.join(frontendDistPath, 'assets'), {
+    maxAge: '1y',
+    immutable: true
+  }));
+  app.use(express.static(frontendDistPath, {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      }
+    }
+  }));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/assets') || req.path.match(/\.[a-zA-Z0-9]+$/)) {
+      return next();
+    }
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+}
 
 // Fallback error handler
 app.use((err, req, res, next) => {
