@@ -1,5 +1,67 @@
 [
   {
+    "id": "AANU-28067",
+    "createdAt": "2026-08-21T09:24:41.145Z",
+    "customer": {
+      "name": "Mrunali Hatzade",
+      "email": "mrunalihatzade353@gmail.com",
+      "phone": "07218405826",
+      "address": "matru smruti nagar, khat road, bhan",
+      "city": "Bengaluru",
+      "state": "Maharashtra",
+      "zip": "560038",
+      "country": "India"
+    },
+    "items": [
+      {
+        "id": "custom-bouquet-1787287189250",
+        "name": "Bespoke Bouquet (7 Handcrafted Stems)",
+        "price": 1410,
+        "image": "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=600&q=80",
+        "yarnMaterial": "Organic Milk Cotton & Satin",
+        "selectedColor": "Blush Pink Kraft",
+        "selectedSize": "7 Stems Assortment",
+        "customNotes": "",
+        "quantity": 1
+      },
+      {
+        "id": "prod-103",
+        "name": "Purple Lavender Daisy Blossom Velvet Cupcake Pot",
+        "slug": "purple-lavender-daisy-cupcake-pot",
+        "price": 499,
+        "originalPrice": 649,
+        "image": "/images/lavender-daisy-cupcake-pot.jpeg",
+        "category": "forever-blooms",
+        "craftTimeHours": 3.5,
+        "yarnMaterial": "Velvet Chenille Yarn",
+        "selectedColor": "Pastel Lavender",
+        "selectedSize": "Single Daisy Cupcake Pot",
+        "customNotes": "",
+        "quantity": 1
+      }
+    ],
+    "subtotal": 1909,
+    "discount": 0,
+    "appliedCoupon": null,
+    "giftWrap": false,
+    "giftWrapFee": 0,
+    "giftMessage": "",
+    "shipping": 0,
+    "shippingMethod": "Standard Craft Delivery",
+    "total": 1909,
+    "status": "placed",
+    "trackingNumber": "USPS-AANU28067",
+    "statusHistory": [
+      {
+        "status": "placed",
+        "time": "2026-08-21T09:24:41.145Z",
+        "note": "Order confirmed! Artisan Aanu has received your order."
+      }
+    ],
+    "paymentMethod": "Cash on Delivery (COD)",
+    "paymentStatus": "Paid"
+  },
+  {
     "id": "AANU-47987",
     "createdAt": "2026-08-21T04:36:53.376Z",
     "customer": {

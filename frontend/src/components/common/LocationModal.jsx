@@ -157,26 +157,29 @@ export const LocationModal = () => {
             <p className="text-[11px] text-red-500 font-medium">{errorMsg}</p>
           )}
 
-          {/* Quick Popular Cities */}
+          {/* Quick Pune Localities */}
           <div className="pt-2">
             <span className="text-[10px] uppercase font-bold text-warmgray-400 block mb-1.5">
-              Popular Cities
+              🌸 Select Pune Neighborhood
             </span>
             <div className="flex flex-wrap gap-1.5">
               {[
-                { city: 'Bengaluru', pin: '560038', state: 'Karnataka' },
-                { city: 'Mumbai', pin: '400050', state: 'Maharashtra' },
-                { city: 'Delhi NCR', pin: '110001', state: 'Delhi' },
-                { city: 'Hyderabad', pin: '500081', state: 'Telangana' },
-                { city: 'Pune', pin: '411001', state: 'Maharashtra' }
+                { name: 'Kothrud', pin: '411038' },
+                { name: 'Baner / Balewadi', pin: '411045' },
+                { name: 'Hinjawadi / Wakad', pin: '411057' },
+                { name: 'Viman Nagar', pin: '411014' },
+                { name: 'Koregaon Park', pin: '411001' },
+                { name: 'Hadapsar / Magarpatta', pin: '411028' },
+                { name: 'PCMC / Pimpri', pin: '411018' },
+                { name: 'Aundh / Shivaji Nagar', pin: '411007' }
               ].map((c) => (
                 <button
                   key={c.pin}
                   type="button"
-                  onClick={() => setManualLocation({ city: c.city, state: c.state, zip: c.pin })}
+                  onClick={() => setManualLocation({ city: `Pune (${c.name})`, state: 'Maharashtra', zip: c.pin })}
                   className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-warmgray-100 dark:bg-warmgray-800 hover:bg-bloom-50 dark:hover:bg-bloom-950 text-warmgray-700 dark:text-warmgray-300 hover:text-bloom-600 transition-colors border border-warmgray-200 dark:border-warmgray-700"
                 >
-                  {c.city}
+                  {c.name}
                 </button>
               ))}
             </div>

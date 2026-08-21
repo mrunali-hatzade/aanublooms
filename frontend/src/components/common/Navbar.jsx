@@ -128,7 +128,7 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                   <Sparkles className="w-3.5 h-3.5 text-bloom-500 fill-bloom-300" />
                 </span>
                 <span className="block text-[9px] uppercase font-semibold tracking-widest text-bloom-600 dark:text-bloom-400">
-                  Handcrafted Crochet Boutique
+                  Handcrafted Blooms & Creations
                 </span>
               </div>
             </button>
@@ -345,16 +345,18 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                       <span>Saved Wishlist ({wishlistCount})</span>
                     </button>
 
-                    <button
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        onNavigate('admin');
-                      }}
-                      className="w-full px-4 py-2 text-left text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
-                    >
-                      <Shield className="w-3.5 h-3.5" />
-                      <span>🛡️ Admin Studio Dashboard</span>
-                    </button>
+                    {user?.role === 'admin' && (
+                      <button
+                        onClick={() => {
+                          setUserDropdownOpen(false);
+                          onNavigate('admin');
+                        }}
+                        className="w-full px-4 py-2 text-left text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
+                      >
+                        <Shield className="w-3.5 h-3.5" />
+                        <span>Admin Studio Dashboard</span>
+                      </button>
+                    )}
                   </div>
 
                   {/* Sign out */}

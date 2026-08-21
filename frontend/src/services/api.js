@@ -24,6 +24,17 @@ export const api = {
     return data;
   },
 
+  async googleLogin(googleUserData) {
+    const res = await fetch(`${API_BASE_URL}/auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(googleUserData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Google sign-in failed');
+    return data;
+  },
+
   async getMe(token) {
     const res = await fetch(`${API_BASE_URL}/auth/me`, {
       headers: {

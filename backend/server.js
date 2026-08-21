@@ -11,8 +11,12 @@ import contactRoutes from './routes/contact.js';
 import feedbackRoutes from './routes/feedback.js';
 import authRoutes from './routes/auth.js';
 import settingsRoutes from './routes/settings.js';
+import { connectDB } from './config/db.js';
 
 dotenv.config();
+
+// Connect to MongoDB Atlas Cloud Database
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

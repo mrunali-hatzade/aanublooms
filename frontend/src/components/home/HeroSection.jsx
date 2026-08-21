@@ -18,18 +18,18 @@ export const HeroSection = ({ onNavigate }) => {
             {/* Minimal Badge */}
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-warmgray-800/90 border border-bloom-200 dark:border-bloom-800/60 text-bloom-700 dark:text-bloom-300 text-xs font-bold shadow-xs">
               <Sparkles className="w-3.5 h-3.5 text-bloom-500" />
-              <span>Handcrafted Crochet Studio</span>
+              <span>Handcrafted Blooms & Creations</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-warmgray-900 dark:text-white leading-tight tracking-tight">
-              Handcrafted Blooms & Plushies that{' '}
+              Handcrafted Blooms & Creations that{' '}
               <span className="text-bloom-600 dark:text-bloom-400 italic">Never Wilt.</span>
             </h1>
 
             {/* Simple, Short, Easy Subtitle */}
             <p className="text-base sm:text-lg text-warmgray-600 dark:text-warmgray-300 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              Everlasting crochet bouquets, plushies & gifts made with organic cotton and soft velvet yarn.
+              Beautiful handmade flowers, flower pots, bouquets & unique creations made with love, patience, and care.
             </p>
 
             {/* Clean Action Buttons */}

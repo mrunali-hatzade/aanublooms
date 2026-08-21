@@ -10,22 +10,22 @@ export const LocationProvider = ({ children }) => {
     try {
       const saved = localStorage.getItem('aanublooms_delivery_location');
       return saved ? JSON.parse(saved) : {
-        city: 'Bengaluru',
-        state: 'Karnataka',
-        zip: '560038',
+        city: 'Pune',
+        state: 'Maharashtra',
+        zip: '411038',
         country: 'India',
-        address: 'Indiranagar, Bengaluru',
-        estimatedDays: '2 - 3 Days',
+        address: 'Kothrud, Pune',
+        estimatedDays: 'Same Day / Next Day',
         isDetected: false
       };
     } catch {
       return {
-        city: 'Bengaluru',
-        state: 'Karnataka',
-        zip: '560038',
+        city: 'Pune',
+        state: 'Maharashtra',
+        zip: '411038',
         country: 'India',
-        address: 'Indiranagar, Bengaluru',
-        estimatedDays: '2 - 3 Days',
+        address: 'Kothrud, Pune',
+        estimatedDays: 'Same Day / Next Day',
         isDetected: false
       };
     }

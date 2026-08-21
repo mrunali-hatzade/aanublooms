@@ -208,10 +208,59 @@ router.put('/profile', (req, res) => {
 
   saveUsers(users);
 
+// ==========================================
+// 5. GOOGLE DIRECT SIGN-IN / SIGN-UP
+// POST /api/auth/google
+// ==========================================
+router.post('/google', (req, res) => {
+  const { email, name, avatar, googleId } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ success: false, message: 'Google account email is required.' });
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+  const users = getUsers();
+
+  let user = users.find(u => u.email.toLowerCase() === cleanEmail);
+
+  if (user) {
+    // Existing user logging in with Google
+    if (avatar && (!user.avatar || user.avatar.includes('dicebear'))) {
+      user.avatar = avatar;
+      user.googleId = googleId;
+      saveUsers(users);
+    }
+  } else {
+    // New user registering with Google
+    const isMakerAdmin = cleanEmail === 'admin@aanublooms.com' || cleanEmail === 'maker@aanublooms.com';
+    user = {
+      id: `usr-${Date.now()}`,
+      name: name ? name.trim() : cleanEmail.split('@')[0],
+      email: cleanEmail,
+      googleId: googleId || `g_${Date.now()}`,
+      authProvider: 'google',
+      phone: '',
+      role: isMakerAdmin ? 'admin' : 'customer',
+      avatar: avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name || cleanEmail)}`,
+      city: '',
+      state: 'Maharashtra',
+      zip: '',
+      address: '',
+      savedAddresses: [],
+      createdAt: new Date().toISOString()
+    };
+    users.push(user);
+    saveUsers(users);
+  }
+
+  const token = `tok_${user.id}_${Date.now()}`;
+
   res.json({
     success: true,
-    message: 'Profile updated successfully!',
-    user: sanitizeUser(users[userIndex])
+    message: `Welcome to AanuBlooms, ${user.name}! 🌸`,
+    user: sanitizeUser(user),
+    token
   });
 });
 

@@ -69,12 +69,12 @@ export const Footer = ({ onNavigate }) => {
                   AanuBlooms
                 </span>
                 <span className="block text-[10px] uppercase font-semibold tracking-widest text-bloom-600 dark:text-bloom-400">
-                  Artisan Crochet Boutique (India)
+                  Handcrafted Blooms & Creations
                 </span>
               </div>
             </button>
-            <p className="text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed max-w-sm">
-              Handcrafting everlasting floral bouquets, amigurumi plushies & cozy wearables with organic cotton and soft velvet yarn.
+            <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed max-w-sm">
+              At AanuBlooms, we create beautiful handmade flowers, charming flower pots, bouquets, decorative pieces, and unique gifts. Every creation is carefully handcrafted with love, patience, and creativity to add a little beauty and happiness to your everyday spaces.
             </p>
             <div className="flex items-center gap-2.5 pt-1 text-warmgray-600 dark:text-warmgray-400">
               <a href="#" className="p-2.5 rounded-full bg-warmgray-200 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors" title="Global Community">
@@ -92,32 +92,37 @@ export const Footer = ({ onNavigate }) => {
           {/* Shop Categories */}
           <div>
             <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base mb-3">
-              Handmade Catalog
+              Our Collections
             </h4>
             <ul className="space-y-2 text-sm text-warmgray-600 dark:text-warmgray-300">
               <li>
                 <button onClick={() => onNavigate('shop', { category: 'forever-blooms' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  Forever Blooms & Pots
+                  🌸 Handmade Flowers
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('shop', { category: 'amigurumi-plushies' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  Amigurumi Plushies
+                <button onClick={() => onNavigate('shop', { category: 'home-living' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
+                  🪴 Flower Pots
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('shop', { category: 'bags-accessories' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  Daisy Bags & Totes
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('shop', { category: 'wearables-apparel' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  Hexagon Cardigans & Hats
+                <button onClick={() => onNavigate('shop', { category: 'forever-blooms' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
+                  💐 Forever Bouquets
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('shop', { category: 'diy-kits-patterns' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  DIY Starter Kits & Patterns
+                  🎁 Handmade Gifts
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('shop', { category: 'bags-accessories' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
+                  ✨ Decorative Creations
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('custom-order')} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
+                  💖 Custom Creations
                 </button>
               </li>
             </ul>
@@ -126,60 +131,64 @@ export const Footer = ({ onNavigate }) => {
           {/* Customer Care */}
           <div>
             <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base mb-3">
-              Maker & Customer Care
+              Customer Care
             </h4>
             <ul className="space-y-2 text-sm text-warmgray-600 dark:text-warmgray-300">
               <li>
-                <button onClick={() => onNavigate('feedback')} className="hover:text-bloom-600 dark:hover:text-bloom-400 font-semibold text-bloom-700 dark:text-bloom-300 transition-colors flex items-center gap-1">
-                  <MessageSquareHeart className="w-4 h-4 text-bloom-500" />
-                  <span>Customer Feedback & Reviews</span>
-                </button>
-              </li>
-              <li>
                 <button onClick={() => onNavigate('track-order')} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  Track Order Timeline
+                  Track Your Order
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('custom-order')} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  Custom Bouquet Commission
+                  Custom Orders
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('about')} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  Meet Maker Aanu
+                  Meet the Maker
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('wishlist')} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
+                  My Wishlist
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('contact')} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
-                  Contact Studio
+                  Contact AanuBlooms
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('admin')} className="text-bloom-600 dark:text-bloom-400 font-semibold hover:underline">
-                  Artisan Studio Portal
+                <button onClick={() => onNavigate('feedback')} className="hover:text-bloom-600 dark:hover:text-bloom-400 font-semibold text-bloom-700 dark:text-bloom-300 transition-colors flex items-center gap-1">
+                  <MessageSquareHeart className="w-4 h-4 text-bloom-500" />
+                  <span>Customer Reviews</span>
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Artisan Guarantee */}
+          {/* Our Handmade Promise */}
           <div>
             <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base mb-3">
-              Artisan Promise
+              Our Handmade Promise
             </h4>
-            <div className="space-y-2.5 text-sm text-warmgray-600 dark:text-warmgray-300">
+            <div className="space-y-2.5 text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
               <div className="flex items-start gap-2">
-                <ShieldCheck className="w-4 h-4 text-bloom-500 shrink-0 mt-0.5" />
-                <span>100% Handcrafted — zero factory machinery used.</span>
+                <span className="shrink-0">🌸</span>
+                <span><strong>100% Handcrafted</strong> — Every bloom is carefully made by hand.</span>
               </div>
               <div className="flex items-start gap-2">
-                <Heart className="w-4 h-4 text-rosewood-500 shrink-0 mt-0.5" />
-                <span>Safe hypoallergenic stuffing & premium certified milk cotton yarn.</span>
+                <span className="shrink-0">💖</span>
+                <span><strong>Made with Love</strong> — Each creation is thoughtfully designed and assembled with care.</span>
               </div>
               <div className="flex items-start gap-2">
-                <Sparkles className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <span>Never wilts. Everlasting blooms made to be cherished for years.</span>
+                <span className="shrink-0">✨</span>
+                <span><strong>Made to Last</strong> — Our forever flowers are designed to stay beautiful without watering or maintenance.</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="shrink-0">🎁</span>
+                <span><strong>Perfect for Gifting</strong> — A thoughtful handmade gift for birthdays, celebrations, or to make someone smile.</span>
               </div>
             </div>
           </div>
@@ -187,9 +196,9 @@ export const Footer = ({ onNavigate }) => {
 
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-warmgray-200 dark:border-warmgray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-warmgray-500 dark:text-warmgray-400">
-          <p>© {new Date().getFullYear()} AanuBlooms Studio. All stitches handcrafted with love & yarn.</p>
+          <p>© {new Date().getFullYear()} AanuBlooms Studio. All creations handcrafted with love & care.</p>
           <div className="flex items-center gap-4 sm:gap-6">
-            <span>Yarn Sourced Sustainably</span>
+            <span>Handcrafted with Care</span>
             <span>Pan-India Delivery</span>
             <span>UPI & Card Secure Checkout</span>
           </div>

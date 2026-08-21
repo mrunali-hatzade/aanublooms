@@ -324,13 +324,15 @@ export const CustomerDashboardPage = ({ onNavigate }) => {
             })}
 
             <div className="pt-2 mt-2 border-t border-warmgray-100 dark:border-warmgray-800 space-y-1">
-              <button
-                onClick={() => onNavigate('admin')}
-                className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-2xl text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-warmgray-800 transition-colors text-left"
-              >
-                <ShieldCheck className="w-4 h-4" />
-                <span>🛡️ Admin Studio Portal</span>
-              </button>
+              {user?.role === 'admin' && (
+                <button
+                  onClick={() => onNavigate('admin')}
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-2xl text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-warmgray-800 transition-colors text-left"
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Admin Studio Portal</span>
+                </button>
+              )}
 
               <button
                 onClick={logout}

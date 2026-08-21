@@ -183,6 +183,64 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Google 1-Click Sign In
+  const loginWithGoogle = async (googleProfile) => {
+    setIsLoadingAuth(true);
+    try {
+      // 1. Send to Backend API
+      const res = await api.googleLogin({
+        name: googleProfile.name,
+        email: googleProfile.email,
+        avatar: googleProfile.avatar || googleProfile.picture,
+        googleId: googleProfile.sub || googleProfile.googleId || `g_${Date.now()}`
+      });
+
+      if (res.success && res.user) {
+        setUser(res.user);
+        if (res.token) localStorage.setItem('aanublooms_token', res.token);
+        setUsersDb(prev => [...prev.filter(u => u.email !== res.user.email), res.user]);
+        addToast(`🌸 Welcome to AanuBlooms, ${res.user.name}! Signed in via Google.`, 'success');
+        closeAuthModal();
+        setIsLoadingAuth(false);
+        return { success: true, user: res.user };
+      }
+    } catch (err) {
+      // 2. Local Fallback Google Sign-in
+      const cleanEmail = googleProfile.email.trim().toLowerCase();
+      const existing = usersDb.find(u => u.email.toLowerCase() === cleanEmail);
+
+      if (existing) {
+        setUser(existing);
+        addToast(`Welcome back, ${existing.name}! 🌸`, 'success');
+        closeAuthModal();
+        setIsLoadingAuth(false);
+        return { success: true, user: existing };
+      }
+
+      const newUser = {
+        id: `usr-${Date.now()}`,
+        name: googleProfile.name || cleanEmail.split('@')[0],
+        email: cleanEmail,
+        googleId: googleProfile.googleId || `g_${Date.now()}`,
+        authProvider: 'google',
+        role: 'customer',
+        avatar: googleProfile.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(googleProfile.name || cleanEmail)}`,
+        city: '',
+        state: 'Maharashtra',
+        zip: '',
+        address: '',
+        savedAddresses: []
+      };
+
+      setUsersDb(prev => [...prev, newUser]);
+      setUser(newUser);
+      addToast(`🌸 Welcome to AanuBlooms, ${newUser.name}! Signed in via Google.`, 'success');
+      closeAuthModal();
+      setIsLoadingAuth(false);
+      return { success: true, user: newUser };
+    }
+  };
+
   // Sign out
   const logout = () => {
     setUser(null);
@@ -257,6 +315,7 @@ export const AuthProvider = ({ children }) => {
         closeAuthModal,
         login,
         signup,
+        loginWithGoogle,
         logout,
         updateProfile,
         addAddress,

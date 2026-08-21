@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ShieldCheck,
   CreditCard,
@@ -6,6 +6,7 @@ import {
   Truck,
   Gift,
   Lock,
+  User,
   ArrowRight,
   ArrowLeft,
   Sparkles,
@@ -35,7 +36,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
     clearCart
   } = useCart();
 
-  const { user, openAuthModal } = useAuth();
+  const { user, isLoggedIn, openAuthModal } = useAuth();
   const { addToast } = useToast();
   const { location: savedLocation, isDetecting, detectCurrentLocation } = useLocation();
 
@@ -48,11 +49,27 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
     email: user?.email || '',
     phone: user?.phone || '',
     address: user?.address || (user?.savedAddresses?.[0]?.address || ''),
-    city: user?.city || (user?.savedAddresses?.[0]?.city || 'Bengaluru'),
-    state: user?.state || (user?.savedAddresses?.[0]?.state || 'Karnataka'),
-    zip: user?.zip || (user?.savedAddresses?.[0]?.zip || '560038'),
+    city: user?.city || (user?.savedAddresses?.[0]?.city || ''),
+    state: user?.state || (user?.savedAddresses?.[0]?.state || 'Maharashtra'),
+    zip: user?.zip || (user?.savedAddresses?.[0]?.zip || ''),
     country: 'India'
   });
+
+  // Sync user details on login
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        name: user.name || prev.name,
+        email: user.email || prev.email,
+        phone: user.phone || prev.phone,
+        address: user.address || (user.savedAddresses?.[0]?.address || prev.address),
+        city: user.city || (user.savedAddresses?.[0]?.city || prev.city),
+        state: user.state || (user.savedAddresses?.[0]?.state || prev.state),
+        zip: user.zip || (user.savedAddresses?.[0]?.zip || prev.zip),
+      }));
+    }
+  }, [user]);
 
   // Shipping method
   const [shippingMethod, setShippingMethod] = useState('Standard Craft Delivery');
@@ -155,6 +172,50 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
         >
           Browse Crochet Catalog 🌸
         </button>
+      </div>
+    );
+  }
+
+  // 🔒 Sign In Gate: Customers MUST be logged in to place an order
+  if (!isLoggedIn || !user) {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-16 text-center">
+        <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-8 border border-warmgray-200 dark:border-warmgray-800 shadow-xl space-y-5 animate-in zoom-in-95">
+          <div className="w-16 h-16 rounded-2xl bg-bloom-100 dark:bg-bloom-950 text-bloom-600 dark:text-bloom-400 mx-auto flex items-center justify-center">
+            <Lock className="w-8 h-8" />
+          </div>
+
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-widest text-bloom-600 block mb-1">
+              Account Authentication Required
+            </span>
+            <h2 className="text-2xl font-serif font-bold text-warmgray-900 dark:text-white">
+              Sign In to Place Your Order
+            </h2>
+            <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-1 max-w-sm mx-auto">
+              Please sign in with Google or your Email to save your delivery address, live stitch tracking & order receipts.
+            </p>
+          </div>
+
+          <div className="pt-2 space-y-2.5 max-w-xs mx-auto">
+            <button
+              type="button"
+              onClick={() => openAuthModal('login')}
+              className="w-full py-3 bg-gradient-to-r from-bloom-500 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-xl font-bold text-xs shadow-cozy transition-all flex items-center justify-center gap-2"
+            >
+              <User className="w-4 h-4" />
+              <span>Sign In / Create Account</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onNavigate('shop')}
+              className="w-full py-2.5 bg-warmgray-50 dark:bg-warmgray-800 hover:bg-warmgray-100 text-warmgray-700 dark:text-warmgray-300 rounded-xl font-semibold text-xs transition-colors"
+            >
+              Return to Catalog
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

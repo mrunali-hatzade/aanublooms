@@ -6,7 +6,7 @@
     "category": "forever-blooms",
     "price": 2399,
     "originalPrice": 2999,
-    "rating": 5.0,
+    "rating": 5,
     "reviewCount": 148,
     "shortDescription": "Flagship heirloom set of 5 handcrafted velvet cupcake potted blossoms: Sunflower, Crimson Rose, Lavender Daisy, Star Lily & Pink Petal.",
     "description": "Our premier flagship boutique collection! Each set includes 5 lovingly slow-crafted potted flowers sitting in ribbed tactile cupcake planters. Complete with custom gold foil gift box, botanical tissue wrap, and authentic calligraphy note 'Handmade with love just for you - Aanu Blooms'.",
@@ -20,15 +20,31 @@
       "/images/blossom-pots-collection.jpeg"
     ],
     "colors": [
-      { "name": "Vibrant Rainbow Garden", "hex": "#EC4899", "inStock": true },
-      { "name": "Pastel Meadow Trio", "hex": "#8B5CF6", "inStock": true }
+      {
+        "name": "Vibrant Rainbow Garden",
+        "hex": "#EC4899",
+        "inStock": true
+      },
+      {
+        "name": "Pastel Meadow Trio",
+        "hex": "#8B5CF6",
+        "inStock": true
+      }
     ],
-    "sizes": ["Full 5-Piece Deluxe Garden Gift Set"],
+    "sizes": [
+      "Full 5-Piece Deluxe Garden Gift Set"
+    ],
     "stock": 12,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Signature", "Heirloom", "Gift Set", "Bestseller", "Handmade with Love"],
+    "tags": [
+      "Signature",
+      "Heirloom",
+      "Gift Set",
+      "Bestseller",
+      "Handmade with Love"
+    ],
     "reviews": [
       {
         "id": "rev-101-1",
@@ -64,14 +80,25 @@
       "/images/aanu-blooms-signature-set.jpeg"
     ],
     "colors": [
-      { "name": "Golden Honey Yellow", "hex": "#F59E0B", "inStock": true }
+      {
+        "name": "Golden Honey Yellow",
+        "hex": "#F59E0B",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single Cupcake Pot"],
+    "sizes": [
+      "Single Cupcake Pot"
+    ],
     "stock": 22,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Sunflower", "Desk Plant", "Cheer", "Velvet Bloom"],
+    "tags": [
+      "Sunflower",
+      "Desk Plant",
+      "Cheer",
+      "Velvet Bloom"
+    ],
     "reviews": []
   },
   {
@@ -95,14 +122,25 @@
       "/images/blossom-pots-collection.jpeg"
     ],
     "colors": [
-      { "name": "Pastel Lavender", "hex": "#A78BFA", "inStock": true }
+      {
+        "name": "Pastel Lavender",
+        "hex": "#A78BFA",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single Daisy Cupcake Pot"],
-    "stock": 18,
+    "sizes": [
+      "Single Daisy Cupcake Pot"
+    ],
+    "stock": 17,
     "featured": true,
     "isBestseller": false,
     "isNew": true,
-    "tags": ["Daisy", "Lavender", "Pastel", "Potted Flower"],
+    "tags": [
+      "Daisy",
+      "Lavender",
+      "Pastel",
+      "Potted Flower"
+    ],
     "reviews": []
   },
   {
@@ -126,14 +164,24 @@
       "/images/blossom-pots-collection.jpeg"
     ],
     "colors": [
-      { "name": "Canary Star Yellow", "hex": "#FACC15", "inStock": true }
+      {
+        "name": "Canary Star Yellow",
+        "hex": "#FACC15",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single Star Lily Pot"],
+    "sizes": [
+      "Single Star Lily Pot"
+    ],
     "stock": 20,
     "featured": false,
     "isBestseller": false,
     "isNew": true,
-    "tags": ["Star Lily", "Yellow", "Desk Decor"],
+    "tags": [
+      "Star Lily",
+      "Yellow",
+      "Desk Decor"
+    ],
     "reviews": []
   },
   {
@@ -157,14 +205,25 @@
       "/images/aanu-blooms-signature-set.jpeg"
     ],
     "colors": [
-      { "name": "Ruby Velvet Red", "hex": "#DC2626", "inStock": true }
+      {
+        "name": "Ruby Velvet Red",
+        "hex": "#DC2626",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single Rose Cupcake Pot"],
+    "sizes": [
+      "Single Rose Cupcake Pot"
+    ],
     "stock": 25,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Rose", "Velvet", "Romantic", "Forever Bloom"],
+    "tags": [
+      "Rose",
+      "Velvet",
+      "Romantic",
+      "Forever Bloom"
+    ],
     "reviews": []
   },
   {
@@ -188,14 +247,26 @@
       "/images/aanu-blooms-signature-set.jpeg"
     ],
     "colors": [
-      { "name": "Blush Princess Pink", "hex": "#F472B6", "inStock": true }
+      {
+        "name": "Blush Princess Pink",
+        "hex": "#F472B6",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single 32cm Stem", "Set of 3 Stems"],
+    "sizes": [
+      "Single 32cm Stem",
+      "Set of 3 Stems"
+    ],
     "stock": 35,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Tulip", "Pink", "Floral Stem", "Vase Decor"],
+    "tags": [
+      "Tulip",
+      "Pink",
+      "Floral Stem",
+      "Vase Decor"
+    ],
     "reviews": []
   },
   {
@@ -219,14 +290,26 @@
       "/images/lavender-daisy-cupcake-pot.jpeg"
     ],
     "colors": [
-      { "name": "Provence Lavender & Lilac", "hex": "#A78BFA", "inStock": true }
+      {
+        "name": "Provence Lavender & Lilac",
+        "hex": "#A78BFA",
+        "inStock": true
+      }
     ],
-    "sizes": ["2-Stem Botanical Duo", "4-Stem Luxe Set"],
+    "sizes": [
+      "2-Stem Botanical Duo",
+      "4-Stem Luxe Set"
+    ],
     "stock": 30,
     "featured": true,
     "isBestseller": false,
     "isNew": true,
-    "tags": ["Lavender", "Lily", "Pastel", "Floral Stems"],
+    "tags": [
+      "Lavender",
+      "Lily",
+      "Pastel",
+      "Floral Stems"
+    ],
     "reviews": []
   },
   {
@@ -250,14 +333,25 @@
       "/images/aanu-blooms-signature-set.jpeg"
     ],
     "colors": [
-      { "name": "Canary Sunshine Gold", "hex": "#EAB308", "inStock": true }
+      {
+        "name": "Canary Sunshine Gold",
+        "hex": "#EAB308",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single Long Stem (35cm)"],
+    "sizes": [
+      "Single Long Stem (35cm)"
+    ],
     "stock": 28,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Sunflower", "Handheld Stem", "Golden", "Vase Flower"],
+    "tags": [
+      "Sunflower",
+      "Handheld Stem",
+      "Golden",
+      "Vase Flower"
+    ],
     "reviews": []
   },
   {
@@ -862,15 +956,30 @@
       "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Ruby Red & Golden", "hex": "#DC2626", "inStock": true },
-      { "name": "Blush Pink & Ivory", "hex": "#F472B6", "inStock": true }
+      {
+        "name": "Ruby Red & Golden",
+        "hex": "#DC2626",
+        "inStock": true
+      },
+      {
+        "name": "Blush Pink & Ivory",
+        "hex": "#F472B6",
+        "inStock": true
+      }
     ],
-    "sizes": ["Standard Braid (45cm)"],
+    "sizes": [
+      "Standard Braid (45cm)"
+    ],
     "stock": 25,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Parandi", "Hair Accessory", "Festive", "Indian Traditional"],
+    "tags": [
+      "Parandi",
+      "Hair Accessory",
+      "Festive",
+      "Indian Traditional"
+    ],
     "reviews": []
   },
   {
@@ -893,15 +1002,30 @@
       "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Strawberry Cream Duo", "hex": "#FB7185", "inStock": true },
-      { "name": "Matcha Sage Duo", "hex": "#86EFAC", "inStock": true }
+      {
+        "name": "Strawberry Cream Duo",
+        "hex": "#FB7185",
+        "inStock": true
+      },
+      {
+        "name": "Matcha Sage Duo",
+        "hex": "#86EFAC",
+        "inStock": true
+      }
     ],
-    "sizes": ["Duo Pack (2 Scrunchies)"],
+    "sizes": [
+      "Duo Pack (2 Scrunchies)"
+    ],
     "stock": 40,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Scrunchie", "Hair Accessory", "Velvet", "Cute"],
+    "tags": [
+      "Scrunchie",
+      "Hair Accessory",
+      "Velvet",
+      "Cute"
+    ],
     "reviews": []
   },
   {
@@ -924,15 +1048,30 @@
       "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Sprout Green & Daisy", "hex": "#4ADE80", "inStock": true },
-      { "name": "Lavender Blossom", "hex": "#C084FC", "inStock": true }
+      {
+        "name": "Sprout Green & Daisy",
+        "hex": "#4ADE80",
+        "inStock": true
+      },
+      {
+        "name": "Lavender Blossom",
+        "hex": "#C084FC",
+        "inStock": true
+      }
     ],
-    "sizes": ["Standard Novel Size"],
+    "sizes": [
+      "Standard Novel Size"
+    ],
     "stock": 35,
     "featured": false,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Bookmark", "Book Lover", "Gift", "Floral"],
+    "tags": [
+      "Bookmark",
+      "Book Lover",
+      "Gift",
+      "Floral"
+    ],
     "reviews": []
   },
   {
@@ -955,15 +1094,30 @@
       "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Pastel Pink Strawberry", "hex": "#F43F5E", "inStock": true },
-      { "name": "Cheerful Sunny Daisy", "hex": "#FBBF24", "inStock": true }
+      {
+        "name": "Pastel Pink Strawberry",
+        "hex": "#F43F5E",
+        "inStock": true
+      },
+      {
+        "name": "Cheerful Sunny Daisy",
+        "hex": "#FBBF24",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single Charm with Gold Clasp"],
+    "sizes": [
+      "Single Charm with Gold Clasp"
+    ],
     "stock": 50,
     "featured": false,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Keychain", "Charm", "Cute", "Gift"],
+    "tags": [
+      "Keychain",
+      "Charm",
+      "Cute",
+      "Gift"
+    ],
     "reviews": []
   },
   {
@@ -973,7 +1127,7 @@
     "category": "forever-blooms",
     "price": 2499,
     "originalPrice": 2999,
-    "rating": 5.0,
+    "rating": 5,
     "reviewCount": 142,
     "shortDescription": "Full heirloom set of 5 handcrafted velvet cupcake potted blossoms: Sunflower, Crimson Rose, Lavender Daisy, Star Lily & Pink Petal.",
     "description": "Our premier flagship boutique collection! Each set includes 5 lovingly slow-crafted potted flowers sitting in ribbed tactile cupcake planters. Complete with custom gold foil gift box, botanical tissue wrap, and authentic calligraphy note 'Handmade with love just for you - Aanu Blooms'.",
@@ -989,15 +1143,31 @@
       "/images/crimson-rose-cupcake-pot.jpeg"
     ],
     "colors": [
-      { "name": "Vibrant Rainbow Garden", "hex": "#EC4899", "inStock": true },
-      { "name": "Pastel Meadow Trio", "hex": "#8B5CF6", "inStock": true }
+      {
+        "name": "Vibrant Rainbow Garden",
+        "hex": "#EC4899",
+        "inStock": true
+      },
+      {
+        "name": "Pastel Meadow Trio",
+        "hex": "#8B5CF6",
+        "inStock": true
+      }
     ],
-    "sizes": ["Full 5-Piece Deluxe Garden Gift Set"],
+    "sizes": [
+      "Full 5-Piece Deluxe Garden Gift Set"
+    ],
     "stock": 12,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Signature", "Heirloom", "Gift Set", "Bestseller", "Handmade with Love"],
+    "tags": [
+      "Signature",
+      "Heirloom",
+      "Gift Set",
+      "Bestseller",
+      "Handmade with Love"
+    ],
     "reviews": [
       {
         "id": "rev-16-1",
@@ -1033,15 +1203,30 @@
       "/images/aanu-blooms-signature-set.jpeg"
     ],
     "colors": [
-      { "name": "Ruby Velvet Red", "hex": "#DC2626", "inStock": true },
-      { "name": "Blushing Burgundy", "hex": "#991B1B", "inStock": true }
+      {
+        "name": "Ruby Velvet Red",
+        "hex": "#DC2626",
+        "inStock": true
+      },
+      {
+        "name": "Blushing Burgundy",
+        "hex": "#991B1B",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single Rose Cupcake Pot"],
+    "sizes": [
+      "Single Rose Cupcake Pot"
+    ],
     "stock": 25,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Rose", "Velvet", "Romantic", "Forever Bloom"],
+    "tags": [
+      "Rose",
+      "Velvet",
+      "Romantic",
+      "Forever Bloom"
+    ],
     "reviews": []
   },
   {
@@ -1065,15 +1250,31 @@
       "/images/lavender-daisy-cupcake-pot.jpeg"
     ],
     "colors": [
-      { "name": "Provence Lavender & Lilac", "hex": "#A78BFA", "inStock": true },
-      { "name": "Indigo Violet", "hex": "#7C3AED", "inStock": true }
+      {
+        "name": "Provence Lavender & Lilac",
+        "hex": "#A78BFA",
+        "inStock": true
+      },
+      {
+        "name": "Indigo Violet",
+        "hex": "#7C3AED",
+        "inStock": true
+      }
     ],
-    "sizes": ["2-Stem Botanical Duo", "4-Stem Luxe Set"],
+    "sizes": [
+      "2-Stem Botanical Duo",
+      "4-Stem Luxe Set"
+    ],
     "stock": 30,
     "featured": true,
     "isBestseller": false,
     "isNew": true,
-    "tags": ["Lavender", "Lily", "Pastel", "Floral Stems"],
+    "tags": [
+      "Lavender",
+      "Lily",
+      "Pastel",
+      "Floral Stems"
+    ],
     "reviews": []
   },
   {
@@ -1097,15 +1298,30 @@
       "/images/blossom-pots-collection.jpeg"
     ],
     "colors": [
-      { "name": "Canary Star Yellow", "hex": "#FACC15", "inStock": true },
-      { "name": "Sunrise Amber", "hex": "#F59E0B", "inStock": true }
+      {
+        "name": "Canary Star Yellow",
+        "hex": "#FACC15",
+        "inStock": true
+      },
+      {
+        "name": "Sunrise Amber",
+        "hex": "#F59E0B",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single Star Lily Pot"],
+    "sizes": [
+      "Single Star Lily Pot"
+    ],
     "stock": 20,
     "featured": false,
     "isBestseller": false,
     "isNew": true,
-    "tags": ["Star Lily", "Yellow", "Cheer", "Desk Decor"],
+    "tags": [
+      "Star Lily",
+      "Yellow",
+      "Cheer",
+      "Desk Decor"
+    ],
     "reviews": []
   }
 ]

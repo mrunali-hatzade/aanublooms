@@ -73,13 +73,13 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-bloom-600 dark:text-bloom-400 block mb-1">
-              Handcrafted Collection
+              Handmade Collections
             </span>
             <h1 className="text-3xl sm:text-4xl font-serif font-bold text-warmgray-900 dark:text-white">
-              {activeCategoryObj ? activeCategoryObj.name : 'All Handcrafted Creations'}
+              {activeCategoryObj ? activeCategoryObj.name : 'All Handmade Creations'}
             </h1>
-            <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-1">
-              {activeCategoryObj ? activeCategoryObj.description : 'Discover forever bouquets, plushies, wearables, and DIY kits.'}
+            <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-1 max-w-2xl">
+              {activeCategoryObj ? activeCategoryObj.description : 'Explore beautiful handmade flowers, flower pots, bouquets, decorative pieces, and thoughtful creations — each carefully crafted by hand with love and creativity.'}
             </p>
           </div>
 
@@ -100,7 +100,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
               onChange={(e) => setSortOption(e.target.value)}
               className="text-xs font-semibold py-2 px-3.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-bloom-400"
             >
-              <option value="featured">Featured Stitches</option>
+              <option value="featured">Featured Blooms</option>
               <option value="price-low">Price: Low to High</option>
               <option value="price-high">Price: High to Low</option>
               <option value="rating">Top Customer Rated</option>

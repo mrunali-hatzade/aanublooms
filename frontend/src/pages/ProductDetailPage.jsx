@@ -20,6 +20,7 @@ import { api } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useToast } from '../context/ToastContext';
+import { useAuth } from '../context/AuthContext';
 
 export const ProductDetailPage = ({ productId, onNavigate }) => {
   const [product, setProduct] = useState(null);
@@ -34,6 +35,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToast } = useToast();
+  const { user, isLoggedIn, openAuthModal } = useAuth();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -89,6 +91,11 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
 
   const handleBuyNow = () => {
     addToCart(product, quantity, { selectedColor, selectedSize });
+    if (!isLoggedIn || !user) {
+      addToast('Please sign in or create an account to proceed to checkout 🌸', 'info');
+      openAuthModal('login');
+      return;
+    }
     onNavigate('checkout');
   };
 
