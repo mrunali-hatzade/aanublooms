@@ -44,7 +44,7 @@ router.post('/validate', (req, res) => {
   if (subtotal < coupon.minOrder) {
     return res.status(400).json({
       success: false,
-      message: `Coupon '${coupon.code}' requires a minimum subtotal of $${coupon.minOrder.toFixed(2)}`
+      message: `Coupon '${coupon.code}' requires a minimum subtotal of ₹${coupon.minOrder}`
     });
   }
 

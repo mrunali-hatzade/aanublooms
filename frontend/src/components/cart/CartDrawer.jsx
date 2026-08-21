@@ -311,17 +311,12 @@ export const CartDrawer = ({ onNavigate }) => {
               {/* Checkout Button */}
               <button
                 onClick={() => {
-                  if (!isLoggedIn || !user) {
-                    closeCart();
-                    openAuthModal('login');
-                    return;
-                  }
                   closeCart();
                   onNavigate('checkout');
                 }}
                 className="w-full py-3 bg-gradient-to-r from-bloom-500 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-xl font-bold text-xs sm:text-sm shadow-cozy transition-all flex items-center justify-center gap-2 group"
               >
-                <span>{isLoggedIn ? 'Proceed to Checkout' : 'Sign In to Checkout'}</span>
+                <span>Proceed to Checkout (₹{total.toLocaleString('en-IN')})</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
