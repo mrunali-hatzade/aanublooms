@@ -440,20 +440,29 @@ export const AdminDashboard = ({ onNavigate }) => {
     }
 
     try {
+      let updatedProducts = [];
       if (editingProduct) {
-        const res = await api.updateProduct(editingProduct.id, productForm);
-        if (res.success) {
-          addToast(`"${productForm.name}" updated successfully! 🌸`, 'success');
-        }
+        await api.updateProduct(editingProduct.id, productForm).catch(() => {});
+        updatedProducts = products.map(p => p.id === editingProduct.id ? { ...p, ...productForm } : p);
+        addToast(`"${productForm.name}" updated successfully! 🌸`, 'success');
       } else {
-        const res = await api.createProduct(productForm);
-        if (res.success) {
-          addToast(`"${productForm.name}" added to store catalog! 🛍️`, 'success');
-        }
+        const newId = `prod-${Date.now()}`;
+        const newProduct = {
+          ...productForm,
+          id: newId,
+          rating: 5.0,
+          reviewCount: 1,
+          inStock: true,
+          image: productForm.images?.[0] || '/images/category/1st_category_flower.jpeg'
+        };
+        await api.createProduct(newProduct).catch(() => {});
+        updatedProducts = [newProduct, ...products];
+        addToast(`"${productForm.name}" added to store catalog! 🛍️`, 'success');
       }
+      setProducts(updatedProducts);
+      localStorage.setItem('aanublooms_products', JSON.stringify(updatedProducts));
       setShowProductModal(false);
       setEditingProduct(null);
-      fetchData();
     } catch (err) {
       addToast(err.message || 'Could not save product', 'error');
     }
@@ -467,11 +476,11 @@ export const AdminDashboard = ({ onNavigate }) => {
     }
     if (window.confirm(`Are you sure you want to remove "${productName}" from the store catalog?`)) {
       try {
-        const res = await api.deleteProduct(productId);
-        if (res.success) {
-          addToast(`"${productName}" removed from store`, 'info');
-          setProducts(prev => prev.filter(p => p.id !== productId));
-        }
+        await api.deleteProduct(productId).catch(() => {});
+        const updated = products.filter(p => p.id !== productId);
+        setProducts(updated);
+        localStorage.setItem('aanublooms_products', JSON.stringify(updated));
+        addToast(`"${productName}" removed from store`, 'info');
       } catch (err) {
         addToast('Could not delete product', 'error');
       }

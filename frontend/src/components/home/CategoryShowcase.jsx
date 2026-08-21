@@ -1,8 +1,8 @@
 import React from 'react';
 
 export const CategoryShowcase = ({ categories = [], onNavigate }) => {
-  // 6 Primary Curated Categories using official uploaded images from /images/category/
-  const displayCategories = [
+  // Use categories dynamically managed via Admin Dashboard
+  const activeCategories = categories && categories.length > 0 ? categories : [
     {
       id: 'forever-blooms',
       name: 'Flowers',
@@ -53,18 +53,18 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
           </h2>
         </div>
 
-        {/* Compact 6-Card Category Row */}
+        {/* Dynamic Category Row */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
-          {displayCategories.map((cat, idx) => (
+          {activeCategories.map((cat, idx) => (
             <div
-              key={idx}
+              key={cat.id || idx}
               onClick={() => onNavigate('shop', { category: cat.id })}
               className="group cursor-pointer flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-1"
             >
               {/* Rounded Square Image Container */}
               <div className="w-full aspect-square rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-warmgray-800 border border-warmgray-200/70 dark:border-warmgray-700/80 shadow-xs group-hover:shadow-md transition-shadow relative">
                 <img
-                  src={cat.image}
+                  src={cat.image || '/images/category/1st_category_flower.jpeg'}
                   alt={cat.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
