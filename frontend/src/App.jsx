@@ -4,11 +4,13 @@ import { ToastProvider } from './context/ToastContext';
 import { AuthProvider } from './context/AuthContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { CartProvider } from './context/CartContext';
+import { LocationProvider } from './context/LocationContext';
 
 import { Banner } from './components/common/Banner';
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
 import { CartDrawer } from './components/cart/CartDrawer';
+import { LocationModal } from './components/common/LocationModal';
 
 import { HomePage } from './pages/HomePage';
 import { ShopPage } from './pages/ShopPage';
@@ -17,11 +19,15 @@ import { CustomOrderPage } from './pages/CustomOrderPage';
 import { WishlistPage } from './pages/WishlistPage';
 import { CheckoutFlow } from './components/checkout/CheckoutFlow';
 import { OrderSuccessPage } from './pages/OrderSuccessPage';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { OrderTrackingPage } from './pages/OrderTrackingPage';
 import { AboutMakerPage } from './pages/AboutMakerPage';
-import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { ContactPage } from './pages/ContactPage';
 import { FeedbackPage } from './pages/FeedbackPage';
+import { CustomerDashboardPage } from './pages/CustomerDashboardPage';
+import { AuthModal } from './components/auth/AuthModal';
+import { Floating3DBackground } from './components/common/Floating3DBackground';
+import { SparkleClickEffect } from './components/common/SparkleClickEffect';
 
 function AppContent() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -40,7 +46,13 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-warmgray-50 dark:bg-warmgray-950 text-warmgray-900 dark:text-warmgray-50 transition-colors">
+    <div className="min-h-screen flex flex-col bg-warmgray-50 dark:bg-warmgray-950 text-warmgray-900 dark:text-warmgray-50 transition-colors relative">
+      {/* Global 3D Ambient Depth & Floating Elements */}
+      <Floating3DBackground />
+
+      {/* Interactive Micro Blossom & Sparkle Click Ripple */}
+      <SparkleClickEffect />
+
       {/* Top Notification Announcement */}
       <Banner />
 
@@ -112,6 +124,10 @@ function AppContent() {
           <FeedbackPage onNavigate={navigateTo} />
         )}
 
+        {currentPage === 'customer-dashboard' && (
+          <CustomerDashboardPage onNavigate={navigateTo} />
+        )}
+
         {currentPage === 'admin' && (
           <AdminDashboardPage onNavigate={navigateTo} />
         )}
@@ -119,6 +135,12 @@ function AppContent() {
 
       {/* Slide-out Cart Drawer */}
       <CartDrawer onNavigate={navigateTo} />
+
+      {/* Global Auth Modal for Login & Signup */}
+      <AuthModal />
+
+      {/* Delivery Location & GPS Modal */}
+      <LocationModal />
 
       {/* Artisan Footer */}
       <Footer onNavigate={navigateTo} />
@@ -131,11 +153,13 @@ export default function App() {
     <ThemeProvider>
       <ToastProvider>
         <AuthProvider>
-          <WishlistProvider>
-            <CartProvider>
-              <AppContent />
-            </CartProvider>
-          </WishlistProvider>
+          <LocationProvider>
+            <WishlistProvider>
+              <CartProvider>
+                <AppContent />
+              </CartProvider>
+            </WishlistProvider>
+          </LocationProvider>
         </AuthProvider>
       </ToastProvider>
     </ThemeProvider>

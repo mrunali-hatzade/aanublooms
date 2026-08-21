@@ -132,10 +132,37 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      {/* Quick Category Filter Pills */}
+      <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <button
+          onClick={() => setSelectedCategory('all')}
+          className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+            selectedCategory === 'all'
+              ? 'bg-warmgray-900 text-white dark:bg-white dark:text-warmgray-900 shadow-sm'
+              : 'bg-warmgray-100 dark:bg-warmgray-800 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-200'
+          }`}
+        >
+          All Items ({products.length})
+        </button>
+        {categories.map(cat => (
+          <button
+            key={cat.id}
+            onClick={() => setSelectedCategory(cat.id)}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+              selectedCategory === cat.id
+                ? 'bg-bloom-500 text-white shadow-cozy'
+                : 'bg-warmgray-100 dark:bg-warmgray-800 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-200'
+            }`}
+          >
+            {cat.icon || '🌸'} {cat.name}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8 items-start">
         
-        {/* Desktop Sidebar Filters */}
-        <div className="hidden lg:block lg:col-span-1">
+        {/* Desktop Sidebar Filters (Sticky) */}
+        <div className="hidden lg:block lg:col-span-1 sticky top-24">
           <ProductFilters
             categories={categories}
             selectedCategory={selectedCategory}
@@ -206,8 +233,8 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
           ) : (
             <div className={
               viewMode === 'grid'
-                ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6'
-                : 'space-y-4'
+                ? 'grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-5'
+                : 'space-y-3'
             }>
               {products.map(product => (
                 <ProductCard

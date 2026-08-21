@@ -169,15 +169,15 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
 
           {/* Craft Hours Highlight */}
           {product.craftTimeHours > 0 && (
-            <div className="p-3.5 rounded-2xl bg-rosewood-50/70 dark:bg-warmgray-800/80 border border-rosewood-100 dark:border-warmgray-700 flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-rosewood-500 text-white shadow-xs">
-                <Clock className="w-4 h-4" />
+            <div className="p-4 rounded-2xl bg-rosewood-50/70 dark:bg-warmgray-800/80 border border-rosewood-100 dark:border-warmgray-700 flex items-center gap-3.5">
+              <div className="p-2.5 rounded-xl bg-rosewood-500 text-white shadow-xs">
+                <Clock className="w-5 h-5" />
               </div>
-              <div className="text-xs">
+              <div className="text-sm">
                 <span className="font-bold text-warmgray-900 dark:text-white block">
                   Artisan Handcrafted in ~{product.craftTimeHours} Hours
                 </span>
-                <span className="text-warmgray-500 dark:text-warmgray-400">
+                <span className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-400">
                   Tight uniform stitches, zero factory mass manufacturing.
                 </span>
               </div>
@@ -187,9 +187,9 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           {/* Color Palette Selector */}
           {product.colors && product.colors.length > 0 && (
             <div>
-              <div className="flex justify-between items-center text-xs font-bold mb-2">
+              <div className="flex justify-between items-center text-sm font-bold mb-2">
                 <span className="text-warmgray-700 dark:text-warmgray-300">
-                  Select Color Tone: <span className="font-normal text-bloom-600">{selectedColor}</span>
+                  Select Color Tone: <span className="font-semibold text-bloom-600 dark:text-bloom-400">{selectedColor}</span>
                 </span>
               </div>
               <div className="flex gap-2.5">
@@ -198,7 +198,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
                     key={color.name}
                     onClick={() => setSelectedColor(color.name)}
                     style={{ backgroundColor: color.hex }}
-                    className={`w-8 h-8 rounded-full border-2 transition-all ${
+                    className={`w-9 h-9 rounded-full border-2 transition-all ${
                       selectedColor === color.name
                         ? 'ring-2 ring-bloom-500 scale-110 border-white shadow-sm'
                         : 'border-warmgray-300 dark:border-warmgray-600'
@@ -213,7 +213,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           {/* Size / Arrangement Selector */}
           {product.sizes && product.sizes.length > 1 && (
             <div>
-              <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
+              <label className="block text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
                 Size / Stem Bundle Option
               </label>
               <div className="flex flex-wrap gap-2">
@@ -221,7 +221,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all ${
+                    className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all ${
                       selectedSize === size
                         ? 'border-bloom-500 bg-bloom-50 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300 font-bold shadow-xs'
                         : 'border-warmgray-200 dark:border-warmgray-700 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-50'
@@ -235,22 +235,22 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           )}
 
           {/* Quantity and Actions */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-3.5 pt-2">
             <div className="flex gap-3">
               {/* Quantity */}
               <div className="flex items-center border border-warmgray-200 dark:border-warmgray-700 rounded-2xl p-1 bg-warmgray-50 dark:bg-warmgray-800">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-warmgray-600 hover:bg-warmgray-200 dark:text-warmgray-300 transition-colors"
+                  className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-base text-warmgray-600 hover:bg-warmgray-200 dark:text-warmgray-300 transition-colors"
                 >
                   -
                 </button>
-                <span className="w-8 text-center text-xs font-bold text-warmgray-900 dark:text-white">
+                <span className="w-8 text-center text-sm font-bold text-warmgray-900 dark:text-white">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-warmgray-600 hover:bg-warmgray-200 dark:text-warmgray-300 transition-colors"
+                  className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-base text-warmgray-600 hover:bg-warmgray-200 dark:text-warmgray-300 transition-colors"
                 >
                   +
                 </button>
@@ -259,7 +259,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
               {/* Add to Cart */}
               <button
                 onClick={handleAddToCart}
-                className={`flex-1 py-3.5 px-6 rounded-2xl font-bold text-xs shadow-cozy transition-all flex items-center justify-center gap-2 ${
+                className={`flex-1 py-3.5 px-6 rounded-2xl font-bold text-sm sm:text-base shadow-cozy transition-all flex items-center justify-center gap-2 ${
                   isAddedAnim
                     ? 'bg-emerald-600 text-white'
                     : 'bg-bloom-500 hover:bg-bloom-600 text-white transform hover:scale-[1.02]'
@@ -290,23 +290,23 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
             {/* Instant Buy Now */}
             <button
               onClick={handleBuyNow}
-              className="w-full py-3.5 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-2xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-2xl font-bold text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2"
             >
               <span>Instant Buy Now with Express Checkout</span>
             </button>
           </div>
 
           {/* Artisan Guarantees list */}
-          <div className="pt-4 border-t border-warmgray-100 dark:border-warmgray-800 space-y-2 text-xs text-warmgray-600 dark:text-warmgray-400">
-            <div className="flex items-center gap-2">
+          <div className="pt-4 border-t border-warmgray-100 dark:border-warmgray-800 space-y-2.5 text-sm text-warmgray-600 dark:text-warmgray-300">
+            <div className="flex items-center gap-2.5">
               <Truck className="w-4 h-4 text-bloom-500 shrink-0" />
               <span>Free delivery across India on orders over ₹999</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
               <span>Lifetime bloom promise — never withers or wilts</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
               <span>Includes dried French lavender sachet for gentle scent</span>
             </div>
@@ -320,7 +320,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
       <div className="pt-10 border-t border-warmgray-200 dark:border-warmgray-800">
         
         {/* Tab Headers */}
-        <div className="flex gap-4 border-b border-warmgray-200 dark:border-warmgray-800 pb-3 overflow-x-auto text-xs sm:text-sm font-bold">
+        <div className="flex gap-6 border-b border-warmgray-200 dark:border-warmgray-800 pb-3 overflow-x-auto text-sm sm:text-base font-bold">
           {[
             { id: 'description', label: 'Story & Description' },
             { id: 'specs', label: 'Stitch & Yarn Specs' },
@@ -344,14 +344,14 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
         {/* Tab Contents */}
         <div className="py-8">
           {activeTab === 'description' && (
-            <div className="max-w-3xl space-y-4 text-sm text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
+            <div className="max-w-3xl space-y-4 text-base text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
               <p>{product.description}</p>
               <p>{product.shortDescription}</p>
             </div>
           )}
 
           {activeTab === 'specs' && (
-            <div className="max-w-xl bg-white dark:bg-warmgray-900 rounded-3xl p-6 border border-warmgray-200 dark:border-warmgray-800 text-xs space-y-3">
+            <div className="max-w-xl bg-white dark:bg-warmgray-900 rounded-3xl p-6 border border-warmgray-200 dark:border-warmgray-800 text-sm space-y-3.5">
               <div className="flex justify-between py-2 border-b border-warmgray-100 dark:border-warmgray-800">
                 <span className="font-bold text-warmgray-500">Yarn Material</span>
                 <span className="font-semibold text-warmgray-900 dark:text-white">{product.yarnMaterial}</span>
@@ -372,17 +372,17 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           )}
 
           {activeTab === 'care' && (
-            <div className="max-w-2xl bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-8 border border-warmgray-200 dark:border-warmgray-800 space-y-4 text-xs text-warmgray-700 dark:text-warmgray-300">
-              <h4 className="font-serif font-bold text-base text-warmgray-900 dark:text-white flex items-center gap-2">
+            <div className="max-w-2xl bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-8 border border-warmgray-200 dark:border-warmgray-800 space-y-4 text-sm text-warmgray-700 dark:text-warmgray-300">
+              <h4 className="font-serif font-bold text-lg text-warmgray-900 dark:text-white flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-bloom-500" />
                 <span>How to keep your crochet piece beautiful for decades</span>
               </h4>
-              <p className="leading-relaxed">{product.careInstructions}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <div className="p-3 bg-warmgray-50 dark:bg-warmgray-800 rounded-xl">
+              <p className="leading-relaxed text-sm sm:text-base">{product.careInstructions}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-sm">
+                <div className="p-3.5 bg-warmgray-50 dark:bg-warmgray-800 rounded-2xl">
                   <strong>🌸 Dusting:</strong> Use a soft blush makeup brush or blowdryer on cold low setting.
                 </div>
-                <div className="p-3 bg-warmgray-50 dark:bg-warmgray-800 rounded-xl">
+                <div className="p-3.5 bg-warmgray-50 dark:bg-warmgray-800 rounded-2xl">
                   <strong>🧼 Washing:</strong> Hand wash gently in cold water with mild wool detergent.
                 </div>
               </div>

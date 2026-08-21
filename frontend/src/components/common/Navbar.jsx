@@ -12,19 +12,24 @@ import {
   Shield,
   Palette,
   Flower2,
-  ChevronDown
+  ChevronDown,
+  LogOut,
+  Package,
+  MapPin
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
+import { useLocation } from '../../context/LocationContext';
 import { api } from '../../services/api';
 
-export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
+export const Navbar = ({ onNavigate, currentPage }) => {
   const { totalItemCount, openCart } = useCart();
   const { count: wishlistCount } = useWishlist();
   const { isDark, toggleTheme } = useTheme();
-  const { user, isAdmin, switchToAdmin, switchToCustomer, logout } = useAuth();
+  const { user, isAdmin, openAuthModal, logout, switchToAdmin, switchToCustomer } = useAuth();
+  const { location, openLocationModal } = useLocation();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -115,16 +120,31 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
               onClick={() => onNavigate('home')}
               className="flex items-center gap-2.5 group text-left"
             >
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-bloom-500 via-rosewood-400 to-amber-300 flex items-center justify-center text-white shadow-cozy group-hover:scale-105 transition-transform duration-300">
-                <Flower2 className="w-6 h-6 animate-pulse-subtle" />
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-bloom-500 via-rosewood-400 to-amber-300 flex items-center justify-center text-white shadow-cozy group-hover:scale-105 transition-transform duration-300">
+                <Flower2 className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-2xl font-bold font-serif tracking-tight text-warmgray-900 dark:text-white flex items-center gap-1">
+                <span className="text-xl sm:text-2xl font-bold font-serif tracking-tight text-warmgray-900 dark:text-white flex items-center gap-1">
                   AanuBlooms
-                  <Sparkles className="w-4 h-4 text-bloom-500 fill-bloom-300" />
+                  <Sparkles className="w-3.5 h-3.5 text-bloom-500 fill-bloom-300" />
                 </span>
-                <span className="block text-[10px] uppercase font-semibold tracking-widest text-bloom-600 dark:text-bloom-400">
-                  Handcrafted Crochet Studio
+                <span className="block text-[9px] uppercase font-semibold tracking-widest text-bloom-600 dark:text-bloom-400">
+                  Handcrafted Crochet Boutique
+                </span>
+              </div>
+            </button>
+
+            {/* GPS Delivery Location Pill */}
+            <button
+              onClick={openLocationModal}
+              className="hidden sm:flex items-center gap-1.5 ml-4 px-3 py-1.5 rounded-full bg-warmgray-50 hover:bg-warmgray-100 dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 border border-warmgray-200 dark:border-warmgray-700 text-xs transition-colors group shrink-0"
+              title="Click to detect GPS location or change PIN code"
+            >
+              <MapPin className="w-3.5 h-3.5 text-bloom-600 dark:text-bloom-400 shrink-0 group-hover:animate-bounce" />
+              <div className="text-left text-[11px] leading-tight">
+                <span className="text-[9px] text-warmgray-400 block font-semibold">Deliver to</span>
+                <span className="font-bold text-warmgray-900 dark:text-white truncate max-w-[100px] block">
+                  {location.city} {location.zip ? `(${location.zip})` : ''}
                 </span>
               </div>
             </button>
@@ -135,13 +155,13 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
             <form onSubmit={handleSearchSubmit} className="w-full relative">
               <input
                 type="text"
-                placeholder="Search tulips, chubby bees, cardigans, kits..."
+                placeholder="Search bouquets, plushies, cardigans, kits..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => searchQuery.trim() && setShowSearchDropdown(true)}
-                className="w-full bg-warmgray-50 dark:bg-warmgray-800/90 border border-warmgray-200 dark:border-warmgray-700 rounded-full py-2.5 pl-11 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-bloom-400 focus:border-transparent transition-all placeholder:text-warmgray-400 text-warmgray-800 dark:text-warmgray-100"
+                className="w-full bg-warmgray-50 dark:bg-warmgray-800/90 border border-warmgray-200 dark:border-warmgray-700 rounded-full py-2 pl-10 pr-9 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-bloom-400 focus:border-transparent transition-all placeholder:text-warmgray-400 text-warmgray-800 dark:text-warmgray-100"
               />
-              <Search className="w-4 h-4 text-warmgray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-warmgray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               {searchQuery && (
                 <button
                   type="button"
@@ -157,7 +177,7 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
             {showSearchDropdown && (
               <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-warmgray-800 rounded-2xl shadow-2xl border border-warmgray-200 dark:border-warmgray-700 overflow-hidden z-50 animate-in fade-in">
                 {isSearching ? (
-                  <div className="p-4 text-center text-sm text-warmgray-500">Searching handmade stitches...</div>
+                  <div className="p-4 text-center text-xs text-warmgray-500">Searching handmade stitches...</div>
                 ) : searchResults.length > 0 ? (
                   <div>
                     <div className="px-4 py-2 bg-warmgray-50 dark:bg-warmgray-700/50 text-xs font-semibold uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400 border-b border-warmgray-100 dark:border-warmgray-700">
@@ -171,28 +191,28 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
                           setSearchQuery('');
                           onNavigate('product-detail', { id: item.id });
                         }}
-                        className="w-full flex items-center gap-3 p-3 hover:bg-bloom-50 dark:hover:bg-warmgray-700 transition-colors text-left border-b border-warmgray-100 dark:border-warmgray-700/50 last:border-0"
+                        className="w-full flex items-center gap-3 p-2.5 hover:bg-bloom-50 dark:hover:bg-warmgray-700 transition-colors text-left border-b border-warmgray-100 dark:border-warmgray-700/50 last:border-0"
                       >
                         <img
                           src={item.images?.[0]}
                           alt={item.name}
-                          className="w-11 h-11 rounded-lg object-cover border border-warmgray-200 dark:border-warmgray-600"
+                          className="w-10 h-10 rounded-lg object-cover border border-warmgray-200 dark:border-warmgray-600"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-warmgray-900 dark:text-warmgray-100 truncate">{item.name}</p>
-                          <p className="text-xs text-bloom-600 dark:text-bloom-400 font-semibold">₹{item.price?.toLocaleString('en-IN')} · <span className="text-warmgray-400 font-normal">{item.yarnMaterial}</span></p>
+                          <p className="text-xs font-medium text-warmgray-900 dark:text-warmgray-100 truncate">{item.name}</p>
+                          <p className="text-[11px] text-bloom-600 dark:text-bloom-400 font-semibold">₹{item.price?.toLocaleString('en-IN')} · <span className="text-warmgray-400 font-normal">{item.yarnMaterial}</span></p>
                         </div>
                       </button>
                     ))}
                     <button
                       onClick={handleSearchSubmit}
-                      className="w-full py-2.5 text-center text-xs font-bold text-bloom-600 dark:text-bloom-400 bg-bloom-50/50 dark:bg-warmgray-700/30 hover:bg-bloom-100/50 transition-colors"
+                      className="w-full py-2 text-center text-xs font-bold text-bloom-600 dark:text-bloom-400 bg-bloom-50/50 dark:bg-warmgray-700/30 hover:bg-bloom-100/50 transition-colors"
                     >
                       View all matching creations →
                     </button>
                   </div>
                 ) : (
-                  <div className="p-4 text-center text-sm text-warmgray-500">
+                  <div className="p-4 text-center text-xs text-warmgray-500">
                     No crochet items found for "{searchQuery}". Try searching for 'tulip', 'bunny', or 'cardigan'!
                   </div>
                 )}
@@ -201,11 +221,11 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
           </div>
 
           {/* Action Icons */}
-          <div className="flex items-center gap-1.5 sm:gap-3">
+          <div className="flex items-center gap-1 sm:gap-2.5">
             {/* Custom Commission Button */}
             <button
               onClick={() => onNavigate('custom-order')}
-              className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-rosewood-100/80 hover:bg-rosewood-200/80 text-rosewood-800 dark:bg-rosewood-950/60 dark:text-rosewood-200 dark:hover:bg-rosewood-900/60 transition-colors border border-rosewood-200 dark:border-rosewood-800"
+              className="hidden xl:flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-rosewood-100/80 hover:bg-rosewood-200/80 text-rosewood-800 dark:bg-rosewood-950/60 dark:text-rosewood-200 dark:hover:bg-rosewood-900/60 transition-colors border border-rosewood-200 dark:border-rosewood-800"
             >
               <Palette className="w-3.5 h-3.5 text-rosewood-600 dark:text-rosewood-400" />
               <span>Custom Commission</span>
@@ -214,23 +234,23 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
             {/* Dark / Light Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2.5 rounded-full text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors"
+              className="p-2 rounded-full text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors"
               title={isDark ? 'Switch to Daylight Theme' : 'Switch to Cozy Moonlight Theme'}
               aria-label="Toggle theme"
             >
-              {isDark ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-warmgray-600" />}
+              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-warmgray-600" />}
             </button>
 
             {/* Wishlist Button */}
             <button
               onClick={() => onNavigate('wishlist')}
-              className="p-2.5 rounded-full text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors relative"
+              className="p-2 rounded-full text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors relative"
               title="View Wishlist"
               aria-label="Wishlist"
             >
-              <Heart className={`w-5 h-5 ${wishlistCount > 0 ? 'text-rosewood-500 fill-rosewood-500' : ''}`} />
+              <Heart className={`w-4 h-4 ${wishlistCount > 0 ? 'text-rosewood-500 fill-rosewood-500' : ''}`} />
               {wishlistCount > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 bg-rosewood-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse-subtle">
+                <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-rosewood-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
                   {wishlistCount}
                 </span>
               )}
@@ -239,13 +259,13 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
             {/* Cart / Basket Button */}
             <button
               onClick={openCart}
-              className="flex items-center gap-2 p-2 sm:px-4 sm:py-2.5 rounded-full bg-bloom-500 hover:bg-bloom-600 text-white shadow-cozy transition-all duration-200 transform hover:scale-[1.02]"
+              className="flex items-center gap-1.5 p-2 sm:px-3.5 sm:py-2 rounded-full bg-bloom-500 hover:bg-bloom-600 text-white shadow-cozy transition-all duration-200 transform hover:scale-[1.02]"
               aria-label="Shopping Cart"
             >
               <div className="relative">
-                <ShoppingBag className="w-5 h-5" />
+                <ShoppingBag className="w-4 h-4" />
                 {totalItemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-white text-bloom-600 text-[10px] font-extrabold rounded-full flex items-center justify-center shadow">
+                  <span className="absolute -top-2 -right-2 w-3.5 h-3.5 bg-white text-bloom-600 text-[9px] font-extrabold rounded-full flex items-center justify-center shadow">
                     {totalItemCount}
                   </span>
                 )}
@@ -255,107 +275,101 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
               </span>
             </button>
 
-            {/* User Account / Mode Switcher */}
+            {/* User Account Button & Dropdown */}
             <div ref={userDropdownRef} className="relative">
-              <button
-                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center gap-1.5 p-1.5 sm:p-2 rounded-full hover:bg-warmgray-100 dark:hover:bg-warmgray-800 text-warmgray-700 dark:text-warmgray-200 transition-colors"
-                aria-label="User profile menu"
-              >
-                {user ? (
+              {user ? (
+                <button
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="flex items-center gap-1.5 p-1 pl-2 pr-2.5 rounded-full bg-warmgray-100 dark:bg-warmgray-800 hover:bg-warmgray-200 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 transition-colors border border-warmgray-200 dark:border-warmgray-700"
+                  aria-label="User profile menu"
+                >
                   <img
-                    src={user.avatar}
+                    src={user.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(user.name)}`}
                     alt={user.name}
-                    className="w-8 h-8 rounded-full object-cover border-2 border-bloom-300 dark:border-bloom-600"
+                    className="w-6 h-6 rounded-full object-cover border border-bloom-400"
                   />
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-warmgray-200 dark:bg-warmgray-700 flex items-center justify-center">
-                    <User className="w-4 h-4 text-warmgray-600 dark:text-warmgray-300" />
-                  </div>
-                )}
-                <ChevronDown className="w-3.5 h-3.5 hidden sm:inline text-warmgray-400" />
-              </button>
+                  <span className="text-xs font-bold max-w-[80px] truncate hidden md:inline">
+                    {user.name.split(' ')[0]}
+                  </span>
+                  <ChevronDown className="w-3 h-3 text-warmgray-400" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => openAuthModal('login')}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-warmgray-900 hover:bg-black text-white dark:bg-white dark:text-warmgray-900 text-xs font-bold shadow-xs transition-all"
+                >
+                  <User className="w-3.5 h-3.5" />
+                  <span>Sign In</span>
+                </button>
+              )}
 
-              {userDropdownOpen && (
+              {/* User Dropdown Menu */}
+              {userDropdownOpen && user && (
                 <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-warmgray-800 rounded-2xl shadow-2xl border border-warmgray-200 dark:border-warmgray-700 py-2 z-50 animate-in fade-in">
-                  <div className="px-4 py-3 border-b border-warmgray-100 dark:border-warmgray-700">
-                    <p className="text-xs text-warmgray-500 dark:text-warmgray-400">Signed in as</p>
-                    <p className="text-sm font-bold text-warmgray-900 dark:text-white truncate">{user?.name || 'Guest Maker Fan'}</p>
-                    <span className={`inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      isAdmin
-                        ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
-                        : 'bg-bloom-100 text-bloom-800 dark:bg-bloom-950 dark:text-bloom-300'
-                    }`}>
-                      {isAdmin ? '👑 Artisan Studio Owner (Admin)' : '🛍️ Customer Account'}
-                    </span>
+                  <div className="px-4 py-2.5 border-b border-warmgray-100 dark:border-warmgray-700">
+                    <p className="text-[10px] uppercase font-bold text-warmgray-400">Signed in as</p>
+                    <p className="text-xs font-bold text-warmgray-900 dark:text-white truncate">{user.name}</p>
+                    <p className="text-[11px] text-warmgray-500 truncate">{user.email}</p>
                   </div>
 
                   <div className="py-1">
                     <button
                       onClick={() => {
                         setUserDropdownOpen(false);
+                        onNavigate('customer-dashboard');
+                      }}
+                      className="w-full px-4 py-2 text-left text-xs font-bold text-bloom-600 dark:text-bloom-400 hover:bg-bloom-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
+                    >
+                      <User className="w-3.5 h-3.5" />
+                      <span>My Account & Orders</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setUserDropdownOpen(false);
                         onNavigate('track-order');
                       }}
-                      className="w-full px-4 py-2 text-left text-sm text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
+                      className="w-full px-4 py-2 text-left text-xs text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
                     >
-                      📦 Track Live Orders
+                      <Package className="w-3.5 h-3.5" />
+                      <span>Track Live Orders</span>
                     </button>
+
                     <button
                       onClick={() => {
                         setUserDropdownOpen(false);
                         onNavigate('wishlist');
                       }}
-                      className="w-full px-4 py-2 text-left text-sm text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
+                      className="w-full px-4 py-2 text-left text-xs text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
                     >
-                      ❤️ Saved Wishlist ({wishlistCount})
+                      <Heart className="w-3.5 h-3.5" />
+                      <span>Saved Wishlist ({wishlistCount})</span>
                     </button>
-                    
-                    {/* Admin Dashboard link */}
+
                     <button
                       onClick={() => {
                         setUserDropdownOpen(false);
                         onNavigate('admin');
                       }}
-                      className="w-full px-4 py-2 text-left text-sm font-semibold text-bloom-600 dark:text-bloom-400 hover:bg-bloom-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
+                      className="w-full px-4 py-2 text-left text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-warmgray-700 flex items-center gap-2"
                     >
-                      <Shield className="w-4 h-4" />
-                      Artisan Studio Dashboard
+                      <Shield className="w-3.5 h-3.5" />
+                      <span>🛡️ Admin Studio Dashboard</span>
                     </button>
                   </div>
 
-                  {/* Mode Switcher Buttons */}
-                  <div className="px-3 py-2 border-t border-warmgray-100 dark:border-warmgray-700 bg-warmgray-50/70 dark:bg-warmgray-900/50">
-                    <p className="text-[11px] font-semibold text-warmgray-500 uppercase tracking-wider mb-1.5">
-                      Quick Role Switch:
-                    </p>
-                    <div className="flex gap-1.5">
-                      <button
-                        onClick={() => {
-                          switchToCustomer();
-                          setUserDropdownOpen(false);
-                        }}
-                        className={`flex-1 py-1 px-2 text-[11px] font-semibold rounded-lg border transition-all ${
-                          !isAdmin
-                            ? 'bg-white dark:bg-warmgray-800 border-bloom-400 text-bloom-700 dark:text-bloom-300 shadow-sm'
-                            : 'border-warmgray-200 dark:border-warmgray-700 text-warmgray-600 dark:text-warmgray-400'
-                        }`}
-                      >
-                        Customer
-                      </button>
-                      <button
-                        onClick={() => {
-                          switchToAdmin();
-                          setUserDropdownOpen(false);
-                        }}
-                        className={`flex-1 py-1 px-2 text-[11px] font-semibold rounded-lg border transition-all ${
-                          isAdmin
-                            ? 'bg-amber-50 dark:bg-amber-950/60 border-amber-400 text-amber-800 dark:text-amber-300 shadow-sm'
-                            : 'border-warmgray-200 dark:border-warmgray-700 text-warmgray-600 dark:text-warmgray-400'
-                        }`}
-                      >
-                        Artisan Maker
-                      </button>
-                    </div>
+                  {/* Sign out */}
+                  <div className="pt-1 border-t border-warmgray-100 dark:border-warmgray-700">
+                    <button
+                      onClick={() => {
+                        logout();
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full px-4 py-2 text-left text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 flex items-center gap-2"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Sign Out</span>
+                    </button>
                   </div>
                 </div>
               )}
@@ -364,15 +378,15 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
         </div>
 
         {/* Desktop Category Bar */}
-        <nav className="hidden lg:flex items-center justify-between py-1.5 border-t border-warmgray-100 dark:border-warmgray-800/80 text-xs sm:text-sm font-medium">
-          <div className="flex items-center gap-6">
+        <nav className="hidden lg:flex items-center justify-between py-1.5 border-t border-warmgray-100 dark:border-warmgray-800/80 text-xs font-medium">
+          <div className="flex items-center gap-5">
             {navLinks.map((link, idx) => (
               <button
                 key={idx}
                 onClick={() => onNavigate(link.page, link.params)}
-                className={`hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors py-1 relative ${
+                className={`hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors py-0.5 relative ${
                   currentPage === link.page && (!link.params || JSON.stringify(link.params) === '{}')
-                    ? 'text-bloom-600 dark:text-bloom-400 font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-bloom-500 after:rounded-full'
+                    ? 'text-bloom-600 dark:text-bloom-400 font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-bloom-500 after:rounded-full'
                     : 'text-warmgray-700 dark:text-warmgray-300'
                 }`}
               >
@@ -381,16 +395,29 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
             ))}
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-medium text-warmgray-500 dark:text-warmgray-400">
-            <span className="flex items-center gap-1">
-              ✨ 100% Hand-stitched with love
-            </span>
+          <div className="flex items-center gap-3 text-xs font-medium text-warmgray-500 dark:text-warmgray-400">
+            {user ? (
+              <button
+                onClick={() => onNavigate('customer-dashboard')}
+                className="text-bloom-600 dark:text-bloom-400 font-bold hover:underline flex items-center gap-1"
+              >
+                <User className="w-3.5 h-3.5" />
+                <span>My Dashboard</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => openAuthModal('signup')}
+                className="text-bloom-600 dark:text-bloom-400 font-bold hover:underline"
+              >
+                Join Cozy Club (Get ₹150 Off)
+              </button>
+            )}
             <span>•</span>
             <button
               onClick={() => onNavigate('track-order')}
-              className="text-bloom-600 dark:text-bloom-400 font-semibold hover:underline"
+              className="text-warmgray-600 dark:text-warmgray-300 font-semibold hover:text-bloom-600"
             >
-              Track Your Stitches 🧶
+              Track Stitches 🧶
             </button>
           </div>
         </nav>
@@ -398,7 +425,7 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white dark:bg-warmgray-900 border-b border-warmgray-200 dark:border-warmgray-800 px-4 pt-3 pb-6 space-y-4 animate-in slide-in-from-top duration-200">
+        <div className="lg:hidden bg-white dark:bg-warmgray-900 border-b border-warmgray-200 dark:border-warmgray-800 px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top duration-200">
           {/* Mobile Search */}
           <form onSubmit={handleSearchSubmit} className="relative">
             <input
@@ -406,13 +433,13 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
               placeholder="Search crochet creations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-bloom-400 text-warmgray-900 dark:text-warmgray-100"
+              className="w-full bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 rounded-xl py-2 pl-9 pr-4 text-xs focus:outline-none focus:ring-2 focus:ring-bloom-400 text-warmgray-900 dark:text-warmgray-100"
             />
-            <Search className="w-4 h-4 text-warmgray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-warmgray-400 absolute left-3 top-1/2 -translate-y-1/2" />
           </form>
 
           {/* Navigation Links */}
-          <div className="flex flex-col space-y-2">
+          <div className="flex flex-col space-y-1 text-xs">
             {navLinks.map((link, idx) => (
               <button
                 key={idx}
@@ -420,28 +447,44 @@ export const Navbar = ({ onNavigate, currentPage, onOpenAuth }) => {
                   setMobileMenuOpen(false);
                   onNavigate(link.page, link.params);
                 }}
-                className="text-left px-3 py-2 rounded-xl text-warmgray-800 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 font-medium text-sm transition-colors"
+                className="text-left px-3 py-2 rounded-xl text-warmgray-800 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 font-medium transition-colors"
               >
                 {link.label}
               </button>
             ))}
+
+            {user ? (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onNavigate('customer-dashboard');
+                }}
+                className="text-left px-3 py-2 rounded-xl text-bloom-600 dark:text-bloom-400 bg-bloom-50 dark:bg-warmgray-800 font-bold transition-colors flex items-center gap-1.5"
+              >
+                <User className="w-3.5 h-3.5" />
+                <span>My Account & Orders Dashboard</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  openAuthModal('login');
+                }}
+                className="text-left px-3 py-2 rounded-xl text-bloom-600 dark:text-bloom-400 bg-bloom-50 dark:bg-warmgray-800 font-bold transition-colors flex items-center gap-1.5"
+              >
+                <User className="w-3.5 h-3.5" />
+                <span>Sign In / Create Account</span>
+              </button>
+            )}
+
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onNavigate('track-order');
               }}
-              className="text-left px-3 py-2 rounded-xl text-warmgray-800 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 font-medium text-sm transition-colors"
+              className="text-left px-3 py-2 rounded-xl text-warmgray-800 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 font-medium transition-colors"
             >
               📦 Track My Order
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onNavigate('admin');
-              }}
-              className="text-left px-3 py-2 rounded-xl text-bloom-600 dark:text-bloom-400 bg-bloom-50 dark:bg-warmgray-800 font-bold text-sm transition-colors"
-            >
-              👑 Artisan Studio Dashboard
             </button>
           </div>
         </div>

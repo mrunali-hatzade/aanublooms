@@ -22,15 +22,15 @@ export const Footer = ({ onNavigate }) => {
         <div className="bg-gradient-to-r from-bloom-500 via-rosewood-500 to-amber-500 rounded-3xl p-6 sm:p-8 mb-10 text-white shadow-soft-lg relative overflow-hidden">
           <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
           <div className="max-w-2xl relative z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/20 text-xs font-bold tracking-wider uppercase mb-2 backdrop-blur-sm">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-xs font-bold tracking-wider uppercase mb-2 backdrop-blur-sm">
               <Sparkles className="w-3.5 h-3.5" />
               Join the Cozy Yarn Club
             </span>
             <h3 className="text-xl sm:text-2xl font-serif font-bold mb-1.5">
               Get ₹150 off your first handcrafted piece
             </h3>
-            <p className="text-rose-100 text-xs sm:text-sm mb-4 leading-relaxed">
-              Receive secret flash drops, new amigurumi pattern releases, custom commission openings, and maker behind-the-scenes stories.
+            <p className="text-rose-100 text-sm sm:text-base mb-4 leading-relaxed">
+              Get flash drops, new pattern releases & maker behind-the-scenes stories.
             </p>
             <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2.5 max-w-md">
               <input
@@ -39,14 +39,14 @@ export const Footer = ({ onNavigate }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="flex-1 px-3.5 py-2.5 rounded-2xl bg-white/90 dark:bg-warmgray-900/90 text-warmgray-900 dark:text-white placeholder:text-warmgray-400 focus:outline-none focus:ring-2 focus:ring-white text-xs"
+                className="flex-1 px-4 py-2.5 rounded-2xl bg-white/90 dark:bg-warmgray-900/90 text-warmgray-900 dark:text-white placeholder:text-warmgray-400 focus:outline-none focus:ring-2 focus:ring-white text-sm"
               />
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-2xl bg-warmgray-900 hover:bg-black text-white font-bold text-xs transition-all shadow-md flex items-center justify-center gap-1.5 group whitespace-nowrap"
+                className="px-6 py-2.5 rounded-2xl bg-warmgray-900 hover:bg-black text-white font-bold text-sm transition-all shadow-md flex items-center justify-center gap-1.5 group whitespace-nowrap"
               >
                 <span>Join Club</span>
-                <Send className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </button>
             </form>
           </div>
@@ -61,40 +61,40 @@ export const Footer = ({ onNavigate }) => {
               onClick={() => onNavigate('home')}
               className="flex items-center gap-2.5 group text-left"
             >
-              <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-bloom-500 to-rosewood-400 flex items-center justify-center text-white shadow-cozy">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-bloom-500 to-rosewood-400 flex items-center justify-center text-white shadow-cozy">
                 <Flower2 className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-lg font-bold font-serif tracking-tight text-warmgray-900 dark:text-white">
+                <span className="text-xl font-bold font-serif tracking-tight text-warmgray-900 dark:text-white">
                   AanuBlooms
                 </span>
-                <span className="block text-[9px] uppercase font-semibold tracking-widest text-bloom-600 dark:text-bloom-400">
+                <span className="block text-[10px] uppercase font-semibold tracking-widest text-bloom-600 dark:text-bloom-400">
                   Artisan Crochet Boutique (India)
                 </span>
               </div>
             </button>
-            <p className="text-xs text-warmgray-600 dark:text-warmgray-400 leading-relaxed max-w-sm">
-              Handcrafting timeless floral bouquets, cuddly amigurumi plushies, and cozy wearables. Each stitch is woven with love, patience, and the highest grade organic cotton & velvet yarn.
+            <p className="text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed max-w-sm">
+              Handcrafting everlasting floral bouquets, amigurumi plushies & cozy wearables with organic cotton and soft velvet yarn.
             </p>
             <div className="flex items-center gap-2.5 pt-1 text-warmgray-600 dark:text-warmgray-400">
-              <a href="#" className="p-2 rounded-full bg-warmgray-200 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors" title="Global Community">
-                <Globe className="w-3.5 h-3.5" />
+              <a href="#" className="p-2.5 rounded-full bg-warmgray-200 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors" title="Global Community">
+                <Globe className="w-4 h-4" />
               </a>
-              <a href="#" className="p-2 rounded-full bg-warmgray-200 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors" title="Chat with Maker">
-                <MessageCircle className="w-3.5 h-3.5" />
+              <a href="#" className="p-2.5 rounded-full bg-warmgray-200 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors" title="Chat with Maker">
+                <MessageCircle className="w-4 h-4" />
               </a>
-              <a href="#" className="p-2 rounded-full bg-warmgray-200 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors" title="Share">
-                <Share2 className="w-3.5 h-3.5" />
+              <a href="#" className="p-2.5 rounded-full bg-warmgray-200 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors" title="Share">
+                <Share2 className="w-4 h-4" />
               </a>
             </div>
           </div>
 
           {/* Shop Categories */}
           <div>
-            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-sm mb-3">
+            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base mb-3">
               Handmade Catalog
             </h4>
-            <ul className="space-y-2 text-xs text-warmgray-600 dark:text-warmgray-400">
+            <ul className="space-y-2 text-sm text-warmgray-600 dark:text-warmgray-300">
               <li>
                 <button onClick={() => onNavigate('shop', { category: 'forever-blooms' })} className="hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors">
                   Forever Blooms & Pots
@@ -125,13 +125,13 @@ export const Footer = ({ onNavigate }) => {
 
           {/* Customer Care */}
           <div>
-            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-sm mb-3">
+            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base mb-3">
               Maker & Customer Care
             </h4>
-            <ul className="space-y-2 text-xs text-warmgray-600 dark:text-warmgray-400">
+            <ul className="space-y-2 text-sm text-warmgray-600 dark:text-warmgray-300">
               <li>
                 <button onClick={() => onNavigate('feedback')} className="hover:text-bloom-600 dark:hover:text-bloom-400 font-semibold text-bloom-700 dark:text-bloom-300 transition-colors flex items-center gap-1">
-                  <MessageSquareHeart className="w-3.5 h-3.5 text-bloom-500" />
+                  <MessageSquareHeart className="w-4 h-4 text-bloom-500" />
                   <span>Customer Feedback & Reviews</span>
                 </button>
               </li>
@@ -165,10 +165,10 @@ export const Footer = ({ onNavigate }) => {
 
           {/* Artisan Guarantee */}
           <div>
-            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-sm mb-3">
+            <h4 className="font-serif font-bold text-warmgray-900 dark:text-white text-base mb-3">
               Artisan Promise
             </h4>
-            <div className="space-y-2.5 text-xs text-warmgray-600 dark:text-warmgray-400">
+            <div className="space-y-2.5 text-sm text-warmgray-600 dark:text-warmgray-300">
               <div className="flex items-start gap-2">
                 <ShieldCheck className="w-4 h-4 text-bloom-500 shrink-0 mt-0.5" />
                 <span>100% Handcrafted — zero factory machinery used.</span>
@@ -186,7 +186,7 @@ export const Footer = ({ onNavigate }) => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-6 border-t border-warmgray-200 dark:border-warmgray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-warmgray-500 dark:text-warmgray-400">
+        <div className="pt-6 border-t border-warmgray-200 dark:border-warmgray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-warmgray-500 dark:text-warmgray-400">
           <p>© {new Date().getFullYear()} AanuBlooms Studio. All stitches handcrafted with love & yarn.</p>
           <div className="flex items-center gap-4 sm:gap-6">
             <span>Yarn Sourced Sustainably</span>

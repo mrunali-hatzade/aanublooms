@@ -16,6 +16,7 @@ import confetti from 'canvas-confetti';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
+import { useLocation } from '../../context/LocationContext';
 import { api } from '../../services/api';
 
 export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
@@ -34,21 +35,22 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
     clearCart
   } = useCart();
 
-  const { user } = useAuth();
+  const { user, openAuthModal } = useAuth();
   const { addToast } = useToast();
+  const { location: savedLocation, isDetecting, detectCurrentLocation } = useLocation();
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Address form
   const [formData, setFormData] = useState({
-    name: user?.name || 'Pooja Sharma',
-    email: user?.email || 'pooja.sharma@example.com',
-    phone: '+91 98765 43210',
-    address: 'Flat 402, Lotus Residency, 14th Main Road',
-    city: 'Bengaluru',
-    state: 'Karnataka',
-    zip: '560038',
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    address: user?.address || (user?.savedAddresses?.[0]?.address || ''),
+    city: user?.city || (user?.savedAddresses?.[0]?.city || 'Bengaluru'),
+    state: user?.state || (user?.savedAddresses?.[0]?.state || 'Karnataka'),
+    zip: user?.zip || (user?.savedAddresses?.[0]?.zip || '560038'),
     country: 'India'
   });
 
@@ -207,10 +209,77 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
           {/* STEP 1: Shipping Address */}
           {currentStep === 1 && (
             <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-5 sm:p-7 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft space-y-4 animate-in fade-in">
-              <h3 className="font-serif font-bold text-base sm:text-lg text-warmgray-900 dark:text-white flex items-center gap-2">
-                <Truck className="w-4 h-4 text-bloom-500" />
-                <span>Contact & Delivery Address (India)</span>
-              </h3>
+              <div className="flex justify-between items-center">
+                <h3 className="font-serif font-bold text-base sm:text-lg text-warmgray-900 dark:text-white flex items-center gap-2">
+                  <Truck className="w-4 h-4 text-bloom-500" />
+                  <span>Contact & Delivery Address (India)</span>
+                </h3>
+
+                {!user && (
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal('login')}
+                    className="text-xs text-bloom-600 dark:text-bloom-400 font-bold hover:underline"
+                  >
+                    Have an account? Sign In
+                  </button>
+                )}
+              </div>
+
+              {/* GPS Auto-Fill Location Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (savedLocation && savedLocation.city) {
+                    setFormData(prev => ({
+                      ...prev,
+                      city: savedLocation.city,
+                      state: savedLocation.state,
+                      zip: savedLocation.zip,
+                      address: prev.address || savedLocation.address
+                    }));
+                    addToast(`📍 Autofilled location: ${savedLocation.city} (${savedLocation.zip})`, 'success');
+                  } else {
+                    detectCurrentLocation();
+                  }
+                }}
+                className="w-full p-2.5 rounded-xl bg-bloom-50 dark:bg-bloom-950/60 hover:bg-bloom-100 dark:hover:bg-bloom-900 border border-bloom-200 dark:border-bloom-800 text-bloom-700 dark:text-bloom-300 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs"
+              >
+                <span>📍 Auto-Fill with Current GPS Location ({savedLocation?.city || 'Detect'})</span>
+              </button>
+
+              {/* Saved Address Quick Selector if logged in */}
+              {user && user.savedAddresses && user.savedAddresses.length > 0 && (
+                <div className="p-3 bg-bloom-50/60 dark:bg-warmgray-800/60 rounded-2xl border border-bloom-100 dark:border-warmgray-700 space-y-2">
+                  <span className="text-[11px] font-bold text-warmgray-700 dark:text-warmgray-300 block">
+                    ⚡ Use a Saved Delivery Address:
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {user.savedAddresses.map(addr => (
+                      <button
+                        key={addr.id}
+                        type="button"
+                        onClick={() => {
+                          setFormData({
+                            name: addr.name || user.name,
+                            email: user.email,
+                            phone: addr.phone || user.phone,
+                            address: addr.address,
+                            city: addr.city,
+                            state: addr.state,
+                            zip: addr.zip,
+                            country: 'India'
+                          });
+                          addToast(`Loaded "${addr.title}" address!`, 'info');
+                        }}
+                        className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-warmgray-900 border border-warmgray-200 dark:border-warmgray-700 hover:border-bloom-400 text-warmgray-800 dark:text-warmgray-200 shadow-xs"
+                      >
+                        📍 {addr.title} ({addr.city})
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>

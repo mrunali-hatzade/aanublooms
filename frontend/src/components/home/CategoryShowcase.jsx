@@ -7,17 +7,14 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-bloom-100 dark:bg-bloom-950/80 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider mb-1.5">
+        <div className="text-center max-w-xl mx-auto mb-6">
+          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-bloom-100 dark:bg-bloom-950/80 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider mb-1">
             <Sparkles className="w-3.5 h-3.5" />
             Curated Collections
           </span>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
             Explore Handcrafted Categories
           </h2>
-          <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-400 mt-1">
-            From everlasting floral stems and squishy amigurumi to wearable hexagon cardigans and DIY beginner boxes.
-          </p>
         </div>
 
         {/* Categories Grid */}
@@ -38,23 +35,18 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 
                 {/* Floating Content Over Image */}
-                <div className="absolute bottom-3 left-3 right-3 text-white">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300 mb-0.5 block">
-                    {cat.itemCount || 12}+ Creations
-                  </span>
-                  <h3 className="font-serif font-bold text-lg sm:text-xl text-white">
-                    {cat.name}
-                  </h3>
-                </div>
-              </div>
-
-              {/* Bottom text & arrow */}
-              <div className="p-3.5 flex items-center justify-between bg-white dark:bg-warmgray-900">
-                <p className="text-[11px] text-warmgray-600 dark:text-warmgray-400 line-clamp-1 max-w-[220px]">
-                  {cat.description}
-                </p>
-                <div className="w-7 h-7 rounded-full bg-bloom-50 dark:bg-warmgray-800 text-bloom-600 dark:text-bloom-400 group-hover:bg-bloom-500 group-hover:text-white flex items-center justify-center transition-colors shrink-0 shadow-xs">
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                <div className="absolute bottom-3 left-3 right-3 text-white flex items-end justify-between">
+                  <div>
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-amber-300 block">
+                      {cat.itemCount || 12}+ Items
+                    </span>
+                    <h3 className="font-serif font-bold text-lg sm:text-xl text-white">
+                      {cat.name}
+                    </h3>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white group-hover:bg-bloom-500 flex items-center justify-center transition-colors shrink-0">
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,5 +1,56 @@
 [
   {
+    "id": "AANU-47987",
+    "createdAt": "2026-08-21T04:36:53.376Z",
+    "customer": {
+      "name": "Pooja Sharma",
+      "email": "pooja.sharma@example.com",
+      "phone": "+91 98765 43210",
+      "address": "Flat 402, Lotus Residency, 14th Main Road, Indiranagar",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "zip": "560038",
+      "country": "India"
+    },
+    "items": [
+      {
+        "id": "custom-1787286997410",
+        "name": "Custom Commission: Custom Hexagon / Granny Square Cardigan",
+        "slug": "custom-artisan-commission",
+        "price": 4099,
+        "originalPrice": null,
+        "image": "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=600&q=80",
+        "category": "custom-commissions",
+        "craftTimeHours": 10,
+        "yarnMaterial": "Super-Soft Chenille Velvet",
+        "selectedColor": "Palette of 4 Yarn Tones",
+        "selectedSize": "Deluxe 15 Stems",
+        "customNotes": "Ribbon: \"Forever In Bloom\" | Flowers: Pink Tulips, White Daisies, Eucalyptus Leaves | Yarn: Super-Soft Chenille Velvet | Notes: lml",
+        "quantity": 1
+      }
+    ],
+    "subtotal": 4099,
+    "discount": 0,
+    "appliedCoupon": null,
+    "giftWrap": false,
+    "giftWrapFee": 0,
+    "giftMessage": "",
+    "shipping": 0,
+    "shippingMethod": "Standard Craft Delivery",
+    "total": 4099,
+    "status": "placed",
+    "trackingNumber": "USPS-AANU47987",
+    "statusHistory": [
+      {
+        "status": "placed",
+        "time": "2026-08-21T04:36:53.376Z",
+        "note": "Order confirmed! Artisan Aanu has received your order."
+      }
+    ],
+    "paymentMethod": "Cash on Delivery (COD)",
+    "paymentStatus": "Paid"
+  },
+  {
     "id": "AANU-86831",
     "createdAt": "2026-08-20T15:23:12.881Z",
     "customer": {

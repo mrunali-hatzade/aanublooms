@@ -1,5 +1,266 @@
 [
   {
+    "id": "prod-101",
+    "name": "The AanuBlooms Signature 5-Piece Blossom Garden Pots Set",
+    "slug": "aanublooms-signature-5-piece-blossom-pots-set",
+    "category": "forever-blooms",
+    "price": 2399,
+    "originalPrice": 2999,
+    "rating": 5.0,
+    "reviewCount": 148,
+    "shortDescription": "Flagship heirloom set of 5 handcrafted velvet cupcake potted blossoms: Sunflower, Crimson Rose, Lavender Daisy, Star Lily & Pink Petal.",
+    "description": "Our premier flagship boutique collection! Each set includes 5 lovingly slow-crafted potted flowers sitting in ribbed tactile cupcake planters. Complete with custom gold foil gift box, botanical tissue wrap, and authentic calligraphy note 'Handmade with love just for you - Aanu Blooms'.",
+    "craftTimeHours": 14,
+    "yarnMaterial": "High-Grade Velvet Chenille & Combed Milk Cotton",
+    "difficulty": "Masterpiece Collection",
+    "dimensions": "Set of 5 Pots (Height ~15-18cm each)",
+    "careInstructions": "Keep indoors away from moisture. Dust gently with a cool hairdryer.",
+    "images": [
+      "/images/aanu-blooms-signature-set.jpeg",
+      "/images/blossom-pots-collection.jpeg"
+    ],
+    "colors": [
+      { "name": "Vibrant Rainbow Garden", "hex": "#EC4899", "inStock": true },
+      { "name": "Pastel Meadow Trio", "hex": "#8B5CF6", "inStock": true }
+    ],
+    "sizes": ["Full 5-Piece Deluxe Garden Gift Set"],
+    "stock": 12,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Signature", "Heirloom", "Gift Set", "Bestseller", "Handmade with Love"],
+    "reviews": [
+      {
+        "id": "rev-101-1",
+        "author": "Pooja Sharma",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+        "rating": 5,
+        "date": "2026-08-18",
+        "title": "Unbelievable quality and finish!",
+        "comment": "The set of 5 potted flowers arrived in perfect shape in Bangalore. The fairy lights and Aanu Blooms card made it feel so personal!",
+        "verifiedPurchase": true,
+        "helpfulCount": 42
+      }
+    ]
+  },
+  {
+    "id": "prod-102",
+    "name": "Sunny Sunshine Velvet Sunflower Mini Cupcake Pot",
+    "slug": "sunny-sunshine-velvet-sunflower-cupcake-pot",
+    "category": "forever-blooms",
+    "price": 499,
+    "originalPrice": 649,
+    "rating": 4.98,
+    "reviewCount": 89,
+    "shortDescription": "Cheerful yellow velvet sunflower with structured spiral chocolate seed center seated in a cozy ribbed pot.",
+    "description": "Brighten up your study desk or office windowsill with this bright yellow velvet sunflower. Hand-stitched with ultra-soft plush yarn in a latte brown ribbed planter.",
+    "craftTimeHours": 3.5,
+    "yarnMaterial": "Plush Velvet Chenille & Cotton",
+    "difficulty": "Intermediate Artisan",
+    "dimensions": "Height: 16cm, Diameter: 8cm",
+    "careInstructions": "Dust occasionally with a soft dry brush.",
+    "images": [
+      "/images/sunflower-cupcake-pot.jpeg",
+      "/images/aanu-blooms-signature-set.jpeg"
+    ],
+    "colors": [
+      { "name": "Golden Honey Yellow", "hex": "#F59E0B", "inStock": true }
+    ],
+    "sizes": ["Single Cupcake Pot"],
+    "stock": 22,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Sunflower", "Desk Plant", "Cheer", "Velvet Bloom"],
+    "reviews": []
+  },
+  {
+    "id": "prod-103",
+    "name": "Purple Lavender Daisy Blossom Velvet Cupcake Pot",
+    "slug": "purple-lavender-daisy-cupcake-pot",
+    "category": "forever-blooms",
+    "price": 499,
+    "originalPrice": 649,
+    "rating": 4.95,
+    "reviewCount": 74,
+    "shortDescription": "Pastel lilac-purple daisy blossom with dense petal loops and sunshine yellow core in a ribbed pot.",
+    "description": "Delicate textured lavender florets surrounding a cheerful golden yellow center. Hand-potted in a tactile latte ribbed cupcake base.",
+    "craftTimeHours": 3.5,
+    "yarnMaterial": "Velvet Chenille Yarn",
+    "difficulty": "Intermediate Artisan",
+    "dimensions": "Height: 15cm, Diameter: 8cm",
+    "careInstructions": "Dust gently with dry cloth.",
+    "images": [
+      "/images/lavender-daisy-cupcake-pot.jpeg",
+      "/images/blossom-pots-collection.jpeg"
+    ],
+    "colors": [
+      { "name": "Pastel Lavender", "hex": "#A78BFA", "inStock": true }
+    ],
+    "sizes": ["Single Daisy Cupcake Pot"],
+    "stock": 18,
+    "featured": true,
+    "isBestseller": false,
+    "isNew": true,
+    "tags": ["Daisy", "Lavender", "Pastel", "Potted Flower"],
+    "reviews": []
+  },
+  {
+    "id": "prod-104",
+    "name": "Golden Star Lily Blossom Velvet Cupcake Pot",
+    "slug": "golden-star-lily-velvet-cupcake-pot",
+    "category": "forever-blooms",
+    "price": 499,
+    "originalPrice": 649,
+    "rating": 4.94,
+    "reviewCount": 51,
+    "shortDescription": "Vibrant 5-pointed canary yellow star lily with pearl beaded stamen in a ribbed planter pot.",
+    "description": "A radiant tabletop piece with pearl-beaded central stamen and sculpted emerald leaves. Arrives potted and ready to decorate any space.",
+    "craftTimeHours": 3.5,
+    "yarnMaterial": "Plush Velvet & Pearl Accent",
+    "difficulty": "Intermediate Artisan",
+    "dimensions": "Height: 16cm, Pot Diameter: 8cm",
+    "careInstructions": "Keep away from moisture.",
+    "images": [
+      "/images/golden-lily-cupcake-pot.jpeg",
+      "/images/blossom-pots-collection.jpeg"
+    ],
+    "colors": [
+      { "name": "Canary Star Yellow", "hex": "#FACC15", "inStock": true }
+    ],
+    "sizes": ["Single Star Lily Pot"],
+    "stock": 20,
+    "featured": false,
+    "isBestseller": false,
+    "isNew": true,
+    "tags": ["Star Lily", "Yellow", "Desk Decor"],
+    "reviews": []
+  },
+  {
+    "id": "prod-105",
+    "name": "Crimson Velvet Rosebud Blossom Cupcake Pot",
+    "slug": "crimson-velvet-rosebud-blossom-pot",
+    "category": "forever-blooms",
+    "price": 549,
+    "originalPrice": 699,
+    "rating": 4.97,
+    "reviewCount": 68,
+    "shortDescription": "Deep romantic ruby red velvet rose blossom seated in a ribbed planter with emerald leaf base.",
+    "description": "Rich crimson red rose handcrafted petal by petal with ultra-soft plush velvet yarn. A timeless romantic gift that never withers.",
+    "craftTimeHours": 4,
+    "yarnMaterial": "Plush Velvet Chenille & Cotton",
+    "difficulty": "Intermediate Artisan",
+    "dimensions": "Height: 16cm, Diameter: 8cm",
+    "careInstructions": "Dust with dry soft brush.",
+    "images": [
+      "/images/crimson-rose-cupcake-pot.jpeg",
+      "/images/aanu-blooms-signature-set.jpeg"
+    ],
+    "colors": [
+      { "name": "Ruby Velvet Red", "hex": "#DC2626", "inStock": true }
+    ],
+    "sizes": ["Single Rose Cupcake Pot"],
+    "stock": 25,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Rose", "Velvet", "Romantic", "Forever Bloom"],
+    "reviews": []
+  },
+  {
+    "id": "prod-106",
+    "name": "Pink Princess Velvet Tulip Handheld Botanical Stem",
+    "slug": "pink-princess-velvet-tulip-handheld-stem",
+    "category": "forever-blooms",
+    "price": 399,
+    "originalPrice": 499,
+    "rating": 4.96,
+    "reviewCount": 92,
+    "shortDescription": "Romantic blush pink velvet closed tulip bud on a bendable green floral wire stem with textured leaves.",
+    "description": "Slow-stitched blush pink velvet tulip flower mounted on an adjustable green florist stem. Perfect for styling in ceramic or glass vases individually or in bouquets.",
+    "craftTimeHours": 3,
+    "yarnMaterial": "Velvet Chenille & Flexible Wire",
+    "difficulty": "Intermediate Artisan",
+    "dimensions": "Stem Length: 32cm, Flower Height: 6cm",
+    "careInstructions": "Reshape gently with hands.",
+    "images": [
+      "/images/pink-tulip-stem.jpeg",
+      "/images/aanu-blooms-signature-set.jpeg"
+    ],
+    "colors": [
+      { "name": "Blush Princess Pink", "hex": "#F472B6", "inStock": true }
+    ],
+    "sizes": ["Single 32cm Stem", "Set of 3 Stems"],
+    "stock": 35,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Tulip", "Pink", "Floral Stem", "Vase Decor"],
+    "reviews": []
+  },
+  {
+    "id": "prod-107",
+    "name": "Royal Purple Lavender & Lilac Lily Stems Duo",
+    "slug": "royal-purple-lavender-lilac-lily-stems-duo-piece",
+    "category": "forever-blooms",
+    "price": 649,
+    "originalPrice": 799,
+    "rating": 4.98,
+    "reviewCount": 57,
+    "shortDescription": "Pastel botanical pair: 1 textured French lavender stem and 1 open lilac lily with golden pistil stamen.",
+    "description": "An elegant botanical pair crafted with textured lavender floret loops and a 6-petal lilac lily with golden central pistils. Bendable floral wire core allows custom vase styling.",
+    "craftTimeHours": 4,
+    "yarnMaterial": "Combed Milk Cotton & Velvet Stems",
+    "difficulty": "Intermediate Artisan",
+    "dimensions": "Stem Length: 30cm",
+    "careInstructions": "Reshape gently by hand.",
+    "images": [
+      "/images/lavender-lily-stems.jpeg",
+      "/images/lavender-daisy-cupcake-pot.jpeg"
+    ],
+    "colors": [
+      { "name": "Provence Lavender & Lilac", "hex": "#A78BFA", "inStock": true }
+    ],
+    "sizes": ["2-Stem Botanical Duo", "4-Stem Luxe Set"],
+    "stock": 30,
+    "featured": true,
+    "isBestseller": false,
+    "isNew": true,
+    "tags": ["Lavender", "Lily", "Pastel", "Floral Stems"],
+    "reviews": []
+  },
+  {
+    "id": "prod-108",
+    "name": "Botanical Giant Sunshine Sunflower Handheld Stem",
+    "slug": "botanical-giant-sunshine-sunflower-handheld-stem",
+    "category": "forever-blooms",
+    "price": 499,
+    "originalPrice": 599,
+    "rating": 4.99,
+    "reviewCount": 81,
+    "shortDescription": "Large golden yellow sunflower head with spiral brown center and sculpted green leaves on a sturdy stem.",
+    "description": "A magnificent handheld sunflower crafted with layers of golden yellow petals and a textured deep brown core. Mounted on a long florist wire stem with dual emerald leaves.",
+    "craftTimeHours": 4,
+    "yarnMaterial": "Velvet Chenille & Sturdy Wire Core",
+    "difficulty": "Intermediate Artisan",
+    "dimensions": "Stem Length: 35cm, Flower Diameter: 12cm",
+    "careInstructions": "Dust with cool hairdryer.",
+    "images": [
+      "/images/sunflower-stem-handheld.jpeg",
+      "/images/aanu-blooms-signature-set.jpeg"
+    ],
+    "colors": [
+      { "name": "Canary Sunshine Gold", "hex": "#EAB308", "inStock": true }
+    ],
+    "sizes": ["Single Long Stem (35cm)"],
+    "stock": 28,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Sunflower", "Handheld Stem", "Golden", "Vase Flower"],
+    "reviews": []
+  },
+  {
     "id": "prod-1",
     "name": "Everlasting Pink Tulip & Daisy Handcrafted Bouquet",
     "slug": "everlasting-pink-tulip-daisy-bouquet",
@@ -16,21 +277,43 @@
     "dimensions": "Height: 35cm (13.8in), Width: 22cm (8.7in)",
     "careInstructions": "Gently dust with a soft brush or hairdryer on cool setting. Spot clean with a damp cloth if needed. Avoid prolonged direct sunlight to maintain vibrant color.",
     "images": [
-      "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1591886960571-74d43a9d4166?auto=format&fit=crop&w=800&q=80"
+      "/images/pink-tulip-stem.jpeg",
+      "/images/aanu-blooms-signature-set.jpeg",
+      "/images/lavender-lily-stems.jpeg"
     ],
     "colors": [
-      { "name": "Blush Pink & White", "hex": "#F4B6C2", "inStock": true },
-      { "name": "Pastel Lavender & Cream", "hex": "#D8BFD8", "inStock": true },
-      { "name": "Sunset Peach & Coral", "hex": "#F7A38B", "inStock": true }
+      {
+        "name": "Blush Pink & White",
+        "hex": "#F4B6C2",
+        "inStock": true
+      },
+      {
+        "name": "Pastel Lavender & Cream",
+        "hex": "#D8BFD8",
+        "inStock": true
+      },
+      {
+        "name": "Sunset Peach & Coral",
+        "hex": "#F7A38B",
+        "inStock": true
+      }
     ],
-    "sizes": ["Petite (5 Stems)", "Classic (9 Stems)", "Deluxe Luxe (15 Stems)"],
+    "sizes": [
+      "Petite (5 Stems)",
+      "Classic (9 Stems)",
+      "Deluxe Luxe (15 Stems)"
+    ],
     "stock": 18,
     "featured": true,
     "isBestseller": true,
     "isNew": false,
-    "tags": ["Everlasting", "Bouquet", "Gift Ready", "Bestseller", "Milk Cotton"],
+    "tags": [
+      "Everlasting",
+      "Bouquet",
+      "Gift Ready",
+      "Bestseller",
+      "Milk Cotton"
+    ],
     "reviews": [
       {
         "id": "rev-1",
@@ -73,19 +356,36 @@
     "dimensions": "Height: 18cm, Pot Diameter: 8cm",
     "careInstructions": "Dust occasionally with a soft duster. Keep away from excessive moisture.",
     "images": [
-      "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?auto=format&fit=crop&w=800&q=80"
+      "/images/sunflower-cupcake-pot.jpeg",
+      "/images/sunflower-stem-handheld.jpeg",
+      "/images/aanu-blooms-signature-set.jpeg"
     ],
     "colors": [
-      { "name": "Warm Golden Yellow", "hex": "#F5B025", "inStock": true },
-      { "name": "Amber Sunrise", "hex": "#E67E22", "inStock": true }
+      {
+        "name": "Warm Golden Yellow",
+        "hex": "#F5B025",
+        "inStock": true
+      },
+      {
+        "name": "Amber Sunrise",
+        "hex": "#E67E22",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single Bloom Pot", "Twin Bloom Duo"],
+    "sizes": [
+      "Single Bloom Pot",
+      "Twin Bloom Duo"
+    ],
     "stock": 24,
     "featured": true,
     "isBestseller": true,
     "isNew": false,
-    "tags": ["Desk Decor", "Sunflower", "Gift", "Handmade"],
+    "tags": [
+      "Desk Decor",
+      "Sunflower",
+      "Gift",
+      "Handmade"
+    ],
     "reviews": [
       {
         "id": "rev-3",
@@ -121,16 +421,38 @@
       "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Strawberry Pink & Cream", "hex": "#F8C8DC", "inStock": true },
-      { "name": "Matcha Latte Green & Cream", "hex": "#C5E1A5", "inStock": true },
-      { "name": "Boba Brown & Milk", "hex": "#D7CCC8", "inStock": true }
+      {
+        "name": "Strawberry Pink & Cream",
+        "hex": "#F8C8DC",
+        "inStock": true
+      },
+      {
+        "name": "Matcha Latte Green & Cream",
+        "hex": "#C5E1A5",
+        "inStock": true
+      },
+      {
+        "name": "Boba Brown & Milk",
+        "hex": "#D7CCC8",
+        "inStock": true
+      }
     ],
-    "sizes": ["Small (18cm)", "Classic Medium (25cm)", "Jumbo Huggable (38cm)"],
+    "sizes": [
+      "Small (18cm)",
+      "Classic Medium (25cm)",
+      "Jumbo Huggable (38cm)"
+    ],
     "stock": 14,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Amigurumi", "Plushie", "Chenille", "Velvet", "Bunny"],
+    "tags": [
+      "Amigurumi",
+      "Plushie",
+      "Chenille",
+      "Velvet",
+      "Bunny"
+    ],
     "reviews": [
       {
         "id": "rev-4",
@@ -166,15 +488,31 @@
       "https://images.unsplash.com/photo-1558877385-81a1c7e67d72?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Classic Honeybee", "hex": "#FFD54F", "inStock": true },
-      { "name": "Pastel Pink Bee", "hex": "#FFCDD2", "inStock": true }
+      {
+        "name": "Classic Honeybee",
+        "hex": "#FFD54F",
+        "inStock": true
+      },
+      {
+        "name": "Pastel Pink Bee",
+        "hex": "#FFCDD2",
+        "inStock": true
+      }
     ],
-    "sizes": ["Pocket Size (10cm)", "Classic Chubby (16cm)"],
+    "sizes": [
+      "Pocket Size (10cm)",
+      "Classic Chubby (16cm)"
+    ],
     "stock": 30,
     "featured": false,
     "isBestseller": true,
     "isNew": false,
-    "tags": ["Bee", "Amigurumi", "Velvet", "Cute"],
+    "tags": [
+      "Bee",
+      "Amigurumi",
+      "Velvet",
+      "Cute"
+    ],
     "reviews": []
   },
   {
@@ -198,15 +536,32 @@
       "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Sage Green Garden", "hex": "#8FA68F", "inStock": true },
-      { "name": "Mocha Latte Earth", "hex": "#B59E8C", "inStock": true }
+      {
+        "name": "Sage Green Garden",
+        "hex": "#8FA68F",
+        "inStock": true
+      },
+      {
+        "name": "Mocha Latte Earth",
+        "hex": "#B59E8C",
+        "inStock": true
+      }
     ],
-    "sizes": ["Standard Market Size (Fits 14-inch Laptop)", "Oversized Beach Tote"],
+    "sizes": [
+      "Standard Market Size (Fits 14-inch Laptop)",
+      "Oversized Beach Tote"
+    ],
     "stock": 12,
     "featured": true,
     "isBestseller": true,
     "isNew": true,
-    "tags": ["Tote Bag", "Granny Square", "Daisy", "Cotton", "Artisan"],
+    "tags": [
+      "Tote Bag",
+      "Granny Square",
+      "Daisy",
+      "Cotton",
+      "Artisan"
+    ],
     "reviews": []
   },
   {
@@ -229,15 +584,30 @@
       "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Blush & Ivory", "hex": "#EBB3B3", "inStock": true },
-      { "name": "Forest Fern & Coral", "hex": "#58725C", "inStock": true }
+      {
+        "name": "Blush & Ivory",
+        "hex": "#EBB3B3",
+        "inStock": true
+      },
+      {
+        "name": "Forest Fern & Coral",
+        "hex": "#58725C",
+        "inStock": true
+      }
     ],
-    "sizes": ["Standard (Fits All Smartphones)"],
+    "sizes": [
+      "Standard (Fits All Smartphones)"
+    ],
     "stock": 16,
     "featured": false,
     "isBestseller": false,
     "isNew": true,
-    "tags": ["Crossbody", "Phone Bag", "Tulip", "Summer"],
+    "tags": [
+      "Crossbody",
+      "Phone Bag",
+      "Tulip",
+      "Summer"
+    ],
     "reviews": []
   },
   {
@@ -261,15 +631,33 @@
       "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Pastel Sunset Blend", "hex": "#F6D1D8", "inStock": true },
-      { "name": "Earthy Forest", "hex": "#829580", "inStock": true }
+      {
+        "name": "Pastel Sunset Blend",
+        "hex": "#F6D1D8",
+        "inStock": true
+      },
+      {
+        "name": "Earthy Forest",
+        "hex": "#829580",
+        "inStock": true
+      }
     ],
-    "sizes": ["S/M (Free Size)", "L/XL (Relaxed)", "Custom Tailored"],
+    "sizes": [
+      "S/M (Free Size)",
+      "L/XL (Relaxed)",
+      "Custom Tailored"
+    ],
     "stock": 6,
     "featured": true,
     "isBestseller": false,
     "isNew": true,
-    "tags": ["Cardigan", "Wearable", "Hexagon Cardigan", "Oversized", "Wool"],
+    "tags": [
+      "Cardigan",
+      "Wearable",
+      "Hexagon Cardigan",
+      "Oversized",
+      "Wool"
+    ],
     "reviews": []
   },
   {
@@ -292,15 +680,30 @@
       "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Ivory Cream with Wildflowers", "hex": "#FBF6EE", "inStock": true },
-      { "name": "Sage Moss with Chamomiles", "hex": "#9EB29C", "inStock": true }
+      {
+        "name": "Ivory Cream with Wildflowers",
+        "hex": "#FBF6EE",
+        "inStock": true
+      },
+      {
+        "name": "Sage Moss with Chamomiles",
+        "hex": "#9EB29C",
+        "inStock": true
+      }
     ],
-    "sizes": ["Standard Adult (56-58cm)"],
+    "sizes": [
+      "Standard Adult (56-58cm)"
+    ],
     "stock": 20,
     "featured": false,
     "isBestseller": true,
     "isNew": false,
-    "tags": ["Bucket Hat", "Cotton", "Summer", "Handmade"],
+    "tags": [
+      "Bucket Hat",
+      "Cotton",
+      "Summer",
+      "Handmade"
+    ],
     "reviews": []
   },
   {
@@ -323,15 +726,31 @@
       "https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Spring Pastels", "hex": "#FAD2E1", "inStock": true },
-      { "name": "Warm Earth Tones", "hex": "#DDA15E", "inStock": true }
+      {
+        "name": "Spring Pastels",
+        "hex": "#FAD2E1",
+        "inStock": true
+      },
+      {
+        "name": "Warm Earth Tones",
+        "hex": "#DDA15E",
+        "inStock": true
+      }
     ],
-    "sizes": ["Set of 4 + Pot Basket", "Set of 6 + Pot Basket"],
+    "sizes": [
+      "Set of 4 + Pot Basket",
+      "Set of 6 + Pot Basket"
+    ],
     "stock": 35,
     "featured": true,
     "isBestseller": true,
     "isNew": false,
-    "tags": ["Coaster", "Home Decor", "Coffee", "Gift Set"],
+    "tags": [
+      "Coaster",
+      "Home Decor",
+      "Coffee",
+      "Gift Set"
+    ],
     "reviews": []
   },
   {
@@ -354,15 +773,32 @@
       "https://images.unsplash.com/photo-1606103836293-0a0bf1220a25?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Strawberry Bunny Kit", "hex": "#F48FB1", "inStock": true },
-      { "name": "Oliver Dino Kit", "hex": "#81C784", "inStock": true }
+      {
+        "name": "Strawberry Bunny Kit",
+        "hex": "#F48FB1",
+        "inStock": true
+      },
+      {
+        "name": "Oliver Dino Kit",
+        "hex": "#81C784",
+        "inStock": true
+      }
     ],
-    "sizes": ["Single Character Starter Box", "Trio Master Box"],
+    "sizes": [
+      "Single Character Starter Box",
+      "Trio Master Box"
+    ],
     "stock": 40,
     "featured": true,
     "isBestseller": true,
     "isNew": false,
-    "tags": ["DIY Kit", "Beginner", "Learn to Crochet", "Craft", "Gift"],
+    "tags": [
+      "DIY Kit",
+      "Beginner",
+      "Learn to Crochet",
+      "Craft",
+      "Gift"
+    ],
     "reviews": []
   },
   {
@@ -385,14 +821,291 @@
       "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80"
     ],
     "colors": [
-      { "name": "Standard PDF (English)", "hex": "#3B82F6", "inStock": true }
+      {
+        "name": "Standard PDF (English)",
+        "hex": "#3B82F6",
+        "inStock": true
+      }
     ],
-    "sizes": ["Digital PDF Download"],
+    "sizes": [
+      "Digital PDF Download"
+    ],
     "stock": 999,
     "featured": false,
     "isBestseller": true,
     "isNew": false,
-    "tags": ["PDF Pattern", "Digital", "Flower Pattern", "Instant Download"],
+    "tags": [
+      "PDF Pattern",
+      "Digital",
+      "Flower Pattern",
+      "Instant Download"
+    ],
+    "reviews": []
+  },
+  {
+    "id": "prod-12",
+    "name": "Handmade Floral Blossom Crochet Parandi Braid Tassel",
+    "slug": "floral-blossom-crochet-parandi-tassel",
+    "category": "hair-accessories",
+    "price": 449,
+    "originalPrice": 599,
+    "rating": 4.96,
+    "reviewCount": 42,
+    "shortDescription": "Traditional Indian braid enhancer adorned with delicate crochet roses, jasmine buds, and golden bells.",
+    "description": "Elevate your festive, wedding, or everyday hairstyles! Hand-crafted with organic soft cotton yarn, featuring blooming roses, cascading jasmine loops, and gentle golden ghungroo bells.",
+    "craftTimeHours": 4,
+    "yarnMaterial": "Organic Cotton Yarn & Golden Bells",
+    "difficulty": "Intermediate",
+    "dimensions": "Length: 45cm",
+    "careInstructions": "Spot clean only with a damp cloth.",
+    "images": [
+      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Ruby Red & Golden", "hex": "#DC2626", "inStock": true },
+      { "name": "Blush Pink & Ivory", "hex": "#F472B6", "inStock": true }
+    ],
+    "sizes": ["Standard Braid (45cm)"],
+    "stock": 25,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Parandi", "Hair Accessory", "Festive", "Indian Traditional"],
+    "reviews": []
+  },
+  {
+    "id": "prod-13",
+    "name": "Velvet Strawberry & Daisy Hair Scrunchies (Duo Pack)",
+    "slug": "velvet-strawberry-daisy-hair-scrunchies",
+    "category": "hair-accessories",
+    "price": 299,
+    "originalPrice": 399,
+    "rating": 4.94,
+    "reviewCount": 68,
+    "shortDescription": "Snag-free super-soft chenille velvet hair scrunchies featuring 3D mini crochet charms.",
+    "description": "Gentle on all hair types with zero hair breakage. Handcrafted from velvety chenille yarn with durable high-stretch elastic and adorable mini 3D crochet charms.",
+    "craftTimeHours": 2,
+    "yarnMaterial": "Plush Velvet & Chenille Yarn",
+    "difficulty": "Beginner Friendly",
+    "dimensions": "Diameter: 10cm",
+    "careInstructions": "Hand wash with mild shampoo.",
+    "images": [
+      "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Strawberry Cream Duo", "hex": "#FB7185", "inStock": true },
+      { "name": "Matcha Sage Duo", "hex": "#86EFAC", "inStock": true }
+    ],
+    "sizes": ["Duo Pack (2 Scrunchies)"],
+    "stock": 40,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Scrunchie", "Hair Accessory", "Velvet", "Cute"],
+    "reviews": []
+  },
+  {
+    "id": "prod-14",
+    "name": "Handmade Botanical Sprout & Flower Crochet Bookmark",
+    "slug": "botanical-sprout-flower-crochet-bookmark",
+    "category": "bookmarks",
+    "price": 249,
+    "originalPrice": 349,
+    "rating": 4.98,
+    "reviewCount": 51,
+    "shortDescription": "Aesthetic flat floral bookmark with a long silky tassel, perfect for book lovers and journaling.",
+    "description": "Never lose your page again! Hand-stitched with ultra-fine cotton yarn that lies completely flat between book pages without bending spines.",
+    "craftTimeHours": 2,
+    "yarnMaterial": "100% Fine Mercerized Cotton",
+    "difficulty": "Beginner Friendly",
+    "dimensions": "Length: 28cm with tassel",
+    "careInstructions": "Spot clean only.",
+    "images": [
+      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Sprout Green & Daisy", "hex": "#4ADE80", "inStock": true },
+      { "name": "Lavender Blossom", "hex": "#C084FC", "inStock": true }
+    ],
+    "sizes": ["Standard Novel Size"],
+    "stock": 35,
+    "featured": false,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Bookmark", "Book Lover", "Gift", "Floral"],
+    "reviews": []
+  },
+  {
+    "id": "prod-15",
+    "name": "Mini Lucky Daisy & Strawberry Crochet Keychain Charm",
+    "slug": "lucky-daisy-strawberry-crochet-keychain",
+    "category": "keychains",
+    "price": 199,
+    "originalPrice": 299,
+    "rating": 4.91,
+    "reviewCount": 77,
+    "shortDescription": "Cute pocket-sized crochet charm with gold lobster clasp for bags, airpods, and keys.",
+    "description": "Add a touch of handcrafted cuteness to your everyday keys, backpack, or tote bag. Fitted with a rust-free golden lobster swivel clasp.",
+    "craftTimeHours": 1.5,
+    "yarnMaterial": "Organic Milk Cotton & Gold Metal Ring",
+    "difficulty": "Beginner Friendly",
+    "dimensions": "Charm Length: 8cm",
+    "careInstructions": "Spot clean with damp cloth.",
+    "images": [
+      "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=800&q=80"
+    ],
+    "colors": [
+      { "name": "Pastel Pink Strawberry", "hex": "#F43F5E", "inStock": true },
+      { "name": "Cheerful Sunny Daisy", "hex": "#FBBF24", "inStock": true }
+    ],
+    "sizes": ["Single Charm with Gold Clasp"],
+    "stock": 50,
+    "featured": false,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Keychain", "Charm", "Cute", "Gift"],
+    "reviews": []
+  },
+  {
+    "id": "prod-16",
+    "name": "The AanuBlooms Signature 5-Piece Blossom Garden Pots Set",
+    "slug": "aanublooms-signature-5-piece-blossom-pots-set",
+    "category": "forever-blooms",
+    "price": 2499,
+    "originalPrice": 2999,
+    "rating": 5.0,
+    "reviewCount": 142,
+    "shortDescription": "Full heirloom set of 5 handcrafted velvet cupcake potted blossoms: Sunflower, Crimson Rose, Lavender Daisy, Star Lily & Pink Petal.",
+    "description": "Our premier flagship boutique collection! Each set includes 5 lovingly slow-crafted potted flowers sitting in ribbed tactile cupcake planters. Complete with custom gold foil gift box, botanical tissue wrap, and authentic calligraphy note 'Handmade with love just for you - Aanu Blooms'.",
+    "craftTimeHours": 14,
+    "yarnMaterial": "High-Grade Velvet Chenille & Combed Milk Cotton",
+    "difficulty": "Masterpiece Collection",
+    "dimensions": "Set of 5 Pots (Height ~15-18cm each)",
+    "careInstructions": "Keep indoors away from moisture. Dust gently with a cool hairdryer.",
+    "images": [
+      "/images/aanu-blooms-signature-set.jpeg",
+      "/images/blossom-pots-collection.jpeg",
+      "/images/sunflower-cupcake-pot.jpeg",
+      "/images/crimson-rose-cupcake-pot.jpeg"
+    ],
+    "colors": [
+      { "name": "Vibrant Rainbow Garden", "hex": "#EC4899", "inStock": true },
+      { "name": "Pastel Meadow Trio", "hex": "#8B5CF6", "inStock": true }
+    ],
+    "sizes": ["Full 5-Piece Deluxe Garden Gift Set"],
+    "stock": 12,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Signature", "Heirloom", "Gift Set", "Bestseller", "Handmade with Love"],
+    "reviews": [
+      {
+        "id": "rev-16-1",
+        "author": "Pooja Sharma",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+        "rating": 5,
+        "date": "2026-08-18",
+        "title": "Unbelievable quality and finish!",
+        "comment": "The set of 5 potted flowers arrived in perfect shape in Bangalore. The fairy lights and Aanu Blooms card made it feel so personal!",
+        "verifiedPurchase": true,
+        "helpfulCount": 42
+      }
+    ]
+  },
+  {
+    "id": "prod-17",
+    "name": "Crimson Velvet Rosebud Cupcake Flower Pot",
+    "slug": "crimson-velvet-rosebud-cupcake-pot",
+    "category": "forever-blooms",
+    "price": 549,
+    "originalPrice": 699,
+    "rating": 4.96,
+    "reviewCount": 63,
+    "shortDescription": "Deep ruby red velvet rose blossom seated in a ribbed latte planter with sculpted emerald foliage.",
+    "description": "Slow-stitched with ultra-soft velvety chenille yarn for a luxurious tactile touch. Perfect for desks, gifting on anniversaries, or bedside nightstands.",
+    "craftTimeHours": 3.5,
+    "yarnMaterial": "Plush Velvet Chenille & Cotton",
+    "difficulty": "Intermediate Artisan",
+    "dimensions": "Height: 16cm, Diameter: 8cm",
+    "careInstructions": "Dust with dry soft brush.",
+    "images": [
+      "/images/crimson-rose-cupcake-pot.jpeg",
+      "/images/aanu-blooms-signature-set.jpeg"
+    ],
+    "colors": [
+      { "name": "Ruby Velvet Red", "hex": "#DC2626", "inStock": true },
+      { "name": "Blushing Burgundy", "hex": "#991B1B", "inStock": true }
+    ],
+    "sizes": ["Single Rose Cupcake Pot"],
+    "stock": 25,
+    "featured": true,
+    "isBestseller": true,
+    "isNew": true,
+    "tags": ["Rose", "Velvet", "Romantic", "Forever Bloom"],
+    "reviews": []
+  },
+  {
+    "id": "prod-18",
+    "name": "Royal Purple Lavender & Lilac Lily Botanical Stems Duo",
+    "slug": "royal-purple-lavender-lilac-lily-stems-duo",
+    "category": "forever-blooms",
+    "price": 649,
+    "originalPrice": 799,
+    "rating": 4.97,
+    "reviewCount": 48,
+    "shortDescription": "Elegant pair of French lavender sprig and open lilac lily with golden pistil stamen.",
+    "description": "A calming pastel duo crafted with textured lavender floret loops and a 6-petal lilac lily with golden central pistils. Bendable floral wire core allows custom vase styling.",
+    "craftTimeHours": 4,
+    "yarnMaterial": "Combed Milk Cotton & Velvet Stems",
+    "difficulty": "Intermediate Artisan",
+    "dimensions": "Stem Length: 30cm",
+    "careInstructions": "Reshape gently by hand.",
+    "images": [
+      "/images/lavender-lily-stems.jpeg",
+      "/images/lavender-daisy-cupcake-pot.jpeg"
+    ],
+    "colors": [
+      { "name": "Provence Lavender & Lilac", "hex": "#A78BFA", "inStock": true },
+      { "name": "Indigo Violet", "hex": "#7C3AED", "inStock": true }
+    ],
+    "sizes": ["2-Stem Botanical Duo", "4-Stem Luxe Set"],
+    "stock": 30,
+    "featured": true,
+    "isBestseller": false,
+    "isNew": true,
+    "tags": ["Lavender", "Lily", "Pastel", "Floral Stems"],
+    "reviews": []
+  },
+  {
+    "id": "prod-19",
+    "name": "Golden Star Lily Blossom Velvet Cupcake Pot",
+    "slug": "golden-star-lily-blossom-cupcake-pot",
+    "category": "forever-blooms",
+    "price": 549,
+    "originalPrice": 699,
+    "rating": 4.93,
+    "reviewCount": 39,
+    "shortDescription": "Vibrant sunny star lily with beaded white stamen center seated in a cozy ribbed pot.",
+    "description": "Spreads warmth and positivity to any room. 5-pointed bright canary yellow petals with pearl beaded stamen details.",
+    "craftTimeHours": 3.5,
+    "yarnMaterial": "Plush Velvet & Pearl Accent",
+    "difficulty": "Intermediate Artisan",
+    "dimensions": "Height: 16cm, Pot Diameter: 8cm",
+    "careInstructions": "Dust with dry soft brush.",
+    "images": [
+      "/images/golden-lily-cupcake-pot.jpeg",
+      "/images/blossom-pots-collection.jpeg"
+    ],
+    "colors": [
+      { "name": "Canary Star Yellow", "hex": "#FACC15", "inStock": true },
+      { "name": "Sunrise Amber", "hex": "#F59E0B", "inStock": true }
+    ],
+    "sizes": ["Single Star Lily Pot"],
+    "stock": 20,
+    "featured": false,
+    "isBestseller": false,
+    "isNew": true,
+    "tags": ["Star Lily", "Yellow", "Cheer", "Desk Decor"],
     "reviews": []
   }
 ]

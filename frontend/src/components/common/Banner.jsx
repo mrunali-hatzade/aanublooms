@@ -3,7 +3,7 @@ import { Sparkles, Heart } from 'lucide-react';
 
 export const Banner = () => {
   return (
-    <aside aria-label="Announcement" className="bg-gradient-to-r from-bloom-600 via-rosewood-500 to-bloom-500 text-white text-xs sm:text-sm py-2 px-4 relative shadow-sm">
+    <aside aria-label="Announcement" className="bg-gradient-to-r from-bloom-600 via-pink-500 to-rosewood-500 text-white text-xs sm:text-sm py-2 px-4 relative shadow-sm">
       <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-center font-medium">
         <Sparkles className="w-4 h-4 animate-spin text-amber-200 hidden sm:inline" style={{ animationDuration: '6s' }} />
         <span>

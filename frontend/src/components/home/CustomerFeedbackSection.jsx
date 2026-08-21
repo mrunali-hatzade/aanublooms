@@ -36,9 +36,9 @@ export const CustomerFeedbackSection = ({ onNavigate }) => {
 
         <button
           onClick={() => onNavigate('feedback')}
-          className="self-start md:self-auto px-5 py-2.5 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-xs shadow-cozy flex items-center gap-1.5 transition-all transform hover:scale-105"
+          className="self-start md:self-auto px-5 py-2.5 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-sm shadow-cozy flex items-center gap-1.5 transition-all transform hover:scale-105"
         >
-          <MessageSquare className="w-3.5 h-3.5" />
+          <MessageSquare className="w-4 h-4" />
           <span>Write Customer Feedback</span>
         </button>
       </div>
@@ -55,23 +55,23 @@ export const CustomerFeedbackSection = ({ onNavigate }) => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-0.5 text-amber-400">
                   {[...Array(item.rating || 5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
+                    <Star key={i} className="w-4 h-4 fill-amber-400" />
                   ))}
                 </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-warmgray-100 dark:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300">
+                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-warmgray-100 dark:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300">
                   {item.productCategory}
                 </span>
               </div>
 
               {/* Highlight Pill */}
               {item.highlight && (
-                <span className="inline-block text-[11px] font-bold text-bloom-600 dark:text-bloom-400">
+                <span className="inline-block text-xs sm:text-sm font-bold text-bloom-600 dark:text-bloom-400">
                   ✨ “{item.highlight}”
                 </span>
               )}
 
               {/* Comment */}
-              <p className="text-xs text-warmgray-700 dark:text-warmgray-300 leading-relaxed italic">
+              <p className="text-sm text-warmgray-700 dark:text-warmgray-300 leading-relaxed italic">
                 "{item.comment}"
               </p>
             </div>
@@ -81,14 +81,14 @@ export const CustomerFeedbackSection = ({ onNavigate }) => {
               <img
                 src={item.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80'}
                 alt={item.author}
-                className="w-9 h-9 rounded-full object-cover border-2 border-bloom-200 dark:border-bloom-600"
+                className="w-10 h-10 rounded-full object-cover border-2 border-bloom-200 dark:border-bloom-600"
               />
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold text-warmgray-900 dark:text-white truncate flex items-center gap-1">
+                <p className="text-sm font-bold text-warmgray-900 dark:text-white truncate flex items-center gap-1">
                   <span>{item.author}</span>
-                  {item.verified && <CheckCircle2 className="w-3 h-3 text-emerald-500 fill-emerald-100 dark:fill-emerald-950" />}
+                  {item.verified && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 fill-emerald-100 dark:fill-emerald-950" />}
                 </p>
-                <p className="text-[10px] text-warmgray-400">
+                <p className="text-xs text-warmgray-500 dark:text-warmgray-400">
                   {item.city ? `${item.city}, India` : 'Verified Buyer'} · {item.date}
                 </p>
               </div>
@@ -101,10 +101,10 @@ export const CustomerFeedbackSection = ({ onNavigate }) => {
       <div className="mt-5 text-center">
         <button
           onClick={() => onNavigate('feedback')}
-          className="text-xs font-bold text-bloom-600 dark:text-bloom-400 hover:underline inline-flex items-center gap-1"
+          className="text-sm font-bold text-bloom-600 dark:text-bloom-400 hover:underline inline-flex items-center gap-1.5"
         >
           <span>View all community feedback & submit yours</span>
-          <ArrowRight className="w-3.5 h-3.5" />
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </section>

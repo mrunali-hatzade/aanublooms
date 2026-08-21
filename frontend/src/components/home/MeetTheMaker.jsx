@@ -23,7 +23,7 @@ export const MeetTheMaker = ({ onNavigate }) => {
                 <p className="font-handwritten text-xl text-bloom-600 dark:text-bloom-400 font-bold mb-0.5">
                   "Every loop has a story"
                 </p>
-                <p className="text-[10px] text-warmgray-600 dark:text-warmgray-400">
+                <p className="text-xs text-warmgray-500">
                   — Aanu, Founder & Lead Artisan
                 </p>
               </div>
@@ -45,42 +45,37 @@ export const MeetTheMaker = ({ onNavigate }) => {
               Crafting forever memories, one loop & petal at a time
             </h2>
 
-            <div className="space-y-2.5 text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
-              <p>
-                Hi there! I'm <strong className="text-warmgray-900 dark:text-white">Aanu</strong>. What began as a childhood passion sitting with a wooden crochet hook and soft yarn has bloomed into a cozy artisan studio dedicated to timeless handcrafted gifts across India.
-              </p>
-              <p>
-                In a world of mass factory production, AanuBlooms is a celebration of slow, mindful craft. It takes between <strong>4 to 24 hours</strong> of dedicated hand-stitching to bring each bouquet, plushie, or cardigan into being.
-              </p>
-            </div>
+            <p className="text-base sm:text-lg text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
+              Every AanuBlooms piece is slow-crafted by hand with pure organic cotton and velvet yarn — creating timeless, heartfelt gifts made to last forever.
+            </p>
 
             {/* Maker Pillars */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            <div className="grid grid-cols-2 gap-3 pt-1">
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                <span className="text-xs font-semibold text-warmgray-800 dark:text-warmgray-200">100% Hand-stitched Stems</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">100% Handcrafted</span>
               </div>
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                <span className="text-xs font-semibold text-warmgray-800 dark:text-warmgray-200">Custom Ribbon Messages</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">Custom Ribbon Cards</span>
               </div>
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                <span className="text-xs font-semibold text-warmgray-800 dark:text-warmgray-200">Sustainably Sourced Cotton</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">Eco-Cotton Yarn</span>
               </div>
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                <span className="text-xs font-semibold text-warmgray-800 dark:text-warmgray-200">Fragrant Lavender Gift Sachet</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">Pan-India Delivery</span>
               </div>
             </div>
 
-            <div className="pt-1">
+            <div className="pt-2">
               <button
                 onClick={() => onNavigate('about')}
-                className="px-5 py-2.5 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-full font-bold text-xs shadow-sm transition-all inline-flex items-center gap-2"
+                className="px-6 py-3 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-full font-bold text-sm shadow-sm transition-all inline-flex items-center gap-2"
               >
-                <span>Read Full Studio Journey</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Read Studio Story</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
