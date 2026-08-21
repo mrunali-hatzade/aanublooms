@@ -1,38 +1,37 @@
 import React from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
 
 export const CategoryShowcase = ({ categories = [], onNavigate }) => {
-  // 6 Primary Curated Categories matching the boutique aesthetic
+  // 6 Primary Curated Categories using official uploaded images from /images/category/
   const displayCategories = [
     {
-      id: 'bags-accessories',
-      name: 'Bags',
-      image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80'
-    },
-    {
       id: 'forever-blooms',
-      name: 'Flowers & Bouquets',
-      image: '/images/aanu-blooms-signature-set.jpeg'
+      name: 'Flowers',
+      image: '/images/category/1st_category_flower.jpeg'
     },
     {
-      id: 'amigurumi-plushies',
-      name: 'Amigurumi',
-      image: 'https://images.unsplash.com/photo-1558877385-81a1c7e67d72?auto=format&fit=crop&w=400&q=80'
-    },
-    {
-      id: 'hair-accessories',
-      name: 'Accessories',
-      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400&q=80'
+      id: 'keychains-bag-charms',
+      name: 'Keychains',
+      image: '/images/category/2nd_category_keychain.jpeg'
     },
     {
       id: 'home-living',
-      name: 'Home Decor',
-      image: '/images/sunflower-cupcake-pot.jpeg'
+      name: 'Flower Pots',
+      image: '/images/category/3rd_category_flowerpot.jpeg'
+    },
+    {
+      id: 'forever-blooms',
+      name: 'Bouquets',
+      image: '/images/category/4th_category_bouquet.jpeg'
     },
     {
       id: 'diy-kits-patterns',
-      name: 'Gifts & Hampers',
-      image: '/images/blossom-pots-collection.jpeg'
+      name: 'Handmade Gifts',
+      image: '/images/category/5th_category_handmadegifts.jpeg'
+    },
+    {
+      id: 'bags-accessories',
+      name: 'Home Decor',
+      image: '/images/category/5th_category_homedecor.jpeg'
     }
   ];
 
@@ -55,15 +54,15 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
         </div>
 
         {/* Compact 6-Card Category Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-          {displayCategories.map((cat) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
+          {displayCategories.map((cat, idx) => (
             <div
-              key={cat.id}
+              key={idx}
               onClick={() => onNavigate('shop', { category: cat.id })}
               className="group cursor-pointer flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-1"
             >
               {/* Rounded Square Image Container */}
-              <div className="w-full aspect-square rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-warmgray-800 border border-warmgray-200/70 dark:border-warmgray-700/80 shadow-xs group-hover:shadow-md transition-shadow">
+              <div className="w-full aspect-square rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-warmgray-800 border border-warmgray-200/70 dark:border-warmgray-700/80 shadow-xs group-hover:shadow-md transition-shadow relative">
                 <img
                   src={cat.image}
                   alt={cat.name}

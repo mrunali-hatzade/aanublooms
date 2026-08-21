@@ -1,6 +1,17 @@
 import React from 'react';
 import { Filter, RotateCcw } from 'lucide-react';
 
+const getCatImage = (catId, catName = '') => {
+  const str = (catId + ' ' + catName).toLowerCase();
+  if (str.includes('flower') && !str.includes('pot')) return '/images/category/1st_category_flower.jpeg';
+  if (str.includes('keychain') || str.includes('charm') || str.includes('parandi')) return '/images/category/2nd_category_keychain.jpeg';
+  if (str.includes('pot') || str.includes('plant')) return '/images/category/3rd_category_flowerpot.jpeg';
+  if (str.includes('bouquet')) return '/images/category/4th_category_bouquet.jpeg';
+  if (str.includes('gift') || str.includes('pattern') || str.includes('kit')) return '/images/category/5th_category_handmadegifts.jpeg';
+  if (str.includes('decor') || str.includes('home') || str.includes('bag') || str.includes('wearable')) return '/images/category/5th_category_homedecor.jpeg';
+  return '/images/category/1st_category_flower.jpeg';
+};
+
 export const ProductFilters = ({
   categories = [],
   selectedCategory,
@@ -49,7 +60,7 @@ export const ProductFilters = ({
         </button>
       </div>
 
-      {/* Category List */}
+      {/* Category List with Category Images */}
       <div>
         <div className="flex items-center justify-between mb-2">
           <h4 className="font-bold text-xs uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400">
@@ -57,30 +68,41 @@ export const ProductFilters = ({
           </h4>
           <span className="text-[10px] text-warmgray-400">Scroll for more ↓</span>
         </div>
-        <div className="max-h-52 overflow-y-auto pr-1.5 space-y-1 scrollbar-thin scrollbar-thumb-bloom-300 dark:scrollbar-thumb-warmgray-600 hover:scrollbar-thumb-bloom-500">
+        <div className="max-h-56 overflow-y-auto pr-1.5 space-y-1.5 scrollbar-thin scrollbar-thumb-bloom-300 dark:scrollbar-thumb-warmgray-600 hover:scrollbar-thumb-bloom-500">
           <button
             onClick={() => onSelectCategory('all')}
-            className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${
+            className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
               selectedCategory === 'all'
                 ? 'bg-bloom-500 text-white font-bold shadow-cozy'
                 : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800'
             }`}
           >
-            <span>✨ All Handcrafted Items</span>
+            <div className="w-6 h-6 rounded-lg bg-bloom-100 dark:bg-warmgray-700 flex items-center justify-center text-xs shrink-0">
+              ✨
+            </div>
+            <span>All Handcrafted Items</span>
           </button>
-          {categories.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => onSelectCategory(cat.id)}
-              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${
-                selectedCategory === cat.id
-                  ? 'bg-bloom-500 text-white font-bold shadow-cozy'
-                  : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800'
-              }`}
-            >
-              <span>{cat.name}</span>
-            </button>
-          ))}
+          {categories.map(cat => {
+            const catImg = getCatImage(cat.id, cat.name);
+            return (
+              <button
+                key={cat.id}
+                onClick={() => onSelectCategory(cat.id)}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                  selectedCategory === cat.id
+                    ? 'bg-bloom-500 text-white font-bold shadow-cozy'
+                    : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800'
+                }`}
+              >
+                <img
+                  src={catImg}
+                  alt={cat.name}
+                  className="w-6 h-6 rounded-lg object-cover border border-warmgray-200/60 dark:border-warmgray-700 shrink-0"
+                />
+                <span className="truncate">{cat.name}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
