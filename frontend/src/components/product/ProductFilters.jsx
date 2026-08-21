@@ -111,22 +111,22 @@ export const ProductFilters = ({
         <div className="flex items-center justify-between text-sm font-semibold text-warmgray-900 dark:text-white mb-2">
           <span>Max Price</span>
           <span className="text-bloom-600 dark:text-bloom-400 font-bold font-serif text-base">
-            ₹{priceRange?.toLocaleString('en-IN')}
+            ₹{priceRange >= 10000 ? '10,000+' : priceRange?.toLocaleString('en-IN')}
           </span>
         </div>
         <input
           type="range"
-          min="100"
-          max="5000"
-          step="100"
+          min="0"
+          max="10000"
+          step="250"
           value={priceRange}
           onChange={(e) => onPriceChange(Number(e.target.value))}
           className="w-full accent-bloom-500 cursor-pointer h-2 bg-warmgray-200 dark:bg-warmgray-700 rounded-lg"
         />
         <div className="flex justify-between text-xs text-warmgray-400 mt-1 font-mono">
-          <span>₹100</span>
-          <span>₹2,500</span>
-          <span>₹5,000+</span>
+          <span>₹0</span>
+          <span>₹5,000</span>
+          <span>₹10,000+</span>
         </div>
       </div>
 

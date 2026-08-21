@@ -76,6 +76,50 @@ export const Navbar = ({ onNavigate, currentPage }) => {
     }
   };
 
+  const [activeSection, setActiveSection] = useState('home');
+
+  // Scrollspy for Homepage Sections
+  useEffect(() => {
+    if (currentPage !== 'home') {
+      setActiveSection(currentPage);
+      return;
+    }
+
+    const sectionMap = [
+      { id: 'home-hero', page: 'home' },
+      { id: 'home-categories', page: 'shop' },
+      { id: 'home-bestsellers', page: 'shop' },
+      { id: 'home-feedback', page: 'feedback' },
+      { id: 'home-videos', page: 'custom-order' },
+      { id: 'home-story', page: 'about' }
+    ];
+
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + 180;
+      for (let i = sectionMap.length - 1; i >= 0; i--) {
+        const elem = document.getElementById(sectionMap[i].id);
+        if (elem) {
+          const top = elem.offsetTop;
+          if (scrollPos >= top) {
+            setActiveSection(sectionMap[i].page);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentPage]);
+
+  const isLinkActive = (linkPage) => {
+    if (currentPage === 'home') {
+      return activeSection === linkPage;
+    }
+    return currentPage === linkPage;
+  };
+
   const navLinks = [
     { label: 'Home', page: 'home' },
     { label: 'Shop All', page: 'shop' },
@@ -84,6 +128,27 @@ export const Navbar = ({ onNavigate, currentPage }) => {
     { label: 'Feedback', page: 'feedback' },
     { label: 'Contact Us', page: 'contact' },
   ];
+
+  const handleNavClick = (link) => {
+    if (currentPage === 'home') {
+      const targetMap = {
+        'home': 'home-hero',
+        'shop': 'home-categories',
+        'custom-order': 'home-videos',
+        'about': 'home-story',
+        'feedback': 'home-feedback',
+        'contact': 'home-story'
+      };
+      const targetId = targetMap[link.page];
+      const elem = targetId ? document.getElementById(targetId) : null;
+      if (elem) {
+        const top = elem.offsetTop - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+        return;
+      }
+    }
+    onNavigate(link.page, link.params);
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-warmgray-900/95 backdrop-blur-md border-b border-warmgray-200/80 dark:border-warmgray-800 transition-colors shadow-xs">
@@ -138,115 +203,91 @@ export const Navbar = ({ onNavigate, currentPage }) => {
           </div>
 
           {/* Live Search Bar */}
-          <div ref={searchRef} className="hidden md:flex flex-1 max-w-md mx-4 relative">
+          <div ref={searchRef} className="hidden md:flex flex-1 max-w-xs lg:max-w-sm mx-4 relative">
             <form onSubmit={handleSearchSubmit} className="w-full relative">
               <input
                 type="text"
-                placeholder="Search bouquets, plushies, cardigans, kits..."
+                placeholder="Search bouquets, plushies, cardigans..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => searchQuery.trim() && setShowSearchDropdown(true)}
-                className="w-full bg-warmgray-50 dark:bg-warmgray-800/90 border border-warmgray-200 dark:border-warmgray-700 rounded-full py-2 pl-10 pr-9 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-bloom-400 focus:border-transparent transition-all placeholder:text-warmgray-400 text-warmgray-800 dark:text-warmgray-100"
+                className="w-full bg-warmgray-100/80 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 rounded-full py-2 pl-10 pr-4 text-xs focus:outline-none focus:ring-2 focus:ring-bloom-400 focus:bg-white dark:focus:bg-warmgray-900 text-warmgray-900 dark:text-warmgray-100 transition-all"
               />
               <Search className="w-4 h-4 text-warmgray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-600 dark:hover:text-warmgray-200 p-1"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
             </form>
 
-            {/* Search Dropdown Results */}
-            {showSearchDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-warmgray-800 rounded-2xl shadow-2xl border border-warmgray-200 dark:border-warmgray-700 overflow-hidden z-50 animate-in fade-in">
-                {isSearching ? (
-                  <div className="p-4 text-center text-xs text-warmgray-500">Searching handmade stitches...</div>
-                ) : searchResults.length > 0 ? (
-                  <div>
-                    <div className="px-4 py-2 bg-warmgray-50 dark:bg-warmgray-700/50 text-xs font-semibold uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400 border-b border-warmgray-100 dark:border-warmgray-700">
-                      Handcrafted Matches
-                    </div>
-                    {searchResults.map(item => (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          setShowSearchDropdown(false);
-                          setSearchQuery('');
-                          onNavigate('product-detail', { id: item.id });
-                        }}
-                        className="w-full flex items-center gap-3 p-2.5 hover:bg-bloom-50 dark:hover:bg-warmgray-700 transition-colors text-left border-b border-warmgray-100 dark:border-warmgray-700/50 last:border-0"
-                      >
-                        <img
-                          src={item.images?.[0]}
-                          alt={item.name}
-                          className="w-10 h-10 rounded-lg object-cover border border-warmgray-200 dark:border-warmgray-600"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-medium text-warmgray-900 dark:text-warmgray-100 truncate">{item.name}</p>
-                          <p className="text-[11px] text-bloom-600 dark:text-bloom-400 font-semibold">₹{item.price?.toLocaleString('en-IN')} · <span className="text-warmgray-400 font-normal">{item.yarnMaterial}</span></p>
-                        </div>
-                      </button>
-                    ))}
+            {/* Dropdown Results */}
+            {showSearchDropdown && searchResults.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-warmgray-900 rounded-2xl shadow-xl border border-warmgray-200 dark:border-warmgray-800 overflow-hidden z-50 animate-in fade-in zoom-in-95">
+                <div className="p-2 space-y-1">
+                  {searchResults.map((item) => (
                     <button
-                      onClick={handleSearchSubmit}
-                      className="w-full py-2 text-center text-xs font-bold text-bloom-600 dark:text-bloom-400 bg-bloom-50/50 dark:bg-warmgray-700/30 hover:bg-bloom-100/50 transition-colors"
+                      key={item.id}
+                      onClick={() => {
+                        setShowSearchDropdown(false);
+                        onNavigate('product-detail', { id: item.id });
+                      }}
+                      className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-left transition-colors"
                     >
-                      View all matching creations →
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-10 h-10 rounded-lg object-cover bg-warmgray-100"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-bold text-warmgray-900 dark:text-white truncate">
+                          {item.name}
+                        </p>
+                        <p className="text-[11px] text-bloom-600 font-semibold font-serif">
+                          ₹{item.price?.toLocaleString('en-IN')}
+                        </p>
+                      </div>
                     </button>
-                  </div>
-                ) : (
-                  <div className="p-4 text-center text-xs text-warmgray-500">
-                    No crochet items found for "{searchQuery}". Try searching for 'tulip', 'bunny', or 'cardigan'!
-                  </div>
-                )}
+                  ))}
+                </div>
               </div>
             )}
           </div>
 
-          {/* Action Icons */}
-          <div className="flex items-center gap-1 sm:gap-2.5">
-            {/* Custom Order Button */}
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            
+            {/* Custom Commission Action Pill */}
             <button
               onClick={() => onNavigate('custom-order')}
-              className="hidden xl:flex items-center gap-1.5 px-4 py-1.5 text-sm font-semibold rounded-full bg-rosewood-100/80 hover:bg-rosewood-200/80 text-rosewood-800 dark:bg-rosewood-950/60 dark:text-rosewood-200 dark:hover:bg-rosewood-900/60 transition-colors border border-rosewood-200 dark:border-rosewood-800"
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-bloom-50 hover:bg-bloom-100 dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-bloom-700 dark:text-bloom-300 border border-bloom-200 dark:border-warmgray-700 font-semibold text-xs transition-all shadow-2xs hover:scale-102"
             >
-              <Palette className="w-4 h-4 text-rosewood-600 dark:text-rosewood-400" />
+              <Palette className="w-3.5 h-3.5 text-bloom-600 dark:text-bloom-400" />
               <span>Custom Order</span>
             </button>
 
-            {/* Track Order Quick Button */}
+            {/* Track Order Utility Button */}
             <button
               onClick={() => onNavigate('track-order')}
-              className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-full bg-warmgray-100 dark:bg-warmgray-800 hover:bg-warmgray-200 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 transition-colors border border-warmgray-200 dark:border-warmgray-700"
-              title="Track Your Order"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-warmgray-100 hover:bg-warmgray-200 dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-warmgray-700 dark:text-warmgray-300 font-semibold text-xs transition-all"
             >
-              <Package className="w-4 h-4 text-bloom-600 dark:text-bloom-400" />
+              <Package className="w-3.5 h-3.5 text-bloom-600" />
               <span>Track Order</span>
             </button>
 
             {/* Wishlist Button */}
             <button
               onClick={() => onNavigate('wishlist')}
-              className="p-2.5 rounded-full text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors relative"
-              title="View Wishlist"
+              className="p-2 rounded-xl text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors relative"
               aria-label="Wishlist"
             >
-              <Heart className={`w-5 h-5 ${wishlistCount > 0 ? 'text-rosewood-500 fill-rosewood-500' : ''}`} />
+              <Heart className="w-5 h-5" />
               {wishlistCount > 0 && (
-                <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-rosewood-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-bloom-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
                   {wishlistCount}
                 </span>
               )}
             </button>
 
-            {/* Cart / Basket Button */}
+            {/* Shopping Cart Pill */}
             <button
               onClick={openCart}
-              className="flex items-center gap-2 p-2 sm:px-4 sm:py-2.5 rounded-full bg-bloom-500 hover:bg-bloom-600 text-white shadow-cozy transition-all duration-200 transform hover:scale-[1.02]"
+              className="px-4 py-2 rounded-full bg-bloom-500 hover:bg-bloom-600 text-white font-bold text-xs transition-all shadow-cozy flex items-center gap-2 transform active:scale-95"
               aria-label="Shopping Cart"
             >
               <div className="relative">
@@ -261,26 +302,28 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                 Basket {totalItemCount > 0 ? `(${totalItemCount})` : ''}
               </span>
             </button>
-
           </div>
         </div>
 
-        {/* Desktop Category Bar */}
+        {/* Desktop Category Bar with Scrollspy Highlighting */}
         <nav className="hidden lg:flex items-center justify-start py-2.5 border-t border-warmgray-100 dark:border-warmgray-800/80 text-sm font-semibold">
           <div className="flex items-center gap-7">
-            {navLinks.map((link, idx) => (
-              <button
-                key={idx}
-                onClick={() => onNavigate(link.page, link.params)}
-                className={`hover:text-bloom-600 dark:hover:text-bloom-400 transition-colors py-1 relative text-sm font-semibold ${
-                  currentPage === link.page && (!link.params || JSON.stringify(link.params) === '{}')
-                    ? 'text-bloom-600 dark:text-bloom-400 font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-bloom-500 after:rounded-full'
-                    : 'text-warmgray-700 dark:text-warmgray-300'
-                }`}
-              >
-                {link.label}
-              </button>
-            ))}
+            {navLinks.map((link, idx) => {
+              const active = isLinkActive(link.page);
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handleNavClick(link)}
+                  className={`hover:text-bloom-600 dark:hover:text-bloom-400 transition-all py-1 relative text-sm ${
+                    active
+                      ? 'text-bloom-600 dark:text-bloom-400 font-extrabold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-bloom-500 after:rounded-full'
+                      : 'text-warmgray-700 dark:text-warmgray-300 font-semibold'
+                  }`}
+                >
+                  {link.label}
+                </button>
+              );
+            })}
           </div>
         </nav>
       </div>

@@ -43,13 +43,17 @@ export const HomePage = ({ onNavigate }) => {
     <div className="space-y-8 sm:space-y-10">
       
       {/* 1. Hero Section */}
-      <HeroSection onNavigate={onNavigate} />
+      <div id="home-hero">
+        <HeroSection onNavigate={onNavigate} />
+      </div>
 
       {/* 2. Categories Showcase */}
-      <CategoryShowcase categories={categories} onNavigate={onNavigate} />
+      <div id="home-categories">
+        <CategoryShowcase categories={categories} onNavigate={onNavigate} />
+      </div>
 
       {/* 5. Centered "Best Sellers" Section (Matching Reference Design) */}
-      <section className="py-4 sm:py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="home-bestsellers" className="py-4 sm:py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-md mx-auto mb-6">
           <div className="flex items-center justify-center gap-2 text-[#E07A5F] mb-1">
             <span className="h-px w-10 bg-[#E07A5F]/40"></span>
@@ -91,13 +95,19 @@ export const HomePage = ({ onNavigate }) => {
       </section>
 
       {/* 6. Customer Feedback Section */}
-      <CustomerFeedbackSection onNavigate={onNavigate} />
+      <div id="home-feedback">
+        <CustomerFeedbackSection onNavigate={onNavigate} />
+      </div>
 
       {/* 7. Artisan Craft Videos & Reels Gallery (With Add Video Button) */}
-      <StudioVideoGallery onNavigate={onNavigate} />
+      <div id="home-videos">
+        <StudioVideoGallery onNavigate={onNavigate} />
+      </div>
 
       {/* 8. Meet the Maker Artisan Section */}
-      <MeetTheMaker onNavigate={onNavigate} />
+      <div id="home-story">
+        <MeetTheMaker onNavigate={onNavigate} />
+      </div>
 
       {/* 11. Custom Commission Banner Teaser */}
       <section className="py-4 sm:py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

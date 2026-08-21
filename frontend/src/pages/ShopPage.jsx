@@ -14,7 +14,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
 
   // Filters state
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-  const [priceRange, setPriceRange] = useState(5000);
+  const [priceRange, setPriceRange] = useState(10000);
   const [selectedYarn, setSelectedYarn] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
   const [inStockOnly, setInStockOnly] = useState(false);
@@ -56,7 +56,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
 
   const handleResetFilters = () => {
     setSelectedCategory('all');
-    setPriceRange(5000);
+    setPriceRange(10000);
     setSelectedYarn('all');
     setSelectedDifficulty('all');
     setInStockOnly(false);
