@@ -28,6 +28,7 @@ import { CustomerDashboardPage } from './pages/CustomerDashboardPage';
 import { AuthModal } from './components/auth/AuthModal';
 import { Floating3DBackground } from './components/common/Floating3DBackground';
 import { SparkleClickEffect } from './components/common/SparkleClickEffect';
+import { ScrollToTopButton } from './components/common/ScrollToTopButton';
 
 function AppContent() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -45,6 +46,17 @@ function AppContent() {
     navigateTo('order-success', { order: orderData });
   };
 
+  // If in Admin Mode, render the dedicated standalone Admin Application Shell
+  if (currentPage === 'admin') {
+    return (
+      <div className="min-h-screen bg-[#F8F6F3] text-warmgray-900 transition-colors">
+        <AdminDashboardPage onNavigate={navigateTo} />
+        <AuthModal />
+      </div>
+    );
+  }
+
+  // Customer Storefront Layout
   return (
     <div className="min-h-screen flex flex-col bg-warmgray-50 dark:bg-warmgray-950 text-warmgray-900 dark:text-warmgray-50 transition-colors relative">
       {/* Global 3D Ambient Depth & Floating Elements */}
@@ -127,10 +139,6 @@ function AppContent() {
         {currentPage === 'customer-dashboard' && (
           <CustomerDashboardPage onNavigate={navigateTo} />
         )}
-
-        {currentPage === 'admin' && (
-          <AdminDashboardPage onNavigate={navigateTo} />
-        )}
       </main>
 
       {/* Slide-out Cart Drawer */}
@@ -141,6 +149,9 @@ function AppContent() {
 
       {/* Delivery Location & GPS Modal */}
       <LocationModal />
+
+      {/* Floating Go To Top Button */}
+      <ScrollToTopButton />
 
       {/* Artisan Footer */}
       <Footer onNavigate={navigateTo} />

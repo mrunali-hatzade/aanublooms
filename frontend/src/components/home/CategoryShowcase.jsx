@@ -2,52 +2,66 @@ import React from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 export const CategoryShowcase = ({ categories = [], onNavigate }) => {
+  // 6 Primary Curated Categories matching the boutique aesthetic
+  const displayCategories = [
+    {
+      id: 'bags-accessories',
+      name: 'Bags',
+      image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 'forever-blooms',
+      name: 'Flowers & Bouquets',
+      image: '/images/aanu-blooms-signature-set.jpeg'
+    },
+    {
+      id: 'amigurumi-plushies',
+      name: 'Amigurumi',
+      image: 'https://images.unsplash.com/photo-1558877385-81a1c7e67d72?auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 'hair-accessories',
+      name: 'Accessories',
+      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 'home-living',
+      name: 'Home Decor',
+      image: '/images/sunflower-cupcake-pot.jpeg'
+    },
+    {
+      id: 'diy-kits-patterns',
+      name: 'Gifts & Hampers',
+      image: '/images/blossom-pots-collection.jpeg'
+    }
+  ];
+
   return (
-    <section className="py-6 sm:py-8 bg-warmgray-50 dark:bg-warmgray-950 transition-colors">
+    <section className="py-6 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-bloom-100 dark:bg-bloom-950/80 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider mb-1">
-            <Sparkles className="w-3.5 h-3.5" />
-            Curated Collections
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
-            Explore Handcrafted Categories
-          </h2>
-        </div>
-
-        {/* Categories Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {categories.map((cat, idx) => (
+        {/* Compact 6-Card Category Row */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          {displayCategories.map((cat) => (
             <div
-              key={cat.id || idx}
+              key={cat.id}
               onClick={() => onNavigate('shop', { category: cat.id })}
-              className="group relative rounded-2xl overflow-hidden bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft hover:shadow-soft-lg cursor-pointer transform hover:-translate-y-1 transition-all duration-300 flex flex-col"
+              className="group cursor-pointer flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-1"
             >
-              {/* Image with zoom */}
-              <div className="relative aspect-[4/2.6] w-full overflow-hidden bg-warmgray-100 dark:bg-warmgray-800">
+              {/* Rounded Square Image Container */}
+              <div className="w-full aspect-square rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-warmgray-800 border border-warmgray-200/70 dark:border-warmgray-700/80 shadow-xs group-hover:shadow-md transition-shadow">
                 <img
                   src={cat.image}
                   alt={cat.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-                
-                {/* Floating Content Over Image */}
-                <div className="absolute bottom-3 left-3 right-3 text-white flex items-end justify-between">
-                  <div>
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-amber-300 block">
-                      {cat.itemCount || 12}+ Items
-                    </span>
-                    <h3 className="font-serif font-bold text-lg sm:text-xl text-white">
-                      {cat.name}
-                    </h3>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white group-hover:bg-bloom-500 flex items-center justify-center transition-colors shrink-0">
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                </div>
+              </div>
+
+              {/* Bottom White/Cream Pill Name Tag */}
+              <div className="w-full mt-2 py-1.5 px-2 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700/80 shadow-2xs group-hover:border-bloom-400 dark:group-hover:border-bloom-500 transition-colors">
+                <span className="text-xs font-serif font-bold text-warmgray-900 dark:text-white truncate block">
+                  {cat.name}
+                </span>
               </div>
             </div>
           ))}

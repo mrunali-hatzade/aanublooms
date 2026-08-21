@@ -38,9 +38,9 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
         </button>
 
         {/* Image Column */}
-        <div className="md:w-1/2 bg-warmgray-100 dark:bg-warmgray-800 p-5 flex flex-col justify-between">
-          <div className="aspect-square rounded-2xl overflow-hidden mb-3 bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
-            <img src={selectedImage} alt={product.name} className="w-full h-full object-cover" />
+        <div className="md:w-1/2 bg-[#FAF7F2] dark:bg-warmgray-800 p-5 flex flex-col justify-between">
+          <div className="aspect-square rounded-2xl overflow-hidden mb-3 bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs flex items-center justify-center p-2">
+            <img src={selectedImage} alt={product.name} className="w-full h-full object-contain" />
           </div>
 
           {product.images && product.images.length > 1 && (
@@ -49,11 +49,11 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(img)}
-                  className={`w-12 h-12 rounded-xl overflow-hidden border-2 transition-all ${
-                    selectedImage === img ? 'border-bloom-500 scale-105' : 'border-transparent opacity-70'
+                  className={`w-12 h-12 rounded-xl overflow-hidden border-2 bg-white dark:bg-warmgray-900 p-0.5 transition-all ${
+                    selectedImage === img ? 'border-bloom-500 scale-105 shadow-xs' : 'border-transparent opacity-70'
                   }`}
                 >
-                  <img src={img} alt="thumb" className="w-full h-full object-cover" />
+                  <img src={img} alt="thumb" className="w-full h-full object-contain" />
                 </button>
               ))}
             </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HeroSection } from '../components/home/HeroSection';
 import { WhatWouldYouLikeSection } from '../components/home/WhatWouldYouLikeSection';
 import { CategoryShowcase } from '../components/home/CategoryShowcase';
-import { ArtisanStudioVideo } from '../components/home/ArtisanStudioVideo';
+import { StudioVideoGallery } from '../components/home/StudioVideoGallery';
 import { MeetTheMaker } from '../components/home/MeetTheMaker';
 import { CustomerFeedbackSection } from '../components/home/CustomerFeedbackSection';
 import { ProductCard } from '../components/product/ProductCard';
@@ -52,51 +52,27 @@ export const HomePage = ({ onNavigate }) => {
       {/* 3. Categories Showcase */}
       <CategoryShowcase categories={categories} onNavigate={onNavigate} />
 
-      {/* 5. Trending Forever Blooms & Plushies Section */}
+      {/* 5. Centered "Best Sellers" Section (Matching Reference Design) */}
       <section className="py-4 sm:py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-6">
-          <div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider mb-1.5">
-              <Sparkles className="w-3.5 h-3.5" />
-              Artisan Handcrafted Picks
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
-              Trending Forever Blooms & Plushies
-            </h2>
+        <div className="text-center max-w-md mx-auto mb-6">
+          <div className="flex items-center justify-center gap-2 text-[#E07A5F] mb-1">
+            <span className="h-px w-10 bg-[#E07A5F]/40"></span>
+            <span className="text-xs font-serif">୨୧</span>
+            <span className="h-px w-10 bg-[#E07A5F]/40"></span>
           </div>
-
-          {/* Filter tabs */}
-          <div className="flex gap-1.5 bg-warmgray-100 dark:bg-warmgray-800/80 p-1 rounded-2xl self-start overflow-x-auto">
-            {[
-              { id: 'all', label: 'All Picks' },
-              { id: 'bestsellers', label: '★ Bestsellers' },
-              { id: 'new', label: 'Fresh Drops' },
-              { id: 'blooms', label: '🌸 Forever Blooms' },
-              { id: 'plushies', label: '🧸 Plushies' }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveFilterTab(tab.id)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                  activeFilterTab === tab.id
-                    ? 'bg-white dark:bg-warmgray-900 text-bloom-600 dark:text-bloom-400 shadow-xs'
-                    : 'text-warmgray-600 dark:text-warmgray-400 hover:text-warmgray-900'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
+            Best Sellers
+          </h2>
         </div>
 
-        {/* Products Grid */}
+        {/* 6-Column Compact Product Cards Grid */}
         {filteredItems.length === 0 ? (
           <div className="text-center py-12 text-xs text-warmgray-500">
             Loading handcrafted creations...
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {filteredItems.map(product => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
+            {filteredItems.slice(0, 12).map(product => (
               <ProductCard
                 key={product.id}
                 product={product}
@@ -110,10 +86,10 @@ export const HomePage = ({ onNavigate }) => {
         <div className="mt-8 text-center">
           <button
             onClick={() => onNavigate('shop')}
-            className="px-7 py-3 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-full font-bold text-sm shadow-sm transition-all inline-flex items-center gap-2"
+            className="px-7 py-2.5 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-full font-bold text-xs shadow-xs transition-all inline-flex items-center gap-2"
           >
-            <span>Explore Entire Handcrafted Catalog ({featuredProducts.length}+ pieces)</span>
-            <ArrowRight className="w-4 h-4" />
+            <span>View All Handcrafted Pieces</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
       </section>
@@ -121,8 +97,8 @@ export const HomePage = ({ onNavigate }) => {
       {/* 6. Customer Feedback Section */}
       <CustomerFeedbackSection onNavigate={onNavigate} />
 
-      {/* 7. Behind The Stitches Video Reel & Studio Photo Gallery */}
-      <ArtisanStudioVideo onNavigate={onNavigate} />
+      {/* 7. Artisan Craft Videos & Reels Gallery (With Add Video Button) */}
+      <StudioVideoGallery onNavigate={onNavigate} />
 
       {/* 8. Meet the Maker Artisan Section */}
       <MeetTheMaker onNavigate={onNavigate} />

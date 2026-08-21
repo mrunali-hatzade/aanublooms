@@ -91,7 +91,6 @@ export const Navbar = ({ onNavigate, currentPage }) => {
     { label: 'Home', page: 'home' },
     { label: 'Shop All', page: 'shop' },
     { label: 'Custom Orders', page: 'custom-order' },
-    { label: 'DIY Kits', page: 'shop', params: { category: 'diy-kits-patterns' } },
     { label: 'Our Story', page: 'about' },
     { label: 'Feedback', page: 'feedback' },
     { label: 'Contact Us', page: 'contact' },
