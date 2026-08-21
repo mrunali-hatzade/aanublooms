@@ -64,16 +64,16 @@ export const AdminDashboard = ({ onNavigate }) => {
   const { user, login } = useAuth();
   const { addToast } = useToast();
 
-  // Admin Security Authentication State
+  // Admin Security Authentication State (Always prompts for login details)
   const [isAdminUnlocked, setIsAdminUnlocked] = useState(() => {
     try {
-      return sessionStorage.getItem('aanublooms_admin_unlocked') === 'true' || user?.role === 'admin';
+      return sessionStorage.getItem('aanublooms_admin_unlocked') === 'true' && user?.role === 'admin';
     } catch {
       return false;
     }
   });
 
-  const [adminEmail, setAdminEmail] = useState('admin@aanublooms.com');
+  const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
@@ -83,18 +83,32 @@ export const AdminDashboard = ({ onNavigate }) => {
     const cleanEmail = adminEmail.trim().toLowerCase();
     const cleanPass = adminPassword.trim();
 
+    if (!cleanEmail) {
+      setAuthError('Please enter your administrator email address.');
+      addToast('Admin email address required', 'error');
+      return;
+    }
+
+    if (!cleanPass) {
+      setAuthError('Please enter your administrator password.');
+      addToast('Admin password required', 'error');
+      return;
+    }
+
+    const isValidEmail = cleanEmail.includes('admin') || cleanEmail.includes('aanu') || cleanEmail.includes('priya') || cleanEmail === 'admin@aanublooms.com';
     const isValidPass = cleanPass === 'adminpassword123' || cleanPass === 'admin123' || cleanPass === '1234' || cleanPass === 'aanublooms';
-    if (isValidPass || cleanEmail === 'admin@aanublooms.com') {
+
+    if (isValidEmail && isValidPass) {
       try {
         sessionStorage.setItem('aanublooms_admin_unlocked', 'true');
       } catch {}
       setIsAdminUnlocked(true);
-      login('admin@aanublooms.com', 'adminpassword123');
-      addToast('👑 Admin Security Access Granted!', 'success');
+      login(cleanEmail, cleanPass);
+      addToast('👑 Admin Security Access Granted! Welcome back.', 'success');
       setAuthError('');
     } else {
-      setAuthError('Invalid admin password. Try "adminpassword123" or "1234".');
-      addToast('Incorrect admin passcode', 'error');
+      setAuthError('Invalid Admin Credentials. Please verify your Email and Password.');
+      addToast('Incorrect Admin email or password', 'error');
     }
   };
 
