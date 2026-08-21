@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
 
 // POST /api/custom-requests
 router.post('/', (req, res) => {
-  const { customerName, customerEmail, itemType, colorPalette, yarnPreference, specialNotes, estimatedBudget } = req.body;
+  const { customerName, customerEmail, itemType, colorPalette, yarnPreference, specialNotes, estimatedBudget, referenceImage } = req.body;
 
   if (!customerName || !customerEmail || !itemType) {
     return res.status(400).json({ success: false, message: 'Please provide customer name, email, and item type' });
@@ -47,7 +47,8 @@ router.post('/', (req, res) => {
     colorPalette: colorPalette || [],
     yarnPreference: yarnPreference || 'Artisan Choice',
     specialNotes: specialNotes || '',
-    estimatedBudget: estimatedBudget || '$40 - $80',
+    estimatedBudget: estimatedBudget || '₹1,200 - ₹2,500',
+    referenceImage: referenceImage || null,
     status: 'pending_review'
   };
 
@@ -56,7 +57,7 @@ router.post('/', (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: 'Custom commission request received! Aanu will review and respond via email within 24 hours.',
+    message: 'Custom order request received! Aanu will review and respond via email within 24 hours.',
     data: newRequest
   });
 });

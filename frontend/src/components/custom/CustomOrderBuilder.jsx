@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Palette, Sparkles, Check, Heart, Flower2, Gift, Send, ShoppingBag } from 'lucide-react';
+import { Palette, Sparkles, Check, Heart, Flower2, Gift, Send, ShoppingBag, Upload, X, Image as ImageIcon } from 'lucide-react';
 import { api } from '../../services/api';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
@@ -16,6 +16,8 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
   const [stemCount, setStemCount] = useState('Classic 9 Stems');
   const [ribbonMessage, setRibbonMessage] = useState('Forever In Bloom');
   const [specialNotes, setSpecialNotes] = useState('');
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [photoName, setPhotoName] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,6 +78,27 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
   const currentTypeObj = creationOptions.find(o => o.name === creationType) || creationOptions[0];
   const estimatedPrice = currentTypeObj.priceBase + (stemCount === 'Deluxe 15 Stems' ? 600 : 0);
 
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 8 * 1024 * 1024) {
+      addToast('Please upload an image under 8MB', 'error');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPhotoPreview(reader.result);
+      setPhotoName(file.name);
+      addToast('Reference photo attached! 📷', 'success');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removePhoto = () => {
+    setPhotoPreview(null);
+    setPhotoName('');
+  };
+
   const toggleColor = (hex) => {
     if (selectedColors.includes(hex)) {
       if (selectedColors.length > 1) {
@@ -107,19 +130,20 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       slug: 'custom-artisan-order',
       price: estimatedPrice,
       originalPrice: null,
-      images: [currentTypeObj.image],
+      images: photoPreview ? [photoPreview, currentTypeObj.image] : [currentTypeObj.image],
       category: 'custom-orders',
       craftTimeHours: 10,
       yarnMaterial: yarnPreference,
       colors: selectedColors.map(c => ({ name: c, hex: c })),
       sizes: [stemCount],
-      description: `Custom Order with palette [${selectedColors.join(', ')}], flowers: [${selectedFlowers.join(', ')}], ribbon message: "${ribbonMessage}". Notes: ${specialNotes}`
+      referenceImage: photoPreview || null,
+      description: `Custom Order with palette [${selectedColors.join(', ')}], flowers: [${selectedFlowers.join(', ')}], ribbon message: "${ribbonMessage}".${photoPreview ? ' [Reference Photo Attached]' : ''} Notes: ${specialNotes}`
     };
 
     addToCart(customProduct, 1, {
       selectedColor: `Palette of ${selectedColors.length} Yarn Tones`,
       selectedSize: stemCount,
-      customNotes: `Ribbon: "${ribbonMessage}" | Flowers: ${selectedFlowers.join(', ')} | Yarn: ${yarnPreference} | Notes: ${specialNotes}`
+      customNotes: `Ribbon: "${ribbonMessage}" | Flowers: ${selectedFlowers.join(', ')} | Yarn: ${yarnPreference}${photoPreview ? ' | [Reference Photo Attached]' : ''} | Notes: ${specialNotes}`
     });
 
     addToast('🌸 Custom order added to your basket!', 'success');
@@ -142,7 +166,8 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
         colorPalette: selectedColors,
         yarnPreference,
         specialNotes: `Flowers: ${selectedFlowers.join(', ')} | Stems: ${stemCount} | Ribbon: "${ribbonMessage}" | Notes: ${specialNotes}`,
-        estimatedBudget: `₹${estimatedPrice.toLocaleString('en-IN')}`
+        estimatedBudget: `₹${estimatedPrice.toLocaleString('en-IN')}`,
+        referenceImage: photoPreview || null
       });
 
       addToast('🌸 Custom order inquiry sent to Aanu! She will contact you within 24 hours.', 'success');
@@ -333,6 +358,60 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
             </div>
           </div>
 
+          {/* Reference Photo / Design Image Upload */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-warmgray-50/80 dark:bg-warmgray-800/60 border border-warmgray-200 dark:border-warmgray-700 space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <label className="font-serif font-bold text-sm sm:text-base text-warmgray-900 dark:text-white flex items-center gap-2">
+                  <Upload className="w-4 h-4 text-bloom-600 dark:text-bloom-400" />
+                  <span>Upload Reference Photo / Design Inspiration</span>
+                </label>
+                <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">
+                  Have a Pinterest photo, color reference, or sketch of what you want to make? Upload it here for artisan Aanu!
+                </p>
+              </div>
+            </div>
+
+            {photoPreview ? (
+              <div className="relative inline-block mt-2">
+                <img
+                  src={photoPreview}
+                  alt="Reference preview"
+                  className="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl object-cover border-2 border-bloom-500 shadow-md"
+                />
+                <button
+                  type="button"
+                  onClick={removePhoto}
+                  className="absolute -top-2 -right-2 p-1.5 bg-rose-600 text-white rounded-full shadow-lg hover:bg-rose-700 transition-colors"
+                  title="Remove photo"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+                <span className="block text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mt-1.5">
+                  ✓ Photo Attached ({photoName || 'Custom Photo'})
+                </span>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-warmgray-300 dark:border-warmgray-600 hover:border-bloom-500 dark:hover:border-bloom-400 rounded-2xl cursor-pointer bg-white dark:bg-warmgray-800 transition-all group">
+                <div className="w-12 h-12 rounded-full bg-bloom-50 dark:bg-warmgray-700 flex items-center justify-center text-bloom-600 dark:text-bloom-400 group-hover:scale-110 transition-transform mb-2">
+                  <Upload className="w-6 h-6" />
+                </div>
+                <span className="text-sm font-bold text-warmgray-800 dark:text-warmgray-200">
+                  Click or drag photo here to upload
+                </span>
+                <span className="text-xs text-warmgray-400 mt-0.5">
+                  Supports JPG, PNG, WEBP (Up to 8MB)
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                />
+              </label>
+            )}
+          </div>
+
           {/* Ribbon & Notes */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
@@ -401,11 +480,11 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
           {/* Summary Box */}
           <div className="lg:col-span-7 bg-white dark:bg-warmgray-900 rounded-3xl p-5 sm:p-7 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft space-y-5">
             <h3 className="font-serif font-bold text-lg text-warmgray-900 dark:text-white">
-              Bespoke Commission Summary
+              Custom Order Summary
             </h3>
 
             <div className="flex gap-3.5 p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800/60 border border-warmgray-100 dark:border-warmgray-700">
-              <img src={currentTypeObj.image} alt="preview" className="w-16 h-16 rounded-xl object-cover" />
+              <img src={photoPreview || currentTypeObj.image} alt="preview" className="w-16 h-16 rounded-xl object-cover" />
               <div>
                 <h4 className="font-serif font-bold text-sm text-warmgray-900 dark:text-white">
                   {creationType}
@@ -416,6 +495,11 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
                 <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">
                   Ribbon: "{ribbonMessage || 'None'}"
                 </p>
+                {photoPreview && (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-md mt-1 border border-emerald-200 dark:border-emerald-800">
+                    📷 Custom Reference Photo Attached
+                  </span>
+                )}
               </div>
             </div>
 
@@ -483,7 +567,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
           {/* Form for Inquiry */}
           <div className="lg:col-span-5 bg-warmgray-50 dark:bg-warmgray-900/60 rounded-3xl p-5 sm:p-7 border border-warmgray-200/80 dark:border-warmgray-800 space-y-3.5">
             <h4 className="font-serif font-bold text-base text-warmgray-900 dark:text-white">
-              Send Commission Inquiry
+              Send Custom Order Inquiry
             </h4>
             <p className="text-xs text-warmgray-500 dark:text-warmgray-400 leading-relaxed">
               Prefer to chat with Aanu first? Fill in your details and she will email you with a personalized sketch and timeline.
