@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Flower2, Heart, Sparkles, Send, ShieldCheck, Globe, MessageCircle, Share2, MessageSquareHeart } from 'lucide-react';
+import { Flower2, Heart, Sparkles, Send, ShieldCheck, Globe, MessageCircle, Share2, MessageSquare } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 
 export const Footer = ({ onNavigate }) => {
@@ -160,7 +160,7 @@ export const Footer = ({ onNavigate }) => {
               </li>
               <li>
                 <button onClick={() => onNavigate('feedback')} className="hover:text-bloom-600 dark:hover:text-bloom-400 font-semibold text-bloom-700 dark:text-bloom-300 transition-colors flex items-center gap-1">
-                  <MessageSquareHeart className="w-4 h-4 text-bloom-500" />
+                  <MessageSquare className="w-4 h-4 text-bloom-500" />
                   <span>Customer Reviews</span>
                 </button>
               </li>

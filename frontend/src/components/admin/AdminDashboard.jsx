@@ -13,7 +13,7 @@ import {
   Shield,
   ShieldAlert,
   ShieldCheck,
-  MessageSquareHeart,
+  MessageSquare,
   Star,
   IndianRupee,
   Sparkles,
