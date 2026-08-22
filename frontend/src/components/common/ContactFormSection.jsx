@@ -48,7 +48,7 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
   };
 
   return (
-    <section className="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-8 sm:py-12 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-10 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft">
         
         <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">

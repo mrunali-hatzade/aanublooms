@@ -3,7 +3,7 @@ const API_BASE_URL = rawApi.replace(/\/+$/, '');
 
 // Helper for Persistent Admin Products
 const getStoredProducts = () => {
-  const saved = localStorage.getItem('aanublooms_products');
+  const saved = localStorage.getItem('aanublooms_products_v2');
   if (saved !== null) {
     try {
       return JSON.parse(saved);
@@ -118,7 +118,7 @@ const getStoredProducts = () => {
       description: 'Cozy organic cotton coaster set for aesthetic room decor.'
     }
   ];
-  localStorage.setItem('aanublooms_products', JSON.stringify(initial));
+  localStorage.setItem('aanublooms_products_v2', JSON.stringify(initial));
   return initial;
 };
 
@@ -169,7 +169,7 @@ const getStoredCategories = () => {
     }
   ];
 
-  const saved = localStorage.getItem('aanublooms_categories');
+  const saved = localStorage.getItem('aanublooms_categories_v2');
   if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
@@ -181,7 +181,7 @@ const getStoredCategories = () => {
     }
   }
   
-  localStorage.setItem('aanublooms_categories', JSON.stringify(initial));
+  localStorage.setItem('aanublooms_categories_v2', JSON.stringify(initial));
   return initial;
 };
 
@@ -337,7 +337,7 @@ export const api = {
       image: productData.image || productData.images?.[0] || '/images/category/1st_category_flower.jpeg'
     };
     const updated = [newProduct, ...list];
-    localStorage.setItem('aanublooms_products', JSON.stringify(updated));
+    localStorage.setItem('aanublooms_products_v2', JSON.stringify(updated));
 
     try {
       await fetch(`${API_BASE_URL}/products`, {
@@ -353,7 +353,7 @@ export const api = {
   async updateProduct(id, productData) {
     const list = getStoredProducts();
     const updated = list.map(p => p.id === id ? { ...p, ...productData } : p);
-    localStorage.setItem('aanublooms_products', JSON.stringify(updated));
+    localStorage.setItem('aanublooms_products_v2', JSON.stringify(updated));
 
     try {
       await fetch(`${API_BASE_URL}/products/${id}`, {
@@ -370,7 +370,7 @@ export const api = {
   async deleteProduct(id) {
     const list = getStoredProducts();
     const updated = list.filter(p => p.id !== id);
-    localStorage.setItem('aanublooms_products', JSON.stringify(updated));
+    localStorage.setItem('aanublooms_products_v2', JSON.stringify(updated));
 
     try {
       await fetch(`${API_BASE_URL}/products/${id}`, {
@@ -400,6 +400,40 @@ export const api = {
     });
     if (!res.ok) throw new Error('Failed to place order');
     return res.json();
+  },
+
+  async deleteOrder(id) {
+    try {
+      await fetch(`${API_BASE_URL}/orders/${id}`, { method: 'DELETE' }).catch(() => {});
+    } catch {}
+    return { success: true };
+  },
+
+  async deleteCustomRequest(id) {
+    try {
+      await fetch(`${API_BASE_URL}/custom-requests/${id}`, { method: 'DELETE' }).catch(() => {});
+    } catch {}
+    return { success: true };
+  },
+
+  async deleteContactMessage(id) {
+    try {
+      await fetch(`${API_BASE_URL}/contact/${id}`, { method: 'DELETE' }).catch(() => {});
+    } catch {}
+    return { success: true };
+  },
+
+  async deleteFeedback(id) {
+    const saved = localStorage.getItem('aanublooms_feedback_v2s');
+    if (saved) {
+      const parsed = JSON.parse(saved).filter(f => f.id !== id);
+      localStorage.setItem('aanublooms_feedback_v2s', JSON.stringify(parsed));
+      if (typeof window !== 'undefined') window.dispatchEvent(new Event('aanublooms_data_updated'));
+    }
+    try {
+      await fetch(`${API_BASE_URL}/feedback/${id}`, { method: 'DELETE' }).catch(() => {});
+    } catch {}
+    return { success: true };
   },
 
   async getOrders(params = {}) {
@@ -499,7 +533,7 @@ export const api = {
 
   // Real Customer Feedback
   async getFeedbacks() {
-    const saved = localStorage.getItem('aanublooms_feedbacks');
+    const saved = localStorage.getItem('aanublooms_feedback_v2s');
     if (saved !== null) {
       try {
         const list = JSON.parse(saved);
@@ -513,7 +547,7 @@ export const api = {
       if (!res.ok) throw new Error('API request failed');
       const data = await res.json();
       if (data.data && Array.isArray(data.data)) {
-        localStorage.setItem('aanublooms_feedbacks', JSON.stringify(data.data));
+        localStorage.setItem('aanublooms_feedback_v2s', JSON.stringify(data.data));
       }
       return data;
     } catch {
@@ -541,10 +575,10 @@ export const api = {
       createdAt: new Date().toISOString()
     };
 
-    const saved = localStorage.getItem('aanublooms_feedbacks');
+    const saved = localStorage.getItem('aanublooms_feedback_v2s');
     const existing = saved ? JSON.parse(saved) : [];
     const updated = [newFeedback, ...existing];
-    localStorage.setItem('aanublooms_feedbacks', JSON.stringify(updated));
+    localStorage.setItem('aanublooms_feedback_v2s', JSON.stringify(updated));
 
     // Notify all components across website live
     if (typeof window !== 'undefined') {

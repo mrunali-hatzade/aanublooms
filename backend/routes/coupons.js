@@ -70,4 +70,15 @@ router.post('/validate', (req, res) => {
   });
 });
 
+
+// DELETE /:code
+router.delete('/:code', (req, res) => {
+  let items = getCoupons();
+  const initialCount = items.length;
+  items = items.filter(i => (i.id || i.code || i._id || '').toString() !== req.params.code.toString());
+  if (items.length === initialCount) return res.status(404).json({ success: false, message: 'Not found' });
+  saveCoupons(items);
+  res.json({ success: true, message: 'Deleted successfully' });
+});
+
 export default router;

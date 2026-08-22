@@ -74,7 +74,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
   const activeCategoryObj = categories.find(c => c.id === selectedCategory);
 
   return (
-    <div className="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="py-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
       
       {/* Header Title */}
       <div className="mb-8 pb-6 border-b border-warmgray-200 dark:border-warmgray-800">

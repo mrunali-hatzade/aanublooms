@@ -1,8 +1,9 @@
 import React from 'react';
 import { Filter, RotateCcw } from 'lucide-react';
 
-const getCatImage = (catId, catName = '') => {
-  const str = (catId + ' ' + catName).toLowerCase();
+const getCatImage = (cat) => {
+  if (cat.image) return cat.image;
+  const str = (cat.id + ' ' + cat.name).toLowerCase();
   if (str.includes('flower') && !str.includes('pot')) return '/images/category/1st_category_flower.jpeg';
   if (str.includes('keychain') || str.includes('charm') || str.includes('parandi')) return '/images/category/2nd_category_keychain.jpeg';
   if (str.includes('pot') || str.includes('plant')) return '/images/category/3rd_category_flowerpot.jpeg';
@@ -83,7 +84,7 @@ export const ProductFilters = ({
             <span>All Handcrafted Items</span>
           </button>
           {categories.map(cat => {
-            const catImg = getCatImage(cat.id, cat.name);
+            const catImg = getCatImage(cat);
             return (
               <button
                 key={cat.id}

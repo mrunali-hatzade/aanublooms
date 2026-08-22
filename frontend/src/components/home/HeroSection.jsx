@@ -9,11 +9,11 @@ export const HeroSection = ({ onNavigate }) => {
       <div className="absolute top-6 left-1/4 w-72 h-72 bg-bloom-200/30 dark:bg-bloom-950/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-6 right-1/4 w-72 h-72 bg-rosewood-200/20 dark:bg-rosewood-950/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
           
           {/* Left: Simple, Clear & Elegant Text */}
-          <div className="lg:col-span-7 space-y-4 text-center lg:text-left">
+          <div className="lg:col-span-6 space-y-4 text-center lg:text-left">
             
             {/* Minimal Badge */}
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-warmgray-800/90 border border-bloom-200 dark:border-bloom-800/60 text-bloom-700 dark:text-bloom-300 text-xs font-bold shadow-xs">
@@ -59,13 +59,13 @@ export const HeroSection = ({ onNavigate }) => {
           </div>
 
           {/* Right: Clean, Beautiful Visual Card */}
-          <div className="lg:col-span-5">
-            <div className="relative mx-auto max-w-sm lg:max-w-none">
+          <div className="lg:col-span-6">
+            <div className="relative mx-auto max-w-sm lg:max-w-md">
               <div className="rounded-3xl overflow-hidden shadow-xl border-4 border-white dark:border-warmgray-800 bg-white dark:bg-warmgray-900 group">
                 <img
                   src="/images/aanu-blooms-signature-set.jpeg"
                   alt="AanuBlooms Signature 5-Piece Blossom Pots Collection"
-                  className="w-full h-72 sm:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-64 sm:h-72 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="p-4 flex items-center justify-between bg-white dark:bg-warmgray-900">
                   <div>

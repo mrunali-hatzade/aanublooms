@@ -35,6 +35,9 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // API Routes
+import paymentRoutes from './routes/payment.js';
+
+app.use('/api/payment', paymentRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/products', productsRoutes);

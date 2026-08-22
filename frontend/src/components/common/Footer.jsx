@@ -16,7 +16,7 @@ export const Footer = ({ onNavigate }) => {
 
   return (
     <footer className="bg-warmgray-100 dark:bg-warmgray-900 border-t border-warmgray-200 dark:border-warmgray-800 transition-colors pt-10 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Newsletter Card */}
         <div className="bg-gradient-to-r from-bloom-500 via-rosewood-500 to-amber-500 rounded-3xl p-6 sm:p-8 mb-10 text-white shadow-soft-lg relative overflow-hidden">

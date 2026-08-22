@@ -62,4 +62,15 @@ router.post('/', (req, res) => {
   });
 });
 
+
+// DELETE /:id
+router.delete('/:id', (req, res) => {
+  let items = getRequests();
+  const initialCount = items.length;
+  items = items.filter(i => (i.id || i.code || i._id || '').toString() !== req.params.id.toString());
+  if (items.length === initialCount) return res.status(404).json({ success: false, message: 'Not found' });
+  saveRequests(items);
+  res.json({ success: true, message: 'Deleted successfully' });
+});
+
 export default router;

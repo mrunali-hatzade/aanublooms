@@ -27,7 +27,7 @@ export const ArtisanStudioVideo = ({ onNavigate }) => {
 
   return (
     <section className="py-10 sm:py-14 bg-gradient-to-b from-warmgray-50 via-bloom-50/40 to-warmgray-50 dark:from-warmgray-950 dark:via-warmgray-900/80 dark:to-warmgray-950 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">

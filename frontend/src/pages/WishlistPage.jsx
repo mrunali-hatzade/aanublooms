@@ -14,7 +14,7 @@ export const WishlistPage = ({ onNavigate }) => {
   };
 
   return (
-    <div className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[70vh]">
+    <div className="py-12 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 min-h-[70vh]">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-warmgray-200 dark:border-warmgray-800">
         <div>
           <span className="text-xs font-bold uppercase tracking-wider text-rosewood-600 dark:text-rosewood-400 block mb-1">

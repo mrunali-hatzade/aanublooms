@@ -107,7 +107,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
   };
 
   return (
-    <div className="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <div className="py-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
       
       {/* Breadcrumb / Back button */}
       <div className="flex items-center justify-between text-xs text-warmgray-500 dark:text-warmgray-400">
@@ -132,12 +132,12 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         
         {/* Left: Multi-Image Gallery */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-5">
           <ImageGallery images={product.images} productName={product.name} />
         </div>
 
         {/* Right: Buy Box & Details */}
-        <div className="lg:col-span-5 space-y-6">
+        <div className="lg:col-span-7 space-y-6">
           
           {/* Header & Badges */}
           <div>
@@ -307,7 +307,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           <div className="pt-4 border-t border-warmgray-100 dark:border-warmgray-800 space-y-2.5 text-sm text-warmgray-600 dark:text-warmgray-300">
             <div className="flex items-center gap-2.5">
               <Truck className="w-4 h-4 text-bloom-500 shrink-0" />
-              <span>Free delivery across India on orders over ₹999</span>
+              <span>Free delivery across Pune on orders over ₹999</span>
             </div>
             <div className="flex items-center gap-2.5">
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />

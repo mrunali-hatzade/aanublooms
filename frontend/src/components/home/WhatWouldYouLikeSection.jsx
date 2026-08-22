@@ -83,7 +83,7 @@ export const WhatWouldYouLikeSection = ({ categories = [], onNavigate }) => {
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 bg-purple-200/30 dark:bg-purple-900/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 bg-pink-200/30 dark:bg-pink-900/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Aesthetic Header */}
         <div className="text-center mb-6 sm:mb-7">

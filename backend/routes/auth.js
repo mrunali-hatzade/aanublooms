@@ -271,4 +271,20 @@ router.post('/google', (req, res) => {
   });
 });
 
+// DELETE /api/auth/users/:email
+router.delete('/users/:email', (req, res) => {
+  const email = req.params.email.toLowerCase();
+  let users = getUsers();
+  
+  const initialCount = users.length;
+  users = users.filter(u => u.email !== email);
+
+  if (users.length === initialCount) {
+    return res.status(404).json({ success: false, message: 'User not found' });
+  }
+
+  saveUsers(users);
+  res.json({ success: true, message: 'User deleted successfully' });
+});
+
 export default router;

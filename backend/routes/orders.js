@@ -125,8 +125,17 @@ router.post('/', (req, res) => {
     return res.status(400).json({ success: false, message: 'Order items and customer details are required' });
   }
 
-  const randomDigits = Math.floor(10000 + Math.random() * 90000);
-  const orderId = `AANU-${randomDigits}`;
+  // Generate sequential Order ID (AB-0001)
+  let nextNumber = 1;
+  const abOrders = orders.filter(o => o.id && o.id.startsWith('AB-'));
+  if (abOrders.length > 0) {
+    const maxOrder = abOrders.reduce((max, order) => {
+      const num = parseInt(order.id.replace('AB-', ''), 10);
+      return num > max ? num : max;
+    }, 0);
+    nextNumber = maxOrder + 1;
+  }
+  const orderId = `AB-${String(nextNumber).padStart(4, '0')}`;
 
   const newOrder = {
     id: orderId,
@@ -143,7 +152,7 @@ router.post('/', (req, res) => {
     shippingMethod,
     total: Number(total),
     status: 'placed',
-    trackingNumber: `USPS-AANU${randomDigits}`,
+    trackingNumber: `TRACK-${orderId}`,
     statusHistory: [
       {
         status: 'placed',
@@ -218,6 +227,37 @@ router.patch('/:id/status', (req, res) => {
     message: `Order status updated to ${status}`,
     data: orders[index]
   });
+});
+
+// DELETE /api/orders/customer/:email
+// Deletes all orders associated with a customer email
+router.delete('/customer/:email', (req, res) => {
+  const email = req.params.email.toLowerCase();
+  let orders = getOrders();
+  
+  const initialCount = orders.length;
+  orders = orders.filter(o => {
+    const custEmail = (o.customer?.email || '').toLowerCase();
+    return custEmail !== email;
+  });
+
+  if (orders.length === initialCount) {
+    return res.status(404).json({ success: false, message: 'No orders found for this customer.' });
+  }
+
+  saveOrders(orders);
+  res.json({ success: true, message: `Deleted all orders for ${email}`, deletedCount: initialCount - orders.length });
+});
+
+
+// DELETE /:id
+router.delete('/:id', (req, res) => {
+  let items = getOrders();
+  const initialCount = items.length;
+  items = items.filter(i => (i.id || i.code || i._id || '').toString() !== req.params.id.toString());
+  if (items.length === initialCount) return res.status(404).json({ success: false, message: 'Not found' });
+  saveOrders(items);
+  res.json({ success: true, message: 'Deleted successfully' });
 });
 
 export default router;

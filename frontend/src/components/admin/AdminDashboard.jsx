@@ -123,11 +123,13 @@ export const AdminDashboard = ({ onNavigate }) => {
   };
 
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'products' | 'categories' | 'collections' | 'inventory' | 'orders' | 'custom-orders' | 'enquiries' | 'customers' | 'media' | 'coupons' | 'settings' | 'reports'
+  const [globalSearchQuery, setGlobalSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [salesTimeframe, setSalesTimeframe] = useState('7-days'); // 'today' | '7-days' | '30-days' | '3-months' | '1-year'
-  const [selectedDateRange, setSelectedDateRange] = useState('19 May – 25 May 2026');
+  const [selectedDateRange, setSelectedDateRange] = useState('Today');
 
   const [analytics, setAnalytics] = useState(null);
+  
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -181,6 +183,7 @@ export const AdminDashboard = ({ onNavigate }) => {
 
   // Category Manager State
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
   const [categoryForm, setCategoryForm] = useState({
     name: '',
     slug: '',
@@ -188,33 +191,54 @@ export const AdminDashboard = ({ onNavigate }) => {
     image: '/images/category/1st_category_flower.jpeg'
   });
 
+  
+  const dashboardStats = React.useMemo(() => {
+    const totalSales = orders.reduce((sum, o) => sum + (o.total || 0), 0);
+    const totalOrders = orders.length;
+    const avgOrderValue = totalOrders > 0 ? Math.round(totalSales / totalOrders) : 0;
+    const completed = orders.filter(o => o.status === 'delivered' || o.status === 'completed').length;
+    const completionRate = totalOrders > 0 ? Math.round((completed / totalOrders) * 100) : 0;
+    const pendingOrders = orders.filter(o => o.status !== 'delivered' && o.status !== 'completed').length;
+    const totalCustomers = [...new Set(orders.map(o => o.customer?.email).filter(Boolean))].length;
+    return { totalSales, totalOrders, avgOrderValue, completionRate, pendingOrders, totalCustomers };
+  }, [orders]);
+
   const handleAddCategory = (e) => {
     e.preventDefault();
-    if (!categoryForm.name.trim()) return;
-
-    const catId = categoryForm.slug || categoryForm.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    if (!categoryForm.name) {
+      addToast('Category name is required', 'error');
+      return;
+    }
     const newCat = {
-      id: catId,
+      id: editingCategory ? editingCategory.id : (categoryForm.slug || categoryForm.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')),
       name: categoryForm.name,
-      description: categoryForm.description || 'Handcrafted crochet collection.',
+      description: categoryForm.description,
       image: categoryForm.image || '/images/category/1st_category_flower.jpeg',
-      itemCount: 0
+      itemCount: editingCategory ? editingCategory.itemCount : 0
     };
 
-    const updated = [...categories.filter(c => c.id !== catId), newCat];
+    let updated;
+    if (editingCategory) {
+      updated = categories.map(c => c.id === editingCategory.id ? newCat : c);
+      addToast('Category updated successfully', 'success');
+    } else {
+      updated = [...categories, newCat];
+      addToast('Category added successfully', 'success');
+    }
+    
     setCategories(updated);
-    localStorage.setItem('aanublooms_categories', JSON.stringify(updated));
+    localStorage.setItem('aanublooms_categories_v2', JSON.stringify(updated));
     window.dispatchEvent(new Event('aanublooms_data_updated'));
     setShowCategoryModal(false);
     setCategoryForm({ name: '', slug: '', description: '', image: '/images/category/1st_category_flower.jpeg' });
-    addToast('🌸 New category added successfully!', 'success');
+    setEditingCategory(null);
   };
 
   const handleDeleteCategory = (catId) => {
     if (window.confirm('Are you sure you want to remove this category?')) {
       const updated = categories.filter(c => c.id !== catId);
       setCategories(updated);
-      localStorage.setItem('aanublooms_categories', JSON.stringify(updated));
+      localStorage.setItem('aanublooms_categories_v2', JSON.stringify(updated));
       window.dispatchEvent(new Event('aanublooms_data_updated'));
       addToast('Category removed from website', 'info');
     }
@@ -376,6 +400,7 @@ export const AdminDashboard = ({ onNavigate }) => {
   };
 
   // Update order stage
+  const handleDeleteOrder = async (id, e) => { if(e) e.stopPropagation(); if(window.confirm("Delete order?")) { await api.deleteOrder(id); setOrders(prev => prev.filter(o => o.id !== id)); addToast("Order deleted", "info"); } }; const handleDeleteCustom = async (id, e) => { if(e) e.stopPropagation(); if(window.confirm("Delete custom request?")) { await api.deleteCustomRequest(id); setCustomRequests(prev => prev.filter(r => r.id !== id)); addToast("Request deleted", "info"); } }; const handleDeleteEnquiry = async (id, e) => { if(e) e.stopPropagation(); if(window.confirm("Delete enquiry?")) { await api.deleteContactMessage(id); setContactMessages(prev => prev.filter(m => m.id !== id)); addToast("Enquiry deleted", "info"); } }; const handleDeleteFeedback = async (id, e) => { if(e) e.stopPropagation(); if(window.confirm("Delete feedback?")) { await api.deleteFeedback(id); setFeedbacks(prev => prev.filter(f => f.id !== id)); addToast("Feedback deleted", "info"); } };
   const handleUpdateStatus = async (orderId, newStatus) => {
     if (!isAdmin) {
       addToast('Admin access required to update orders', 'error');
@@ -545,7 +570,7 @@ export const AdminDashboard = ({ onNavigate }) => {
         addToast(`"${productForm.name}" added to store catalog! 🛍️`, 'success');
       }
       setProducts(updatedProducts);
-      localStorage.setItem('aanublooms_products', JSON.stringify(updatedProducts));
+      localStorage.setItem('aanublooms_products_v2', JSON.stringify(updatedProducts));
       window.dispatchEvent(new Event('aanublooms_data_updated'));
       setShowProductModal(false);
       setEditingProduct(null);
@@ -565,7 +590,7 @@ export const AdminDashboard = ({ onNavigate }) => {
         await api.deleteProduct(productId).catch(() => {});
         const updated = products.filter(p => p.id !== productId);
         setProducts(updated);
-        localStorage.setItem('aanublooms_products', JSON.stringify(updated));
+        localStorage.setItem('aanublooms_products_v2', JSON.stringify(updated));
         window.dispatchEvent(new Event('aanublooms_data_updated'));
         addToast(`"${productName}" removed from store`, 'info');
       } catch (err) {
@@ -596,13 +621,7 @@ export const AdminDashboard = ({ onNavigate }) => {
   });
 
   // Top Products Ranked List (01 to 05)
-  const topProductsList = [
-    { rank: '01', name: 'Daisy Crochet Bag', sold: '42 sold', revenue: '₹54,558', image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=120&q=80' },
-    { rank: '02', name: 'Tulip Flower Bouquet', sold: '35 sold', revenue: '₹41,965', image: '/images/pink-tulip-stem.jpeg' },
-    { rank: '03', name: 'Cute Bunny Amigurumi', sold: '28 sold', revenue: '₹24,920', image: 'https://images.unsplash.com/photo-1558877385-81a1c7e67d72?auto=format&fit=crop&w=120&q=80' },
-    { rank: '04', name: 'Sunflower Keychain', sold: '26 sold', revenue: '₹9,074', image: '/images/sunflower-cupcake-pot.jpeg' },
-    { rank: '05', name: 'Heart Coaster Set', sold: '22 sold', revenue: '₹6,578', image: '/images/blossom-pots-collection.jpeg' }
-  ];
+  const topProductsList = React.useMemo(() => { return [...products].sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0)).slice(0, 5).map((p, idx) => ({ rank: "0" + (idx + 1), name: p.name, sold: (p.reviewCount || 0) + " sold", revenue: "₹" + ((p.reviewCount || 0) * p.price).toLocaleString(), image: p.image || (p.images && p.images[0]) || "/images/category/1st_category_flower.jpeg" })); }, [products]);
 
   // Restock action handler for low stock items
   const handleRestock = (item) => {
@@ -785,7 +804,7 @@ export const AdminDashboard = ({ onNavigate }) => {
               }`}
             >
               <Package className="w-4 h-4" />
-              <span>Products ({products.length || 27})</span>
+              <span>Products ({products.length})</span>
             </button>
             <button
               onClick={() => { setActiveTab('categories'); setSidebarOpen(false); }}
@@ -840,7 +859,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                 <span>All Orders</span>
               </div>
               <span className="px-2 py-0.5 rounded-full bg-[#D65C5C] text-white text-[10px] font-bold">
-                {orders.length || 12}
+                {orders.length}
               </span>
             </button>
 
@@ -857,7 +876,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                 <span>Custom Orders</span>
               </div>
               <span className="px-2 py-0.5 rounded-full bg-[#D99A35] text-white text-[10px] font-bold">
-                {customRequests.length || 7}
+                {customRequests.length}
               </span>
             </button>
 
@@ -1061,7 +1080,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                 <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-[#E9E2DC] p-3.5 z-50 text-xs animate-in fade-in">
                   <div className="flex justify-between items-center pb-2.5 border-b border-[#E9E2DC] font-bold">
                     <span>Recent Notifications</span>
-                    <span className="text-[10px] text-[#D96C65]">5 New</span>
+                    <span className="text-[10px] text-[#D96C65]">{orders.length} New</span>
                   </div>
                   <div className="divide-y divide-[#E9E2DC]/60 space-y-1 mt-1">
                     <p className="py-2 text-[#3E2B25]">🛍️ <strong>New order received</strong>: #SL1024 has been placed (2m ago)</p>
@@ -1138,18 +1157,31 @@ export const AdminDashboard = ({ onNavigate }) => {
                   Dashboard
                 </h2>
                 <p className="text-xs text-[#756A65] mt-0.5">
-                  Welcome back, Priya. Here's what's happening with your store today.
+                  Welcome back, {user?.name || 'Admin'}. Here's what's happening with your store today.
                 </p>
               </div>
 
               {/* Date Range Selector */}
-              <div className="flex items-center gap-2 self-start sm:self-auto">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[#E9E2DC] rounded-xl text-xs font-semibold text-[#3E2B25] shadow-2xs">
-                  <Calendar className="w-3.5 h-3.5 text-[#756A65]" />
-                  <span>{selectedDateRange}</span>
-                  <ChevronDown className="w-3 h-3 text-[#756A65]" />
-                </div>
-              </div>
+              
+  <div className="flex items-center gap-2 self-start sm:self-auto">
+    <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[#E9E2DC] rounded-xl text-xs font-semibold text-[#3E2B25] shadow-2xs relative">
+      <Calendar className="w-3.5 h-3.5 text-[#756A65] pointer-events-none" />
+      <select 
+        value={selectedDateRange}
+        onChange={(e) => setSelectedDateRange(e.target.value)}
+        className="appearance-none bg-transparent outline-none cursor-pointer pr-4"
+      >
+        <option value="Today">Today</option>
+        <option value="Last 7 Days">Last 7 Days</option>
+        <option value="Last 30 Days">Last 30 Days</option>
+        <option value="This Month">This Month</option>
+        <option value="This Year">This Year</option>
+        <option value="19 May – 25 May 2026">19 May – 25 May 2026</option>
+      </select>
+      <ChevronDown className="w-3 h-3 text-[#756A65] absolute right-3 pointer-events-none" />
+    </div>
+  </div>
+
             </div>
 
             {/* ROW 1: 6 KPI CARDS */}
@@ -1164,10 +1196,10 @@ export const AdminDashboard = ({ onNavigate }) => {
                   </div>
                 </div>
                 <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">
-                  ₹1,24,500
+                  ₹{dashboardStats.totalSales.toLocaleString("en-IN")}
                 </h3>
                 <span className="text-[10px] text-[#4F9D69] font-bold block">
-                  +24.5% <span className="text-[#756A65] font-normal">vs last 7 days</span>
+                  {dashboardStats.totalOrders > 0 ? "Live data" : "No orders yet"}
                 </span>
               </div>
 
@@ -1179,11 +1211,9 @@ export const AdminDashboard = ({ onNavigate }) => {
                     📦
                   </div>
                 </div>
-                <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">
-                  86
-                </h3>
+                <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">{dashboardStats.totalOrders}</h3>
                 <span className="text-[10px] text-[#4F9D69] font-bold block">
-                  +15.2% <span className="text-[#756A65] font-normal">vs last 7 days</span>
+                  {dashboardStats.totalOrders > 0 ? "Live data" : "No orders yet"}
                 </span>
               </div>
 
@@ -1195,11 +1225,9 @@ export const AdminDashboard = ({ onNavigate }) => {
                     👥
                   </div>
                 </div>
-                <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">
-                  62
-                </h3>
+                <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">{dashboardStats.totalCustomers}</h3>
                 <span className="text-[10px] text-[#4F9D69] font-bold block">
-                  +10.3% <span className="text-[#756A65] font-normal">vs last 7 days</span>
+                  {dashboardStats.totalCustomers > 0 ? "Live data" : "No customers yet"}
                 </span>
               </div>
 
@@ -1212,10 +1240,10 @@ export const AdminDashboard = ({ onNavigate }) => {
                   </div>
                 </div>
                 <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">
-                  {products.length || 27}
+                  {products.length}
                 </h3>
                 <span className="text-[10px] text-[#4F9D69] font-bold block">
-                  +5.6% <span className="text-[#756A65] font-normal">vs last 7 days</span>
+                  {products.length > 0 ? "Live data" : "No products yet"}
                 </span>
               </div>
 
@@ -1227,9 +1255,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                     📋
                   </div>
                 </div>
-                <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">
-                  12
-                </h3>
+                <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">{dashboardStats.pendingOrders}</h3>
                 <button
                   onClick={() => setActiveTab('orders')}
                   className="text-[10px] text-[#D96C65] font-bold hover:underline flex items-center gap-0.5"
@@ -1247,9 +1273,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                     🎁
                   </div>
                 </div>
-                <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">
-                  7
-                </h3>
+                <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">{customRequests.length}</h3>
                 <button
                   onClick={() => setActiveTab('custom-orders')}
                   className="text-[10px] text-[#D96C65] font-bold hover:underline flex items-center gap-0.5"
@@ -1849,7 +1873,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                 </div>
 
                 <button
-                  onClick={() => setShowCategoryModal(true)}
+                  onClick={() => { setEditingCategory(null); setCategoryForm({ name: "", slug: "", description: "", image: "/images/category/1st_category_flower.jpeg" }); setShowCategoryModal(true); }}
                   className="px-4 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-semibold shadow-2xs flex items-center gap-1.5 transition-colors self-start sm:self-auto"
                 >
                   <Plus className="w-4 h-4" />
@@ -1986,9 +2010,17 @@ export const AdminDashboard = ({ onNavigate }) => {
                           <p className="font-semibold text-[#3E2B25]">{order.customer?.name}</p>
                           <p className="text-[10px] text-[#756A65]">{order.customer?.city || 'India'}</p>
                         </td>
-                        <td className="py-3 px-3 font-serif font-bold text-[#3E2B25]">
-                          ₹{order.total?.toLocaleString('en-IN')}
-                        </td>
+                        <td className="py-3 px-3">
+    <div className="font-serif font-bold text-[#3E2B25]">₹{order.total?.toLocaleString('en-IN')}</div>
+    <div className="text-[10px] font-medium mt-1">
+      <span className={order.paymentStatus === 'paid' ? 'text-green-600' : 'text-orange-500'}>
+        {order.paymentStatus === 'paid' ? 'Paid' : 'Pending'}
+      </span>
+      <span className="text-warmgray-500 ml-1 block truncate max-w-[80px]" title={order.paymentMethod}>
+        {order.paymentMethod || 'COD'}
+      </span>
+    </div>
+  </td>
                         <td className="py-3 px-3">
                           <select
                             value={order.status}
@@ -2005,10 +2037,12 @@ export const AdminDashboard = ({ onNavigate }) => {
                         <td className="py-3 px-3 text-right">
                           <button
                             onClick={() => onNavigate('track-order', { id: order.id })}
-                            className="px-2.5 py-1 bg-[#F8F6F3] hover:bg-[#E9E2DC] rounded-lg text-xs font-semibold text-[#3E2B25] transition-colors"
-                          >
-                            Track
-                          </button>
+                            className="px-2.5 py-1 bg-[#F8F6F3] hover:bg-[#E9E2DC] rounded-lg text-xs font-semibold text-[#3E2B25] transition-colors">
+    Track
+  </button>
+  <button onClick={(e) => handleDeleteOrder(order.id, e)} className="ml-2 px-2 py-1 text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors" title="Delete Order">
+    <Trash2 className="w-3.5 h-3.5" />
+  </button>
                         </td>
                       </tr>
                     ))}
@@ -2145,7 +2179,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                             if (window.confirm('Delete this feedback entry from website?')) {
                               const updated = feedbacks.filter(f => f.id !== fb.id);
                               setFeedbacks(updated);
-                              localStorage.setItem('aanublooms_feedbacks', JSON.stringify(updated));
+                              localStorage.setItem('aanublooms_feedback_v2s', JSON.stringify(updated));
                               window.dispatchEvent(new Event('aanublooms_data_updated'));
                               addToast('Feedback removed', 'info');
                             }
@@ -2171,7 +2205,7 @@ export const AdminDashboard = ({ onNavigate }) => {
             <div className="bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-4">
               <div>
                 <h2 className="text-xl font-serif font-bold text-[#3E2B25]">
-                  Custom Orders & Bespoke Inquiries ({customRequests.length || 7})
+                  Custom Orders & Bespoke Inquiries ({customRequests.length})
                 </h2>
                 <p className="text-xs text-[#756A65] mt-0.5">
                   Manage personalized crochet commissions, custom bouquets, and special event quotes.
@@ -2179,10 +2213,7 @@ export const AdminDashboard = ({ onNavigate }) => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                {(customRequests.length > 0 ? customRequests : [
-                  { id: 'CO1023', customerName: 'Rhea Sen', customerPhone: '+91 98201 23456', itemType: 'Pastel Lilac & Rose Bouquet', estimatedBudget: '₹2,500', specialNotes: 'Needs embroidery on ribbon: Happy 25th Anniversary Mom & Dad. Delivery by Friday.' },
-                  { id: 'CO1024', customerName: 'Arjun Verma', customerPhone: '+91 97112 88442', itemType: 'Giant Velvet Sunflower Pot', estimatedBudget: '₹1,200', specialNotes: 'Custom golden yellow tone with dark brown pistil.' }
-                ]).map(req => (
+                {customRequests.length === 0 ? (<div className="col-span-2 text-center py-10"><p className="text-sm text-[#756A65]">No custom orders yet</p><p className="text-[10px] text-[#756A65] mt-1">Custom orders from customers will appear here</p></div>) : customRequests.map(req => (
                   <div key={req.id} className="p-4 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-3">
                     <div className="flex justify-between items-start">
                       <div>
@@ -2433,11 +2464,7 @@ export const AdminDashboard = ({ onNavigate }) => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                {(coupons.length > 0 ? coupons : [
-                  { code: 'AANU15', discount: '15% OFF', desc: 'Welcome first order coupon' },
-                  { code: 'FLOWER10', discount: '10% OFF', desc: 'Forever blooms orders above ₹999' },
-                  { code: 'FREESHIP', discount: 'Free Shipping', desc: 'Pan-India free delivery promo' }
-                ]).map(cp => (
+                {coupons.map(cp => (
                   <div key={cp.code} className="p-4 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-2 relative group">
                     <span className="px-3 py-1 bg-[#D96C65]/15 text-[#D96C65] font-mono font-bold text-sm rounded-lg inline-block">
                       {cp.code}
@@ -2807,7 +2834,7 @@ export const AdminDashboard = ({ onNavigate }) => {
               <h3 className="font-serif font-bold text-lg text-[#3E2B25]">
                 Add New Category 🌸
               </h3>
-              <button onClick={() => setShowCategoryModal(false)} className="p-1 text-[#756A65] hover:text-[#3E2B25]">
+              <button onClick={() => { setShowCategoryModal(false); setEditingCategory(null); setCategoryForm({ name: "", slug: "", description: "", image: "/images/category/1st_category_flower.jpeg" }); }} className="p-1 text-[#756A65] hover:text-[#3E2B25]">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -2887,7 +2914,7 @@ export const AdminDashboard = ({ onNavigate }) => {
               <div className="flex justify-end gap-2 pt-3 border-t border-[#E9E2DC]">
                 <button
                   type="button"
-                  onClick={() => setShowCategoryModal(false)}
+                  onClick={() => { setShowCategoryModal(false); setEditingCategory(null); setCategoryForm({ name: "", slug: "", description: "", image: "/images/category/1st_category_flower.jpeg" }); }}
                   className="px-4 py-2 text-xs font-semibold text-[#756A65]"
                 >
                   Cancel

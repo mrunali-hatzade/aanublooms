@@ -73,11 +73,9 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
   }, [formData]);
 
   // Shipping method
-  const isFreeEligible = subtotal >= 999;
-  const [shippingMethod, setShippingMethod] = useState(
-    isFreeEligible ? 'Free Handcrafted Delivery (Pune & India)' : 'Standard Handcrafted Delivery'
-  );
-  const [shippingSpeedFee, setShippingSpeedFee] = useState(isFreeEligible ? 0 : 80);
+  const isFreeEligible = true;
+  const [shippingMethod, setShippingMethod] = useState('Free Handcrafted Delivery');
+  const [shippingSpeedFee, setShippingSpeedFee] = useState(0);
 
   // Payment method
   const [paymentMethod, setPaymentMethod] = useState('upi');
@@ -98,20 +96,21 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
     setShippingSpeedFee(fee);
   };
 
-  const handlePlaceOrder = async (e) => {
-    e.preventDefault();
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
 
-    if (!formData.name.trim() || !formData.phone.trim()) {
-      addToast('Please provide your Full Name and Mobile Number.', 'error');
-      return;
-    }
-
-    if (!formData.address.trim() || !formData.city.trim() || !formData.zip.trim()) {
-      addToast('Please provide your complete Delivery Address & PIN Code.', 'error');
-      return;
-    }
-
-    setIsProcessing(true);
+  const finalizeOrder = async (calculatedTotal, finalPaymentMethod, paymentId = null) => {
     try {
       try {
         confetti({
@@ -122,8 +121,6 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
       } catch (e) {
         console.log(e);
       }
-
-      const calculatedTotal = subtotal - discountAmount + (giftWrap ? giftWrapFee : 0) + shippingSpeedFee;
 
       const orderPayload = {
         customer: {
@@ -146,12 +143,8 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
         shipping: shippingSpeedFee,
         shippingMethod,
         total: calculatedTotal,
-        paymentMethod:
-          paymentMethod === 'upi'
-            ? 'UPI (Google Pay / PhonePe / Paytm / QR)'
-            : paymentMethod === 'card'
-            ? 'Credit / Debit Card (Online)'
-            : 'Cash on Delivery (COD)'
+        paymentMethod: finalPaymentMethod,
+        paymentId
       };
 
       const res = await api.createOrder(orderPayload);
@@ -166,6 +159,84 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
       addToast(err.message || 'Could not place order. Please try again.', 'error');
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault();
+
+    if (!formData.name.trim() || !formData.phone.trim()) {
+      addToast('Please provide your Full Name and Mobile Number.', 'error');
+      return;
+    }
+
+    if (!formData.address.trim() || !formData.city.trim() || !formData.zip.trim()) {
+      addToast('Please provide your complete Delivery Address & PIN Code.', 'error');
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const calculatedTotal = subtotal - discountAmount + (giftWrap ? giftWrapFee : 0) + shippingSpeedFee;
+
+      if (paymentMethod === 'cod') {
+        await finalizeOrder(calculatedTotal, 'Cash on Delivery (COD)');
+        return;
+      }
+
+      const isLoaded = await loadRazorpayScript();
+      if (!isLoaded) {
+        throw new Error('Razorpay SDK failed to load. Are you online?');
+      }
+
+      const rzpOrder = await api.createRazorpayOrder(calculatedTotal);
+      
+      const options = {
+        key: rzpOrder.keyId,
+        amount: rzpOrder.amount,
+        currency: rzpOrder.currency,
+        name: 'AanuBlooms Boutique',
+        description: 'Handcrafted Crochet Order',
+        order_id: rzpOrder.orderId,
+        handler: async function (response) {
+          try {
+             await api.verifyRazorpayPayment({
+               razorpay_order_id: response.razorpay_order_id,
+               razorpay_payment_id: response.razorpay_payment_id,
+               razorpay_signature: response.razorpay_signature
+             });
+             const methodStr = paymentMethod === 'upi' ? 'UPI (Online)' : 'Card (Online)';
+             await finalizeOrder(calculatedTotal, `Razorpay ${methodStr}`, response.razorpay_payment_id);
+          } catch(err) {
+             addToast('Payment verification failed! Please contact support if money was deducted.', 'error');
+             setIsProcessing(false);
+          }
+        },
+        prefill: {
+          name: formData.name.trim(),
+          email: formData.email.trim() || `${formData.phone.trim()}@guest.aanublooms.com`,
+          contact: formData.phone.trim()
+        },
+        theme: {
+          color: '#D96C65'
+        },
+        modal: {
+          ondismiss: function() {
+            setIsProcessing(false);
+          }
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (response){
+        addToast(response.error.description || 'Payment failed or cancelled', 'error');
+        setIsProcessing(false);
+      });
+      rzp.open();
+
+    } catch (err) {
+      setIsProcessing(false);
+      addToast(err.message || 'Could not place order. Please try again.', 'error');
     }
   };
 
@@ -194,7 +265,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
   const finalTotal = subtotal - discountAmount + (giftWrap ? giftWrapFee : 0) + shippingSpeedFee;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
       
       {/* Title & Trust Banner */}
       <div className="mb-9 text-center sm:text-left">
@@ -206,14 +277,14 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
           Complete Your Order
         </h1>
         <p className="text-sm sm:text-base text-warmgray-600 dark:text-warmgray-400 mt-2 max-w-3xl">
-          Handcrafted with love by artisan Aanu. Free delivery in Pune & across India on orders over ₹999.
+          Handcrafted with love by artisan Aanu. Free delivery across Pune on orders over ₹999.
         </p>
       </div>
 
       <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
         
         {/* Left Column: Form Details (7 cols) */}
-        <div className="lg:col-span-7 space-y-7">
+        <div className="lg:col-span-8 space-y-7">
           
           {/* 1. Contact Information */}
           <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-7 sm:p-9 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-5">
@@ -394,61 +465,33 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
 
             <div className="space-y-3">
               <label
-                onClick={() => handleShippingSelect(isFreeEligible ? 'Free Handcrafted Delivery (Pune & India)' : 'Standard Handcrafted Delivery', isFreeEligible ? 0 : 80)}
-                className={`flex items-center justify-between p-4.5 rounded-2xl border cursor-pointer transition-all ${
-                  shippingSpeedFee === (isFreeEligible ? 0 : 80)
+                onClick={() => handleShippingSelect('Free Handcrafted Delivery', 0)}
+                className={`flex items-start sm:items-center justify-between p-4.5 rounded-2xl border cursor-pointer transition-all ${
+                  shippingSpeedFee === 0
                     ? 'border-bloom-500 bg-bloom-50/40 dark:bg-bloom-950/20'
                     : 'border-warmgray-200 dark:border-warmgray-700 hover:border-warmgray-300'
                 }`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0 pr-4">
                   <input
                     type="radio"
                     name="shippingSpeed"
-                    checked={shippingSpeedFee === (isFreeEligible ? 0 : 80)}
+                    checked={shippingSpeedFee === 0}
                     onChange={() => {}}
-                    className="text-bloom-600 focus:ring-bloom-400 w-4 h-4"
+                    className="text-bloom-600 focus:ring-bloom-400 w-4 h-4 mt-1 sm:mt-0 shrink-0"
                   />
-                  <div>
-                    <p className="text-sm sm:text-base font-bold text-warmgray-900 dark:text-white">
-                      {isFreeEligible ? '🌸 Free Handcrafted Delivery' : '📦 Standard Handcrafted Delivery'}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm sm:text-base font-bold text-warmgray-900 dark:text-white truncate whitespace-normal">
+                      🌸 Free Handcrafted Delivery
                     </p>
-                    <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">
+                    <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5 whitespace-normal">
                       Delivered carefully in 3–6 business days with protective box packaging.
                     </p>
                   </div>
                 </div>
-                <span className="text-sm sm:text-base font-bold text-bloom-600">
-                  {isFreeEligible ? 'FREE' : '₹80'}
+                <span className="text-sm sm:text-base font-bold text-bloom-600 shrink-0 mt-1 sm:mt-0">
+                  FREE
                 </span>
-              </label>
-
-              <label
-                onClick={() => handleShippingSelect('Express Studio Dispatch (Priority Stitches)', 150)}
-                className={`flex items-center justify-between p-4.5 rounded-2xl border cursor-pointer transition-all ${
-                  shippingSpeedFee === 150
-                    ? 'border-bloom-500 bg-bloom-50/40 dark:bg-bloom-950/20'
-                    : 'border-warmgray-200 dark:border-warmgray-700 hover:border-warmgray-300'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <input
-                    type="radio"
-                    name="shippingSpeed"
-                    checked={shippingSpeedFee === 150}
-                    onChange={() => {}}
-                    className="text-bloom-600 focus:ring-bloom-400 w-4 h-4"
-                  />
-                  <div>
-                    <p className="text-sm sm:text-base font-bold text-warmgray-900 dark:text-white">
-                      ⚡ Priority Studio Dispatch (Pune Same/Next Day Dispatch)
-                    </p>
-                    <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">
-                      Top priority crafting queue & expedited delivery.
-                    </p>
-                  </div>
-                </div>
-                <span className="text-sm sm:text-base font-bold text-warmgray-900 dark:text-white">₹150</span>
               </label>
             </div>
           </div>
@@ -468,57 +511,57 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('upi')}
-                className={`p-4.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 ${
+                className={`p-4.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 min-w-0 ${
                   paymentMethod === 'upi'
                     ? 'border-bloom-500 bg-bloom-50/50 dark:bg-bloom-950/30 text-bloom-900 dark:text-bloom-100 shadow-xs'
                     : 'border-warmgray-200 dark:border-warmgray-700 hover:border-warmgray-300'
                 }`}
               >
-                <div className="flex items-center justify-between">
-                  <QrCode className="w-6 h-6 text-bloom-600" />
-                  {paymentMethod === 'upi' && <CheckCircle2 className="w-4 h-4 text-bloom-600" />}
+                <div className="flex items-center justify-between w-full">
+                  <QrCode className="w-6 h-6 text-bloom-600 shrink-0" />
+                  {paymentMethod === 'upi' && <CheckCircle2 className="w-4 h-4 text-bloom-600 shrink-0" />}
                 </div>
-                <div>
-                  <p className="text-sm font-bold">UPI / QR</p>
-                  <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">GPay, PhonePe, Paytm</p>
+                <div className="w-full">
+                  <p className="text-sm font-bold truncate">UPI / QR</p>
+                  <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5 whitespace-normal">GPay, PhonePe, Paytm</p>
                 </div>
               </button>
 
               <button
                 type="button"
                 onClick={() => setPaymentMethod('card')}
-                className={`p-4.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 ${
+                className={`p-4.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 min-w-0 ${
                   paymentMethod === 'card'
                     ? 'border-bloom-500 bg-bloom-50/50 dark:bg-bloom-950/30 text-bloom-900 dark:text-bloom-100 shadow-xs'
                     : 'border-warmgray-200 dark:border-warmgray-700 hover:border-warmgray-300'
                 }`}
               >
-                <div className="flex items-center justify-between">
-                  <CreditCard className="w-6 h-6 text-bloom-600" />
-                  {paymentMethod === 'card' && <CheckCircle2 className="w-4 h-4 text-bloom-600" />}
+                <div className="flex items-center justify-between w-full">
+                  <CreditCard className="w-6 h-6 text-bloom-600 shrink-0" />
+                  {paymentMethod === 'card' && <CheckCircle2 className="w-4 h-4 text-bloom-600 shrink-0" />}
                 </div>
-                <div>
-                  <p className="text-sm font-bold">Cards / Banking</p>
-                  <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">RuPay, Visa, NetBanking</p>
+                <div className="w-full">
+                  <p className="text-sm font-bold truncate">Cards / NetBanking</p>
+                  <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5 whitespace-normal">RuPay, Visa, Mastercard</p>
                 </div>
               </button>
 
               <button
                 type="button"
                 onClick={() => setPaymentMethod('cod')}
-                className={`p-4.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 ${
+                className={`p-4.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-3 min-w-0 ${
                   paymentMethod === 'cod'
                     ? 'border-bloom-500 bg-bloom-50/50 dark:bg-bloom-950/30 text-bloom-900 dark:text-bloom-100 shadow-xs'
                     : 'border-warmgray-200 dark:border-warmgray-700 hover:border-warmgray-300'
                 }`}
               >
-                <div className="flex items-center justify-between">
-                  <Truck className="w-6 h-6 text-bloom-600" />
-                  {paymentMethod === 'cod' && <CheckCircle2 className="w-4 h-4 text-bloom-600" />}
+                <div className="flex items-center justify-between w-full">
+                  <Truck className="w-6 h-6 text-bloom-600 shrink-0" />
+                  {paymentMethod === 'cod' && <CheckCircle2 className="w-4 h-4 text-bloom-600 shrink-0" />}
                 </div>
-                <div>
-                  <p className="text-sm font-bold">Cash on Delivery</p>
-                  <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">Pay on Hand Delivery</p>
+                <div className="w-full">
+                  <p className="text-sm font-bold truncate">Cash on Delivery</p>
+                  <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5 whitespace-normal">Pay on Hand Delivery</p>
                 </div>
               </button>
             </div>
@@ -526,8 +569,8 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
 
         </div>
 
-        {/* Right Column: Order Summary & Place Order (5 cols) */}
-        <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-5">
+        {/* Right Column: Order Summary & Place Order (4 cols) */}
+        <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-5">
           
           <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-7 sm:p-9 border border-warmgray-200 dark:border-warmgray-800 shadow-soft-lg space-y-5">
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-warmgray-900 dark:text-white border-b border-warmgray-100 dark:border-warmgray-800 pb-4">

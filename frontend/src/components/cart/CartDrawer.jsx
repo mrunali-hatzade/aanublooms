@@ -104,7 +104,7 @@ export const CartDrawer = ({ onNavigate }) => {
                 <Truck className="w-3.5 h-3.5 text-bloom-600 dark:text-bloom-400" />
                 {isFreeShipping ? (
                   <span className="text-emerald-600 dark:text-emerald-400 font-bold">
-                    🎉 You unlocked FREE Delivery across India!
+                    🎉 You unlocked FREE Delivery across Pune!
                   </span>
                 ) : (
                   <span>

@@ -4,7 +4,7 @@ import { Heart, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
 export const MeetTheMaker = ({ onNavigate }) => {
   return (
     <section className="py-8 sm:py-10 bg-warmgray-100/70 dark:bg-warmgray-900/60 border-y border-warmgray-200 dark:border-warmgray-800 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           {/* Photos Side */}

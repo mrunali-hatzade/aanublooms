@@ -92,7 +92,7 @@ export const InteractiveBouquetStudio = ({ onNavigate }) => {
 
   return (
     <section className="py-8 sm:py-12 bg-white dark:bg-warmgray-900 border-b border-warmgray-200 dark:border-warmgray-800 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Title */}
         <div className="text-center max-w-xl mx-auto mb-8">

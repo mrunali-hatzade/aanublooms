@@ -58,6 +58,11 @@ class ErrorBoundary extends React.Component {
             <p className="text-xs text-[#756A65] leading-relaxed">
               We encountered a temporary display issue. Click below to refresh the storefront.
             </p>
+            {this.state.error && (
+              <pre className="text-[10px] text-red-500 bg-red-50 p-2 rounded text-left overflow-auto max-h-32">
+                {this.state.error.toString()}
+              </pre>
+            )}
             <div className="pt-2 flex flex-col gap-2">
               <button
                 type="button"
@@ -127,7 +132,9 @@ const parseRouteFromLocation = () => {
     if (pathname === 'about' || pathname === 'our-story') return { page: 'about', params: {} };
     if (pathname === 'contact') return { page: 'contact', params: {} };
     if (pathname === 'feedback' || pathname === 'reviews') return { page: 'feedback', params: {} };
-    if (pathname === 'admin') return { page: 'admin', params: {} };
+    if (pathname === 'admin') {
+      return { page: 'admin', params: { tab: searchParams.get('tab') || 'dashboard' } };
+    }
 
     return { page: 'home', params: {} };
   } catch {
@@ -159,6 +166,8 @@ function AppContent() {
         path = `/product/${params.id}`;
       } else if (page === 'track-order') {
         path = params.id ? `/track-order?id=${params.id}` : '/track-order';
+      } else if (page === 'admin') {
+        path = params.tab && params.tab !== 'dashboard' ? `/admin?tab=${params.tab}` : '/admin';
       } else if (page !== 'home') {
         path = `/${page}`;
       }
@@ -211,7 +220,7 @@ function AppContent() {
   if (currentPage === 'admin') {
     return (
       <div className="min-h-screen bg-[#F8F6F3] text-warmgray-900 transition-colors">
-        <AdminDashboardPage onNavigate={navigateTo} />
+        <AdminDashboardPage onNavigate={navigateTo} navParams={navParams} />
       </div>
     );
   }
@@ -249,7 +258,7 @@ function AppContent() {
 
   // Customer Storefront Layout
   return (
-    <div className="min-h-screen flex flex-col bg-warmgray-50 dark:bg-warmgray-950 text-warmgray-900 dark:text-warmgray-50 transition-colors relative">
+    <div className="min-h-screen flex flex-col max-w-[1536px] mx-auto bg-warmgray-50 dark:bg-warmgray-950 text-warmgray-900 dark:text-warmgray-50 transition-colors relative">
       {/* Global 3D Ambient Depth & Floating Elements */}
       <Floating3DBackground />
 

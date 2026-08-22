@@ -354,7 +354,7 @@ export const CustomerDashboardPage = ({ onNavigate, initialTab = 'overview' }) =
     : 'AB';
 
   return (
-    <div className="py-6 sm:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+    <div className="py-6 sm:py-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
       {/* MOBILE NAVIGATION TABS (Horizontal Scrollable) */}
       <div className="lg:hidden flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none border-b border-warmgray-200 dark:border-warmgray-800">
@@ -1231,7 +1231,7 @@ export const CustomerDashboardPage = ({ onNavigate, initialTab = 'overview' }) =
                     Saved Addresses
                   </h2>
                   <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-1">
-                    Manage your delivery addresses across Pune and India.
+                    Manage your delivery addresses in Pune.
                   </p>
                 </div>
 

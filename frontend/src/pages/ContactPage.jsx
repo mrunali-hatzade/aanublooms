@@ -23,6 +23,7 @@ export const ContactPage = ({ onNavigate }) => {
     name: '',
     email: '',
     subject: 'Custom Order Question',
+    otherSubject: '',
     orderId: '',
     message: ''
   });
@@ -79,7 +80,7 @@ export const ContactPage = ({ onNavigate }) => {
   };
 
   return (
-    <div className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <div className="py-12 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
       
       {/* Page Hero Header */}
       <div className="text-center max-w-3xl mx-auto space-y-3">
@@ -132,7 +133,7 @@ export const ContactPage = ({ onNavigate }) => {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Emily Watson"
+                    placeholder="e.g. Pooja Sharma"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
@@ -146,7 +147,7 @@ export const ContactPage = ({ onNavigate }) => {
                   <input
                     type="email"
                     required
-                    placeholder="e.g. emily@example.com"
+                    placeholder="e.g. pooja@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
@@ -157,7 +158,7 @@ export const ContactPage = ({ onNavigate }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
-                    Topic / Subject
+                    Subject / Inquiry Type
                   </label>
                   <select
                     value={formData.subject}
@@ -169,6 +170,7 @@ export const ContactPage = ({ onNavigate }) => {
                     <option value="Wholesale / Wedding Bulk Orders">Wholesale / Wedding Bulk Orders</option>
                     <option value="Pattern & DIY Kit Help">Pattern & DIY Kit Help</option>
                     <option value="General Maker Question">General Maker Question</option>
+                    <option value="Other (Please specify)">Other (Please specify)</option>
                   </select>
                 </div>
 
@@ -186,17 +188,34 @@ export const ContactPage = ({ onNavigate }) => {
                 </div>
               </div>
 
-              <div>
+              {formData.subject === 'Other (Please specify)' && (
+                <div className="mt-4">
+                  <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
+                    Please Specify *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Collaboration Request"
+                    value={formData.otherSubject}
+                    onChange={(e) => setFormData({ ...formData, otherSubject: e.target.value })}
+                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
+                  />
+                </div>
+              )}
+
+              
+              <div className="w-full">
                 <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                   How can we help? *
                 </label>
                 <textarea
                   required
                   rows={5}
-                  placeholder="Share details about your question, custom floral colors, or delivery requests..."
+                  placeholder="Share your custom flower preferences or any other questions here..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400 leading-relaxed"
+                  className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400 resize-y"
                 />
               </div>
 
@@ -206,7 +225,7 @@ export const ContactPage = ({ onNavigate }) => {
                 className="w-full py-4 bg-gradient-to-r from-bloom-500 via-bloom-600 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-2xl font-bold text-sm shadow-cozy transition-all flex items-center justify-center gap-2 group disabled:opacity-50"
               >
                 <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                <span>{isSubmitting ? 'Sending to Aanu...' : 'Send Message to Artisan Aanu'}</span>
+                <span>{isSubmitting ? 'Sending to Aanu...' : 'Send Message to Studio'}</span>
               </button>
             </form>
           )}

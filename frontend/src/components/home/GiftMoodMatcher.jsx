@@ -97,7 +97,7 @@ export const GiftMoodMatcher = ({ onNavigate }) => {
 
   return (
     <section className="py-8 sm:py-12 bg-gradient-to-b from-rose-50/50 via-warmgray-50 to-purple-50/40 dark:from-warmgray-950 dark:via-warmgray-900 dark:to-warmgray-950 border-b border-warmgray-200 dark:border-warmgray-800 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-7">
@@ -172,7 +172,7 @@ export const GiftMoodMatcher = ({ onNavigate }) => {
                   Includes Free Luxury Gift Box & Handwritten Card
                 </span>
                 <span className="text-amber-700 dark:text-amber-400 text-[11px]">
-                  All bundle gift pairings arrive wrapped with satin ribbon and bubble protection across India.
+                  All bundle gift pairings arrive wrapped with satin ribbon and bubble protection across Pune.
                 </span>
               </div>
             </div>

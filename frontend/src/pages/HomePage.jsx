@@ -63,7 +63,7 @@ export const HomePage = ({ onNavigate }) => {
       </div>
 
       {/* 5. Centered "Best Sellers" Section (Matching Reference Design) */}
-      <section id="home-bestsellers" className="py-4 sm:py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="home-bestsellers" className="py-4 sm:py-6 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-md mx-auto mb-6">
           <div className="flex items-center justify-center gap-2 text-[#E07A5F] mb-1">
             <span className="h-px w-10 bg-[#E07A5F]/40"></span>
@@ -120,7 +120,7 @@ export const HomePage = ({ onNavigate }) => {
       </div>
 
       {/* 11. Custom Commission Banner Teaser */}
-      <section className="py-4 sm:py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-4 sm:py-6 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-r from-bloom-500 via-rosewood-500 to-amber-500 rounded-3xl p-6 sm:p-10 text-white shadow-soft-lg flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
           <div className="max-w-xl relative z-10">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-xs font-bold uppercase tracking-wider mb-2">
