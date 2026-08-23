@@ -206,7 +206,7 @@ export const AdminDashboard = ({ onNavigate }) => {
     return { totalSales, totalOrders, avgOrderValue, completionRate, pendingOrders, totalCustomers };
   }, [orders]);
 
-  const handleAddCategory = (e) => {
+  const handleAddCategory = async (e) => {
     e.preventDefault();
     if (!categoryForm.name) {
       addToast('Category name is required', 'error');
@@ -221,29 +221,40 @@ export const AdminDashboard = ({ onNavigate }) => {
     };
 
     let updated;
-    if (editingCategory) {
-      updated = categories.map(c => c.id === editingCategory.id ? newCat : c);
-      addToast('Category updated successfully', 'success');
-    } else {
-      updated = [...categories, newCat];
-      addToast('Category added successfully', 'success');
-    }
-    
-    setCategories(updated);
-    localStorage.setItem('aanublooms_categories_v2', JSON.stringify(updated));
-    window.dispatchEvent(new Event('aanublooms_data_updated'));
-    setShowCategoryModal(false);
-    setCategoryForm({ name: '', slug: '', description: '', image: '/images/category/1st_category_flower.jpeg' });
-    setEditingCategory(null);
-  };
-
-  const handleDeleteCategory = (catId) => {
-    if (window.confirm('Are you sure you want to remove this category?')) {
-      const updated = categories.filter(c => c.id !== catId);
+    try {
+      if (editingCategory) {
+        await api.updateCategory(editingCategory.id, newCat).catch(() => {});
+        updated = categories.map(c => c.id === editingCategory.id ? newCat : c);
+        addToast('Category updated successfully', 'success');
+      } else {
+        await api.addCategory(newCat).catch(() => {});
+        updated = [...categories, newCat];
+        addToast('Category added successfully', 'success');
+      }
+      
       setCategories(updated);
       localStorage.setItem('aanublooms_categories_v2', JSON.stringify(updated));
       window.dispatchEvent(new Event('aanublooms_data_updated'));
-      addToast('Category removed from website', 'info');
+      setShowCategoryModal(false);
+      setCategoryForm({ name: '', slug: '', description: '', image: '/images/category/1st_category_flower.jpeg' });
+      setEditingCategory(null);
+    } catch (error) {
+      addToast('Failed to save category', 'error');
+    }
+  };
+
+  const handleDeleteCategory = async (catId) => {
+    if (window.confirm('Are you sure you want to remove this category?')) {
+      try {
+        await api.deleteCategory(catId).catch(() => {});
+        const updated = categories.filter(c => c.id !== catId);
+        setCategories(updated);
+        localStorage.setItem('aanublooms_categories_v2', JSON.stringify(updated));
+        window.dispatchEvent(new Event('aanublooms_data_updated'));
+        addToast('Category removed from website', 'info');
+      } catch (error) {
+        addToast('Failed to delete category', 'error');
+      }
     }
   };
 
@@ -560,8 +571,9 @@ export const AdminDashboard = ({ onNavigate }) => {
       };
 
       if (editingProduct) {
-        await api.updateProduct(editingProduct.id, finalProductForm).catch(() => {});
-        updatedProducts = products.map(p => p.id === editingProduct.id ? { ...p, ...finalProductForm } : p);
+        const res = await api.updateProduct(editingProduct.id, finalProductForm);
+        const savedProduct = res.data || { ...editingProduct, ...finalProductForm };
+        updatedProducts = products.map(p => p.id === editingProduct.id ? savedProduct : p);
         addToast(`"${finalProductForm.name}" updated successfully! 🌸`, 'success');
       } else {
         const newId = `prod-${Date.now()}`;
@@ -573,8 +585,9 @@ export const AdminDashboard = ({ onNavigate }) => {
           inStock: true,
           image: finalProductForm.images?.[0] || '/images/category/1st_category_flower.jpeg'
         };
-        await api.createProduct(newProduct).catch(() => {});
-        updatedProducts = [newProduct, ...products];
+        const res = await api.createProduct(newProduct);
+        const savedProduct = res.data || newProduct;
+        updatedProducts = [savedProduct, ...products];
         addToast(`"${finalProductForm.name}" added to store catalog! 🛍️`, 'success');
       }
       setProducts(updatedProducts);
