@@ -163,7 +163,7 @@ export const AdminDashboard = ({ onNavigate }) => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [productForm, setProductForm] = useState({
     name: '',
-    category: 'forever-blooms',
+    category: '',
     price: 599,
     originalPrice: 799,
     yarnMaterial: '100% Combed Milk Cotton',
@@ -383,7 +383,7 @@ export const AdminDashboard = ({ onNavigate }) => {
       setEditingProduct(null);
       setProductForm({
         name: file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '),
-        category: 'forever-blooms',
+        category: '',
         price: 599,
         originalPrice: 799,
         yarnMaterial: '100% Combed Milk Cotton',
@@ -510,7 +510,7 @@ export const AdminDashboard = ({ onNavigate }) => {
     setEditingProduct(null);
     setProductForm({
       name: '',
-      category: 'forever-blooms',
+      category: '',
       price: 599,
       originalPrice: 799,
       yarnMaterial: '100% Combed Milk Cotton',
@@ -554,23 +554,28 @@ export const AdminDashboard = ({ onNavigate }) => {
 
     try {
       let updatedProducts = [];
+      const finalProductForm = {
+        ...productForm,
+        category: productForm.category || (categories.length > 0 ? categories[0].id : '')
+      };
+
       if (editingProduct) {
-        await api.updateProduct(editingProduct.id, productForm).catch(() => {});
-        updatedProducts = products.map(p => p.id === editingProduct.id ? { ...p, ...productForm } : p);
-        addToast(`"${productForm.name}" updated successfully! 🌸`, 'success');
+        await api.updateProduct(editingProduct.id, finalProductForm).catch(() => {});
+        updatedProducts = products.map(p => p.id === editingProduct.id ? { ...p, ...finalProductForm } : p);
+        addToast(`"${finalProductForm.name}" updated successfully! 🌸`, 'success');
       } else {
         const newId = `prod-${Date.now()}`;
         const newProduct = {
-          ...productForm,
+          ...finalProductForm,
           id: newId,
           rating: 5.0,
           reviewCount: 1,
           inStock: true,
-          image: productForm.images?.[0] || '/images/category/1st_category_flower.jpeg'
+          image: finalProductForm.images?.[0] || '/images/category/1st_category_flower.jpeg'
         };
         await api.createProduct(newProduct).catch(() => {});
         updatedProducts = [newProduct, ...products];
-        addToast(`"${productForm.name}" added to store catalog! 🛍️`, 'success');
+        addToast(`"${finalProductForm.name}" added to store catalog! 🛍️`, 'success');
       }
       setProducts(updatedProducts);
       localStorage.setItem('aanublooms_products_v2', JSON.stringify(updatedProducts));
@@ -2634,15 +2639,11 @@ export const AdminDashboard = ({ onNavigate }) => {
                       onChange={(e) => setProductForm({ ...productForm, category: e.target.value })}
                       className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]"
                     >
-                      <option value="forever-blooms">🌸 Forever Blooms & Pots</option>
-                      <option value="amigurumi-plushies">🧸 Amigurumi Plushies</option>
-                      <option value="hair-accessories">🎀 Hair Bows & Parandis</option>
-                      <option value="bookmarks">🔖 Botanical Bookmarks</option>
-                      <option value="keychains">🔑 Keychains & Charms</option>
-                      <option value="home-living">🏡 Cozy Home & Living</option>
-                      <option value="bags-accessories">👜 Bags & Totes</option>
-                      <option value="wearables-apparel">🧶 Wearables & Cardigans</option>
-                      <option value="diy-kits-patterns">📦 DIY Kits & Patterns</option>
+                      {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
