@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { useToast } from './ToastContext';
 import { api } from '../services/api';
+import { useSettings } from './SettingsContext';
 
 const CartContext = createContext();
 
@@ -21,6 +22,7 @@ export const CartProvider = ({ children }) => {
   const [isCouponLoading, setIsCouponLoading] = useState(false);
 
   const { addToast } = useToast();
+  const { settings } = useSettings();
 
   useEffect(() => {
     localStorage.setItem('aanublooms_cart', JSON.stringify(items));
@@ -107,9 +109,11 @@ export const CartProvider = ({ children }) => {
     return items.reduce((sum, item) => sum + item.quantity, 0);
   }, [items]);
 
-  const freeShippingThreshold = 999;
+  // Shipping from store settings
+  const freeShippingThreshold = settings?.shipping?.freeShippingThreshold ?? 999;
+  const standardShippingCharge = settings?.shipping?.standardCharge ?? 80;
   const freeShippingRemaining = Math.max(0, freeShippingThreshold - subtotal);
-  const freeShippingProgress = Math.min(100, (subtotal / freeShippingThreshold) * 100);
+  const freeShippingProgress = freeShippingThreshold > 0 ? Math.min(100, (subtotal / freeShippingThreshold) * 100) : 100;
 
   const giftWrapFee = giftWrap ? 99 : 0;
 
@@ -127,7 +131,7 @@ export const CartProvider = ({ children }) => {
 
   // Shipping calculation
   const isFreeShipping = subtotal >= freeShippingThreshold || appliedCoupon?.discountType === 'shipping';
-  const shippingFee = items.length === 0 ? 0 : isFreeShipping ? 0 : 80;
+  const shippingFee = isFreeShipping || items.length === 0 ? 0 : standardShippingCharge;
 
   // Total
   const total = useMemo(() => {

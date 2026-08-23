@@ -1,77 +1,67 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const contactMessagesPath = path.join(__dirname, '../data/contactMessages.json');
+import { ContactMessage } from '../models/ContactMessage.js';
+import { Notification } from '../models/Notification.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-const getMessages = () => {
+// GET /api/contact — admin only
+router.get('/', requireAdmin, async (req, res) => {
   try {
-    if (!fs.existsSync(contactMessagesPath)) {
-      fs.writeFileSync(contactMessagesPath, JSON.stringify([], null, 2), 'utf8');
-      return [];
-    }
-    const data = fs.readFileSync(contactMessagesPath, 'utf8');
-    return JSON.parse(data);
+    const messages = await ContactMessage.find().sort({ createdAt: -1 });
+    res.json({ success: true, count: messages.length, data: messages });
   } catch (err) {
-    console.error('Error reading contact messages:', err);
-    return [];
+    res.status(500).json({ success: false, message: err.message });
   }
-};
-
-const saveMessages = (messages) => {
-  fs.writeFileSync(contactMessagesPath, JSON.stringify(messages, null, 2), 'utf8');
-};
-
-// GET /api/contact (for maker admin view)
-router.get('/', (req, res) => {
-  const messages = getMessages();
-  res.json({ success: true, count: messages.length, data: messages });
 });
 
-// POST /api/contact (submit contact message)
-router.post('/', (req, res) => {
-  const { name, email, subject, orderId, message } = req.body;
+// POST /api/contact — public
+router.post('/', async (req, res) => {
+  try {
+    const { name, email, phone, subject, message } = req.body;
+    if (!name || !email || !message) {
+      return res.status(400).json({ success: false, message: 'Name, email, and message are required.' });
+    }
 
-  if (!name || !email || !message) {
-    return res.status(400).json({ success: false, message: 'Please provide your name, email, and message' });
+    const newMessage = new ContactMessage({
+      id: `MSG-${Date.now()}`,
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      phone: phone?.trim() || '',
+      subject: subject?.trim() || '',
+      message: message.trim()
+    });
+
+    await newMessage.save();
+
+    await Notification.create({
+      type: 'new_enquiry',
+      title: 'New Enquiry',
+      message: `${name} sent a message: "${message.substring(0, 60)}..."`,
+      relatedEntity: 'contact_message',
+      relatedEntityId: newMessage.id
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Your message has been sent! We will respond within 24 hours.',
+      data: newMessage
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
-
-  const messages = getMessages();
-  const newMessage = {
-    id: `MSG-${Date.now()}`,
-    createdAt: new Date().toISOString(),
-    name,
-    email,
-    subject: subject || 'General Inquiry',
-    orderId: orderId || null,
-    message,
-    status: 'unread'
-  };
-
-  messages.unshift(newMessage);
-  saveMessages(messages);
-
-  res.status(201).json({
-    success: true,
-    message: 'Thank you! Your message has been sent to Artisan Aanu. She will reply to your email within 24 hours 🌸',
-    data: newMessage
-  });
 });
 
-
-// DELETE /:id
-router.delete('/:id', (req, res) => {
-  let items = getMessages();
-  const initialCount = items.length;
-  items = items.filter(i => (i.id || i.code || i._id || '').toString() !== req.params.id.toString());
-  if (items.length === initialCount) return res.status(404).json({ success: false, message: 'Not found' });
-  saveMessages(items);
-  res.json({ success: true, message: 'Deleted successfully' });
+// DELETE /api/contact/:id — admin
+router.delete('/:id', requireAdmin, async (req, res) => {
+  try {
+    const deleted = await ContactMessage.findOneAndDelete({ id: req.params.id })
+      || await ContactMessage.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ success: false, message: 'Message not found.' });
+    res.json({ success: true, message: 'Message deleted.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 export default router;

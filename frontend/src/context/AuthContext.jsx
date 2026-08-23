@@ -4,80 +4,48 @@ import { api } from '../services/api';
 
 const AuthContext = createContext();
 
-// Default Administrator Seed Account (Owner Admin)
-const DEFAULT_ADMIN = {
-  id: 'admin-primary',
-  name: 'Aanu (Artisan Founder)',
-  email: 'admin@aanublooms.com',
-  password: 'adminpassword123',
-  phone: '+91 98765 43210',
-  role: 'admin',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-  city: 'Mumbai',
-  state: 'Maharashtra',
-  zip: '400050',
-  address: 'Artisan Studio',
-  savedAddresses: []
-};
-
 export const AuthProvider = ({ children }) => {
-  // Registered users repository
-  const [usersDb, setUsersDb] = useState(() => {
-    try {
-      const saved = localStorage.getItem('aanublooms_users_db');
-      return saved ? JSON.parse(saved) : [DEFAULT_ADMIN];
-    } catch {
-      return [DEFAULT_ADMIN];
-    }
-  });
-
-  // Current logged in session — Starts as null (Fresh real user is logged out until they sign in)
-  const [user, setUser] = useState(() => {
-    try {
-      const saved = localStorage.getItem('aanublooms_user');
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
-
-  const [isLoadingAuth, setIsLoadingAuth] = useState(false);
-
-  // Auth modal global toggle
+  const [user, setUser] = useState(null);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authModalTab, setAuthModalTab] = useState('login'); // 'login' | 'signup'
+  const [authModalTab, setAuthModalTab] = useState('login');
 
   const { addToast } = useToast();
 
+  // On mount: validate stored token
   useEffect(() => {
-    localStorage.setItem('aanublooms_users_db', JSON.stringify(usersDb));
-  }, [usersDb]);
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem('aanublooms_user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('aanublooms_user');
-    }
-  }, [user]);
+    const validateStoredSession = async () => {
+      try {
+        const token = localStorage.getItem('aanublooms_token');
+        if (token) {
+          const res = await api.getMe(token);
+          if (res.success && res.user) {
+            setUser(res.user);
+          } else {
+            localStorage.removeItem('aanublooms_token');
+          }
+        }
+      } catch {
+        localStorage.removeItem('aanublooms_token');
+      } finally {
+        setIsLoadingAuth(false);
+      }
+    };
+    validateStoredSession();
+  }, []);
 
   const openAuthModal = (tab = 'login') => {
     setAuthModalTab(tab);
     setIsAuthModalOpen(true);
   };
 
-  const closeAuthModal = () => {
-    setIsAuthModalOpen(false);
-  };
+  const closeAuthModal = () => setIsAuthModalOpen(false);
 
   // Real User Sign In
   const login = async (email, password) => {
     setIsLoadingAuth(true);
-    const cleanEmail = email.trim().toLowerCase();
-
     try {
-      // 1. Try Backend API login
-      const res = await api.login(cleanEmail, password);
+      const res = await api.login(email.trim().toLowerCase(), password);
       if (res.success && res.user) {
         setUser(res.user);
         if (res.token) localStorage.setItem('aanublooms_token', res.token);
@@ -86,221 +54,107 @@ export const AuthProvider = ({ children }) => {
         setIsLoadingAuth(false);
         return { success: true, user: res.user };
       }
-    } catch (apiErr) {
-      // 2. Fallback to local users DB
-      const existing = usersDb.find(u => u.email.toLowerCase() === cleanEmail);
-      if (existing) {
-        if (existing.password && existing.password !== password) {
-          addToast('Incorrect password. Please try again.', 'error');
-          setIsLoadingAuth(false);
-          return { success: false, message: 'Invalid credentials' };
-        }
-        setUser(existing);
-        addToast(`Welcome back, ${existing.name}! 🌸`, 'success');
-        closeAuthModal();
-        setIsLoadingAuth(false);
-        return { success: true, user: existing };
-      }
-
-      addToast(apiErr.message || 'Incorrect email or password. Please verify.', 'error');
+    } catch (err) {
+      addToast(err.message || 'Login failed. Please check your credentials.', 'error');
       setIsLoadingAuth(false);
-      return { success: false, message: apiErr.message };
+      return { success: false, message: err.message };
     }
+    setIsLoadingAuth(false);
+    return { success: false, message: 'Login failed' };
   };
 
   // Real User Sign Up
   const signup = async ({ name, email, password, phone, city, state, zip, address }) => {
     setIsLoadingAuth(true);
-    const cleanEmail = email.trim().toLowerCase();
-
     try {
-      // 1. Try Backend API register
-      const res = await api.register({
-        name: name.trim(),
-        email: cleanEmail,
-        password,
-        phone,
-        city,
-        state,
-        zip,
-        address
-      });
-
+      const res = await api.register({ name: name.trim(), email: email.trim().toLowerCase(), password, phone, city, state, zip, address });
       if (res.success && res.user) {
         setUser(res.user);
         if (res.token) localStorage.setItem('aanublooms_token', res.token);
-        setUsersDb(prev => [...prev.filter(u => u.email !== cleanEmail), res.user]);
-        addToast(`🌸 Welcome to AanuBlooms, ${res.user.name}! Account created.`, 'success');
+        addToast(`🌸 Welcome to AanuBlooms, ${res.user.name}!`, 'success');
         closeAuthModal();
         setIsLoadingAuth(false);
         return { success: true, user: res.user };
       }
-    } catch (apiErr) {
-      // 2. Local fallback registration
-      const existing = usersDb.find(u => u.email.toLowerCase() === cleanEmail);
-      if (existing) {
-        addToast('An account with this email already exists. Please sign in.', 'error');
-        setAuthModalTab('login');
-        setIsLoadingAuth(false);
-        return { success: false, message: 'User already exists' };
-      }
-
-      const isMakerAdmin = cleanEmail.includes('admin@') || cleanEmail.includes('maker@');
-      const newUser = {
-        id: `usr-${Date.now()}`,
-        name: name.trim(),
-        email: cleanEmail,
-        password: password,
-        phone: phone || '',
-        role: isMakerAdmin ? 'admin' : 'customer',
-        avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`,
-        city: city || '',
-        state: state || 'Maharashtra',
-        zip: zip || '',
-        address: address || '',
-        savedAddresses: address ? [
-          {
-            id: `addr-${Date.now()}`,
-            title: 'Primary Delivery Address',
-            name: name.trim(),
-            phone: phone || '',
-            address: address.trim(),
-            city: city || '',
-            state: state || 'Maharashtra',
-            zip: zip || '',
-            country: 'India',
-            isDefault: true
-          }
-        ] : []
-      };
-
-      setUsersDb(prev => [...prev, newUser]);
-      setUser(newUser);
-      addToast(`🌸 Welcome to AanuBlooms, ${newUser.name}! Your account is active.`, 'success');
-      closeAuthModal();
+    } catch (err) {
+      addToast(err.message || 'Registration failed.', 'error');
       setIsLoadingAuth(false);
-      return { success: true, user: newUser };
+      return { success: false, message: err.message };
     }
+    setIsLoadingAuth(false);
+    return { success: false, message: 'Registration failed' };
   };
 
-  // Google 1-Click Sign In
+  // Google Sign In
   const loginWithGoogle = async (googleProfile) => {
     setIsLoadingAuth(true);
     try {
-      // 1. Send to Backend API
       const res = await api.googleLogin({
         name: googleProfile.name,
         email: googleProfile.email,
         avatar: googleProfile.avatar || googleProfile.picture,
         googleId: googleProfile.sub || googleProfile.googleId || `g_${Date.now()}`
       });
-
       if (res.success && res.user) {
         setUser(res.user);
         if (res.token) localStorage.setItem('aanublooms_token', res.token);
-        setUsersDb(prev => [...prev.filter(u => u.email !== res.user.email), res.user]);
-        addToast(`🌸 Welcome to AanuBlooms, ${res.user.name}! Signed in via Google.`, 'success');
+        addToast(`🌸 Welcome, ${res.user.name}!`, 'success');
         closeAuthModal();
         setIsLoadingAuth(false);
         return { success: true, user: res.user };
       }
     } catch (err) {
-      // 2. Local Fallback Google Sign-in
-      const cleanEmail = googleProfile.email.trim().toLowerCase();
-      const existing = usersDb.find(u => u.email.toLowerCase() === cleanEmail);
-
-      if (existing) {
-        setUser(existing);
-        addToast(`Welcome back, ${existing.name}! 🌸`, 'success');
-        closeAuthModal();
-        setIsLoadingAuth(false);
-        return { success: true, user: existing };
-      }
-
-      const newUser = {
-        id: `usr-${Date.now()}`,
-        name: googleProfile.name || cleanEmail.split('@')[0],
-        email: cleanEmail,
-        googleId: googleProfile.googleId || `g_${Date.now()}`,
-        authProvider: 'google',
-        role: 'customer',
-        avatar: googleProfile.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(googleProfile.name || cleanEmail)}`,
-        city: '',
-        state: 'Maharashtra',
-        zip: '',
-        address: '',
-        savedAddresses: []
-      };
-
-      setUsersDb(prev => [...prev, newUser]);
-      setUser(newUser);
-      addToast(`🌸 Welcome to AanuBlooms, ${newUser.name}! Signed in via Google.`, 'success');
-      closeAuthModal();
+      addToast(err.message || 'Google sign-in failed.', 'error');
       setIsLoadingAuth(false);
-      return { success: true, user: newUser };
+      return { success: false, message: err.message };
     }
+    setIsLoadingAuth(false);
+    return { success: false };
   };
 
-  // Sign out
   const logout = () => {
     setUser(null);
-    addToast('Signed out of store', 'info');
+    localStorage.removeItem('aanublooms_token');
+    addToast('Signed out successfully', 'info');
   };
 
-  // Update profile
-  const updateProfile = (updatedFields) => {
+  const updateProfile = async (updatedFields) => {
     if (!user) return;
-    const updated = { ...user, ...updatedFields };
-    setUser(updated);
-    setUsersDb(prev => prev.map(u => (u.id === user.id ? updated : u)));
-    addToast('Profile details updated successfully! 🌸', 'success');
+    try {
+      const res = await api.updateProfile(updatedFields);
+      if (res.success && res.user) {
+        setUser(res.user);
+        addToast('Profile updated! 🌸', 'success');
+      }
+    } catch (err) {
+      addToast(err.message || 'Failed to update profile', 'error');
+    }
   };
 
-  // Add saved delivery address
+  // Address management (local state, synced on next login)
   const addAddress = (newAddr) => {
     if (!user) return;
-    const addrObj = {
-      id: `addr-${Date.now()}`,
-      ...newAddr,
-      isDefault: (user.savedAddresses || []).length === 0 || newAddr.isDefault
-    };
-
+    const addrObj = { id: `addr-${Date.now()}`, ...newAddr, isDefault: (user.savedAddresses || []).length === 0 || newAddr.isDefault };
     let updatedList = [...(user.savedAddresses || [])];
-    if (addrObj.isDefault) {
-      updatedList = updatedList.map(a => ({ ...a, isDefault: false }));
-    }
+    if (addrObj.isDefault) updatedList = updatedList.map(a => ({ ...a, isDefault: false }));
     updatedList.push(addrObj);
-
-    const updatedUser = { ...user, savedAddresses: updatedList };
-    setUser(updatedUser);
-    setUsersDb(prev => prev.map(u => (u.id === user.id ? updatedUser : u)));
+    setUser({ ...user, savedAddresses: updatedList });
     addToast('New delivery address saved! 📦', 'success');
   };
 
-  // Delete address
   const deleteAddress = (addressId) => {
     if (!user) return;
     const updatedList = (user.savedAddresses || []).filter(a => a.id !== addressId);
-    if (updatedList.length > 0 && !updatedList.some(a => a.isDefault)) {
-      updatedList[0].isDefault = true;
-    }
-    const updatedUser = { ...user, savedAddresses: updatedList };
-    setUser(updatedUser);
-    setUsersDb(prev => prev.map(u => (u.id === user.id ? updatedUser : u)));
+    if (updatedList.length > 0 && !updatedList.some(a => a.isDefault)) updatedList[0].isDefault = true;
+    setUser({ ...user, savedAddresses: updatedList });
     addToast('Address removed', 'info');
   };
 
-  // Set default address
   const setDefaultAddress = (addressId) => {
     if (!user) return;
-    const updatedList = (user.savedAddresses || []).map(a => ({
-      ...a,
-      isDefault: a.id === addressId
-    }));
-    const updatedUser = { ...user, savedAddresses: updatedList };
-    setUser(updatedUser);
-    setUsersDb(prev => prev.map(u => (u.id === user.id ? updatedUser : u)));
-    addToast('Default delivery address updated! ✨', 'success');
+    const updatedList = (user.savedAddresses || []).map(a => ({ ...a, isDefault: a.id === addressId }));
+    setUser({ ...user, savedAddresses: updatedList });
+    addToast('Default address updated!', 'success');
   };
 
   return (
@@ -309,6 +163,7 @@ export const AuthProvider = ({ children }) => {
         user,
         isLoggedIn: !!user,
         isAdmin: user?.role === 'admin',
+        isLoadingAuth,
         isAuthModalOpen,
         authModalTab,
         openAuthModal,
@@ -321,7 +176,7 @@ export const AuthProvider = ({ children }) => {
         addAddress,
         deleteAddress,
         setDefaultAddress,
-        registeredUsers: usersDb
+        registeredUsers: [] // Kept for compatibility, no longer used
       }}
     >
       {children}

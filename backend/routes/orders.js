@@ -1,263 +1,234 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { Order } from '../models/Order.js';
+import { Product } from '../models/Product.js';
+import { Notification } from '../models/Notification.js';
+import { requireAdmin } from '../middleware/auth.js';
 import { sendOrderConfirmationToCustomer, sendNewOrderAlertToFounder } from '../services/emailService.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const ordersFilePath = path.join(__dirname, '../data/orders.json');
-const productsFilePath = path.join(__dirname, '../data/products.json');
 
 const router = express.Router();
 
-const getOrders = () => {
+// Helper: generate next order ID
+const generateOrderId = async () => {
+  const lastOrder = await Order.findOne().sort({ createdAt: -1 }).select('id');
+  let nextNum = 1;
+  if (lastOrder?.id) {
+    const match = lastOrder.id.match(/(\d+)$/);
+    if (match) nextNum = parseInt(match[1]) + 1;
+  }
+  return `AB-${String(nextNum).padStart(4, '0')}`;
+};
+
+// GET /api/orders — admin only
+router.get('/', requireAdmin, async (req, res) => {
   try {
-    const data = fs.readFileSync(ordersFilePath, 'utf8');
-    return JSON.parse(data);
+    const { email, status, limit = 100 } = req.query;
+    let query = {};
+    if (email) query['customer.email'] = { $regex: email, $options: 'i' };
+    if (status && status !== 'all') query.status = status;
+
+    const orders = await Order.find(query)
+      .sort({ createdAt: -1 })
+      .limit(parseInt(limit));
+
+    res.json({ success: true, count: orders.length, data: orders });
   } catch (err) {
-    console.error('Error reading orders:', err);
-    return [];
+    res.status(500).json({ success: false, message: err.message });
   }
-};
-
-const saveOrders = (orders) => {
-  fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2), 'utf8');
-};
-
-// GET /api/orders
-router.get('/', (req, res) => {
-  const orders = getOrders();
-  const { email, status } = req.query;
-  let filtered = orders;
-
-  if (email) {
-    filtered = filtered.filter(o => o.customer && o.customer.email.toLowerCase() === email.toLowerCase());
-  }
-
-  if (status && status !== 'all') {
-    filtered = filtered.filter(o => o.status.toLowerCase() === status.toLowerCase());
-  }
-
-  res.json({
-    success: true,
-    count: filtered.length,
-    data: filtered
-  });
 });
 
-// POST /api/orders/track (Secure Guest Order Tracking)
-router.post('/track', (req, res) => {
-  const { orderId, phone } = req.body;
-
-  if (!orderId || !phone) {
-    return res.status(400).json({
-      success: false,
-      message: 'Please provide both your Order ID and phone number used during checkout.'
-    });
-  }
-
-  const cleanId = orderId.trim().toUpperCase().replace('#', '');
-  const cleanPhone = phone.trim().replace(/[^0-9]/g, '');
-
-  const orders = getOrders();
-  const order = orders.find(o => {
-    const idMatch = o.id.toUpperCase().replace('#', '') === cleanId;
-    const orderPhone = (o.customer?.phone || '').replace(/[^0-9]/g, '');
-    const phoneMatch = orderPhone && (orderPhone.endsWith(cleanPhone) || cleanPhone.endsWith(orderPhone) || orderPhone.includes(cleanPhone) || cleanPhone.includes(orderPhone));
-    return idMatch && phoneMatch;
-  });
-
-  if (!order) {
-    return res.status(404).json({
-      success: false,
-      message: 'No order found matching this Order ID and phone number. Please verify your receipt details.'
-    });
-  }
-
-  // Mask sensitive info for privacy
-  const maskedPhone = order.customer?.phone ? order.customer.phone.replace(/(\d{2})\d+(\d{2})/, '$1******$2') : '******';
-  const safeOrder = {
-    ...order,
-    customer: {
-      name: order.customer?.name || 'Valued Customer',
-      city: order.customer?.city || 'Pune',
-      state: order.customer?.state || 'Maharashtra',
-      zip: order.customer?.zip || '411038',
-      phone: maskedPhone
+// POST /api/orders/track — guest order tracking (public)
+router.post('/track', async (req, res) => {
+  try {
+    const { orderId, phone } = req.body;
+    if (!orderId || !phone) {
+      return res.status(400).json({ success: false, message: 'Please provide both Order ID and phone number.' });
     }
-  };
 
-  res.json({ success: true, data: safeOrder });
-});
+    const cleanId = orderId.trim().toUpperCase().replace('#', '');
+    const cleanPhone = phone.trim().replace(/[^0-9]/g, '');
 
-// GET /api/orders/:id
-router.get('/:id', (req, res) => {
-  const orders = getOrders();
-  const order = orders.find(o => o.id.toUpperCase() === req.params.id.toUpperCase());
-
-  if (!order) {
-    return res.status(404).json({ success: false, message: 'Order not found' });
-  }
-
-  res.json({ success: true, data: order });
-});
-
-// POST /api/orders (Create new order)
-router.post('/', (req, res) => {
-  const orders = getOrders();
-  const {
-    customer,
-    items,
-    subtotal,
-    discount = 0,
-    appliedCoupon = null,
-    giftWrap = false,
-    giftWrapFee = 0,
-    giftMessage = '',
-    shipping = 0,
-    shippingMethod = 'Standard Craft Delivery',
-    total,
-    paymentMethod = 'Credit Card'
-  } = req.body;
-
-  if (!customer || !items || items.length === 0) {
-    return res.status(400).json({ success: false, message: 'Order items and customer details are required' });
-  }
-
-  // Generate sequential Order ID (AB-0001)
-  let nextNumber = 1;
-  const abOrders = orders.filter(o => o.id && o.id.startsWith('AB-'));
-  if (abOrders.length > 0) {
-    const maxOrder = abOrders.reduce((max, order) => {
-      const num = parseInt(order.id.replace('AB-', ''), 10);
-      return num > max ? num : max;
-    }, 0);
-    nextNumber = maxOrder + 1;
-  }
-  const orderId = `AB-${String(nextNumber).padStart(4, '0')}`;
-
-  const newOrder = {
-    id: orderId,
-    createdAt: new Date().toISOString(),
-    customer,
-    items,
-    subtotal: Number(subtotal),
-    discount: Number(discount),
-    appliedCoupon,
-    giftWrap: Boolean(giftWrap),
-    giftWrapFee: Number(giftWrapFee),
-    giftMessage: giftMessage || '',
-    shipping: Number(shipping),
-    shippingMethod,
-    total: Number(total),
-    status: 'placed',
-    trackingNumber: `TRACK-${orderId}`,
-    statusHistory: [
-      {
-        status: 'placed',
-        time: new Date().toISOString(),
-        note: 'Order confirmed! Artisan Aanu has received your order.'
-      }
-    ],
-    paymentMethod,
-    paymentStatus: 'Paid'
-  };
-
-  orders.unshift(newOrder);
-  saveOrders(orders);
-
-  // Optional: decrement stock in products.json
-  try {
-    const productsData = fs.readFileSync(productsFilePath, 'utf8');
-    const products = JSON.parse(productsData);
-    items.forEach(item => {
-      const prod = products.find(p => p.id === item.id);
-      if (prod && prod.stock > 0) {
-        prod.stock = Math.max(0, prod.stock - (item.quantity || 1));
-      }
+    const orders = await Order.find({});
+    const order = orders.find(o => {
+      const idMatch = (o.id || '').toUpperCase().replace('#', '') === cleanId;
+      const orderPhone = (o.customer?.phone || '').replace(/[^0-9]/g, '');
+      const phoneMatch = orderPhone && (orderPhone.endsWith(cleanPhone) || cleanPhone.endsWith(orderPhone));
+      return idMatch && phoneMatch;
     });
-    fs.writeFileSync(productsFilePath, JSON.stringify(products, null, 2), 'utf8');
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'No order found matching this Order ID and phone number.' });
+    }
+
+    const maskedPhone = order.customer?.phone ? order.customer.phone.replace(/(\d{2})\d+(\d{2})/, '$1******$2') : '******';
+    const safeOrder = {
+      ...order.toObject(),
+      customer: {
+        name: order.customer?.name || 'Valued Customer',
+        city: order.customer?.city || '',
+        state: order.customer?.state || '',
+        zip: order.customer?.zip || '',
+        phone: maskedPhone
+      }
+    };
+
+    res.json({ success: true, data: safeOrder });
   } catch (err) {
-    console.error('Error updating stock:', err);
+    res.status(500).json({ success: false, message: err.message });
   }
+});
 
-  // ✉️ Send Automated Email Notifications (Customer Confirmation + Founder Alert)
+// GET /api/orders/:id — admin only
+router.get('/:id', requireAdmin, async (req, res) => {
   try {
-    sendOrderConfirmationToCustomer(newOrder);
-    sendNewOrderAlertToFounder(newOrder);
-  } catch (emailErr) {
-    console.error('Email dispatch error (non-fatal):', emailErr.message);
+    const order = await Order.findOne({ id: req.params.id.toUpperCase() });
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
+    res.json({ success: true, data: order });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
-
-  res.status(201).json({
-    success: true,
-    message: 'Order placed successfully!',
-    data: newOrder
-  });
 });
 
-// PATCH /api/orders/:id/status (Admin status update)
-router.patch('/:id/status', (req, res) => {
-  const orders = getOrders();
-  const { status, note } = req.body;
-  const index = orders.findIndex(o => o.id.toUpperCase() === req.params.id.toUpperCase());
+// POST /api/orders — create new order (public — guest checkout)
+router.post('/', async (req, res) => {
+  try {
+    const {
+      customer, items, subtotal, discount = 0, couponCode = '',
+      giftWrap = false, giftWrapFee = 0, giftMessage = '',
+      shipping = 0, shippingMethod = 'Standard Craft Delivery',
+      total, paymentMethod = 'COD'
+    } = req.body;
 
-  if (index === -1) {
-    return res.status(404).json({ success: false, message: 'Order not found' });
+    if (!customer || !items || items.length === 0) {
+      return res.status(400).json({ success: false, message: 'Order items and customer details are required.' });
+    }
+
+    // Validate and decrement stock
+    for (const item of items) {
+      const product = await Product.findOne({ id: item.id || item.productId });
+      if (product) {
+        if (product.stock < (item.quantity || 1)) {
+          return res.status(400).json({
+            success: false,
+            message: `"${product.name}" has insufficient stock. Only ${product.stock} available.`
+          });
+        }
+        product.stock = Math.max(0, product.stock - (item.quantity || 1));
+        await product.save();
+
+        // Low stock notification
+        if (product.stock <= (product.lowStockThreshold || 3)) {
+          await Notification.create({
+            type: 'low_stock',
+            title: 'Low Stock Alert',
+            message: `"${product.name}" is running low — only ${product.stock} left.`,
+            relatedEntity: 'product',
+            relatedEntityId: product.id
+          });
+        }
+      }
+    }
+
+    const orderId = await generateOrderId();
+    const newOrder = new Order({
+      id: orderId,
+      isGuestOrder: true,
+      customer,
+      items,
+      subtotal: Number(subtotal),
+      discountAmount: Number(discount),
+      couponCode,
+      giftWrap: Boolean(giftWrap),
+      giftWrapFee: Number(giftWrapFee),
+      giftMessage: giftMessage || '',
+      shippingFee: Number(shipping),
+      shippingMethod,
+      total: Number(total),
+      paymentMethod,
+      paymentStatus: paymentMethod === 'COD' ? 'pending' : 'paid',
+      status: 'placed',
+      trackingNumber: `TRACK-${orderId}`,
+      statusHistory: [{ status: 'placed', time: new Date().toISOString(), note: 'Order placed successfully.' }]
+    });
+
+    await newOrder.save();
+
+    // Create notification
+    await Notification.create({
+      type: 'new_order',
+      title: 'New Order Received! 🛍️',
+      message: `Order ${orderId} from ${customer.name} — ₹${total}`,
+      relatedEntity: 'order',
+      relatedEntityId: orderId
+    });
+
+    // Send emails
+    try {
+      sendOrderConfirmationToCustomer(newOrder.toObject());
+      sendNewOrderAlertToFounder(newOrder.toObject());
+    } catch (emailErr) {
+      console.error('Email error (non-fatal):', emailErr.message);
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Order placed successfully!',
+      data: newOrder
+    });
+  } catch (err) {
+    console.error('Order creation error:', err);
+    res.status(500).json({ success: false, message: err.message || 'Failed to place order.' });
   }
-
-  const validStatuses = ['placed', 'handcrafting', 'packaging', 'shipped', 'delivered', 'cancelled'];
-  if (!validStatuses.includes(status)) {
-    return res.status(400).json({ success: false, message: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
-  }
-
-  orders[index].status = status;
-  orders[index].statusHistory = orders[index].statusHistory || [];
-  orders[index].statusHistory.push({
-    status,
-    time: new Date().toISOString(),
-    note: note || `Status updated to ${status}`
-  });
-
-  saveOrders(orders);
-
-  res.json({
-    success: true,
-    message: `Order status updated to ${status}`,
-    data: orders[index]
-  });
 });
 
-// DELETE /api/orders/customer/:email
-// Deletes all orders associated with a customer email
-router.delete('/customer/:email', (req, res) => {
-  const email = req.params.email.toLowerCase();
-  let orders = getOrders();
-  
-  const initialCount = orders.length;
-  orders = orders.filter(o => {
-    const custEmail = (o.customer?.email || '').toLowerCase();
-    return custEmail !== email;
-  });
+// PATCH /api/orders/:id/status — admin only
+router.patch('/:id/status', requireAdmin, async (req, res) => {
+  try {
+    const { status, note } = req.body;
+    const validStatuses = ['placed', 'confirmed', 'handcrafting', 'packaging', 'shipped', 'delivered', 'cancelled', 'refunded'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ success: false, message: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
+    }
 
-  if (orders.length === initialCount) {
-    return res.status(404).json({ success: false, message: 'No orders found for this customer.' });
+    const order = await Order.findOne({ id: req.params.id.toUpperCase() });
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
+
+    order.status = status;
+    order.statusHistory = order.statusHistory || [];
+    order.statusHistory.push({ status, time: new Date().toISOString(), note: note || `Status updated to ${status}` });
+    await order.save();
+
+    // Notification for shipped
+    if (status === 'shipped') {
+      await Notification.create({
+        type: 'order_shipped',
+        title: 'Order Shipped',
+        message: `Order ${order.id} has been shipped to ${order.customer?.name}.`,
+        relatedEntity: 'order',
+        relatedEntityId: order.id
+      });
+    }
+
+    res.json({ success: true, message: `Order status updated to ${status}`, data: order });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
-
-  saveOrders(orders);
-  res.json({ success: true, message: `Deleted all orders for ${email}`, deletedCount: initialCount - orders.length });
 });
 
-
-// DELETE /:id
-router.delete('/:id', (req, res) => {
-  let items = getOrders();
-  const initialCount = items.length;
-  items = items.filter(i => (i.id || i.code || i._id || '').toString() !== req.params.id.toString());
-  if (items.length === initialCount) return res.status(404).json({ success: false, message: 'Not found' });
-  saveOrders(items);
-  res.json({ success: true, message: 'Deleted successfully' });
+// DELETE /api/orders/:id — admin only
+router.delete('/:id', requireAdmin, async (req, res) => {
+  try {
+    const deleted = await Order.findOneAndDelete({ id: req.params.id.toUpperCase() });
+    if (!deleted) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
+    res.json({ success: true, message: 'Order deleted.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 export default router;

@@ -6,7 +6,9 @@ const categorySchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String },
   image: { type: String },
-  itemCount: { type: Number, default: 0 }
+  itemCount: { type: Number, default: 0 },
+  displayOrder: { type: Number, default: 0 },
+  status: { type: String, enum: ['active', 'inactive', 'archived'], default: 'active' }
 }, { timestamps: true });
 
 export const Category = mongoose.models.Category || mongoose.model('Category', categorySchema);

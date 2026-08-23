@@ -1,76 +1,101 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const customRequestsPath = path.join(__dirname, '../data/customRequests.json');
+import { CustomRequest } from '../models/CustomRequest.js';
+import { Notification } from '../models/Notification.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-const getRequests = () => {
+// GET /api/custom-requests — admin only
+router.get('/', requireAdmin, async (req, res) => {
   try {
-    const data = fs.readFileSync(customRequestsPath, 'utf8');
-    return JSON.parse(data);
+    const requests = await CustomRequest.find().sort({ createdAt: -1 });
+    res.json({ success: true, count: requests.length, data: requests });
   } catch (err) {
-    console.error('Error reading custom requests:', err);
-    return [];
+    res.status(500).json({ success: false, message: err.message });
   }
-};
-
-const saveRequests = (requests) => {
-  fs.writeFileSync(customRequestsPath, JSON.stringify(requests, null, 2), 'utf8');
-};
-
-// GET /api/custom-requests
-router.get('/', (req, res) => {
-  const requests = getRequests();
-  res.json({ success: true, count: requests.length, data: requests });
 });
 
-// POST /api/custom-requests
-router.post('/', (req, res) => {
-  const { customerName, customerEmail, itemType, colorPalette, yarnPreference, specialNotes, estimatedBudget, referenceImage } = req.body;
+// POST /api/custom-requests — public (customer submits)
+router.post('/', async (req, res) => {
+  try {
+    const { customerName, customerEmail, customerPhone, itemType, colorPalette, yarnPreference, specialNotes, estimatedBudget, referenceImage } = req.body;
 
-  if (!customerName || !customerEmail || !itemType) {
-    return res.status(400).json({ success: false, message: 'Please provide customer name, email, and item type' });
+    if (!customerName || !customerEmail || !itemType) {
+      return res.status(400).json({ success: false, message: 'Please provide your name, email, and item type.' });
+    }
+
+    const id = `COMM-${Date.now()}`;
+    const newRequest = new CustomRequest({
+      id,
+      customerName,
+      customerEmail,
+      customerPhone: customerPhone || '',
+      itemType,
+      colorPalette: colorPalette || [],
+      yarnPreference: yarnPreference || 'Artisan Choice',
+      specialNotes: specialNotes || '',
+      estimatedBudget: estimatedBudget || '',
+      referenceImage: referenceImage || null,
+      status: 'new',
+      statusHistory: [{ status: 'new', time: new Date().toISOString(), note: 'Custom request submitted.' }]
+    });
+
+    await newRequest.save();
+
+    await Notification.create({
+      type: 'new_custom_order',
+      title: 'New Custom Order Request! 🎨',
+      message: `${customerName} wants a custom ${itemType}.`,
+      relatedEntity: 'custom_request',
+      relatedEntityId: id
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Custom order request received! Aanu will review and respond within 24 hours.',
+      data: newRequest
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
-
-  const requests = getRequests();
-  const newRequest = {
-    id: `COMM-${Math.floor(100 + Math.random() * 900)}`,
-    createdAt: new Date().toISOString(),
-    customerName,
-    customerEmail,
-    itemType,
-    colorPalette: colorPalette || [],
-    yarnPreference: yarnPreference || 'Artisan Choice',
-    specialNotes: specialNotes || '',
-    estimatedBudget: estimatedBudget || '₹1,200 - ₹2,500',
-    referenceImage: referenceImage || null,
-    status: 'pending_review'
-  };
-
-  requests.unshift(newRequest);
-  saveRequests(requests);
-
-  res.status(201).json({
-    success: true,
-    message: 'Custom order request received! Aanu will review and respond via email within 24 hours.',
-    data: newRequest
-  });
 });
 
+// PATCH /api/custom-requests/:id/status — admin only
+router.patch('/:id/status', requireAdmin, async (req, res) => {
+  try {
+    const { status, note, adminNotes, quotedPrice } = req.body;
+    const validStatuses = ['new', 'discussion', 'quote_sent', 'approved', 'in_production', 'ready', 'completed', 'cancelled'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status.' });
+    }
 
-// DELETE /:id
-router.delete('/:id', (req, res) => {
-  let items = getRequests();
-  const initialCount = items.length;
-  items = items.filter(i => (i.id || i.code || i._id || '').toString() !== req.params.id.toString());
-  if (items.length === initialCount) return res.status(404).json({ success: false, message: 'Not found' });
-  saveRequests(items);
-  res.json({ success: true, message: 'Deleted successfully' });
+    const request = await CustomRequest.findOne({ id: req.params.id });
+    if (!request) {
+      return res.status(404).json({ success: false, message: 'Custom request not found.' });
+    }
+
+    request.status = status;
+    if (adminNotes) request.adminNotes = adminNotes;
+    if (quotedPrice) request.quotedPrice = Number(quotedPrice);
+    request.statusHistory = request.statusHistory || [];
+    request.statusHistory.push({ status, time: new Date().toISOString(), note: note || `Status updated to ${status}` });
+    await request.save();
+
+    res.json({ success: true, message: `Custom order status updated to ${status}`, data: request });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/custom-requests/:id — admin
+router.delete('/:id', requireAdmin, async (req, res) => {
+  try {
+    const deleted = await CustomRequest.findOneAndDelete({ id: req.params.id });
+    if (!deleted) return res.status(404).json({ success: false, message: 'Not found.' });
+    res.json({ success: true, message: 'Custom request deleted.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 export default router;

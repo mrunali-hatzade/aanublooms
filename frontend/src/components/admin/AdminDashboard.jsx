@@ -63,54 +63,56 @@ import { CollectionsManager } from './CollectionsManager';
 import { StoreSettingsModule } from './settings/StoreSettingsModule';
 
 export const AdminDashboard = ({ onNavigate }) => {
-  const { user, login } = useAuth();
+  const { user, login, isLoadingAuth } = useAuth();
   const { addToast } = useToast();
 
   // Admin Security Authentication State (Always prompts for login details)
   const [isAdminUnlocked, setIsAdminUnlocked] = useState(() => {
     try {
-      return sessionStorage.getItem('aanublooms_admin_unlocked') === 'true' && user?.role === 'admin';
+      return sessionStorage.getItem('aanublooms_admin_unlocked') === 'true';
     } catch {
       return false;
     }
   });
+
+  React.useEffect(() => {
+    if (user?.role === 'admin' && sessionStorage.getItem('aanublooms_admin_unlocked') === 'true') {
+      setIsAdminUnlocked(true);
+    }
+  }, [user]);
 
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
 
-  const handleUnlockAdmin = (e) => {
-    if (e) e.preventDefault();
+  const handleUnlockAdmin = async (e) => {
+    e.preventDefault();
+    setAuthError('');
     const cleanEmail = adminEmail.trim().toLowerCase();
     const cleanPass = adminPassword.trim();
-
-    if (!cleanEmail) {
-      setAuthError('Please enter your administrator email address.');
-      addToast('Admin email address required', 'error');
+    
+    if (!cleanEmail || !cleanPass) {
+      setAuthError('Please enter both email and passcode.');
       return;
     }
 
-    if (!cleanPass) {
-      setAuthError('Please enter your administrator password.');
-      addToast('Admin password required', 'error');
-      return;
-    }
-
-    const isValidEmail = cleanEmail.includes('admin') || cleanEmail.includes('aanu') || cleanEmail.includes('priya') || cleanEmail === 'admin@aanublooms.com';
-    const isValidPass = cleanPass === 'adminpassword123' || cleanPass === 'admin123' || cleanPass === '1234' || cleanPass === 'aanublooms';
-
-    if (isValidEmail && isValidPass) {
-      try {
-        sessionStorage.setItem('aanublooms_admin_unlocked', 'true');
-      } catch {}
-      setIsAdminUnlocked(true);
-      login(cleanEmail, cleanPass);
-      addToast('👑 Admin Security Access Granted! Welcome back.', 'success');
-      setAuthError('');
-    } else {
-      setAuthError('Invalid Admin Credentials. Please verify your Email and Password.');
-      addToast('Incorrect Admin email or password', 'error');
+    try {
+      const res = await login(cleanEmail, cleanPass);
+      if (res?.success && res?.user?.role === 'admin') {
+        try { sessionStorage.setItem('aanublooms_admin_unlocked', 'true'); } catch {}
+        setIsAdminUnlocked(true);
+        addToast('👑 Admin Access Granted! Welcome back.', 'success');
+        setAuthError('');
+      } else if (res?.success && res?.user?.role !== 'admin') {
+        setAuthError('This account does not have admin privileges.');
+        addToast('Admin access required', 'error');
+      } else {
+        setAuthError('Invalid credentials. Please check your email and password.');
+      }
+    } catch (err) {
+      setAuthError(err.message || 'Login failed. Please try again.');
+      addToast(err.message || 'Login failed', 'error');
     }
   };
 
@@ -122,6 +124,7 @@ export const AdminDashboard = ({ onNavigate }) => {
     addToast('Admin session locked 🔒', 'info');
   };
 
+  const isAdmin = isAdminUnlocked;
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'products' | 'categories' | 'collections' | 'inventory' | 'orders' | 'custom-orders' | 'enquiries' | 'customers' | 'media' | 'coupons' | 'settings' | 'reports'
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -621,6 +624,45 @@ export const AdminDashboard = ({ onNavigate }) => {
   });
 
   // Top Products Ranked List (01 to 05)
+  
+  const customOrderStats = React.useMemo(() => {
+    const stats = { new: 0, discuss: 0, quoted: 0, approved: 0, making: 0, ready: 0, done: 0 };
+    customRequests.forEach(req => {
+      const st = req.status || 'new';
+      if (st === 'new') stats.new++;
+      if (st === 'discussion') stats.discuss++;
+      if (st === 'quote_sent') stats.quoted++;
+      if (st === 'approved') stats.approved++;
+      if (st === 'in_production') stats.making++;
+      if (st === 'ready') stats.ready++;
+      if (st === 'completed') stats.done++;
+    });
+    return stats;
+  }, [customRequests]);
+
+  const salesByCategory = React.useMemo(() => {
+    const totals = {};
+    let grand = 0;
+    orders.forEach(o => {
+      (o.items || []).forEach(item => {
+        const p = products.find(prod => prod.id === item.productId);
+        const cat = p?.category || 'forever-blooms';
+        const line = (item.price || 0) * (item.quantity || 1);
+        totals[cat] = (totals[cat] || 0) + line;
+        grand += line;
+      });
+    });
+
+    return {
+      total: grand,
+      bags: grand > 0 ? Math.round(((totals['wearables'] || 0) / grand) * 100) : 0,
+      flowers: grand > 0 ? Math.round(((totals['forever-blooms'] || 0) / grand) * 100) : 0,
+      amigurumi: grand > 0 ? Math.round(((totals['amigurumi'] || 0) / grand) * 100) : 0,
+      accessories: grand > 0 ? Math.round(((totals['accessories'] || 0) / grand) * 100) : 0,
+      home: grand > 0 ? Math.round(((totals['home-decor'] || 0) / grand) * 100) : 0
+    };
+  }, [orders, products]);
+
   const topProductsList = React.useMemo(() => { return [...products].sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0)).slice(0, 5).map((p, idx) => ({ rank: "0" + (idx + 1), name: p.name, sold: (p.reviewCount || 0) + " sold", revenue: "₹" + ((p.reviewCount || 0) * p.price).toLocaleString(), image: p.image || (p.images && p.images[0]) || "/images/category/1st_category_flower.jpeg" })); }, [products]);
 
   // Restock action handler for low stock items
@@ -633,6 +675,10 @@ export const AdminDashboard = ({ onNavigate }) => {
   // =========================================================================
   // IF NOT AUTHENTICATED: DISPLAY ADMIN SECURITY LOCK SCREEN
   // =========================================================================
+  if (isLoadingAuth) {
+    return <div className="min-h-screen bg-[#F8F6F3] flex items-center justify-center"><div className="w-8 h-8 border-4 border-[#D96C65] border-t-transparent rounded-full animate-spin"></div></div>;
+  }
+
   if (!isAdminUnlocked) {
     return (
       <div className="min-h-screen bg-[#F8F6F3] flex items-center justify-center p-4 antialiased font-sans">
@@ -1681,7 +1727,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                     className="w-full py-2 px-3 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>+ Add Product</span>
+                    <span>Add Product</span>
                   </button>
 
                   <button
@@ -1740,7 +1786,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                     className="px-4 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-semibold shadow-2xs flex items-center gap-1.5 transition-colors"
                   >
                     <Plus className="w-4 h-4" />
-                    <span>+ Add Product</span>
+                    <span>Add Product</span>
                   </button>
                 </div>
               </div>
