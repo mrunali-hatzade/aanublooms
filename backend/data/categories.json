@@ -4,7 +4,7 @@
     "name": "Forever Blooms & Pots",
     "description": "Never-wilting hand-crocheted floral bouquets and aesthetic potted plants.",
     "icon": "Flower2",
-    "image": "/images/blossom-pots-collection.jpeg",
+    "image": "/images/category/3rd_category_flowerpot.jpeg",
     "itemCount": 18
   },
   {
@@ -12,7 +12,7 @@
     "name": "Hair Bows & Parandis",
     "description": "Handmade crochet floral parandis, velvet hair scrunchies, and dainty clips.",
     "icon": "Heart",
-    "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+    "image": "/images/category/1st_category_flower.jpeg",
     "itemCount": 9
   },
   {
@@ -20,7 +20,7 @@
     "name": "Amigurumi Plushies",
     "description": "Squishy, cuddly, handcrafted crochet plush companions in velvet & chenille.",
     "icon": "Heart",
-    "image": "https://images.unsplash.com/photo-1558877385-81a1c7e67d72?auto=format&fit=crop&w=600&q=80",
+    "image": "/images/category/5th_category_handmadegifts.jpeg",
     "itemCount": 24
   },
   {
@@ -28,7 +28,7 @@
     "name": "Botanical Bookmarks",
     "description": "Dainty hand-crocheted floral sprout & leaf page savers for book lovers.",
     "icon": "BookOpen",
-    "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80",
+    "image": "/images/category/1st_category_flower.jpeg",
     "itemCount": 7
   },
   {
@@ -36,7 +36,7 @@
     "name": "Keychains & Bag Charms",
     "description": "Pocket-sized crochet strawberries, daisies, and lucky charms.",
     "icon": "Sparkles",
-    "image": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=600&q=80",
+    "image": "/images/category/2nd_category_keychain.jpeg",
     "itemCount": 6
   },
   {
@@ -44,7 +44,7 @@
     "name": "Bags & Totes",
     "description": "Handmade daisy totes, crossbody pouches, and velvet bags.",
     "icon": "ShoppingBag",
-    "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80",
+    "image": "/images/category/4th_category_bouquet.jpeg",
     "itemCount": 15
   },
   {
@@ -60,7 +60,7 @@
     "name": "Cozy Home & Living",
     "description": "Botanical coaster sets, mug rugs, and plant hangers.",
     "icon": "Home",
-    "image": "https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&w=600&q=80",
+    "image": "/images/category/5th_category_homedecor.jpeg",
     "itemCount": 16
   },
   {

@@ -21,7 +21,7 @@ export const sendOrderConfirmationToCustomer = async (order) => {
   const customerEmail = order.customer?.email;
   if (!customerEmail) return { success: false, message: 'No customer email provided' };
 
-  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
+  const founderEmail = process.env.FOUNDER_EMAIL || 'simplifiedworks.official@gmail.com';
   const itemsHtml = (order.items || []).map(item => `
     <tr style="border-bottom: 1px solid #f0ebe6;">
       <td style="padding: 10px 0; color: #3E2B25; font-size: 14px;">
@@ -129,7 +129,7 @@ export const sendOrderConfirmationToCustomer = async (order) => {
 
 // 2. Send New Order Alert Email to Founder
 export const sendNewOrderAlertToFounder = async (order) => {
-  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
+  const founderEmail = process.env.FOUNDER_EMAIL || 'simplifiedworks.official@gmail.com';
 
   const itemsList = (order.items || []).map(item => `
     - ${item.name} x${item.quantity || 1} (${item.selectedColor || 'Standard'}) — ₹${((item.price || 0) * (item.quantity || 1)).toLocaleString('en-IN')}
@@ -182,5 +182,213 @@ export const sendNewOrderAlertToFounder = async (order) => {
     console.log(`📢 [EMAIL SIMULATION] Founder notification alert prepared for: ${founderEmail} (Order #${order.id} - ₹${order.total})`);
   }
 
+  return { success: true, simulated: true };
+};
+
+// 3. Send Contact Form Alert to Founder
+export const sendContactFormAlert = async (messageData) => {
+  const founderEmail = process.env.FOUNDER_EMAIL || 'simplifiedworks.official@gmail.com';
+
+  const htmlContent = `
+    <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 25px; color: #333;">
+      <div style="max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0;">
+        <h2 style="color: #D96C65; margin-top: 0;">📨 New Contact Message Received!</h2>
+        
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;"/>
+        
+        <p style="font-size: 14px; line-height: 1.5; margin: 0;">
+          <strong>Name:</strong> ${messageData.name}<br/>
+          <strong>Email:</strong> ${messageData.email}<br/>
+          <strong>Phone:</strong> ${messageData.phone || 'N/A'}<br/>
+          <strong>Subject:</strong> ${messageData.subject || 'N/A'}
+        </p>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;"/>
+
+        <h3 style="font-size: 14px; text-transform: uppercase; color: #666; margin-bottom: 8px;">Message:</h3>
+        <p style="font-size: 14px; white-space: pre-wrap;">${messageData.message}</p>
+      </div>
+    </div>
+  `;
+
+  const transporter = createTransporter();
+  if (transporter) {
+    try {
+      await transporter.sendMail({
+        from: `"AanuBlooms Store Bot" <${process.env.EMAIL_USER}>`,
+        to: founderEmail,
+        subject: `📨 New Contact Message from ${messageData.name}`,
+        html: htmlContent
+      });
+      return { success: true };
+    } catch (err) {
+      console.error('❌ Error sending contact form email:', err.message);
+      return { success: false, error: err.message };
+    }
+  }
+  return { success: true, simulated: true };
+};
+
+// 4. Send Feedback Alert to Founder
+export const sendFeedbackAlert = async (feedbackData) => {
+  const founderEmail = process.env.FOUNDER_EMAIL || 'simplifiedworks.official@gmail.com';
+
+  const htmlContent = `
+    <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 25px; color: #333;">
+      <div style="max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0;">
+        <h2 style="color: #D96C65; margin-top: 0;">⭐ New Feedback/Review Received!</h2>
+        
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;"/>
+        
+        <p style="font-size: 14px; line-height: 1.5; margin: 0;">
+          <strong>Name:</strong> ${feedbackData.name}<br/>
+          <strong>Email:</strong> ${feedbackData.email || 'N/A'}<br/>
+          <strong>Rating:</strong> ${feedbackData.rating} / 5<br/>
+          <strong>Product/Category:</strong> ${feedbackData.productCategory || 'N/A'}
+        </p>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;"/>
+
+        <h3 style="font-size: 14px; text-transform: uppercase; color: #666; margin-bottom: 8px;">Comment:</h3>
+        <p style="font-size: 14px; white-space: pre-wrap;">${feedbackData.comment || feedbackData.message}</p>
+      </div>
+    </div>
+  `;
+
+  const transporter = createTransporter();
+  if (transporter) {
+    try {
+      await transporter.sendMail({
+        from: `"AanuBlooms Store Bot" <${process.env.EMAIL_USER}>`,
+        to: founderEmail,
+        subject: `⭐ New Feedback (${feedbackData.rating}/5) from ${feedbackData.name}`,
+        html: htmlContent
+      });
+      return { success: true };
+    } catch (err) {
+      console.error('❌ Error sending feedback alert email:', err.message);
+      return { success: false, error: err.message };
+    }
+  }
+  return { success: true, simulated: true };
+};
+
+// 5. Send Order Status Update Alert to Founder
+export const sendOrderStatusUpdateAlert = async (order, status, note) => {
+  const founderEmail = process.env.FOUNDER_EMAIL || 'simplifiedworks.official@gmail.com';
+
+  const htmlContent = `
+    <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 25px; color: #333;">
+      <div style="max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0;">
+        <h2 style="color: #D96C65; margin-top: 0;">📦 Order Status Updated: #${order.id}</h2>
+        
+        <p style="font-size: 14px; line-height: 1.5; margin: 0;">
+          The status for order <strong>#${order.id}</strong> (Customer: ${order.customer?.name || 'N/A'}) has been updated to <strong>${status.toUpperCase()}</strong>.
+        </p>
+
+        ${note ? `<p style="font-size: 14px; color: #555; margin-top: 10px;"><em>Note: ${note}</em></p>` : ''}
+      </div>
+    </div>
+  `;
+
+  const transporter = createTransporter();
+  if (transporter) {
+    try {
+      await transporter.sendMail({
+        from: `"AanuBlooms Store Bot" <${process.env.EMAIL_USER}>`,
+        to: founderEmail,
+        subject: `📦 Order Status Update: #${order.id} is now ${status.toUpperCase()}`,
+        html: htmlContent
+      });
+      return { success: true };
+    } catch (err) {
+      console.error('❌ Error sending order status update alert email:', err.message);
+    }
+  }
+  return { success: true, simulated: true };
+};
+
+// 6. Send Contact Thank You to Customer
+export const sendContactThankYouToCustomer = async (messageData) => {
+  const customerEmail = messageData.email;
+  if (!customerEmail) return { success: false, message: 'No customer email provided' };
+
+  const htmlContent = `
+    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; background-color: #FAF8F5; padding: 30px 15px; color: #3E2B25;">
+      <div style="max-width: 560px; margin: 0 auto; background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #EDE8E2; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+        <div style="background: linear-gradient(135deg, #D96C65, #C45750); padding: 25px 20px; text-align: center; color: #ffffff;">
+          <div style="font-size: 28px; margin-bottom: 5px;">🌸</div>
+          <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">AanuBlooms</h1>
+        </div>
+        <div style="padding: 25px 25px 15px;">
+          <h2 style="font-size: 18px; color: #3E2B25; margin-top: 0;">We received your message!</h2>
+          <p style="font-size: 14px; line-height: 1.6; color: #5C4D46;">
+            Hi <strong>${messageData.name}</strong>,<br/><br/>
+            Thank you for reaching out to AanuBlooms! We have received your message regarding <strong>"${messageData.subject || 'your enquiry'}"</strong>. 
+            We will get back to you within 24 hours.
+          </p>
+          <p style="font-size: 14px; line-height: 1.6; color: #5C4D46;">Have a beautiful day!</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const transporter = createTransporter();
+  if (transporter) {
+    try {
+      await transporter.sendMail({
+        from: `"AanuBlooms Studio" <${process.env.EMAIL_USER}>`,
+        to: customerEmail,
+        subject: `🌸 Thank you for contacting AanuBlooms!`,
+        html: htmlContent
+      });
+      return { success: true };
+    } catch (err) {
+      console.error('❌ Error sending contact thank you email:', err.message);
+      return { success: false, error: err.message };
+    }
+  }
+  return { success: true, simulated: true };
+};
+
+// 7. Send Feedback Thank You to Customer
+export const sendFeedbackThankYouToCustomer = async (feedbackData) => {
+  const customerEmail = feedbackData.email;
+  if (!customerEmail) return { success: false, message: 'No customer email provided' };
+
+  const htmlContent = `
+    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; background-color: #FAF8F5; padding: 30px 15px; color: #3E2B25;">
+      <div style="max-width: 560px; margin: 0 auto; background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #EDE8E2; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+        <div style="background: linear-gradient(135deg, #D96C65, #C45750); padding: 25px 20px; text-align: center; color: #ffffff;">
+          <div style="font-size: 28px; margin-bottom: 5px;">🌸</div>
+          <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">AanuBlooms</h1>
+        </div>
+        <div style="padding: 25px 25px 15px;">
+          <h2 style="font-size: 18px; color: #3E2B25; margin-top: 0;">Thank you for your feedback! ⭐</h2>
+          <p style="font-size: 14px; line-height: 1.6; color: #5C4D46;">
+            Hi <strong>${feedbackData.name}</strong>,<br/><br/>
+            We truly appreciate you taking the time to share your experience with us! Your words mean the world to our small studio and help us keep crafting with love.
+          </p>
+          <p style="font-size: 14px; line-height: 1.6; color: #5C4D46;">Thank you for supporting handmade!</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const transporter = createTransporter();
+  if (transporter) {
+    try {
+      await transporter.sendMail({
+        from: `"AanuBlooms Studio" <${process.env.EMAIL_USER}>`,
+        to: customerEmail,
+        subject: `🌸 Thank you for your feedback!`,
+        html: htmlContent
+      });
+      return { success: true };
+    } catch (err) {
+      console.error('❌ Error sending feedback thank you email:', err.message);
+      return { success: false, error: err.message };
+    }
+  }
   return { success: true, simulated: true };
 };

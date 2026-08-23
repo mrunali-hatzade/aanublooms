@@ -3,7 +3,7 @@ import { Order } from '../models/Order.js';
 import { Product } from '../models/Product.js';
 import { Notification } from '../models/Notification.js';
 import { requireAdmin } from '../middleware/auth.js';
-import { sendOrderConfirmationToCustomer, sendNewOrderAlertToFounder } from '../services/emailService.js';
+import { sendOrderConfirmationToCustomer, sendNewOrderAlertToFounder, sendOrderStatusUpdateAlert } from '../services/emailService.js';
 
 const router = express.Router();
 
@@ -211,6 +211,9 @@ router.patch('/:id/status', requireAdmin, async (req, res) => {
         relatedEntityId: order.id
       });
     }
+
+    // Send email alert to founder for status update
+    await sendOrderStatusUpdateAlert(order, status, note);
 
     res.json({ success: true, message: `Order status updated to ${status}`, data: order });
   } catch (err) {
