@@ -11,8 +11,9 @@ const createTransporter = () => {
     const pass = rawPass.trim().replace(/^['"]|['"]$/g, '');
     return nodemailer.createTransport({
       host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
+      port: 587,
+      secure: false,
+      family: 4,
       auth: { user, pass },
       tls: {
         rejectUnauthorized: false
