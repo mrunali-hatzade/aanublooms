@@ -110,8 +110,8 @@ export const CartProvider = ({ children }) => {
   }, [items]);
 
   // Shipping from store settings
-  const freeShippingThreshold = settings?.shipping?.freeShippingThreshold ?? 999;
-  const standardShippingCharge = settings?.shipping?.standardCharge ?? 80;
+  const freeShippingThreshold = settings?.shipping?.freeShippingThreshold ?? 0;
+  const standardShippingCharge = settings?.shipping?.standardCharge ?? 0;
   const freeShippingRemaining = Math.max(0, freeShippingThreshold - subtotal);
   const freeShippingProgress = freeShippingThreshold > 0 ? Math.min(100, (subtotal / freeShippingThreshold) * 100) : 100;
 
