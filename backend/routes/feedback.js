@@ -32,16 +32,6 @@ router.post('/', async (req, res) => {
       if (!emailRegex.test(email)) {
         return res.status(400).json({ success: false, message: 'Please enter a valid email address format.' });
       }
-
-      const domain = email.split('@')[1];
-      try {
-        const records = await dns.resolveMx(domain);
-        if (!records || records.length === 0) {
-          return res.status(400).json({ success: false, message: 'The email domain does not appear to exist. Please enter a valid email address.' });
-        }
-      } catch (err) {
-        return res.status(400).json({ success: false, message: 'Invalid email domain. Please enter a correct email address.' });
-      }
     }
 
     const newFeedback = new Feedback({
@@ -62,18 +52,10 @@ router.post('/', async (req, res) => {
 
     await newFeedback.save();
 
-    // Send email alert to founder
-    const founderResult = await sendFeedbackAlert(newFeedback);
-    if (founderResult && founderResult.success === false) {
-       return res.status(500).json({ success: false, message: 'Feedback saved, but failed to send internal alert. Please check your email credentials.' });
-    }
-    
-    if (email) {
-      const customerResult = await sendFeedbackThankYouToCustomer(newFeedback);
-      if (customerResult && customerResult.success === false) {
-         return res.status(400).json({ success: false, message: 'The email address you provided seems to be invalid or unable to receive emails. Please provide a working email address.' });
-      }
-    }
+    // Send emails asynchronously in background for instant UI response
+    const emailPromises = [sendFeedbackAlert(newFeedback)];
+    if (email) emailPromises.push(sendFeedbackThankYouToCustomer(newFeedback));
+    Promise.allSettled(emailPromises).catch(emailErr => console.error('Background feedback email error:', emailErr));
 
     res.status(201).json({
       success: true,

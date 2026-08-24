@@ -25,21 +25,10 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Name, email, and message are required.' });
     }
 
-    // Basic regex validation
+    // Fast regex validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ success: false, message: 'Please enter a valid email address format.' });
-    }
-
-    // Advanced validation: Check if domain has MX records
-    const domain = email.split('@')[1];
-    try {
-      const records = await dns.resolveMx(domain);
-      if (!records || records.length === 0) {
-        return res.status(400).json({ success: false, message: 'The email domain does not appear to exist. Please enter a valid email address.' });
-      }
-    } catch (err) {
-      return res.status(400).json({ success: false, message: 'Invalid email domain. Please enter a correct email address.' });
     }
 
     const newMessage = new ContactMessage({
@@ -61,19 +50,11 @@ router.post('/', async (req, res) => {
       relatedEntityId: newMessage.id
     });
 
-    // Send email alert to founder
-    const emailResult = await sendContactFormAlert(newMessage);
-    if (emailResult && emailResult.success === false) {
-       return res.status(500).json({ success: false, message: 'Message saved, but failed to send email alert. Please check your email credentials.' });
-    }
-
-    // Send thank you email to customer
-    const customerEmailResult = await sendContactThankYouToCustomer(newMessage);
-    if (customerEmailResult && customerEmailResult.success === false) {
-       // If sending to the customer fails, it usually means their email address doesn't exist
-       // We can rollback or just inform them
-       return res.status(400).json({ success: false, message: 'The email address you provided seems to be invalid or unable to receive emails. Please provide a working email address.' });
-    }
+    // Send emails asynchronously in background for instant UI response
+    Promise.allSettled([
+      sendContactFormAlert(newMessage),
+      sendContactThankYouToCustomer(newMessage)
+    ]).catch(emailErr => console.error('Background contact email error:', emailErr));
 
     res.status(201).json({
       success: true,
