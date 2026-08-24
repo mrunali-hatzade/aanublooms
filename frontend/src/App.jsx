@@ -265,14 +265,17 @@ function AppContent() {
       {/* Interactive Micro Blossom & Sparkle Click Ripple */}
       <SparkleClickEffect />
 
-      {/* Top Notification Announcement */}
-      <Banner />
+      {/* Sticky Header Wrapper */}
+      <div className="sticky top-0 z-50 w-full flex flex-col">
+        {/* Top Notification Announcement */}
+        <Banner />
 
-      {/* Main Artisan Header */}
-      <Navbar
-        currentPage={currentPage}
-        onNavigate={navigateTo}
-      />
+        {/* Main Artisan Header */}
+        <Navbar
+          currentPage={currentPage}
+          onNavigate={navigateTo}
+        />
+      </div>
 
       {/* Page View Body */}
       <main className="flex-1">

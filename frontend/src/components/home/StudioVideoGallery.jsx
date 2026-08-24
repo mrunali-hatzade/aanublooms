@@ -14,19 +14,19 @@ const defaultVideos = [
   },
   {
     id: 'vid-2',
-    title: 'Sunflower & Daisy Stems Assembly',
-    caption: 'Handcrafted floral wire framing with combed milk cotton yarn.',
-    url: '/images/artisan-craft-video.mp4',
-    poster: '/images/sunflower-stem-handheld.jpeg',
-    tag: '✨ Flower Assembly'
+    title: 'Floral Crafting Process',
+    caption: 'See how our forever blooms come to life.',
+    url: '/images/flower video.mp4',
+    poster: '/images/flower pots.jpeg',
+    tag: '✨ Behind the Scenes'
   },
   {
     id: 'vid-3',
-    title: 'Pastel Garden Cupcake Blossom Pots',
-    caption: 'Everlasting desk blooms made with love in our Pune craft workshop.',
-    url: '/images/whatsapp-craft-video.mp4',
-    poster: '/images/blossom-pots-collection.jpeg',
-    tag: '🧶 Behind The Stitches'
+    title: 'Artisan Creations Showcase',
+    caption: 'A glimpse into our daily artisan craft.',
+    url: '/images/artisan-craft-video.mp4',
+    poster: '/images/1st_category_flower.jpeg',
+    tag: '🪴 Showcase'
   }
 ];
 
@@ -87,16 +87,6 @@ const VideoCard = ({ vid, isPlaying, onTogglePlay, isMuted, onToggleMute, isAdmi
           >
             {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
-
-          {isAdmin && (
-            <button
-              onClick={(e) => onDelete(vid.id, e)}
-              className="w-8 h-8 rounded-full bg-red-600/80 backdrop-blur-xs text-white flex items-center justify-center hover:bg-red-700 transition-colors opacity-0 group-hover:opacity-100"
-              title="Remove video"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
-          )}
         </div>
       </div>
 

@@ -110,7 +110,7 @@ export const sendOrderConfirmationToCustomer = async (order) => {
   if (transporter) {
     try {
       await transporter.sendMail({
-        from: `"AanuBlooms Studio" <${process.env.EMAIL_USER}>`,
+        from: `"AanuBlooms Store" <${process.env.EMAIL_USER}>`,
         to: customerEmail,
         subject: `🌸 Order Confirmed! #${order.id} — AanuBlooms Handcrafted Creations`,
         html: htmlContent
@@ -168,7 +168,7 @@ export const sendNewOrderAlertToFounder = async (order) => {
   if (transporter) {
     try {
       await transporter.sendMail({
-        from: `"AanuBlooms Store Bot" <${process.env.EMAIL_USER}>`,
+        from: `"AanuBlooms Store " <${process.env.EMAIL_USER}>`,
         to: founderEmail,
         subject: `🚨 New Order Alert! #${order.id} — ₹${(order.total || 0).toLocaleString('en-IN')} from ${order.customer?.name || 'Customer'}`,
         html: htmlContent
@@ -215,7 +215,7 @@ export const sendContactFormAlert = async (messageData) => {
   if (transporter) {
     try {
       await transporter.sendMail({
-        from: `"AanuBlooms Store Bot" <${process.env.EMAIL_USER}>`,
+        from: `"AanuBlooms Store " <${process.env.EMAIL_USER}>`,
         to: founderEmail,
         subject: `📨 New Contact Message from ${messageData.name}`,
         html: htmlContent
@@ -259,7 +259,7 @@ export const sendFeedbackAlert = async (feedbackData) => {
   if (transporter) {
     try {
       await transporter.sendMail({
-        from: `"AanuBlooms Store Bot" <${process.env.EMAIL_USER}>`,
+        from: `"AanuBlooms Store " <${process.env.EMAIL_USER}>`,
         to: founderEmail,
         subject: `⭐ New Feedback (${feedbackData.rating}/5) from ${feedbackData.name}`,
         html: htmlContent
@@ -337,7 +337,7 @@ export const sendContactThankYouToCustomer = async (messageData) => {
   if (transporter) {
     try {
       await transporter.sendMail({
-        from: `"AanuBlooms Studio" <${process.env.EMAIL_USER}>`,
+        from: `"AanuBlooms Store" <${process.env.EMAIL_USER}>`,
         to: customerEmail,
         subject: `🌸 Thank you for contacting AanuBlooms!`,
         html: htmlContent
@@ -379,7 +379,7 @@ export const sendFeedbackThankYouToCustomer = async (feedbackData) => {
   if (transporter) {
     try {
       await transporter.sendMail({
-        from: `"AanuBlooms Studio" <${process.env.EMAIL_USER}>`,
+        from: `"AanuBlooms Store" <${process.env.EMAIL_USER}>`,
         to: customerEmail,
         subject: `🌸 Thank you for your feedback!`,
         html: htmlContent

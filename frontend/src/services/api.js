@@ -129,8 +129,9 @@ export const api = {
   },
 
   async updateProduct(id, productData) {
+    const { _id, ...safeData } = productData;
     const res = await fetch(`${API_BASE_URL}/products/${id}`, {
-      method: 'PUT', headers: authHeaders(), body: JSON.stringify(productData)
+      method: 'PUT', headers: authHeaders(), body: JSON.stringify(safeData)
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed to update product');
@@ -472,6 +473,17 @@ export const api = {
     const res = await fetch(`${API_BASE_URL}/feedback/${id}`, { method: 'DELETE', headers: authHeaders() });
     if (!res.ok) { console.warn('Delete feedback failed'); }
     return { success: true };
+  },
+
+  async replyToFeedback(id, reply) {
+    const res = await fetch(`${API_BASE_URL}/feedback/${id}/reply`, {
+      method: 'PUT',
+      headers: authHeaders(),
+      body: JSON.stringify({ reply })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to add reply');
+    return data;
   },
 
   // ==================== PAYMENT ====================

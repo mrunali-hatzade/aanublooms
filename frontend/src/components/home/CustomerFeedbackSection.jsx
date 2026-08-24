@@ -35,7 +35,7 @@ export const CustomerFeedbackSection = ({ onNavigate }) => {
         <div>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rosewood-100 dark:bg-rosewood-950 text-rosewood-800 dark:text-rosewood-300 text-xs font-bold uppercase tracking-wider mb-2">
             <Heart className="w-3.5 h-3.5 fill-rosewood-500 text-rosewood-500" />
-            Loved By 1,200+ Craft Enthusiasts
+            Loved By Craft Enthusiasts
           </span>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
             Customer Love & Honest Feedback

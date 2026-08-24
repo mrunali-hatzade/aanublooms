@@ -22,6 +22,7 @@ export const ContactPage = ({ onNavigate }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     subject: 'Custom Order Question',
     otherSubject: '',
     orderId: '',
@@ -67,6 +68,7 @@ export const ContactPage = ({ onNavigate }) => {
         setFormData({
           name: '',
           email: '',
+          phone: '',
           subject: 'Custom Commission Question',
           orderId: '',
           message: ''
@@ -156,6 +158,20 @@ export const ContactPage = ({ onNavigate }) => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="e.g. +91 9876543210"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
+                  />
+                </div>
+
                 <div>
                   <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                     Subject / Inquiry Type
@@ -255,33 +271,17 @@ export const ContactPage = ({ onNavigate }) => {
                 <Mail className="w-4 h-4 text-bloom-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold text-warmgray-900 dark:text-white block">Email Direct</span>
-                  <a href="mailto:maker@aanublooms.com" className="text-bloom-600 dark:text-bloom-400 hover:underline">
-                    maker@aanublooms.com
+                  <a href="mailto:aanublooms@gmail.com" className="text-bloom-600 dark:text-bloom-400 hover:underline">
+                    aanublooms@gmail.com
                   </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Phone className="w-4 h-4 text-rosewood-500 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-warmgray-900 dark:text-white block">Studio Phone / WhatsApp</span>
-                  <span>+1 (555) 349-2918</span>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-warmgray-900 dark:text-white block">Craft Workshop</span>
-                  <span>742 Blossom Lane, Suite 4B, Portland, OR 97201</span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Clock className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-warmgray-900 dark:text-white block">Studio Craft Hours</span>
-                  <span>Mon – Sat: 9:00 AM – 6:00 PM PST</span>
+                  <span className="font-bold text-warmgray-900 dark:text-white block">Location</span>
+                  <span>Pune, India</span>
                 </div>
               </div>
             </div>

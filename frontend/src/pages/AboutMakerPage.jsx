@@ -38,7 +38,7 @@ export const AboutMakerPage = ({ onNavigate }) => {
 
         <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-warmgray-800">
           <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80"
+            src="/images/founder.jpeg"
             alt="Artisan Aanu"
             className="w-full h-96 object-cover"
           />

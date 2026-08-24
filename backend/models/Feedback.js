@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 const feedbackSchema = new mongoose.Schema({
+  id: { type: String },
   author: { type: String, required: true },
   name: { type: String },
   email: { type: String, default: '' },
@@ -13,7 +14,8 @@ const feedbackSchema = new mongoose.Schema({
   avatar: { type: String },
   verified: { type: Boolean, default: true },
   isApproved: { type: Boolean, default: true },
-  date: { type: String }
+  date: { type: String },
+  adminReply: { type: String, default: '' }
 }, { timestamps: true });
 
 export const Feedback = mongoose.models.Feedback || mongoose.model('Feedback', feedbackSchema);

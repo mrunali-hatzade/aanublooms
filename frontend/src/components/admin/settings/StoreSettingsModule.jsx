@@ -537,7 +537,7 @@ export const StoreSettingsModule = () => {
                   <label className="block text-xs font-bold text-[#3E2B25] mb-1">Year Started</label>
                   <input
                     type="text"
-                    value={formData.business?.yearStarted || '2024'}
+                    value={formData.business?.yearStarted || '2026'}
                     onChange={(e) => handleFieldChange('business', 'yearStarted', e.target.value)}
                     className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]"
                   />

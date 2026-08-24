@@ -20,6 +20,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
   const [photoName, setPhotoName] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const creationOptions = [
@@ -27,28 +28,28 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       id: 'bouquet',
       name: 'Custom Forever Flower Bouquet',
       priceBase: 1499,
-      image: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=600&q=80',
+      image: '/images/category/4th_category_bouquet.jpeg',
       desc: 'Handcrafted bouquet with your choice of floral stems, custom color palette & silk ribbon text.'
     },
     {
       id: 'plushie',
       name: 'Custom Amigurumi Plushie Companion',
       priceBase: 1199,
-      image: 'https://images.unsplash.com/photo-1558877385-81a1c7e67d72?auto=format&fit=crop&w=600&q=80',
+      image: '/images/category/5th_category_handmadegifts.jpeg',
       desc: 'Squishy bunny, bear, or dino with custom accessories (strawberry bag, bowtie, mini hat).'
     },
     {
       id: 'wearable',
       name: 'Custom Hexagon / Granny Square Cardigan',
       priceBase: 3499,
-      image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=600&q=80',
+      image: '/images/category/3rd_category_flowerpot.jpeg',
       desc: 'Tailored to your body measurements with your chosen yarn color blocks and balloon sleeves.'
     },
     {
       id: 'bag',
       name: 'Custom Daisy Market Tote / Crossbody',
       priceBase: 1599,
-      image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80',
+      image: '/images/category/1st_category_flower.jpeg',
       desc: 'Artisan granny square tote in your personalized garden color scheme with inner cotton lining.'
     }
   ];
@@ -152,8 +153,8 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
 
   const handleInquirySubmit = async (e) => {
     e.preventDefault();
-    if (!customerName || !customerEmail) {
-      addToast('Please enter your name and email', 'error');
+    if (!customerName || !customerEmail || !customerPhone) {
+      addToast('Please enter your name, email and phone number', 'error');
       return;
     }
 
@@ -162,6 +163,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       await api.submitCustomRequest({
         customerName,
         customerEmail,
+        customerPhone,
         itemType: creationType,
         colorPalette: selectedColors,
         yarnPreference,
@@ -598,6 +600,20 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
                   placeholder="e.g. samantha@example.com"
                   value={customerEmail}
                   onChange={(e) => setCustomerEmail(e.target.value)}
+                  className="w-full text-xs p-2.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="e.g. +91 9876543210"
+                  value={customerPhone}
+                  onChange={(e) => setCustomerPhone(e.target.value)}
                   className="w-full text-xs p-2.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white"
                 />
               </div>

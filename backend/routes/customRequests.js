@@ -20,8 +20,8 @@ router.post('/', async (req, res) => {
   try {
     const { customerName, customerEmail, customerPhone, itemType, colorPalette, yarnPreference, specialNotes, estimatedBudget, referenceImage } = req.body;
 
-    if (!customerName || !customerEmail || !itemType) {
-      return res.status(400).json({ success: false, message: 'Please provide your name, email, and item type.' });
+    if (!customerName || !customerEmail || !customerPhone || !itemType) {
+      return res.status(400).json({ success: false, message: 'Please provide your name, email, phone number, and item type.' });
     }
 
     const id = `COMM-${Date.now()}`;

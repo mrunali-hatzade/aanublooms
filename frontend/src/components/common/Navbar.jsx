@@ -91,8 +91,8 @@ export const Navbar = ({ onNavigate, currentPage }) => {
       { id: 'home-categories', page: 'shop' },
       { id: 'home-bestsellers', page: 'shop' },
       { id: 'home-feedback', page: 'feedback' },
-      { id: 'home-videos', page: 'custom-order' },
-      { id: 'home-story', page: 'about' }
+      { id: 'home-story', page: 'about' },
+      { id: 'footer-contact', page: 'contact' }
     ];
 
     const handleScroll = () => {
@@ -135,10 +135,9 @@ export const Navbar = ({ onNavigate, currentPage }) => {
       const targetMap = {
         'home': 'home-hero',
         'shop': 'home-categories',
-        'custom-order': 'home-videos',
         'about': 'home-story',
         'feedback': 'home-feedback',
-        'contact': 'home-story'
+        'contact': 'footer-contact'
       };
       const targetId = targetMap[link.page];
       const elem = targetId ? document.getElementById(targetId) : null;
@@ -152,7 +151,7 @@ export const Navbar = ({ onNavigate, currentPage }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-warmgray-900/95 backdrop-blur-md border-b border-warmgray-200/80 dark:border-warmgray-800 transition-colors shadow-xs">
+    <header className="relative z-40 bg-white/95 dark:bg-warmgray-900/95 backdrop-blur-md border-b border-warmgray-200/80 dark:border-warmgray-800 transition-colors shadow-xs">
       {/* Main Bar */}
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-3">

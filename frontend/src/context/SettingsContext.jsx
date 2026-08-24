@@ -20,7 +20,7 @@ export const DEFAULT_SETTINGS = {
     businessName: 'Stitch & Love Handcrafted Studio',
     ownerName: 'Aanu (Priya Sharma)',
     businessType: 'Handmade Boutique & Studio',
-    yearStarted: '2024',
+    yearStarted: '2026',
     address: '402, Lotus Residency, Indiranagar',
     city: 'Bengaluru',
     state: 'Karnataka',

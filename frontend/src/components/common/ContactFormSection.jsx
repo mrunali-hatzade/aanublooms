@@ -9,6 +9,7 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     subject: 'Custom Order Question',
     orderId: '',
     message: ''
@@ -19,8 +20,8 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      addToast('Please fill in your name, email, and message', 'error');
+    if (!formData.name || !formData.email || !formData.phone || !formData.message) {
+      addToast('Please fill in your name, email, phone number, and message', 'error');
       return;
     }
 
@@ -33,6 +34,7 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
         setFormData({
           name: '',
           email: '',
+          phone: '',
           subject: 'Custom Order Question',
           orderId: '',
           message: ''
@@ -123,6 +125,20 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="e.g. +91 9876543210"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full text-xs p-3 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1">
                       Subject / Inquiry Type
                     </label>
                     <select
@@ -137,7 +153,9 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
                       <option value="General Maker Question">General Maker Question</option>
                     </select>
                   </div>
+                </div>
 
+                <div className="grid grid-cols-1 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1">
                       Order ID (Optional)
@@ -190,17 +208,9 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
                 <Mail className="w-4 h-4 text-bloom-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold text-warmgray-900 dark:text-white block">Email Direct</span>
-                  <a href="mailto:maker@aanublooms.com" className="text-bloom-600 dark:text-bloom-400 hover:underline font-medium">
-                    maker@aanublooms.com
+                  <a href="mailto:aanublooms@gmail.com" className="text-bloom-600 dark:text-bloom-400 hover:underline font-medium">
+                    aanublooms@gmail.com
                   </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-2.5">
-                <Phone className="w-4 h-4 text-rosewood-500 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-warmgray-900 dark:text-white block">WhatsApp & Support</span>
-                  <span>+91 98765 43210</span>
                 </div>
               </div>
 
@@ -209,6 +219,17 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
                 <div>
                   <span className="font-bold text-warmgray-900 dark:text-white block">Response Time</span>
                   <span>Within 24 Hours (Mon – Sat)</span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2.5">
+                <svg className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <div>
+                  <span className="font-bold text-warmgray-900 dark:text-white block">Location</span>
+                  <span>Pune, India</span>
                 </div>
               </div>
             </div>

@@ -190,7 +190,7 @@ export const FeedbackPage = ({ onNavigate }) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1">
                     Your Name *
@@ -207,11 +207,25 @@ export const FeedbackPage = ({ onNavigate }) => {
 
                 <div>
                   <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="e.g. you@example.com"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    className="w-full text-xs p-3 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1">
                     City / State
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Bengaluru, Karnataka"
+                    placeholder="e.g. Bengaluru"
                     value={form.city}
                     onChange={(e) => setForm({ ...form, city: e.target.value })}
                     className="w-full text-xs p-3 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
@@ -359,6 +373,18 @@ export const FeedbackPage = ({ onNavigate }) => {
                     "{item.comment}"
                   </p>
                 </div>
+
+                {item.adminReply && (
+                  <div className="mt-3 p-3 bg-warmgray-50 dark:bg-warmgray-800 border-l-2 border-bloom-500 rounded-r-xl">
+                    <div className="flex items-center gap-1.5 mb-1 text-xs font-bold text-bloom-700 dark:text-bloom-400">
+                      <Smile className="w-3.5 h-3.5" />
+                      AanuBlooms Team
+                    </div>
+                    <p className="text-[11px] text-warmgray-600 dark:text-warmgray-300 italic">
+                      "{item.adminReply}"
+                    </p>
+                  </div>
+                )}
 
                 <div className="pt-2 flex items-center justify-between text-[11px] text-warmgray-400">
                   <span className="bg-warmgray-100 dark:bg-warmgray-800 px-2 py-0.5 rounded-md">

@@ -1165,13 +1165,6 @@ export const CustomerDashboardPage = ({ onNavigate, initialTab = 'overview' }) =
                           alt={prod.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                        <button
-                          onClick={() => removeFromWishlist(prod.id)}
-                          className="absolute top-2.5 right-2.5 p-2 rounded-full bg-white/90 dark:bg-warmgray-900/90 text-rosewood-500 hover:bg-white shadow-sm transition-colors"
-                          title="Remove from Wishlist"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
                       </div>
 
                       <div className="p-4 space-y-3">

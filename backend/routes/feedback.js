@@ -88,10 +88,43 @@ router.post('/', async (req, res) => {
 // DELETE /api/feedback/:id — admin
 router.delete('/:id', requireAdmin, async (req, res) => {
   try {
-    const deleted = await Feedback.findByIdAndDelete(req.params.id)
-      || await Feedback.findOneAndDelete({ id: req.params.id });
+    const mongoose = (await import('mongoose')).default;
+    let deleted;
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+      deleted = await Feedback.findByIdAndDelete(req.params.id);
+    }
+    if (!deleted) {
+      deleted = await Feedback.findOneAndDelete({ id: req.params.id });
+    }
     if (!deleted) return res.status(404).json({ success: false, message: 'Feedback not found.' });
     res.json({ success: true, message: 'Feedback deleted.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/feedback/:id/reply — admin
+router.put('/:id/reply', requireAdmin, async (req, res) => {
+  try {
+    const { reply } = req.body;
+    const mongoose = (await import('mongoose')).default;
+    let updated;
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+      updated = await Feedback.findByIdAndUpdate(
+        req.params.id,
+        { $set: { adminReply: reply } },
+        { new: true }
+      );
+    }
+    if (!updated) {
+      updated = await Feedback.findOneAndUpdate(
+        { id: req.params.id },
+        { $set: { adminReply: reply } },
+        { new: true }
+      );
+    }
+    if (!updated) return res.status(404).json({ success: false, message: 'Feedback not found.' });
+    res.json({ success: true, message: 'Reply added successfully.', data: updated });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

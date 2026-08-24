@@ -12,7 +12,7 @@ export const MeetTheMaker = ({ onNavigate }) => {
             <div className="relative mx-auto max-w-sm">
               <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white dark:border-warmgray-800 rotate-1 transform hover:rotate-0 transition-transform duration-300">
                 <img
-                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80"
+                  src="/images/founder.jpeg"
                   alt="Maker Aanu in Studio"
                   className="w-full h-64 sm:h-80 object-cover"
                 />
@@ -57,11 +57,11 @@ export const MeetTheMaker = ({ onNavigate }) => {
               </div>
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">Custom Ribbon Cards</span>
+                <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">Cute, Long lasting & Eco-friendly</span>
               </div>
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">Eco-Cotton Yarn</span>
+                <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">Made with Quality Material</span>
               </div>
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700 shadow-xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />

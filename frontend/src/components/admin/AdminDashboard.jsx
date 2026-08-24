@@ -66,18 +66,14 @@ export const AdminDashboard = ({ onNavigate }) => {
   const { user, login, isLoadingAuth } = useAuth();
   const { addToast } = useToast();
 
-  // Admin Security Authentication State (Always prompts for login details)
-  const [isAdminUnlocked, setIsAdminUnlocked] = useState(() => {
-    try {
-      return sessionStorage.getItem('aanublooms_admin_unlocked') === 'true';
-    } catch {
-      return false;
-    }
-  });
+  // Admin Security Authentication State
+  const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
 
   React.useEffect(() => {
-    if (user?.role === 'admin' && sessionStorage.getItem('aanublooms_admin_unlocked') === 'true') {
+    if (user?.role === 'admin') {
       setIsAdminUnlocked(true);
+    } else {
+      setIsAdminUnlocked(false);
     }
   }, [user]);
 
@@ -100,7 +96,6 @@ export const AdminDashboard = ({ onNavigate }) => {
     try {
       const res = await login(cleanEmail, cleanPass);
       if (res?.success && res?.user?.role === 'admin') {
-        try { sessionStorage.setItem('aanublooms_admin_unlocked', 'true'); } catch {}
         setIsAdminUnlocked(true);
         addToast('👑 Admin Access Granted! Welcome back.', 'success');
         setAuthError('');
@@ -117,9 +112,6 @@ export const AdminDashboard = ({ onNavigate }) => {
   };
 
   const handleLockAdmin = () => {
-    try {
-      sessionStorage.removeItem('aanublooms_admin_unlocked');
-    } catch {}
     setIsAdminUnlocked(false);
     addToast('Admin session locked 🔒', 'info');
   };
@@ -681,7 +673,7 @@ export const AdminDashboard = ({ onNavigate }) => {
     };
   }, [orders, products]);
 
-  const topProductsList = React.useMemo(() => { return [...products].sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0)).slice(0, 5).map((p, idx) => ({ rank: "0" + (idx + 1), name: p.name, sold: (p.reviewCount || 0) + " sold", revenue: "₹" + ((p.reviewCount || 0) * p.price).toLocaleString(), image: p.image || (p.images && p.images[0]) || "/images/category/1st_category_flower.jpeg" })); }, [products]);
+  const topProductsList = React.useMemo(() => { return [...products].sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0)).slice(0, 5).map((p, idx) => ({ rank: "0" + (idx + 1), name: p.name, sold: (p.reviewCount || 0) + " sold", revenue: "₹" + (((p.reviewCount || 0) * (p.price || 0)) || 0).toLocaleString(), image: p.image || (p.images && p.images[0]) || "/images/category/1st_category_flower.jpeg" })); }, [products]);
 
   // Restock action handler for low stock items
   const handleRestock = (item) => {
@@ -768,24 +760,6 @@ export const AdminDashboard = ({ onNavigate }) => {
               >
                 <UserCheck className="w-4 h-4" />
                 <span>Authenticate & Open Admin Portal 🔓</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setAdminEmail('admin@aanublooms.com');
-                  setAdminPassword('adminpassword123');
-                  try {
-                    sessionStorage.setItem('aanublooms_admin_unlocked', 'true');
-                  } catch {}
-                  setIsAdminUnlocked(true);
-                  login('admin@aanublooms.com', 'adminpassword123');
-                  addToast('⚡ Founder 1-Click Access Unlocked!', 'success');
-                }}
-                className="w-full py-2.5 px-3 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                <span>⚡ 1-Click Founder Authenticate</span>
               </button>
 
               <button
@@ -1260,7 +1234,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                   </div>
                 </div>
                 <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#3E2B25]">
-                  ₹{dashboardStats.totalSales.toLocaleString("en-IN")}
+                  ₹{(dashboardStats?.totalSales || 0).toLocaleString("en-IN")}
                 </h3>
                 <span className="text-[10px] text-[#4F9D69] font-bold block">
                   {dashboardStats.totalOrders > 0 ? "Live data" : "No orders yet"}
@@ -1941,7 +1915,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                   className="px-4 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-semibold shadow-2xs flex items-center gap-1.5 transition-colors self-start sm:self-auto"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>+ Add New Category</span>
+                  <span>Add New Category</span>
                 </button>
               </div>
 
@@ -1971,13 +1945,24 @@ export const AdminDashboard = ({ onNavigate }) => {
                         </span>
                       </div>
 
-                      <button
-                        onClick={() => handleDeleteCategory(cat.id)}
-                        className="p-2 rounded-xl text-red-500 hover:bg-red-50 transition-colors"
-                        title="Remove category"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => { setEditingCategory(cat); setCategoryForm(cat); setShowCategoryModal(true); }}
+                          className="p-2 rounded-xl text-[#756A65] hover:bg-[#E9E2DC] transition-colors"
+                          title="Edit category"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                        {!['forever-blooms', 'amigurumi-plushies'].includes(cat.id) && (
+                          <button
+                            onClick={() => handleDeleteCategory(cat.id)}
+                            className="p-2 rounded-xl text-red-500 hover:bg-red-50 transition-colors"
+                            title="Remove category"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
                     </div>
                   );
                 })}
@@ -2071,8 +2056,13 @@ export const AdminDashboard = ({ onNavigate }) => {
                       <tr key={order.id} className="hover:bg-[#F8F6F3]/50 transition-colors">
                         <td className="py-3 px-3 font-mono font-bold text-[#D96C65]">{order.id}</td>
                         <td className="py-3 px-3">
-                          <p className="font-semibold text-[#3E2B25]">{order.customer?.name}</p>
-                          <p className="text-[10px] text-[#756A65]">{order.customer?.city || 'India'}</p>
+                          <div 
+                            onClick={() => setSelectedCustomerDetails(order.customer)}
+                            className="cursor-pointer hover:bg-[#F8F6F3] p-1.5 -ml-1.5 rounded-lg transition-colors border border-transparent hover:border-[#E9E2DC]"
+                          >
+                            <p className="font-semibold text-[#3E2B25]">{order.customer?.name}</p>
+                            <p className="text-[10px] text-[#756A65]">{order.customer?.city || 'India'}</p>
+                          </div>
                         </td>
                         <td className="py-3 px-3">
     <div className="font-serif font-bold text-[#3E2B25]">₹{order.total?.toLocaleString('en-IN')}</div>
@@ -2173,6 +2163,20 @@ export const AdminDashboard = ({ onNavigate }) => {
                           >
                             Reply via Email
                           </a>
+                          <button
+                            onClick={() => {
+                              if (window.confirm('Delete this enquiry permanently?')) {
+                                api.deleteContactMessage(msg.id || msg._id).then(() => {
+                                  const updated = contactMessages.filter(m => (m.id || m._id) !== (msg.id || msg._id));
+                                  setContactMessages(updated);
+                                  addToast('Enquiry deleted', 'info');
+                                }).catch(() => addToast('Failed to delete', 'error'));
+                              }
+                            }}
+                            className="px-2.5 py-1 bg-red-50 text-red-600 border border-red-200 rounded-md font-bold text-[10px] hover:bg-red-100 transition-colors"
+                          >
+                            Delete
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -2238,21 +2242,55 @@ export const AdminDashboard = ({ onNavigate }) => {
 
                       <div className="flex justify-between items-center text-[10px] text-[#756A65] pt-1">
                         <span>Submitted on {fb.date || 'Recent'}</span>
-                        <button
-                          onClick={() => {
-                            if (window.confirm('Delete this feedback entry from website?')) {
-                              const updated = feedbacks.filter(f => f.id !== fb.id);
-                              setFeedbacks(updated);
-                              localStorage.setItem('aanublooms_feedback_v2s', JSON.stringify(updated));
-                              window.dispatchEvent(new Event('aanublooms_data_updated'));
-                              addToast('Feedback removed', 'info');
-                            }
-                          }}
-                          className="text-red-500 hover:underline font-semibold"
-                        >
-                          Delete Review
-                        </button>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={async () => {
+                              const replyText = window.prompt('Enter your public reply to this feedback (shown on site):', fb.adminReply || '');
+                              if (replyText !== null) {
+                                try {
+                                  const updated = await api.replyToFeedback(fb.id || fb._id, replyText);
+                                  const updatedFeedbacks = feedbacks.map(f => (f.id || f._id) === (fb.id || fb._id) ? { ...f, adminReply: replyText } : f);
+                                  setFeedbacks(updatedFeedbacks);
+                                  addToast('Reply saved!', 'success');
+                                } catch (err) {
+                                  addToast('Failed to save reply', 'error');
+                                }
+                              }
+                            }}
+                            className="px-2.5 py-1 bg-bloom-50 text-bloom-600 border border-bloom-200 rounded-md font-bold text-[10px] hover:bg-bloom-100 transition-colors"
+                          >
+                            Site Reply
+                          </button>
+                          {fb.email && (
+                            <a
+                              href={`mailto:${fb.email}?subject=Re:%20Thank%20you%20for%20your%20feedback!`}
+                              className="px-2.5 py-1 bg-[#D96C65] text-white rounded-md font-bold text-[10px] hover:bg-[#c85b54] transition-colors"
+                            >
+                              Email Reply
+                            </a>
+                          )}
+                          <button
+                            onClick={() => {
+                              if (window.confirm('Delete this feedback entry permanently?')) {
+                                api.deleteFeedback(fb.id || fb._id).then(() => {
+                                  const updated = feedbacks.filter(f => (f.id || f._id) !== (fb.id || fb._id));
+                                  setFeedbacks(updated);
+                                  addToast('Feedback deleted', 'info');
+                                }).catch(() => addToast('Failed to delete feedback', 'error'));
+                              }
+                            }}
+                            className="px-2.5 py-1 bg-red-50 text-red-600 border border-red-200 rounded-md font-bold text-[10px] hover:bg-red-100 transition-colors"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
+                      {fb.adminReply && (
+                        <div className="mt-2 p-2 bg-bloom-50 border border-bloom-100 rounded text-xs text-bloom-900">
+                          <span className="font-bold text-[10px] uppercase text-bloom-600 block mb-0.5">Your Reply:</span>
+                          {fb.adminReply}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -2346,13 +2384,13 @@ export const AdminDashboard = ({ onNavigate }) => {
                 <div className="p-3.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-center">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block">Total Revenue</span>
                   <span className="text-xl font-serif font-bold text-[#4F9D69] mt-0.5 block">
-                    ₹{orders.reduce((sum, o) => sum + (o.total || 0), 0).toLocaleString('en-IN')}
+                    ₹{(orders.reduce((sum, o) => sum + (o.total || 0), 0) || 0).toLocaleString('en-IN')}
                   </span>
                 </div>
                 <div className="p-3.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-center">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block">Avg Spend / Buyer</span>
                   <span className="text-xl font-serif font-bold text-[#3E2B25] mt-0.5 block">
-                    ₹{uniqueCustomersList.length ? Math.round(orders.reduce((sum, o) => sum + (o.total || 0), 0) / uniqueCustomersList.length).toLocaleString('en-IN') : 0}
+                    ₹{uniqueCustomersList.length ? Math.round((orders.reduce((sum, o) => sum + (o.total || 0), 0) / uniqueCustomersList.length) || 0).toLocaleString('en-IN') : 0}
                   </span>
                 </div>
               </div>
@@ -2444,7 +2482,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                             {/* Total Spent */}
                             <td className="py-3.5 px-3 text-right">
                               <span className="font-serif font-bold text-sm text-[#D96C65]">
-                                ₹{cust.totalSpent.toLocaleString('en-IN')}
+                                ₹{(cust?.totalSpent || 0).toLocaleString('en-IN')}
                               </span>
                             </td>
 
@@ -2828,7 +2866,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                 <div>
                   <span className="text-[#756A65]">Lifetime Store Spend: </span>
                   <strong className="font-serif font-bold text-sm text-[#D96C65]">
-                    ₹{selectedCustomerDetails.totalSpent.toLocaleString('en-IN')}
+                    ₹{(selectedCustomerDetails?.totalSpent || 0).toLocaleString('en-IN')}
                   </strong>
                 </div>
               </div>
@@ -2892,7 +2930,7 @@ export const AdminDashboard = ({ onNavigate }) => {
           <div className="relative bg-white rounded-3xl max-w-md w-full border border-[#E9E2DC] shadow-2xl p-6 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-[#E9E2DC]">
               <h3 className="font-serif font-bold text-lg text-[#3E2B25]">
-                Add New Category 🌸
+                {editingCategory ? 'Edit Category 🌸' : 'Add New Category 🌸'}
               </h3>
               <button onClick={() => { setShowCategoryModal(false); setEditingCategory(null); setCategoryForm({ name: "", slug: "", description: "", image: "/images/category/1st_category_flower.jpeg" }); }} className="p-1 text-[#756A65] hover:text-[#3E2B25]">
                 <X className="w-5 h-5" />
@@ -2983,7 +3021,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                   type="submit"
                   className="px-5 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-bold shadow-xs transition-colors"
                 >
-                  Add Category 🌸
+                  {editingCategory ? 'Update Category 🌸' : 'Add Category 🌸'}
                 </button>
               </div>
             </form>
@@ -3062,6 +3100,47 @@ export const AdminDashboard = ({ onNavigate }) => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+
+      {/* Customer Details Modal */}
+      {selectedCustomerDetails && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="relative bg-white rounded-3xl max-w-md w-full border border-[#E9E2DC] shadow-2xl p-6 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E9E2DC]">
+              <h3 className="font-serif font-bold text-lg text-[#3E2B25]">
+                Customer Details 👤
+              </h3>
+              <button onClick={() => setSelectedCustomerDetails(null)} className="p-1 text-[#756A65] hover:text-[#3E2B25]">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="p-4 bg-[#F8F6F3] rounded-2xl text-sm border border-[#E9E2DC] space-y-2">
+                <p><strong className="text-[#3E2B25]">Name:</strong> {selectedCustomerDetails.name || 'N/A'}</p>
+                <p><strong className="text-[#3E2B25]">Email:</strong> {selectedCustomerDetails.email || 'N/A'}</p>
+                <p><strong className="text-[#3E2B25]">Phone:</strong> {selectedCustomerDetails.phone || 'N/A'}</p>
+              </div>
+              
+              <div className="p-4 bg-[#F8F6F3] rounded-2xl text-sm border border-[#E9E2DC]">
+                <strong className="text-[#3E2B25] block mb-2 border-b border-[#E9E2DC] pb-1">Shipping Address</strong>
+                <p className="text-[#5C4D46]">{selectedCustomerDetails.address || 'No address provided'}</p>
+                <p className="text-[#5C4D46]">
+                  {selectedCustomerDetails.city || ''}{selectedCustomerDetails.state ? `, ${selectedCustomerDetails.state}` : ''} {selectedCustomerDetails.pincode || ''}
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setSelectedCustomerDetails(null)}
+                className="px-5 py-2 bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#3E2B25] rounded-xl text-xs font-bold transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
