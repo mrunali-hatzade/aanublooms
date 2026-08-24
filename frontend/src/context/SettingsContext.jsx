@@ -38,8 +38,8 @@ export const DEFAULT_SETTINGS = {
     accentColor: '#FAF7F2'
   },
   contact: {
-    whatsappNumber: '+919876543210',
-    phoneNumber: '+91 98765 43210',
+    whatsappNumber: '+919579162154',
+    phoneNumber: '+91 95791 62154',
     businessEmail: 'hello@stitchandlove.com',
     supportEmail: 'support@stitchandlove.com',
     instagramUrl: 'https://instagram.com/aanublooms',

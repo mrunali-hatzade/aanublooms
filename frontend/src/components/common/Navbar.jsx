@@ -16,12 +16,14 @@ import {
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useLocation } from '../../context/LocationContext';
+import { useSettings } from '../../context/SettingsContext';
 import { api } from '../../services/api';
 
 export const Navbar = ({ onNavigate, currentPage }) => {
   const { totalItemCount, openCart } = useCart();
   const { count: wishlistCount } = useWishlist();
   const { location, openLocationModal } = useLocation();
+  const { settings } = useSettings();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -125,6 +127,7 @@ export const Navbar = ({ onNavigate, currentPage }) => {
     { label: 'Home', page: 'home' },
     { label: 'Shop All', page: 'shop' },
     { label: 'Custom Orders', page: 'custom-order' },
+    { label: 'Track Order', page: 'track-order' },
     { label: 'Our Story', page: 'about' },
     { label: 'Feedback', page: 'feedback' },
     { label: 'Contact Us', page: 'contact' },
@@ -265,24 +268,19 @@ export const Navbar = ({ onNavigate, currentPage }) => {
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2 sm:gap-3">
-            
-            {/* Custom Commission Action Pill */}
-            <button
-              onClick={() => onNavigate('custom-order')}
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-bloom-50 hover:bg-bloom-100 dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-bloom-700 dark:text-bloom-300 border border-bloom-200 dark:border-warmgray-700 font-semibold text-xs transition-all shadow-2xs hover:scale-102"
-            >
-              <Palette className="w-3.5 h-3.5 text-bloom-600 dark:text-bloom-400" />
-              <span>Custom Order</span>
-            </button>
 
-            {/* Track Order Utility Button */}
-            <button
-              onClick={() => onNavigate('track-order')}
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-warmgray-100 hover:bg-warmgray-200 dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-warmgray-700 dark:text-warmgray-300 font-semibold text-xs transition-all"
+
+            {/* Instagram CTA */}
+            <a
+              href={settings?.contact?.instagramUrl || "https://instagram.com/aanublooms"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden lg:flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-white font-bold text-xs transition-all shadow-md transform hover:scale-105 hover:shadow-lg"
+              title="Follow us on Instagram"
             >
-              <Package className="w-3.5 h-3.5 text-bloom-600" />
-              <span>Track Order</span>
-            </button>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              <span>Follow Us</span>
+            </a>
 
             {/* Direct Admin Link Button */}
             <button

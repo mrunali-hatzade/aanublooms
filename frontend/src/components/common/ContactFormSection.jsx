@@ -215,6 +215,16 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
               </div>
 
               <div className="flex items-start gap-2.5">
+                <Phone className="w-4 h-4 text-bloom-500 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold text-warmgray-900 dark:text-white block">WhatsApp / Call</span>
+                  <a href="https://wa.me/919579162154" target="_blank" rel="noopener noreferrer" className="text-bloom-600 dark:text-bloom-400 hover:underline font-medium">
+                    +91 95791 62154
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2.5">
                 <Clock className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold text-warmgray-900 dark:text-white block">Response Time</span>
