@@ -18,11 +18,11 @@ const sendMailHelper = async ({ to, subject, html }) => {
         html: html
       });
       if (data.error) {
-        console.error('❌ Resend API error:', data.error.message);
-        return { success: false, error: data.error.message };
+        console.warn('⚠️ Resend API notice (falling back to Nodemailer):', data.error.message);
+      } else {
+        console.log(`⚡ Email successfully sent via Resend API to: ${to} (ID: ${data.id})`);
+        return { success: true, id: data.id };
       }
-      console.log(`⚡ Email successfully sent via Resend API to: ${to} (ID: ${data.id})`);
-      return { success: true, id: data.id };
     } catch (err) {
       console.error('❌ Resend API exception:', err.message);
     }
