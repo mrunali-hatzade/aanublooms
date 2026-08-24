@@ -66,7 +66,7 @@ export const sendOrderConfirmationToCustomer = async (order) => {
   const customerEmail = order.customer?.email;
   if (!customerEmail) return { success: false, message: 'No customer email provided' };
 
-  const founderEmail = process.env.FOUNDER_EMAIL || 'simplifiedworks.official@gmail.com';
+  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
   const itemsHtml = (order.items || []).map(item => `
     <tr style="border-bottom: 1px solid #f0ebe6;">
       <td style="padding: 10px 0; color: #3E2B25; font-size: 14px;">
@@ -138,7 +138,7 @@ export const sendOrderConfirmationToCustomer = async (order) => {
 
 // 2. Send New Order Alert Email to Founder
 export const sendNewOrderAlertToFounder = async (order) => {
-  const founderEmail = process.env.FOUNDER_EMAIL || 'simplifiedworks.official@gmail.com';
+  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
   const itemsList = (order.items || []).map(item => `
     - ${item.name} x${item.quantity || 1} (${item.selectedColor || 'Standard'}) — ₹${((item.price || 0) * (item.quantity || 1)).toLocaleString('en-IN')}
   `).join('\n');
@@ -174,7 +174,7 @@ export const sendNewOrderAlertToFounder = async (order) => {
 
 // 3. Send Contact Form Alert to Founder
 export const sendContactFormAlert = async (messageData) => {
-  const founderEmail = process.env.FOUNDER_EMAIL || 'simplifiedworks.official@gmail.com';
+  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 25px; color: #333;">
       <div style="max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0;">
@@ -202,7 +202,7 @@ export const sendContactFormAlert = async (messageData) => {
 
 // 4. Send Feedback Alert to Founder
 export const sendFeedbackAlert = async (feedbackData) => {
-  const founderEmail = process.env.FOUNDER_EMAIL || 'simplifiedworks.official@gmail.com';
+  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 25px; color: #333;">
       <div style="max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0;">
@@ -230,7 +230,7 @@ export const sendFeedbackAlert = async (feedbackData) => {
 
 // 5. Send Order Status Update Alert to Founder
 export const sendOrderStatusUpdateAlert = async (order, status, note) => {
-  const founderEmail = process.env.FOUNDER_EMAIL || 'simplifiedworks.official@gmail.com';
+  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 25px; color: #333;">
       <div style="max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0;">
