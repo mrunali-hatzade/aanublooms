@@ -2,14 +2,18 @@ import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Create transporter (Uses Gmail SMTP if EMAIL_USER and EMAIL_PASS exist in .env, otherwise logs simulated live emails)
+// Create transporter (Uses Gmail SMTP if EMAIL_USER and EMAIL_PASS exist in process.env, otherwise logs simulated live emails)
 const createTransporter = () => {
-  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  const user = process.env.EMAIL_USER;
+  const pass = process.env.EMAIL_PASS;
+  if (user && pass) {
     return nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: { user, pass },
+      tls: {
+        rejectUnauthorized: false
       }
     });
   }
