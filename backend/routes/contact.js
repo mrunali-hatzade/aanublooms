@@ -54,7 +54,12 @@ router.post('/', async (req, res) => {
     Promise.allSettled([
       sendContactFormAlert(newMessage),
       sendContactThankYouToCustomer(newMessage)
-    ]).catch(emailErr => console.error('Background contact email error:', emailErr));
+    ]).then(results => {
+      results.forEach(res => {
+        if (res.status === 'rejected') console.error('❌ Contact email promise error:', res.reason);
+        else if (res.value && res.value.success === false) console.error('❌ Contact email send error:', res.value.error || res.value.message);
+      });
+    });
 
     res.status(201).json({
       success: true,

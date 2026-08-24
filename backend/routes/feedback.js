@@ -55,7 +55,12 @@ router.post('/', async (req, res) => {
     // Send emails asynchronously in background for instant UI response
     const emailPromises = [sendFeedbackAlert(newFeedback)];
     if (email) emailPromises.push(sendFeedbackThankYouToCustomer(newFeedback));
-    Promise.allSettled(emailPromises).catch(emailErr => console.error('Background feedback email error:', emailErr));
+    Promise.allSettled(emailPromises).then(results => {
+      results.forEach(res => {
+        if (res.status === 'rejected') console.error('❌ Feedback email promise error:', res.reason);
+        else if (res.value && res.value.success === false) console.error('❌ Feedback email send error:', res.value.error || res.value.message);
+      });
+    });
 
     res.status(201).json({
       success: true,
