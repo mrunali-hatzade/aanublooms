@@ -3,9 +3,9 @@ import { Resend } from 'resend';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Unified Send Mail Helper: Tries Resend API first (fastest & 100% reliable on cloud), falls back to Nodemailer SMTP, falls back to Simulation.
+// Unified Send Mail Helper: Uses Nodemailer Gmail SMTP as primary.
 const sendMailHelper = async ({ to, subject, html }) => {
-  // 1. Try Nodemailer Gmail SMTP (Option B - Primary if configured)
+  // 1. Primary: Nodemailer Gmail SMTP
   const rawUser = process.env.EMAIL_USER;
   const rawPass = process.env.EMAIL_PASS;
   if (rawUser && rawPass) {
@@ -22,39 +22,45 @@ const sendMailHelper = async ({ to, subject, html }) => {
         subject: subject,
         html: html
       });
-      console.log(`✉️ Email successfully sent via Gmail SMTP to: ${to}`);
+      console.log(`✉️ Email successfully sent via Nodemailer Gmail SMTP to: ${to}`);
       return { success: true };
     } catch (err) {
-      console.error('❌ Nodemailer Gmail SMTP Error (falling back to Resend):', err.message);
+      console.error('❌ Nodemailer Gmail SMTP Error:', err.message);
     }
   }
 
-  // 2. Try Resend API
-  const resendApiKey = process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.trim().replace(/^['"]|['"]$/g, '') : '';
-  if (resendApiKey) {
-    try {
-      const resend = new Resend(resendApiKey);
-      const fromEmail = process.env.RESEND_FROM_EMAIL || 'AanuBlooms Store <onboarding@resend.dev>';
-      const data = await resend.emails.send({
-        from: fromEmail,
-        to: to,
-        subject: subject,
-        html: html
-      });
-      if (data.error) {
-        console.warn('⚠️ Resend API notice:', data.error.message);
-      } else {
-        console.log(`⚡ Email successfully sent via Resend API to: ${to} (ID: ${data.id})`);
-        return { success: true, id: data.id };
+  // 2. Resend API (kept aside for now, active only if explicitly enabled)
+  if (process.env.USE_RESEND_FALLBACK === 'true') {
+    const resendApiKey = process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.trim().replace(/^['"]|['"]$/g, '') : '';
+    if (resendApiKey) {
+      try {
+        const resend = new Resend(resendApiKey);
+        const fromEmail = process.env.RESEND_FROM_EMAIL || 'AanuBlooms Store <onboarding@resend.dev>';
+        const data = await resend.emails.send({
+          from: fromEmail,
+          to: to,
+          subject: subject,
+          html: html
+        });
+        if (data.error) {
+          console.warn('⚠️ Resend API notice:', data.error.message);
+        } else {
+          console.log(`⚡ Email sent via Resend API to: ${to} (ID: ${data.id})`);
+          return { success: true, id: data.id };
+        }
+      } catch (err) {
+        console.error('❌ Resend API exception:', err.message);
       }
-    } catch (err) {
-      console.error('❌ Resend API exception:', err.message);
     }
   }
 
   console.log(`📢 [EMAIL SIMULATION] Email to ${to}: "${subject}"`);
   return { success: true, simulated: true };
 };
+
+
+// Helper to get founder email
+const getFounderEmail = () => process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
 
 
 // 1. Send Order Confirmation Email to Customer
@@ -134,7 +140,7 @@ export const sendOrderConfirmationToCustomer = async (order) => {
 
 // 2. Send New Order Alert Email to Founder
 export const sendNewOrderAlertToFounder = async (order) => {
-  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
+  const founderEmail = getFounderEmail();
   const itemsList = (order.items || []).map(item => `
     - ${item.name} x${item.quantity || 1} (${item.selectedColor || 'Standard'}) — ₹${((item.price || 0) * (item.quantity || 1)).toLocaleString('en-IN')}
   `).join('\n');
@@ -170,7 +176,7 @@ export const sendNewOrderAlertToFounder = async (order) => {
 
 // 3. Send Contact Form Alert to Founder
 export const sendContactFormAlert = async (messageData) => {
-  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
+  const founderEmail = getFounderEmail();
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 25px; color: #333;">
       <div style="max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0;">
@@ -198,7 +204,7 @@ export const sendContactFormAlert = async (messageData) => {
 
 // 4. Send Feedback Alert to Founder
 export const sendFeedbackAlert = async (feedbackData) => {
-  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
+  const founderEmail = getFounderEmail();
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 25px; color: #333;">
       <div style="max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0;">
@@ -226,7 +232,7 @@ export const sendFeedbackAlert = async (feedbackData) => {
 
 // 5. Send Order Status Update Alert to Founder
 export const sendOrderStatusUpdateAlert = async (order, status, note) => {
-  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
+  const founderEmail = getFounderEmail();
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 25px; color: #333;">
       <div style="max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0;">
