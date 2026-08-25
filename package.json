@@ -1,13 +1,15 @@
 {
   "name": "aanublooms-crochet-studio",
   "version": "1.0.0",
+  "type": "module",
   "description": "AanuBlooms - Boutique Handcrafted Crochet & Floral E-Commerce Platform",
   "scripts": {
     "dev:backend": "node backend/server.js",
     "dev:frontend": "npm run dev --prefix frontend",
     "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"magenta,cyan\" \"npm run dev:backend\" \"npm run dev:frontend\"",
     "start": "node backend/server.js",
-    "build": "npm run build --prefix frontend"
+    "build": "npm run build --prefix frontend",
+    "postinstall": "npm install --prefix frontend"
   },
   "keywords": [
     "crochet",
@@ -19,7 +21,26 @@
   ],
   "author": "AanuBlooms Studio",
   "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.3",
+    "morgan": "^1.10.0",
+    "nodemailer": "^9.0.5",
+    "razorpay": "^2.9.8",
+    "resend": "^6.22.0"
+  },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "@vitejs/plugin-react": "^6.0.4",
+    "autoprefixer": "^10.5.4",
+    "concurrently": "^9.1.2",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^3.4.19",
+    "vite": "^8.2.0"
   }
 }
+
+

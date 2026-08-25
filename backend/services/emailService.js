@@ -5,7 +5,31 @@ dotenv.config();
 
 // Unified Send Mail Helper: Tries Resend API first (fastest & 100% reliable on cloud), falls back to Nodemailer SMTP, falls back to Simulation.
 const sendMailHelper = async ({ to, subject, html }) => {
-  // 1. Try Resend API
+  // 1. Try Nodemailer Gmail SMTP (Option B - Primary if configured)
+  const rawUser = process.env.EMAIL_USER;
+  const rawPass = process.env.EMAIL_PASS;
+  if (rawUser && rawPass) {
+    const user = rawUser.trim().replace(/^['"]|['"]$/g, '');
+    const pass = rawPass.trim().replace(/^['"]|['"]$/g, '');
+    try {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user, pass }
+      });
+      await transporter.sendMail({
+        from: `"AanuBlooms Store" <${user}>`,
+        to: to,
+        subject: subject,
+        html: html
+      });
+      console.log(`✉️ Email successfully sent via Gmail SMTP to: ${to}`);
+      return { success: true };
+    } catch (err) {
+      console.error('❌ Nodemailer Gmail SMTP Error (falling back to Resend):', err.message);
+    }
+  }
+
+  // 2. Try Resend API
   const resendApiKey = process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.trim().replace(/^['"]|['"]$/g, '') : '';
   if (resendApiKey) {
     try {
@@ -18,7 +42,7 @@ const sendMailHelper = async ({ to, subject, html }) => {
         html: html
       });
       if (data.error) {
-        console.warn('⚠️ Resend API notice (falling back to Nodemailer):', data.error.message);
+        console.warn('⚠️ Resend API notice:', data.error.message);
       } else {
         console.log(`⚡ Email successfully sent via Resend API to: ${to} (ID: ${data.id})`);
         return { success: true, id: data.id };
@@ -28,38 +52,10 @@ const sendMailHelper = async ({ to, subject, html }) => {
     }
   }
 
-  // 2. Fallback to Nodemailer Gmail SMTP
-  const rawUser = process.env.EMAIL_USER;
-  const rawPass = process.env.EMAIL_PASS;
-  if (rawUser && rawPass) {
-    const user = rawUser.trim().replace(/^['"]|['"]$/g, '');
-    const pass = rawPass.trim().replace(/^['"]|['"]$/g, '');
-    try {
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        family: 4,
-        auth: { user, pass },
-        tls: { rejectUnauthorized: false }
-      });
-      await transporter.sendMail({
-        from: `"AanuBlooms Store" <${user}>`,
-        to: to,
-        subject: subject,
-        html: html
-      });
-      console.log(`✉️ Email successfully sent via Nodemailer to: ${to}`);
-      return { success: true };
-    } catch (err) {
-      console.error('❌ Nodemailer SMTP Error:', err.message);
-      return { success: false, error: err.message };
-    }
-  }
-
   console.log(`📢 [EMAIL SIMULATION] Email to ${to}: "${subject}"`);
   return { success: true, simulated: true };
 };
+
 
 // 1. Send Order Confirmation Email to Customer
 export const sendOrderConfirmationToCustomer = async (order) => {

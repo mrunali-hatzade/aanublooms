@@ -35,6 +35,12 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(morgan('dev'));
 
+// Ensure DB connection middleware for serverless invocations
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/settings', settingsRoutes);
@@ -82,6 +88,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Internal Server Error', error: err.message });
 });
 
-app.listen(PORT, () => {
-  console.log(`🌸 AanuBlooms API Server running at http://localhost:${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🌸 AanuBlooms API Server running at http://localhost:${PORT}`);
+  });
+}
+
+export default app;
+
