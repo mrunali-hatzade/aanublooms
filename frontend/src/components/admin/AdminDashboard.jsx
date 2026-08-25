@@ -2046,6 +2046,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                     <tr className="border-b border-[#E9E2DC] text-[#756A65] text-[10px] uppercase font-bold">
                       <th className="pb-2.5 px-3">Order ID</th>
                       <th className="pb-2.5 px-3">Customer</th>
+                      <th className="pb-2.5 px-3">Items to Craft</th>
                       <th className="pb-2.5 px-3">Amount</th>
                       <th className="pb-2.5 px-3">Fulfillment Stage</th>
                       <th className="pb-2.5 px-3 text-right">Actions</th>
@@ -2054,27 +2055,50 @@ export const AdminDashboard = ({ onNavigate }) => {
                   <tbody className="divide-y divide-[#E9E2DC]/60">
                     {filteredOrders.map(order => (
                       <tr key={order.id} className="hover:bg-[#F8F6F3]/50 transition-colors">
-                        <td className="py-3 px-3 font-mono font-bold text-[#D96C65]">{order.id}</td>
+                        <td className="py-3 px-3 font-mono font-bold text-[#D96C65]">
+                          <button
+                            onClick={() => setSelectedOrderDetails(order)}
+                            className="hover:underline text-left font-mono font-bold text-[#D96C65]"
+                            title="Click to view full order & crafting details"
+                          >
+                            #{order.id}
+                          </button>
+                        </td>
                         <td className="py-3 px-3">
                           <div 
-                            onClick={() => setSelectedCustomerDetails(order.customer)}
+                            onClick={() => setSelectedOrderDetails(order)}
                             className="cursor-pointer hover:bg-[#F8F6F3] p-1.5 -ml-1.5 rounded-lg transition-colors border border-transparent hover:border-[#E9E2DC]"
+                            title="Click to view order & customer details"
                           >
-                            <p className="font-semibold text-[#3E2B25]">{order.customer?.name}</p>
-                            <p className="text-[10px] text-[#756A65]">{order.customer?.city || 'India'}</p>
+                            <p className="font-semibold text-[#3E2B25]">{order.customer?.name || 'Customer'}</p>
+                            <p className="text-[10px] text-[#756A65]">{order.customer?.city || 'Pune'}</p>
+                          </div>
+                        </td>
+                        <td className="py-3 px-3 max-w-[220px]">
+                          <div 
+                            onClick={() => setSelectedOrderDetails(order)}
+                            className="cursor-pointer group"
+                            title="Click to view items to craft"
+                          >
+                            <div className="text-xs font-semibold text-[#3E2B25] line-clamp-1 group-hover:text-[#D96C65] transition-colors">
+                              {order.items?.map(i => `${i.quantity || 1}x ${i.name}${i.selectedColor ? ` (${i.selectedColor})` : ''}`).join(', ') || 'Handcrafted items'}
+                            </div>
+                            <span className="text-[10px] text-[#756A65] block font-mono">
+                              🧶 {order.items?.reduce((sum, i) => sum + (i.quantity || 1), 0) || 0} total piece(s)
+                            </span>
                           </div>
                         </td>
                         <td className="py-3 px-3">
-    <div className="font-serif font-bold text-[#3E2B25]">₹{order.total?.toLocaleString('en-IN')}</div>
-    <div className="text-[10px] font-medium mt-1">
-      <span className={order.paymentStatus === 'paid' ? 'text-green-600' : 'text-orange-500'}>
-        {order.paymentStatus === 'paid' ? 'Paid' : 'Pending'}
-      </span>
-      <span className="text-warmgray-500 ml-1 block truncate max-w-[80px]" title={order.paymentMethod}>
-        {order.paymentMethod || 'COD'}
-      </span>
-    </div>
-  </td>
+                          <div className="font-serif font-bold text-[#3E2B25]">₹{order.total?.toLocaleString('en-IN')}</div>
+                          <div className="text-[10px] font-medium mt-0.5">
+                            <span className={order.paymentStatus === 'paid' ? 'text-green-600 font-bold' : 'text-orange-500'}>
+                              {order.paymentStatus === 'paid' ? 'Paid ✓' : 'Pending'}
+                            </span>
+                            <span className="text-[#756A65] ml-1">
+                              • {order.paymentMethod || 'COD'}
+                            </span>
+                          </div>
+                        </td>
                         <td className="py-3 px-3">
                           <select
                             value={order.status}
@@ -2088,15 +2112,28 @@ export const AdminDashboard = ({ onNavigate }) => {
                             <option value="delivered">🏡 Delivered</option>
                           </select>
                         </td>
-                        <td className="py-3 px-3 text-right">
-                          <button
-                            onClick={() => onNavigate('track-order', { id: order.id })}
-                            className="px-2.5 py-1 bg-[#F8F6F3] hover:bg-[#E9E2DC] rounded-lg text-xs font-semibold text-[#3E2B25] transition-colors">
-    Track
-  </button>
-  <button onClick={(e) => handleDeleteOrder(order.id, e)} className="ml-2 px-2 py-1 text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors" title="Delete Order">
-    <Trash2 className="w-3.5 h-3.5" />
-  </button>
+                        <td className="py-3 px-3 text-right whitespace-nowrap">
+                          <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              onClick={() => setSelectedOrderDetails(order)}
+                              className="px-2.5 py-1 bg-[#D96C65]/15 hover:bg-[#D96C65] text-[#D96C65] hover:text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1"
+                              title="View Order & Crafting Details"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>View Items</span>
+                            </button>
+
+                            <button
+                              onClick={() => onNavigate('track-order', { id: order.id })}
+                              className="px-2.5 py-1 bg-[#F8F6F3] hover:bg-[#E9E2DC] rounded-lg text-xs font-semibold text-[#3E2B25] transition-colors"
+                            >
+                              Track
+                            </button>
+
+                            <button onClick={(e) => handleDeleteOrder(order.id, e)} className="p-1 text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors" title="Delete Order">
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -3104,6 +3141,216 @@ export const AdminDashboard = ({ onNavigate }) => {
         </div>
       )}
 
+
+      {/* ========================================================= */}
+      {/* ORDER & CRAFTING DETAILS MODAL POP-UP */}
+      {/* ========================================================= */}
+      {selectedOrderDetails && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedOrderDetails(null);
+          }}
+        >
+          <div className="relative bg-white rounded-3xl max-w-2xl w-full border border-[#E9E2DC] shadow-2xl z-10 flex flex-col max-h-[90vh] overflow-hidden animate-in zoom-in-95">
+            
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-[#E9E2DC] flex items-center justify-between bg-white shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#D96C65]/15 text-[#D96C65] font-bold text-lg flex items-center justify-center">
+                  🧶
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono font-bold text-[#D96C65] text-base">#{selectedOrderDetails.id}</span>
+                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#4F9D69]/15 text-[#4F9D69] capitalize">
+                      {selectedOrderDetails.status}
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#756A65] mt-0.5">
+                    Placed on {new Date(selectedOrderDetails.createdAt || Date.now()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => setSelectedOrderDetails(null)} 
+                className="p-2 rounded-xl bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#756A65] transition-colors"
+                title="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Scrollable Content */}
+            <div className="overflow-y-auto px-6 py-5 space-y-5 flex-1 text-xs">
+              
+              {/* Crafting Requirements Banner */}
+              <div className="p-4 rounded-2xl bg-[#FDF8F5] border border-[#F3E5DC] space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-serif font-bold text-sm text-[#3E2B25] flex items-center gap-2">
+                    <span>🌸 Handcrafted Items Required to Make</span>
+                    <span className="text-[10px] font-sans font-bold bg-[#D96C65] text-white px-2 py-0.5 rounded-full">
+                      {selectedOrderDetails.items?.reduce((sum, i) => sum + (i.quantity || 1), 0) || 0} Total Pieces
+                    </span>
+                  </h4>
+                </div>
+
+                <div className="divide-y divide-[#E9E2DC]/80 bg-white rounded-xl border border-[#EDE5DF] overflow-hidden">
+                  {selectedOrderDetails.items?.map((item, idx) => (
+                    <div key={idx} className="p-3 flex items-center justify-between gap-3 hover:bg-[#F8F6F3]/50 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={item.image || '/images/aanu-blooms-signature-set.jpeg'}
+                          alt={item.name}
+                          className="w-12 h-12 rounded-xl object-contain bg-[#F8F6F3] p-1 border border-[#E9E2DC] shrink-0"
+                        />
+                        <div>
+                          <h5 className="font-bold text-xs text-[#3E2B25]">{item.name}</h5>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-[11px] font-semibold text-[#D96C65]">
+                              Qty: {item.quantity || 1}
+                            </span>
+                            {item.selectedColor && (
+                              <span className="text-[10px] bg-[#F8F6F3] text-[#756A65] px-2 py-0.5 rounded-md border border-[#E9E2DC]">
+                                🎨 Color: {item.selectedColor}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <span className="font-serif font-bold text-xs text-[#3E2B25]">
+                          ₹{((item.price || 0) * (item.quantity || 1)).toLocaleString('en-IN')}
+                        </span>
+                        <span className="block text-[10px] text-[#756A65]">
+                          ₹{(item.price || 0).toLocaleString('en-IN')} each
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Customer & Shipping Details */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Customer Info */}
+                <div className="p-4 rounded-2xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block">
+                    👤 Customer Details
+                  </span>
+                  <h5 className="font-bold text-xs text-[#3E2B25]">{selectedOrderDetails.customer?.name || 'N/A'}</h5>
+                  <p className="text-[11px] text-[#756A65]">{selectedOrderDetails.customer?.email || 'N/A'}</p>
+                  <p className="text-[11px] text-[#756A65] font-mono">📞 {selectedOrderDetails.customer?.phone || 'N/A'}</p>
+                  
+                  {selectedOrderDetails.customer?.phone && (
+                    <a
+                      href={`https://wa.me/${selectedOrderDetails.customer.phone.replace(/[^0-9]/g, '')}?text=Hi%20${encodeURIComponent(selectedOrderDetails.customer.name || '')}%2C%20regarding%20your%20AanuBlooms%20order%20%23${selectedOrderDetails.id}...`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#4F9D69] text-white rounded-lg text-[11px] font-semibold mt-1 transition-colors hover:bg-[#3f8356]"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>Chat on WhatsApp</span>
+                    </a>
+                  )}
+                </div>
+
+                {/* Shipping Address */}
+                <div className="p-4 rounded-2xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block">
+                    📍 Shipping Address
+                  </span>
+                  <p className="text-xs text-[#3E2B25] font-semibold leading-relaxed">
+                    {selectedOrderDetails.customer?.address || 'No address provided'}
+                  </p>
+                  <p className="text-[11px] text-[#756A65]">
+                    {selectedOrderDetails.customer?.city || 'Pune'}, {selectedOrderDetails.customer?.state || 'Maharashtra'} - {selectedOrderDetails.customer?.zip || ''}
+                  </p>
+                </div>
+              </div>
+
+              {/* Financial & Payment Summary */}
+              <div className="p-4 rounded-2xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block">
+                  💳 Payment Breakdown
+                </span>
+                <div className="space-y-1 text-xs text-[#5C4D46]">
+                  <div className="flex justify-between">
+                    <span>Subtotal</span>
+                    <span>₹{(selectedOrderDetails.subtotal || selectedOrderDetails.total || 0).toLocaleString('en-IN')}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Shipping (Pune Region)</span>
+                    <span>{selectedOrderDetails.shipping === 0 ? <strong className="text-[#4F9D69]">FREE</strong> : `₹${selectedOrderDetails.shipping || 0}`}</span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t border-[#E9E2DC] font-bold text-sm text-[#3E2B25]">
+                    <span>Total Paid Amount</span>
+                    <span className="font-serif text-[#D96C65]">₹{(selectedOrderDetails.total || 0).toLocaleString('en-IN')}</span>
+                  </div>
+                </div>
+                <div className="pt-2 text-[11px] flex items-center justify-between text-[#756A65]">
+                  <span>Method: <strong>{selectedOrderDetails.paymentMethod || 'Razorpay / Online'}</strong></span>
+                  <span className={`px-2 py-0.5 rounded-md font-bold text-[10px] ${selectedOrderDetails.paymentStatus === 'paid' ? 'bg-[#4F9D69]/15 text-[#4F9D69]' : 'bg-amber-500/15 text-amber-600'}`}>
+                    {selectedOrderDetails.paymentStatus === 'paid' ? 'Paid ✓' : 'Payment Pending'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Quick Fulfillment Stage Change inside Modal */}
+              <div className="p-4 rounded-2xl bg-white border border-[#E9E2DC] space-y-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block">
+                  ⚙️ Update Fulfillment Stage
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { id: 'placed', label: '⏱️ Placed' },
+                    { id: 'handcrafting', label: '🧶 Handcrafting' },
+                    { id: 'packaging', label: '🌸 Packaging' },
+                    { id: 'shipped', label: '📦 Shipped' },
+                    { id: 'delivered', label: '🏡 Delivered' }
+                  ].map(st => (
+                    <button
+                      key={st.id}
+                      onClick={() => {
+                        handleUpdateStatus(selectedOrderDetails.id, st.id);
+                        setSelectedOrderDetails(prev => ({ ...prev, status: st.id }));
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                        selectedOrderDetails.status === st.id
+                          ? 'bg-[#D96C65] text-white font-bold shadow-xs'
+                          : 'bg-[#F8F6F3] text-[#756A65] hover:bg-[#E9E2DC] hover:text-[#3E2B25]'
+                      }`}
+                    >
+                      {st.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-3.5 border-t border-[#E9E2DC] flex items-center justify-between bg-[#F8F6F3] shrink-0">
+              <button
+                onClick={() => window.print()}
+                className="px-4 py-2 bg-white border border-[#E9E2DC] hover:bg-[#E9E2DC] text-[#3E2B25] rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
+              >
+                <FileText className="w-4 h-4 text-[#D96C65]" />
+                <span>Print Craft Slip / Invoice</span>
+              </button>
+
+              <button
+                onClick={() => setSelectedOrderDetails(null)}
+                className="px-5 py-2 bg-[#3E2B25] hover:bg-black text-white rounded-xl text-xs font-bold transition-colors"
+              >
+                Close Details
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Customer Details Modal */}
       {selectedCustomerDetails && (
