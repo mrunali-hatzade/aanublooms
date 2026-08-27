@@ -3,7 +3,7 @@ import dns from 'dns/promises';
 import { Feedback } from '../models/Feedback.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { sendFeedbackAlert, sendFeedbackThankYouToCustomer } from '../services/emailService.js';
-import { sendWhatsAppNotification } from '../services/whatsappService.js';
+import { sendWhatsAppTemplate } from '../services/whatsappService.js';
 
 const router = express.Router();
 
@@ -57,7 +57,12 @@ router.post('/', async (req, res) => {
     try {
       const emailPromises = [
         sendFeedbackAlert(newFeedback),
-        sendWhatsAppNotification(`⭐ *New Customer Review*\n\n*Name:* ${authorName}\n*Rating:* ${rating || 5} Stars\n*Product:* ${productCategory || 'N/A'}\n*Review:* ${commentText}`)
+        sendWhatsAppTemplate('new_customer_feedback', 'en_US', [
+          authorName,
+          rating || 5,
+          productCategory || 'N/A',
+          commentText
+        ])
       ];
       if (email) emailPromises.push(sendFeedbackThankYouToCustomer(newFeedback));
       await Promise.allSettled(emailPromises);

@@ -189,7 +189,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
         throw new Error('Razorpay SDK failed to load. Are you online?');
       }
 
-      const rzpOrder = await api.createRazorpayOrder(calculatedTotal);
+      const rzpOrder = await api.createPaymentOrder(calculatedTotal);
       
       const options = {
         key: rzpOrder.keyId,
@@ -200,7 +200,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
         order_id: rzpOrder.orderId,
         handler: async function (response) {
           try {
-             await api.verifyRazorpayPayment({
+             await api.verifyPayment({
                razorpay_order_id: response.razorpay_order_id,
                razorpay_payment_id: response.razorpay_payment_id,
                razorpay_signature: response.razorpay_signature

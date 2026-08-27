@@ -2,7 +2,7 @@ import express from 'express';
 import { CustomRequest } from '../models/CustomRequest.js';
 import { Notification } from '../models/Notification.js';
 import { requireAdmin } from '../middleware/auth.js';
-import { sendWhatsAppNotification } from '../services/whatsappService.js';
+import { sendWhatsAppTemplate } from '../services/whatsappService.js';
 
 const router = express.Router();
 
@@ -51,7 +51,12 @@ router.post('/', async (req, res) => {
       relatedEntityId: id
     });
 
-    sendWhatsAppNotification(`🎨 *New Custom Request!*\n\n*Name:* ${customerName}\n*Phone:* ${customerPhone || 'N/A'}\n*Item:* ${itemType}\n*Budget:* ${estimatedBudget || 'N/A'}\n*Notes:* ${specialNotes || 'N/A'}`);
+    sendWhatsAppTemplate('new_custom_request', 'en_US', [
+      customerName,
+      customerPhone || 'N/A',
+      itemType,
+      estimatedBudget || 'N/A'
+    ]);
 
     res.status(201).json({
       success: true,

@@ -4,7 +4,7 @@ import { ContactMessage } from '../models/ContactMessage.js';
 import { Notification } from '../models/Notification.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { sendContactFormAlert, sendContactThankYouToCustomer } from '../services/emailService.js';
-import { sendWhatsAppNotification } from '../services/whatsappService.js';
+import { sendWhatsAppTemplate } from '../services/whatsappService.js';
 
 const router = express.Router();
 
@@ -56,7 +56,12 @@ router.post('/', async (req, res) => {
       await Promise.allSettled([
         sendContactFormAlert(newMessage),
         sendContactThankYouToCustomer(newMessage),
-        sendWhatsAppNotification(`📩 *New Contact Enquiry*\n\n*Name:* ${name.trim()}\n*Email:* ${email.trim()}\n*Phone:* ${phone?.trim() || 'N/A'}\n*Subject:* ${subject?.trim() || 'N/A'}\n*Message:* ${message.trim()}`)
+        sendWhatsAppTemplate('new_contact_query', 'en_US', [
+          name.trim(),
+          phone?.trim() || 'N/A',
+          subject?.trim() || 'N/A',
+          message.trim()
+        ])
       ]);
     } catch (emailErr) {
       console.error('Contact notification error:', emailErr.message);

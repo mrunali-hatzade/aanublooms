@@ -4,7 +4,7 @@ import { Product } from '../models/Product.js';
 import { Notification } from '../models/Notification.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { sendOrderConfirmationToCustomer, sendNewOrderAlertToFounder, sendOrderStatusUpdateAlert } from '../services/emailService.js';
-import { sendWhatsAppNotification } from '../services/whatsappService.js';
+import { sendWhatsAppTemplate } from '../services/whatsappService.js';
 
 const router = express.Router();
 
@@ -169,7 +169,12 @@ router.post('/', async (req, res) => {
       await Promise.allSettled([
         sendOrderConfirmationToCustomer(newOrder.toObject()),
         sendNewOrderAlertToFounder(newOrder.toObject()),
-        sendWhatsAppNotification(`🛍️ *New Order Placed!*\n\n*Order ID:* ${orderId}\n*Customer:* ${customer.name}\n*Total:* ₹${total}\n*Payment:* ${paymentMethod}`)
+        sendWhatsAppTemplate('new_order_placed', 'en', [
+          newOrder.id,
+          customer.name,
+          total,
+          newOrder.paymentStatus
+        ])
       ]);
     } catch (emailErr) {
       console.error('Notification error (non-fatal):', emailErr.message);

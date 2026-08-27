@@ -6,12 +6,14 @@ const ACCESS_TOKEN = process.env.META_WA_ACCESS_TOKEN;
 const OWNER_WA_NUMBER = process.env.OWNER_WA_NUMBER || '919579162154'; // Fallback to provided owner number
 
 /**
- * Sends a WhatsApp text message using Meta's Official Cloud API
- * @param {string} text - The message content to send
+ * Sends a WhatsApp template message using Meta's Official Cloud API
+ * @param {string} templateName - The name of the approved template
+ * @param {string} languageCode - Language code (e.g., 'en_US' or 'en')
+ * @param {Array<string>} parameters - Array of strings to fill the variables {{1}}, {{2}}, etc.
  */
-export const sendWhatsAppNotification = async (text) => {
+export const sendWhatsAppTemplate = async (templateName, languageCode, parameters) => {
   if (!PHONE_NUMBER_ID || !ACCESS_TOKEN) {
-    console.warn('WhatsApp API credentials (META_WA_PHONE_NUMBER_ID, META_WA_ACCESS_TOKEN) not configured. Skipping WhatsApp notification.');
+    console.warn('WhatsApp API credentials not configured. Skipping WhatsApp template notification.');
     return;
   }
 
@@ -24,23 +26,30 @@ export const sendWhatsAppNotification = async (text) => {
       },
       body: JSON.stringify({
         messaging_product: 'whatsapp',
-        recipient_type: 'individual',
         to: OWNER_WA_NUMBER,
-        type: 'text',
-        text: {
-          preview_url: false,
-          body: text
+        type: 'template',
+        template: {
+          name: templateName,
+          language: {
+            code: languageCode
+          },
+          components: [
+            {
+              type: 'body',
+              parameters: parameters.map(p => ({ type: 'text', text: String(p) }))
+            }
+          ]
         }
       })
     });
 
     const data = await response.json();
     if (!response.ok) {
-      console.error('Meta WhatsApp API Error:', data);
+      console.error(`Meta WhatsApp API Error [${templateName}]:`, data);
     } else {
-      console.log('WhatsApp notification sent successfully.');
+      console.log(`WhatsApp template notification '${templateName}' sent successfully.`);
     }
   } catch (error) {
-    console.error('Failed to send WhatsApp notification:', error);
+    console.error(`Failed to send WhatsApp template '${templateName}':`, error);
   }
 };
