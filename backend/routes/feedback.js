@@ -3,6 +3,7 @@ import dns from 'dns/promises';
 import { Feedback } from '../models/Feedback.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { sendFeedbackAlert, sendFeedbackThankYouToCustomer } from '../services/emailService.js';
+import { sendWhatsAppNotification } from '../services/whatsappService.js';
 
 const router = express.Router();
 
@@ -52,15 +53,17 @@ router.post('/', async (req, res) => {
 
     await newFeedback.save();
 
-    // Send emails asynchronously in background for instant UI response
-    const emailPromises = [sendFeedbackAlert(newFeedback)];
-    if (email) emailPromises.push(sendFeedbackThankYouToCustomer(newFeedback));
-    Promise.allSettled(emailPromises).then(results => {
-      results.forEach(res => {
-        if (res.status === 'rejected') console.error('❌ Feedback email promise error:', res.reason);
-        else if (res.value && res.value.success === false) console.error('❌ Feedback email send error:', res.value.error || res.value.message);
-      });
-    });
+    // Send emails & WhatsApp (awaited for serverless cloud compatibility)
+    try {
+      const emailPromises = [
+        sendFeedbackAlert(newFeedback),
+        sendWhatsAppNotification(`⭐ *New Customer Review*\n\n*Name:* ${authorName}\n*Rating:* ${rating || 5} Stars\n*Product:* ${productCategory || 'N/A'}\n*Review:* ${commentText}`)
+      ];
+      if (email) emailPromises.push(sendFeedbackThankYouToCustomer(newFeedback));
+      await Promise.allSettled(emailPromises);
+    } catch (emailErr) {
+      console.error('Feedback notification error:', emailErr.message);
+    }
 
     res.status(201).json({
       success: true,

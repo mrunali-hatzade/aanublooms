@@ -4,6 +4,7 @@ import { ContactMessage } from '../models/ContactMessage.js';
 import { Notification } from '../models/Notification.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { sendContactFormAlert, sendContactThankYouToCustomer } from '../services/emailService.js';
+import { sendWhatsAppNotification } from '../services/whatsappService.js';
 
 const router = express.Router();
 
@@ -50,16 +51,16 @@ router.post('/', async (req, res) => {
       relatedEntityId: newMessage.id
     });
 
-    // Send emails asynchronously in background for instant UI response
-    Promise.allSettled([
-      sendContactFormAlert(newMessage),
-      sendContactThankYouToCustomer(newMessage)
-    ]).then(results => {
-      results.forEach(res => {
-        if (res.status === 'rejected') console.error('❌ Contact email promise error:', res.reason);
-        else if (res.value && res.value.success === false) console.error('❌ Contact email send error:', res.value.error || res.value.message);
-      });
-    });
+    // Send emails & WhatsApp (awaited for serverless cloud compatibility)
+    try {
+      await Promise.allSettled([
+        sendContactFormAlert(newMessage),
+        sendContactThankYouToCustomer(newMessage),
+        sendWhatsAppNotification(`📩 *New Contact Enquiry*\n\n*Name:* ${name.trim()}\n*Email:* ${email.trim()}\n*Phone:* ${phone?.trim() || 'N/A'}\n*Subject:* ${subject?.trim() || 'N/A'}\n*Message:* ${message.trim()}`)
+      ]);
+    } catch (emailErr) {
+      console.error('Contact notification error:', emailErr.message);
+    }
 
     res.status(201).json({
       success: true,

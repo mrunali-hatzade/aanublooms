@@ -3,7 +3,7 @@ import { Resend } from 'resend';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Unified Send Mail Helper: Uses Nodemailer Gmail SMTP as primary.
+// Unified Send Mail Helper: Tries Nodemailer Gmail SMTP first, falls back to Resend API on cloud, falls back to simulation.
 const sendMailHelper = async ({ to, subject, html }) => {
   // 1. Primary: Nodemailer Gmail SMTP
   const rawUser = process.env.EMAIL_USER;
@@ -14,7 +14,10 @@ const sendMailHelper = async ({ to, subject, html }) => {
     try {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
-        auth: { user, pass }
+        auth: { user, pass },
+        connectionTimeout: 5000,
+        greetingTimeout: 5000,
+        socketTimeout: 8000
       });
       await transporter.sendMail({
         from: `"AanuBlooms Store" <${user}>`,
@@ -25,32 +28,30 @@ const sendMailHelper = async ({ to, subject, html }) => {
       console.log(`✉️ Email successfully sent via Nodemailer Gmail SMTP to: ${to}`);
       return { success: true };
     } catch (err) {
-      console.error('❌ Nodemailer Gmail SMTP Error:', err.message);
+      console.error('❌ Nodemailer Gmail SMTP Error (falling back to Resend):', err.message);
     }
   }
 
-  // 2. Resend API (kept aside for now, active only if explicitly enabled)
-  if (process.env.USE_RESEND_FALLBACK === 'true') {
-    const resendApiKey = process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.trim().replace(/^['"]|['"]$/g, '') : '';
-    if (resendApiKey) {
-      try {
-        const resend = new Resend(resendApiKey);
-        const fromEmail = process.env.RESEND_FROM_EMAIL || 'AanuBlooms Store <onboarding@resend.dev>';
-        const data = await resend.emails.send({
-          from: fromEmail,
-          to: to,
-          subject: subject,
-          html: html
-        });
-        if (data.error) {
-          console.warn('⚠️ Resend API notice:', data.error.message);
-        } else {
-          console.log(`⚡ Email sent via Resend API to: ${to} (ID: ${data.id})`);
-          return { success: true, id: data.id };
-        }
-      } catch (err) {
-        console.error('❌ Resend API exception:', err.message);
+  // 2. Automatic Cloud Fallback: Resend API (guarantees delivery on cloud platforms like Vercel/Render)
+  const resendApiKey = process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.trim().replace(/^['"]|['"]$/g, '') : '';
+  if (resendApiKey) {
+    try {
+      const resend = new Resend(resendApiKey);
+      const fromEmail = process.env.RESEND_FROM_EMAIL || 'AanuBlooms Store <onboarding@resend.dev>';
+      const data = await resend.emails.send({
+        from: fromEmail,
+        to: to,
+        subject: subject,
+        html: html
+      });
+      if (data.error) {
+        console.warn('⚠️ Resend API notice:', data.error.message);
+      } else {
+        console.log(`⚡ Email successfully sent via Resend API to: ${to} (ID: ${data.id})`);
+        return { success: true, id: data.id };
       }
+    } catch (err) {
+      console.error('❌ Resend API exception:', err.message);
     }
   }
 

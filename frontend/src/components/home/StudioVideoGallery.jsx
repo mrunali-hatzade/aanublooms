@@ -6,8 +6,8 @@ import { useAuth } from '../../context/AuthContext';
 const defaultVideos = [
   {
     id: 'vid-1',
-    title: 'Slow-Crafted Velvet Flowers & Pots',
-    caption: 'Watch the artisan stitching of our 5-piece cupcake blossom garden set.',
+    title: 'Creating Beautiful Handmade Creations',
+    caption: 'Watch how we carefully shape and assemble handmade flowers and pots, one creation at a time.',
     url: '/images/whatsapp-craft-video.mp4',
     poster: '/images/aanu-blooms-signature-set.jpeg',
     tag: '🌸 Studio Reel'
@@ -215,13 +215,13 @@ export const StudioVideoGallery = ({ onNavigate }) => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-bloom-600 dark:text-bloom-400 block mb-0.5">
-              Behind The Stitches
+              Behind The Creations
             </span>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
               Artisan Craft Videos & Reels
             </h2>
             <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">
-              Watch authentic handmade crochet tutorials, flower assembly, and studio stories.
+              Watch our handmade creations come to life — from shaping beautiful flowers and flower pots to creating unique gifts and decorative pieces.
             </p>
           </div>
         </div>

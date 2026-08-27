@@ -33,7 +33,7 @@ export const ArtisanStudioVideo = ({ onNavigate }) => {
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-700 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5 text-bloom-500" />
-            <span>Behind The Stitches · Artisan Studio</span>
+            <span>Behind The Creations · Artisan Studio</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-warmgray-900 dark:text-white">
             Watch the Craft in Motion
@@ -95,7 +95,7 @@ export const ArtisanStudioVideo = ({ onNavigate }) => {
                 {/* Bottom Video Captions */}
                 <div className="pointer-events-auto">
                   <h3 className="font-serif font-bold text-white text-base">
-                    Slow-Crafted Velvet Flowers & Pots
+                    Creating Beautiful Handmade Creations
                   </h3>
                   <p className="text-white/80 text-xs mt-0.5">
                     "Every petal is individually shaped and wired for life."

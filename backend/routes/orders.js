@@ -4,6 +4,7 @@ import { Product } from '../models/Product.js';
 import { Notification } from '../models/Notification.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { sendOrderConfirmationToCustomer, sendNewOrderAlertToFounder, sendOrderStatusUpdateAlert } from '../services/emailService.js';
+import { sendWhatsAppNotification } from '../services/whatsappService.js';
 
 const router = express.Router();
 
@@ -163,12 +164,15 @@ router.post('/', async (req, res) => {
       relatedEntityId: orderId
     });
 
-    // Send emails
+    // Send emails & WhatsApp notification (awaited for serverless cloud compatibility)
     try {
-      sendOrderConfirmationToCustomer(newOrder.toObject());
-      sendNewOrderAlertToFounder(newOrder.toObject());
+      await Promise.allSettled([
+        sendOrderConfirmationToCustomer(newOrder.toObject()),
+        sendNewOrderAlertToFounder(newOrder.toObject()),
+        sendWhatsAppNotification(`🛍️ *New Order Placed!*\n\n*Order ID:* ${orderId}\n*Customer:* ${customer.name}\n*Total:* ₹${total}\n*Payment:* ${paymentMethod}`)
+      ]);
     } catch (emailErr) {
-      console.error('Email error (non-fatal):', emailErr.message);
+      console.error('Notification error (non-fatal):', emailErr.message);
     }
 
     res.status(201).json({
