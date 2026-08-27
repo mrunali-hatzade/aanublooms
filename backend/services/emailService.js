@@ -1,38 +1,9 @@
-import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Unified Send Mail Helper: Tries Nodemailer Gmail SMTP first, falls back to Resend API on cloud, falls back to simulation.
+// Unified Send Mail Helper: Uses Resend API, falls back to simulation.
 const sendMailHelper = async ({ to, subject, html }) => {
-  // 1. Primary: Nodemailer Gmail SMTP
-  const rawUser = process.env.EMAIL_USER;
-  const rawPass = process.env.EMAIL_PASS;
-  if (rawUser && rawPass) {
-    const user = rawUser.trim().replace(/^['"]|['"]$/g, '');
-    const pass = rawPass.trim().replace(/^['"]|['"]$/g, '');
-    try {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: { user, pass },
-        connectionTimeout: 5000,
-        greetingTimeout: 5000,
-        socketTimeout: 8000
-      });
-      await transporter.sendMail({
-        from: `"AanuBlooms Store" <${user}>`,
-        to: to,
-        subject: subject,
-        html: html
-      });
-      console.log(`✉️ Email successfully sent via Nodemailer Gmail SMTP to: ${to}`);
-      return { success: true };
-    } catch (err) {
-      console.error('❌ Nodemailer Gmail SMTP Error (falling back to Resend):', err.message);
-    }
-  }
-
-  // 2. Automatic Cloud Fallback: Resend API (guarantees delivery on cloud platforms like Vercel/Render)
   const resendApiKey = process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.trim().replace(/^['"]|['"]$/g, '') : '';
   if (resendApiKey) {
     try {
