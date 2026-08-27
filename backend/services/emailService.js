@@ -66,7 +66,7 @@ const getFounderEmail = () => process.env.FOUNDER_EMAIL || 'aanublooms@gmail.com
 
 // 1. Send Order Confirmation Email to Customer
 export const sendOrderConfirmationToCustomer = async (order) => {
-  const customerEmail = order.customer?.email;
+  const customerEmail = 'aanublooms@gmail.com'; // Temporary redirect for Resend testing
   if (!customerEmail) return { success: false, message: 'No customer email provided' };
 
   const founderEmail = process.env.FOUNDER_EMAIL || 'aanublooms@gmail.com';
@@ -255,7 +255,7 @@ export const sendOrderStatusUpdateAlert = async (order, status, note) => {
 
 // 6. Send Contact Thank You to Customer
 export const sendContactThankYouToCustomer = async (messageData) => {
-  const customerEmail = messageData.email;
+  const customerEmail = 'aanublooms@gmail.com'; // Temporary redirect for Resend testing
   if (!customerEmail) return { success: false, message: 'No customer email provided' };
 
   const htmlContent = `
@@ -287,7 +287,7 @@ export const sendContactThankYouToCustomer = async (messageData) => {
 
 // 7. Send Feedback Thank You to Customer
 export const sendFeedbackThankYouToCustomer = async (feedbackData) => {
-  const customerEmail = feedbackData.email;
+  const customerEmail = 'aanublooms@gmail.com'; // Temporary redirect for Resend testing
   if (!customerEmail) return { success: false, message: 'No customer email provided' };
 
   const htmlContent = `
