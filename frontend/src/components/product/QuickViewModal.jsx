@@ -65,7 +65,7 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300">
-                {product.yarnMaterial}
+                {product.pipe cleanersMaterial}
               </span>
               <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />

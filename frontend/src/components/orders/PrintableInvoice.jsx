@@ -37,7 +37,7 @@ export const PrintableInvoice = ({ order, onClose }) => {
             </div>
             <div>
               <h2 className="font-serif font-bold text-xl text-warmgray-900">AanuBlooms Studio</h2>
-              <p className="text-[11px] text-warmgray-500">Handcrafted Crochet & Forever Blooms (India)</p>
+              <p className="text-[11px] text-warmgray-500">handcrafted pipe cleaner & Forever Blooms (India)</p>
             </div>
           </div>
 

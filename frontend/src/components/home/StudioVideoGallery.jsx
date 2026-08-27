@@ -136,7 +136,7 @@ export const StudioVideoGallery = ({ onNavigate }) => {
     title: '',
     caption: '',
     url: '',
-    tag: '🧶 Behind The Stitches'
+    tag: '🧶 Behind The creations'
   });
 
   useEffect(() => {
@@ -183,7 +183,7 @@ export const StudioVideoGallery = ({ onNavigate }) => {
     const newVideo = {
       id: `vid-${Date.now()}`,
       title: videoForm.title || 'Handcrafted Artisan Reel',
-      caption: videoForm.caption || 'Slow stitches & crochet behind-the-scenes.',
+      caption: videoForm.caption || 'Slow creations & handmade behind-the-scenes.',
       url: videoForm.url,
       poster: '/images/aanu-blooms-signature-set.jpeg',
       tag: videoForm.tag || '🌸 Studio Reel'
@@ -191,7 +191,7 @@ export const StudioVideoGallery = ({ onNavigate }) => {
 
     setVideos(prev => [newVideo, ...prev]);
     setShowAddModal(false);
-    setVideoForm({ title: '', caption: '', url: '', tag: '🧶 Behind The Stitches' });
+    setVideoForm({ title: '', caption: '', url: '', tag: '🧶 Behind The creations' });
     addToast('Video added to the website studio gallery! 🎥', 'success');
   };
 
@@ -329,7 +329,7 @@ export const StudioVideoGallery = ({ onNavigate }) => {
                   required
                   value={videoForm.title}
                   onChange={(e) => setVideoForm({ ...videoForm, title: e.target.value })}
-                  placeholder="e.g. Crocheting Pink Velvet Tulip Petals"
+                  placeholder="e.g. crafting Pink Velvet Tulip Petals"
                   className="w-full text-xs p-2.5 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white"
                 />
               </div>
@@ -343,7 +343,7 @@ export const StudioVideoGallery = ({ onNavigate }) => {
                   type="text"
                   value={videoForm.caption}
                   onChange={(e) => setVideoForm({ ...videoForm, caption: e.target.value })}
-                  placeholder="e.g. Step-by-step slow crochet loop stitch."
+                  placeholder="e.g. Step-by-step slow handmade loop stitch."
                   className="w-full text-xs p-2.5 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white"
                 />
               </div>
@@ -359,7 +359,7 @@ export const StudioVideoGallery = ({ onNavigate }) => {
                   className="w-full text-xs p-2.5 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white"
                 >
                   <option value="🌸 Studio Reel">🌸 Studio Reel</option>
-                  <option value="🧶 Behind The Stitches">🧶 Behind The Stitches</option>
+                  <option value="🧶 Behind The creations">🧶 Behind The creations</option>
                   <option value="🎀 Gift Packaging">🎀 Gift Packaging</option>
                   <option value="✨ Flower Assembly">✨ Flower Assembly</option>
                 </select>

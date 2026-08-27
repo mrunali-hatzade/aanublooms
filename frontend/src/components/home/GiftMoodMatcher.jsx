@@ -34,7 +34,7 @@ export const GiftMoodMatcher = ({ onNavigate }) => {
       price: 1099,
       originalPrice: 1398,
       image: 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=600&q=80',
-      itemsIncluded: ['Sunny Sunflower in Ceramic Pot', 'Chubby Velvet Honeybee Amigurumi', 'Artisan Gift Ribbon & Card']
+      itemsIncluded: ['Sunny Sunflower in Ceramic Pot', 'Chubby Velvet Honeybee flower pots', 'Artisan Gift Ribbon & Card']
     },
     'partner-romantic': {
       title: 'The Forever Romance Keepsake Box',
@@ -61,7 +61,7 @@ export const GiftMoodMatcher = ({ onNavigate }) => {
       itemsIncluded: ['Chubby Chenille Bunny Plush', 'Velvet Strawberry Hair Scrunchies (Pack of 2)', 'Scented Lavender Bag']
     },
     'graduation-cheerful': {
-      title: 'The Bright Future Graduation Stitches Box',
+      title: 'The Bright Future Graduation creations Box',
       subtitle: 'Sunflower Bloom + Daisy Keychain + Custom Note',
       price: 849,
       originalPrice: 1048,
@@ -79,7 +79,7 @@ export const GiftMoodMatcher = ({ onNavigate }) => {
       name: currentBundle.title,
       price: currentBundle.price,
       originalPrice: currentBundle.originalPrice,
-      yarnMaterial: 'Combed Milk Cotton & Chenille Velvet',
+      pipe cleanersMaterial: 'Premium colourful pipe cleaners',
       rating: 5.0,
       image: currentBundle.image,
       isBestseller: true

@@ -10,7 +10,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
 
   const [step, setStep] = useState(1);
   const [creationType, setCreationType] = useState('Custom Forever Flower Bouquet');
-  const [yarnPreference, setYarnPreference] = useState('100% Combed Milk Cotton');
+  const [pipe cleanersPreference, setpipe cleanersPreference] = useState('100% Combed Milk Cotton');
   const [selectedColors, setSelectedColors] = useState(['#F4B6C2', '#FFFFFF', '#9EB29C']);
   const [selectedFlowers, setSelectedFlowers] = useState(['Pink Tulips', 'White Daisies', 'Eucalyptus Leaves']);
   const [stemCount, setStemCount] = useState('Classic 9 Stems');
@@ -31,26 +31,20 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       image: '/images/category/4th_category_bouquet.jpeg',
       desc: 'Handcrafted bouquet with your choice of floral stems, custom color palette & silk ribbon text.'
     },
+
     {
-      id: 'plushie',
-      name: 'Custom Amigurumi Plushie Companion',
-      priceBase: 1199,
-      image: '/images/category/5th_category_handmadegifts.jpeg',
-      desc: 'Squishy bunny, bear, or dino with custom accessories (strawberry bag, bowtie, mini hat).'
-    },
-    {
-      id: 'wearable',
-      name: 'Custom Hexagon / Granny Square Cardigan',
-      priceBase: 3499,
+      id: 'pot',
+      name: 'Custom Handmade Flower Pot',
+      priceBase: 899,
       image: '/images/category/3rd_category_flowerpot.jpeg',
-      desc: 'Tailored to your body measurements with your chosen yarn color blocks and balloon sleeves.'
+      desc: 'Beautiful pipe cleaner flowers planted in a miniature rustic pot for your desk or home.'
     },
     {
-      id: 'bag',
-      name: 'Custom Daisy Market Tote / Crossbody',
-      priceBase: 1599,
+      id: 'keychain',
+      name: 'Custom Floral Keychain',
+      priceBase: 399,
       image: '/images/category/1st_category_flower.jpeg',
-      desc: 'Artisan granny square tote in your personalized garden color scheme with inner cotton lining.'
+      desc: 'Miniature forever flower keychain to carry your favorite blooms everywhere you go.'
     }
   ];
 
@@ -109,7 +103,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       if (selectedColors.length < 4) {
         setSelectedColors([...selectedColors, hex]);
       } else {
-        addToast('You can pick up to 4 custom yarn colors', 'info');
+        addToast('You can pick up to 4 custom pipe cleaners colors', 'info');
       }
     }
   };
@@ -134,7 +128,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       images: photoPreview ? [photoPreview, currentTypeObj.image] : [currentTypeObj.image],
       category: 'custom-orders',
       craftTimeHours: 10,
-      yarnMaterial: yarnPreference,
+      pipe cleanersMaterial: pipe cleanersPreference,
       colors: selectedColors.map(c => ({ name: c, hex: c })),
       sizes: [stemCount],
       referenceImage: photoPreview || null,
@@ -142,9 +136,9 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
     };
 
     addToCart(customProduct, 1, {
-      selectedColor: `Palette of ${selectedColors.length} Yarn Tones`,
+      selectedColor: `Palette of ${selectedColors.length} pipe cleaners Tones`,
       selectedSize: stemCount,
-      customNotes: `Ribbon: "${ribbonMessage}" | Flowers: ${selectedFlowers.join(', ')} | Yarn: ${yarnPreference}${photoPreview ? ' | [Reference Photo Attached]' : ''} | Notes: ${specialNotes}`
+      customNotes: `Ribbon: "${ribbonMessage}" | Flowers: ${selectedFlowers.join(', ')} | pipe cleaners: ${pipe cleanersPreference}${photoPreview ? ' | [Reference Photo Attached]' : ''} | Notes: ${specialNotes}`
     });
 
     addToast('🌸 Custom order added to your basket!', 'success');
@@ -166,7 +160,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
         customerPhone,
         itemType: creationType,
         colorPalette: selectedColors,
-        yarnPreference,
+        pipe cleanersPreference,
         specialNotes: `Flowers: ${selectedFlowers.join(', ')} | Stems: ${stemCount} | Ribbon: "${ribbonMessage}" | Notes: ${specialNotes}`,
         estimatedBudget: `₹${estimatedPrice.toLocaleString('en-IN')}`,
         referenceImage: photoPreview || null
@@ -261,13 +255,13 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
               onClick={() => setStep(2)}
               className="px-6 py-3 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-xs shadow-cozy transition-all"
             >
-              Continue to Palette & Stitches →
+              Continue to Palette & creations →
             </button>
           </div>
         </div>
       )}
 
-      {/* Step 2: Palette, Flowers, Yarn */}
+      {/* Step 2: Palette, Flowers, pipe cleaners */}
       {step === 2 && (
         <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-5 sm:p-7 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft space-y-6 animate-in fade-in">
           
@@ -275,7 +269,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
           <div>
             <div className="flex justify-between items-center mb-2.5">
               <label className="font-serif font-bold text-sm sm:text-base text-warmgray-900 dark:text-white">
-                Choose Yarn Color Palette (Pick 1 to 4 Colors)
+                Choose pipe cleaners Color Palette (Pick 1 to 4 Colors)
               </label>
               <span className="text-xs text-bloom-600 dark:text-bloom-400 font-semibold">
                 {selectedColors.length} selected
@@ -337,24 +331,24 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
             </div>
           )}
 
-          {/* Yarn Material Selection */}
+          {/* material Selection */}
           <div>
             <label className="font-serif font-bold text-sm sm:text-base text-warmgray-900 dark:text-white block mb-2.5">
-              Yarn Preference
+              pipe cleaners Preference
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              {['100% Combed Milk Cotton', 'Super-Soft Chenille Velvet', 'Organic Bamboo Cotton'].map(yarn => (
+              {['100% Combed Milk Cotton', 'Super-Soft Chenille Velvet', 'Organic Bamboo Cotton'].map(pipe cleaners => (
                 <button
-                  key={yarn}
+                  key={pipe cleaners}
                   type="button"
-                  onClick={() => setYarnPreference(yarn)}
+                  onClick={() => setpipe cleanersPreference(pipe cleaners)}
                   className={`p-3 rounded-2xl text-xs font-semibold border text-center transition-all ${
-                    yarnPreference === yarn
+                    pipe cleanersPreference === pipe cleaners
                       ? 'border-bloom-500 bg-bloom-50 dark:bg-warmgray-800 text-bloom-800 dark:text-bloom-300 shadow-xs font-bold'
                       : 'border-warmgray-200 dark:border-warmgray-800 text-warmgray-700 dark:text-warmgray-300'
                   }`}
                 >
-                  {yarn}
+                  {pipe cleaners}
                 </button>
               ))}
             </div>
@@ -492,7 +486,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
                   {creationType}
                 </h4>
                 <p className="text-xs text-bloom-600 dark:text-bloom-400 font-semibold mt-0.5">
-                  {stemCount} · {yarnPreference}
+                  {stemCount} · {pipe cleanersPreference}
                 </p>
                 <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">
                   Ribbon: "{ribbonMessage || 'None'}"
@@ -508,7 +502,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
             {/* Selected Color Swatches */}
             <div>
               <p className="text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
-                Custom Yarn Palette:
+                Custom color palette:
               </p>
               <div className="flex gap-2">
                 {selectedColors.map((c, idx) => (

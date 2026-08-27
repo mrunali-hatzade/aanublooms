@@ -45,7 +45,7 @@ export const HomePage = ({ onNavigate }) => {
     if (activeFilterTab === 'bestsellers') return p.isBestseller;
     if (activeFilterTab === 'new') return p.isNew;
     if (activeFilterTab === 'blooms') return p.category === 'forever-blooms';
-    if (activeFilterTab === 'plushies') return p.category === 'amigurumi-plushies';
+    if (activeFilterTab === 'plushies') return p.category === 'flower pots-plushies';
     return true;
   });
 

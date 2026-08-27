@@ -35,8 +35,8 @@ export const ContactPage = ({ onNavigate }) => {
 
   const faqs = [
     {
-      q: 'How long does it take to hand-crochet my order?',
-      a: 'Since each piece is 100% hand-stitched without machinery, creation time ranges between 2 to 5 business days for plushies and bouquets, and 5 to 9 business days for larger custom cardigans. Once shipped, standard delivery takes 3-5 business days.'
+      q: 'How long does it take to craft my order?',
+      a: 'Since each piece is 100% hand-crafted without machinery, creation time ranges between 2 to 5 business days for plushies and bouquets, and 5 to 9 business days for larger custom cardigans. Once shipped, standard delivery takes 3-5 business days.'
     },
     {
       q: 'Do forever blooms really last forever?',
@@ -47,7 +47,7 @@ export const ContactPage = ({ onNavigate }) => {
       a: 'Absolutely! You can use our interactive Custom Order Builder or send a note through this contact form with your event color scheme, flower preferences, and custom ribbon messages.'
     },
     {
-      q: 'How do I clean or dust my crochet plushies & flowers?',
+      q: 'How do I clean or dust my handmade flowers & keychains?',
       a: 'We recommend gently dusting with a soft blush makeup brush or a hairdryer on its cool/low setting. For spot cleaning, dab lightly with cold water and gentle wool soap, then lay flat on a dry towel to air dry.'
     }
   ];
@@ -261,7 +261,7 @@ export const ContactPage = ({ onNavigate }) => {
                   AanuBlooms Studio
                 </h3>
                 <p className="text-[11px] text-bloom-600 dark:text-bloom-400 font-semibold">
-                  Handcrafted Crochet & Floral Boutique
+                  Handmade Pipe Cleaner & Floral Boutique
                 </p>
               </div>
             </div>
@@ -309,7 +309,7 @@ export const ContactPage = ({ onNavigate }) => {
               <span>Looking for Custom Colors?</span>
             </h4>
             <p className="text-xs text-warmgray-300 leading-relaxed">
-              Use our interactive commission builder to choose your own 4-color yarn palette, select flower varieties, and add personalized ribbon text with live pricing.
+              Use our interactive commission builder to choose your own palette, select flower varieties, and add personalized ribbon text with live pricing.
             </p>
             <button
               onClick={() => onNavigate('custom-order')}

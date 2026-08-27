@@ -21,7 +21,7 @@ export const Floating3DBackground = () => {
         </div>
       </div>
 
-      {/* Top Right: 3D Floating Yarn Ball */}
+      {/* Top Right: 3D Floating pipe cleaners Ball */}
       <div
         className="absolute top-36 right-8 sm:right-16 animate-float opacity-65 dark:opacity-45 filter drop-shadow-[0_15px_25px_rgba(168,85,247,0.25)]"
         style={{ animationDuration: '10s', animationDelay: '-2s' }}
@@ -71,7 +71,7 @@ export const Floating3DBackground = () => {
         </div>
       </div>
 
-      {/* Soft Ethereal Stitches Texture Grid (Subtle Luxury Depth) */}
+      {/* Soft Ethereal creations Texture Grid (Subtle Luxury Depth) */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-pink-100/20 via-transparent to-transparent dark:from-pink-950/10 pointer-events-none" />
 
     </div>

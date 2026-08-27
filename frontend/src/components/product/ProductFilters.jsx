@@ -19,21 +19,21 @@ export const ProductFilters = ({
   onSelectCategory,
   priceRange,
   onPriceChange,
-  selectedYarn,
-  onSelectYarn,
+  selectedpipe cleaners,
+  onSelectpipe cleaners,
   selectedDifficulty,
   onSelectDifficulty,
   inStockOnly,
   onToggleInStock,
   onResetFilters
 }) => {
-  const yarnMaterials = [
-    { label: 'All Yarn Types', value: 'all' },
+  const pipe cleanersMaterials = [
+    { label: 'All pipe cleaners Types', value: 'all' },
     { label: '100% Milk Cotton', value: 'Milk Cotton' },
     { label: 'Chenille Velvet', value: 'Chenille' },
     { label: 'Organic Cotton', value: 'Organic' },
     { label: 'Merino Wool Blend', value: 'Wool' },
-    { label: 'Non-Fraying Beginner Yarn', value: 'Beginner' }
+    { label: 'Non-Fraying Beginner pipe cleaners', value: 'Beginner' }
   ];
 
   const difficulties = [
@@ -50,7 +50,7 @@ export const ProductFilters = ({
       <div className="flex items-center justify-between pb-3 border-b border-warmgray-100 dark:border-warmgray-800">
         <div className="flex items-center gap-2 font-serif font-bold text-base sm:text-lg text-warmgray-900 dark:text-white">
           <Filter className="w-4 h-4 text-bloom-500" />
-          <span>Filter Stitches</span>
+          <span>Filter creations</span>
         </div>
         <button
           onClick={onResetFilters}
@@ -131,25 +131,25 @@ export const ProductFilters = ({
         </div>
       </div>
 
-      {/* Yarn Material */}
+      {/* material */}
       <div className="pt-2 border-t border-warmgray-100 dark:border-warmgray-800">
         <h4 className="font-bold text-xs uppercase tracking-wider text-warmgray-500 dark:text-warmgray-400 mb-2">
-          Yarn & Material
+          pipe cleaners & Material
         </h4>
         <div className="space-y-2">
-          {yarnMaterials.map(yarn => (
+          {pipe cleanersMaterials.map(pipe cleaners => (
             <label
-              key={yarn.value}
+              key={pipe cleaners.value}
               className="flex items-center gap-2.5 text-sm text-warmgray-700 dark:text-warmgray-300 cursor-pointer hover:text-bloom-600 transition-colors"
             >
               <input
                 type="radio"
-                name="yarnMaterial"
-                checked={selectedYarn === yarn.value}
-                onChange={() => onSelectYarn(yarn.value)}
+                name="pipe cleanersMaterial"
+                checked={selectedpipe cleaners === pipe cleaners.value}
+                onChange={() => onSelectpipe cleaners(pipe cleaners.value)}
                 className="w-4 h-4 text-bloom-500 focus:ring-bloom-400"
               />
-              <span>{yarn.label}</span>
+              <span>{pipe cleaners.label}</span>
             </label>
           ))}
         </div>

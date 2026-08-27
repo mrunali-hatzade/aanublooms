@@ -9,7 +9,7 @@ export const Footer = ({ onNavigate }) => {
   const handleSubscribe = (e) => {
     e.preventDefault();
     if (email.trim()) {
-      addToast('🌸 Welcome to the AanuBlooms Yarn Club! Check your inbox for your ₹150 discount code.', 'success');
+      addToast('🌸 Welcome to the AanuBlooms pipe cleaners Club! Check your inbox for your ₹150 discount code.', 'success');
       setEmail('');
     }
   };

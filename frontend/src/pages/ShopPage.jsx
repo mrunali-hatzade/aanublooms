@@ -15,7 +15,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
   // Filters state
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [priceRange, setPriceRange] = useState(10000);
-  const [selectedYarn, setSelectedYarn] = useState('all');
+  const [selectedpipe cleaners, setSelectedpipe cleaners] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortOption, setSortOption] = useState('featured');
@@ -37,7 +37,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
             category: selectedCategory,
             search: searchQuery,
             maxPrice: priceRange,
-            yarnMaterial: selectedYarn,
+            pipe cleanersMaterial: selectedpipe cleaners,
             difficulty: selectedDifficulty,
             inStock: inStockOnly,
             sort: sortOption
@@ -60,12 +60,12 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
       window.removeEventListener('aanublooms_data_updated', handleUpdate);
       window.removeEventListener('storage', handleUpdate);
     };
-  }, [selectedCategory, searchQuery, priceRange, selectedYarn, selectedDifficulty, inStockOnly, sortOption]);
+  }, [selectedCategory, searchQuery, priceRange, selectedpipe cleaners, selectedDifficulty, inStockOnly, sortOption]);
 
   const handleResetFilters = () => {
     setSelectedCategory('all');
     setPriceRange(10000);
-    setSelectedYarn('all');
+    setSelectedpipe cleaners('all');
     setSelectedDifficulty('all');
     setInStockOnly(false);
     setSortOption('featured');
@@ -174,8 +174,8 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
             onSelectCategory={setSelectedCategory}
             priceRange={priceRange}
             onPriceChange={setPriceRange}
-            selectedYarn={selectedYarn}
-            onSelectYarn={setSelectedYarn}
+            selectedpipe cleaners={selectedpipe cleaners}
+            onSelectpipe cleaners={setSelectedpipe cleaners}
             selectedDifficulty={selectedDifficulty}
             onSelectDifficulty={setSelectedDifficulty}
             inStockOnly={inStockOnly}
@@ -200,8 +200,8 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
                 onSelectCategory={(cat) => { setSelectedCategory(cat); setMobileFilterOpen(false); }}
                 priceRange={priceRange}
                 onPriceChange={setPriceRange}
-                selectedYarn={selectedYarn}
-                onSelectYarn={setSelectedYarn}
+                selectedpipe cleaners={selectedpipe cleaners}
+                onSelectpipe cleaners={setSelectedpipe cleaners}
                 selectedDifficulty={selectedDifficulty}
                 onSelectDifficulty={setSelectedDifficulty}
                 inStockOnly={inStockOnly}
@@ -217,7 +217,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
           {isLoading ? (
             <div className="py-24 text-center">
               <div className="w-12 h-12 border-4 border-bloom-200 border-t-bloom-500 rounded-full animate-spin mx-auto mb-3" />
-              <p className="text-xs text-warmgray-500">Unraveling handmade stitches...</p>
+              <p className="text-xs text-warmgray-500">Unraveling handmade creations...</p>
             </div>
           ) : products.length === 0 ? (
             <div className="py-20 text-center bg-white dark:bg-warmgray-900 rounded-3xl border border-warmgray-200 dark:border-warmgray-800 p-8">
@@ -226,7 +226,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
                 No matching creations found
               </h3>
               <p className="text-xs text-warmgray-500 dark:text-warmgray-400 max-w-sm mx-auto mb-6">
-                Try widening your price range or clearing selected yarn filters.
+                Try widening your price range or clearing selected pipe cleaners filters.
               </p>
               <button
                 onClick={handleResetFilters}

@@ -150,7 +150,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
       const res = await api.createOrder(orderPayload);
       if (res.success && res.data) {
         clearCart();
-        addToast('🌸 Order Placed Successfully! Artisan Aanu is preparing your yarn stitches.', 'success');
+        addToast('🌸 Order Placed Successfully! Artisan Aanu is preparing your pipe cleaners creations.', 'success');
         if (onOrderPlaced) {
           onOrderPlaced(res.data);
         }
@@ -196,7 +196,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
         amount: rzpOrder.amount,
         currency: rzpOrder.currency,
         name: 'AanuBlooms Boutique',
-        description: 'Handcrafted Crochet Order',
+        description: 'handcrafted pipe cleaner Order',
         order_id: rzpOrder.orderId,
         handler: async function (response) {
           try {

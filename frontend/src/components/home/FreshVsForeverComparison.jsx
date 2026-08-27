@@ -13,10 +13,10 @@ export const FreshVsForeverComparison = ({ onNavigate }) => {
             The Artisan Difference
           </span>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
-            Why Handmade Crochet Blooms Win Every Time
+            Why Handmade handmade Blooms Win Every Time
           </h2>
           <p className="text-xs sm:text-sm text-warmgray-500 dark:text-warmgray-400 mt-1">
-            Real flowers are sweet for a week. AanuBlooms handcrafted stitches last a lifetime.
+            Real flowers are sweet for a week. AanuBlooms handcrafted creations last a lifetime.
           </p>
         </div>
 
@@ -55,7 +55,7 @@ export const FreshVsForeverComparison = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* AanuBlooms Forever Stitches (Superior Boutique) */}
+          {/* AanuBlooms Forever creations (Superior Boutique) */}
           <div className="p-6 rounded-3xl bg-gradient-to-tr from-bloom-50 via-rosewood-50 to-warmgray-50 dark:from-warmgray-800 dark:via-warmgray-800 dark:to-warmgray-900 border-2 border-bloom-400 dark:border-bloom-500 shadow-soft-lg space-y-4 relative">
             <div className="absolute -top-3 right-6 bg-gradient-to-r from-bloom-500 to-rosewood-500 text-white text-[10px] uppercase tracking-widest font-extrabold px-3 py-0.5 rounded-full shadow-xs">
               ✨ 100% Everlasting
@@ -95,7 +95,7 @@ export const FreshVsForeverComparison = ({ onNavigate }) => {
                 onClick={() => onNavigate('shop')}
                 className="w-full py-2.5 bg-bloom-500 hover:bg-bloom-600 text-white rounded-xl text-xs font-bold shadow-xs transition-all text-center"
               >
-                Shop Everlasting Stitches 🌸
+                Shop Everlasting creations 🌸
               </button>
             </div>
           </div>

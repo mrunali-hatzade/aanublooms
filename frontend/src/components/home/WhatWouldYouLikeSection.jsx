@@ -39,7 +39,7 @@ export const WhatWouldYouLikeSection = ({ categories = [], onNavigate }) => {
       glow: 'from-indigo-100 to-purple-100 dark:from-indigo-950/40 dark:to-purple-950/40',
       ring: 'border-indigo-200/80 dark:border-indigo-800/60 group-hover:border-indigo-400 group-hover:shadow-[0_0_20px_rgba(199,210,254,0.6)]'
     },
-    'amigurumi-plushies': {
+    'flower pots-plushies': {
       icon: '🧸',
       name: 'Velvet Plushies',
       glow: 'from-pink-100 to-amber-100 dark:from-pink-950/40 dark:to-amber-950/40',

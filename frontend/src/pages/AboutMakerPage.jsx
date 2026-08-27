@@ -15,7 +15,7 @@ export const AboutMakerPage = ({ onNavigate }) => {
           Handcrafted with Love, Creativity & Endless Patience
         </h1>
         <p className="text-base text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
-          Welcome to AanuBlooms! We create everlasting floral bouquets, cuddly amigurumi plushies, and cozy wearables that bring warmth into everyday life.
+          Welcome to AanuBlooms! We create everlasting floral bouquets, cuddly flower pots, and cozy wearables that bring warmth into everyday life.
         </p>
       </div>
 
@@ -68,7 +68,7 @@ export const AboutMakerPage = ({ onNavigate }) => {
           </div>
           <h3 className="font-serif font-bold text-base text-warmgray-900 dark:text-white">Slow Craft Fashion</h3>
           <p className="text-xs text-warmgray-500 dark:text-warmgray-400">
-            We spend between 4 to 24 hours on each piece to guarantee tight, flawless stitches.
+            We spend between 4 to 24 hours on each piece to guarantee tight, flawless creations.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export const AboutMakerPage = ({ onNavigate }) => {
           </div>
           <h3 className="font-serif font-bold text-base text-warmgray-900 dark:text-white">Eco & Hypoallergenic</h3>
           <p className="text-xs text-warmgray-500 dark:text-warmgray-400">
-            OEKO-TEX certified combed cotton and super-soft chenille velvet yarns.
+            OEKO-TEX certified combed cotton and super-soft chenille pipe cleanerss.
           </p>
         </div>
 

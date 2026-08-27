@@ -18,7 +18,7 @@ export const MeetTheMaker = ({ onNavigate }) => {
                 />
               </div>
 
-              {/* Behind Stitches Badge */}
+              {/* Behind creations Badge */}
               <div className="absolute -bottom-4 -left-3 sm:-left-4 bg-white dark:bg-warmgray-800 p-3 rounded-2xl shadow-lg border border-warmgray-200/80 dark:border-warmgray-700 max-w-[220px]">
                 <p className="font-handwritten text-xl text-bloom-600 dark:text-bloom-400 font-bold mb-0.5">
                   "Every loop has a story"
@@ -46,7 +46,7 @@ export const MeetTheMaker = ({ onNavigate }) => {
             </h2>
 
             <p className="text-base sm:text-lg text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
-              Every AanuBlooms piece is slow-crafted by hand with pure organic cotton and velvet yarn — creating timeless, heartfelt gifts made to last forever.
+              Every AanuBlooms piece is slow-crafted by hand with pure organic cotton and pipe cleaners — creating timeless, heartfelt gifts made to last forever.
             </p>
 
             {/* Maker Pillars */}

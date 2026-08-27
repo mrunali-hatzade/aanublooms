@@ -18,7 +18,7 @@ export const WishlistPage = ({ onNavigate }) => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-warmgray-200 dark:border-warmgray-800">
         <div>
           <span className="text-xs font-bold uppercase tracking-wider text-rosewood-600 dark:text-rosewood-400 block mb-1">
-            Your Saved Stitches
+            Your Saved creations
           </span>
           <h1 className="text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
             Handcrafted Wishlist ({wishlist.length})
@@ -56,7 +56,7 @@ export const WishlistPage = ({ onNavigate }) => {
             Your Wishlist is Empty
           </h2>
           <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mb-6">
-            Tap the heart icon on any flower bouquet, amigurumi plushie, or cardigan to save it here!
+            Tap the heart icon on any flower bouquet, flower pots plushie, or cardigan to save it here!
           </p>
           <button
             onClick={() => onNavigate('shop')}
@@ -90,7 +90,7 @@ export const WishlistPage = ({ onNavigate }) => {
                   </button>
                 </div>
                 <div className="p-4">
-                  <span className="text-[11px] text-warmgray-500 block truncate">{item.yarnMaterial}</span>
+                  <span className="text-[11px] text-warmgray-500 block truncate">{item.pipe cleanersMaterial}</span>
                   <h3 className="font-serif font-bold text-sm text-warmgray-900 dark:text-white line-clamp-1 mt-0.5">
                     {item.name}
                   </h3>

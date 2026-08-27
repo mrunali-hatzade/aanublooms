@@ -69,7 +69,7 @@ export const InteractiveBouquetStudio = ({ onNavigate }) => {
       id: `custom-bouquet-${Date.now()}`,
       name: `Bespoke Bouquet (${totalStems} Handcrafted Stems)`,
       price: totalCost,
-      yarnMaterial: 'Organic Milk Cotton & Velvet Satin',
+      pipe cleanersMaterial: 'premium colourful pipe cleaners',
       rating: 5.0,
       image: '/images/pink-tulip-stem.jpeg',
       customDetails: {
@@ -104,7 +104,7 @@ export const InteractiveBouquetStudio = ({ onNavigate }) => {
             Build Your Forever Bouquet Live
           </h2>
           <p className="text-xs sm:text-sm text-warmgray-500 dark:text-warmgray-400 mt-1">
-            Pick your flower assortment, paper & ribbon. We will crochet and hand-wrap it in our studio!
+            Pick your flower assortment, paper & ribbon. We will handmade and hand-wrap it in our studio!
           </p>
         </div>
 

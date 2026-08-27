@@ -1535,7 +1535,7 @@ export const StoreSettingsModule = () => {
                     type="text"
                     value={formData.seo?.metaTitle || ''}
                     onChange={(e) => handleFieldChange('seo', 'metaTitle', e.target.value)}
-                    placeholder="Stitch & Love | Handmade Crochet Creations & Forever Blooms"
+                    placeholder="Stitch & Love | Handmade handmade Creations & Forever Blooms"
                     className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC]"
                   />
                 </div>
@@ -1548,7 +1548,7 @@ export const StoreSettingsModule = () => {
                     rows={3}
                     value={formData.seo?.metaDescription || ''}
                     onChange={(e) => handleFieldChange('seo', 'metaDescription', e.target.value)}
-                    placeholder="Discover beautiful handmade crochet flowers, bags, and gifts..."
+                    placeholder="Discover beautiful handmade handmade flowers, bags, and gifts..."
                     className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC]"
                   />
                 </div>
@@ -1561,7 +1561,7 @@ export const StoreSettingsModule = () => {
                     type="text"
                     value={formData.seo?.keywords || ''}
                     onChange={(e) => handleFieldChange('seo', 'keywords', e.target.value)}
-                    placeholder="crochet flowers, handmade bouquet, amigurumi plushies, gifts india"
+                    placeholder="handmade flowers, handmade bouquet, flower pots, gifts india"
                     className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC]"
                   />
                 </div>
@@ -1636,7 +1636,7 @@ export const StoreSettingsModule = () => {
                         type="button"
                         onClick={() => {
                           setEditingLegalPolicy(p.title);
-                          setLegalPolicyContent(`Official ${p.title} for Stitch & Love Handmade Studio.\n\nAll pieces are slow-stitched and shipped with care across India.`);
+                          setLegalPolicyContent(`Official ${p.title} for Stitch & Love Handmade Studio.\n\nAll pieces are slow-crafted and shipped with care across India.`);
                         }}
                         className="p-2 rounded-xl bg-white hover:bg-gray-100 border border-[#E9E2DC] text-[#3E2B25] text-xs font-semibold flex items-center gap-1 shadow-2xs"
                       >
@@ -1792,7 +1792,7 @@ export const StoreSettingsModule = () => {
           {activeSection === 'crafting' && (
             <div className="bg-white rounded-2xl p-6 border border-[#E9E2DC] shadow-sm space-y-6">
               <div className="border-b border-[#E9E2DC] pb-3">
-                <h3 className="font-serif font-bold text-base text-[#3E2B25]">Crochet Crafting & Production Defaults</h3>
+                <h3 className="font-serif font-bold text-base text-[#3E2B25]">handmade Crafting & Production Defaults</h3>
                 <p className="text-xs text-[#756A65]">Slow-fashion production times, raw material tracking, and replenishment triggers.</p>
               </div>
 
@@ -1838,7 +1838,7 @@ export const StoreSettingsModule = () => {
                 <div className="flex items-center justify-between p-3.5 bg-[#F8F6F3] rounded-xl border border-[#E9E2DC]">
                   <div>
                     <span className="text-xs font-bold text-[#3E2B25] block">Raw Material Inventory Tracking</span>
-                    <span className="text-[10px] text-[#756A65]">Track yarn skeins, stuffing, eyes and packaging</span>
+                    <span className="text-[10px] text-[#756A65]">Track pipe cleaners skeins, stuffing, eyes and packaging</span>
                   </div>
                   <input
                     type="checkbox"

@@ -8,7 +8,7 @@ export const DEFAULT_SETTINGS = {
   general: {
     storeName: 'Stitch & Love',
     tagline: 'Handmade with Love, One Stitch at a Time.',
-    description: 'Beautiful handmade crochet creations crafted with care, forever floral bouquets, cuddly amigurumi, and bespoke gifts.',
+    description: 'Beautiful handmade creations crafted with care, forever floral bouquets, flower pots, keychains, and bespoke gifts.',
     storeOpen: true,
     closedMessage: "We're taking a short break to craft more creations and will be back soon.",
     currency: 'INR',
@@ -138,9 +138,9 @@ export const DEFAULT_SETTINGS = {
     }
   },
   seo: {
-    metaTitle: 'Stitch & Love | Handmade Crochet Creations & Forever Blooms',
-    metaDescription: 'Discover beautiful handmade crochet flowers, bags, amigurumi, accessories and personalized gifts crafted with love in India.',
-    keywords: 'crochet flowers, handmade bouquet, amigurumi plushies, crochet bags, gifts india',
+    metaTitle: 'Stitch & Love | Handmade Creations & Forever Blooms',
+    metaDescription: 'Discover beautiful handmade pipe cleaner flowers, flower pots, keychains, accessories and personalized gifts crafted with love in India.',
+    keywords: 'handmade flowers, pipe cleaner bouquet, flower pots, keychains, gifts india',
     ogImage: '/images/blossom-pots-collection.jpeg',
     allowIndexing: true,
     sitemapStatus: 'Active & Auto-Generated'

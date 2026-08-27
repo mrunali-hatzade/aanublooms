@@ -54,7 +54,7 @@ export const CartProvider = ({ children }) => {
             image: product.images?.[0] || product.image,
             category: product.category,
             craftTimeHours: product.craftTimeHours,
-            yarnMaterial: product.yarnMaterial,
+            pipe cleanersMaterial: product.pipe cleanersMaterial,
             selectedColor: colorName,
             selectedSize: sizeName,
             customNotes: customNotes || '',

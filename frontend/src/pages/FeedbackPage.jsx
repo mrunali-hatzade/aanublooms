@@ -244,7 +244,7 @@ export const FeedbackPage = ({ onNavigate }) => {
                     className="w-full text-xs p-3 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
                   >
                     <option value="Forever Blooms & Pots">Forever Blooms & Pots</option>
-                    <option value="Amigurumi Plushies">Amigurumi Plushies</option>
+                    <option value="flower pots">flower pots</option>
                     <option value="Bags & Accessories">Bags & Accessories</option>
                     <option value="Wearables & Cardigans">Wearables & Cardigans</option>
                     <option value="Cozy Home & Living">Cozy Home & Living</option>
@@ -259,7 +259,7 @@ export const FeedbackPage = ({ onNavigate }) => {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Super soft velvet yarn"
+                    placeholder="e.g. Super soft pipe cleaners"
                     value={form.highlight}
                     onChange={(e) => setForm({ ...form, highlight: e.target.value })}
                     className="w-full text-xs p-3 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
@@ -274,7 +274,7 @@ export const FeedbackPage = ({ onNavigate }) => {
                 <textarea
                   required
                   rows={4}
-                  placeholder="Tell us what you loved about your crochet piece, stitch quality, gifting experience, or packaging..."
+                  placeholder="Tell us what you loved about your handmade piece, stitch quality, gifting experience, or packaging..."
                   value={form.comment}
                   onChange={(e) => setForm({ ...form, comment: e.target.value })}
                   className="w-full text-xs p-3 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400 leading-relaxed"

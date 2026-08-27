@@ -19,7 +19,7 @@ export const CraftTimelineTracker = ({ initialOrder, onPrintInvoice }) => {
   const [errorMsg, setErrorMsg] = useState('');
 
   const stages = [
-    { key: 'placed', label: 'Order Placed', desc: 'Order confirmed & yarn reserved', icon: Package },
+    { key: 'placed', label: 'Order Placed', desc: 'Order confirmed & pipe cleaners reserved', icon: Package },
     { key: 'handcrafting', label: '🧶 Handcrafting & Stitching', desc: 'Artisan Aanu is hand-stitching with love', icon: Sparkles },
     { key: 'packaging', label: '🌸 Quality & Ribbon Packaging', desc: 'Protected in kraft box with lavender sachet', icon: Flower2 },
     { key: 'shipped', label: '📦 Shipped with Tracking', desc: 'Carrier on the way to your door', icon: Truck },

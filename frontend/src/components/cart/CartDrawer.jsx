@@ -86,7 +86,7 @@ export const CartDrawer = ({ onNavigate }) => {
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-5 h-5 text-bloom-600 dark:text-bloom-400" />
               <h2 className="font-serif font-bold text-base sm:text-lg text-warmgray-900 dark:text-white">
-                Your Yarn Basket ({totalItemCount})
+                Your pipe cleaners Basket ({totalItemCount})
               </h2>
             </div>
             <button
@@ -317,7 +317,7 @@ export const CartDrawer = ({ onNavigate }) => {
                 }}
                 className="w-full text-center text-[11px] font-semibold text-warmgray-500 hover:text-bloom-600 dark:text-warmgray-400 transition-colors"
               >
-                Continue Browsing Stitches
+                Continue Browsing creations
               </button>
             </div>
           )}

@@ -62,7 +62,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
     return (
       <div className="py-32 text-center">
         <div className="w-12 h-12 border-4 border-bloom-200 border-t-bloom-500 rounded-full animate-spin mx-auto mb-3" />
-        <p className="text-xs text-warmgray-500">Unpacking handcrafted stitches...</p>
+        <p className="text-xs text-warmgray-500">Unpacking handcrafted creations...</p>
       </div>
     );
   }
@@ -70,7 +70,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
   if (!product) {
     return (
       <div className="py-20 text-center max-w-md mx-auto">
-        <h2 className="font-serif font-bold text-2xl mb-2">Crochet Piece Not Found</h2>
+        <h2 className="font-serif font-bold text-2xl mb-2">handmade piece Not Found</h2>
         <button
           onClick={() => onNavigate('shop')}
           className="px-6 py-2.5 bg-bloom-500 text-white rounded-full text-xs font-bold"
@@ -143,7 +143,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="px-3 py-1 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider">
-                {product.yarnMaterial}
+                {product.pipe cleanersMaterial}
               </span>
               <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
@@ -185,7 +185,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
                   Artisan Handcrafted in ~{product.craftTimeHours} Hours
                 </span>
                 <span className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-400">
-                  Tight uniform stitches, zero factory mass manufacturing.
+                  Tight uniform creations, zero factory mass manufacturing.
                 </span>
               </div>
             </div>
@@ -330,7 +330,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
         <div className="flex gap-6 border-b border-warmgray-200 dark:border-warmgray-800 pb-3 overflow-x-auto text-sm sm:text-base font-bold">
           {[
             { id: 'description', label: 'Story & Description' },
-            { id: 'specs', label: 'Stitch & Yarn Specs' },
+            { id: 'specs', label: 'Stitch & pipe cleaners Specs' },
             { id: 'care', label: 'Washing & Care Guide' },
             { id: 'reviews', label: `Customer Reviews (${product.reviewCount || 0})` }
           ].map(tab => (
@@ -360,8 +360,8 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           {activeTab === 'specs' && (
             <div className="max-w-xl bg-white dark:bg-warmgray-900 rounded-3xl p-6 border border-warmgray-200 dark:border-warmgray-800 text-sm space-y-3.5">
               <div className="flex justify-between py-2 border-b border-warmgray-100 dark:border-warmgray-800">
-                <span className="font-bold text-warmgray-500">Yarn Material</span>
-                <span className="font-semibold text-warmgray-900 dark:text-white">{product.yarnMaterial}</span>
+                <span className="font-bold text-warmgray-500">material</span>
+                <span className="font-semibold text-warmgray-900 dark:text-white">{product.pipe cleanersMaterial}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-warmgray-100 dark:border-warmgray-800">
                 <span className="font-bold text-warmgray-500">Handcraft Duration</span>
@@ -382,7 +382,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
             <div className="max-w-2xl bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-8 border border-warmgray-200 dark:border-warmgray-800 space-y-4 text-sm text-warmgray-700 dark:text-warmgray-300">
               <h4 className="font-serif font-bold text-lg text-warmgray-900 dark:text-white flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-bloom-500" />
-                <span>How to keep your crochet piece beautiful for decades</span>
+                <span>How to keep your handmade piece beautiful for decades</span>
               </h4>
               <p className="leading-relaxed text-sm sm:text-base">{product.careInstructions}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-sm">

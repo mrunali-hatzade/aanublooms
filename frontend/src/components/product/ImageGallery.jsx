@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ZoomIn, ZoomOut, Maximize2, Sparkles, X } from 'lucide-react';
 
-export const ImageGallery = ({ images = [], productName = 'Crochet Piece' }) => {
+export const ImageGallery = ({ images = [], productName = 'handmade piece' }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isZoomMode, setIsZoomMode] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
@@ -70,7 +70,7 @@ export const ImageGallery = ({ images = [], productName = 'Crochet Piece' }) => 
 
         {isZoomMode && (
           <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-medium pointer-events-none animate-in fade-in">
-            Move mouse to inspect yarn stitches · Click to exit
+            Move mouse to inspect pipe cleaners creations · Click to exit
           </div>
         )}
       </div>

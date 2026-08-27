@@ -158,11 +158,11 @@ export const AdminDashboard = ({ onNavigate }) => {
     category: '',
     price: 599,
     originalPrice: 799,
-    yarnMaterial: '100% Combed Milk Cotton',
+    pipe cleanersMaterial: '100% Combed Milk Cotton',
     craftTimeHours: 4,
     difficulty: 'Intermediate',
     stock: 12,
-    shortDescription: 'Slow-stitched handcrafted crochet piece made with love.',
+    shortDescription: 'Slow-crafted handcrafted pipe cleaner piece made with love.',
     description: 'Handmade with ultra-soft milk cotton and velvet chenille. Perfect for thoughtful gifting and forever home decor.',
     images: ['/images/aanu-blooms-signature-set.jpeg'],
     featured: true,
@@ -171,7 +171,7 @@ export const AdminDashboard = ({ onNavigate }) => {
 
   // Low Stock Items State
   const [lowStockItems, setLowStockItems] = useState([
-    { id: 'mat-1', name: 'Pink Cotton Yarn', count: '2 balls remaining', type: 'Raw Material', urgency: 'high' },
+    { id: 'mat-1', name: 'Pink Cotton pipe cleaners', count: '2 balls remaining', type: 'Raw Material', urgency: 'high' },
     { id: 'mat-2', name: 'Cream Velvet Chenille', count: '3 balls remaining', type: 'Raw Material', urgency: 'medium' },
     { id: 'mat-3', name: 'Artisan Packaging Boxes', count: '5 remaining', type: 'Packaging', urgency: 'medium' }
   ]);
@@ -389,11 +389,11 @@ export const AdminDashboard = ({ onNavigate }) => {
         category: '',
         price: 599,
         originalPrice: 799,
-        yarnMaterial: '100% Combed Milk Cotton',
+        pipe cleanersMaterial: '100% Combed Milk Cotton',
         craftTimeHours: 4,
         difficulty: 'Intermediate',
         stock: 10,
-        shortDescription: 'Slow-stitched handcrafted crochet piece made with love.',
+        shortDescription: 'Slow-crafted handcrafted pipe cleaner piece made with love.',
         description: 'Handmade with ultra-soft milk cotton and velvet chenille. Perfect for thoughtful gifting and forever home decor.',
         images: [dataUrl],
         featured: true,
@@ -516,11 +516,11 @@ export const AdminDashboard = ({ onNavigate }) => {
       category: '',
       price: 599,
       originalPrice: 799,
-      yarnMaterial: '100% Combed Milk Cotton',
+      pipe cleanersMaterial: '100% Combed Milk Cotton',
       craftTimeHours: 4,
       difficulty: 'Intermediate',
       stock: 12,
-      shortDescription: 'Slow-stitched handcrafted crochet piece made with love.',
+      shortDescription: 'Slow-crafted handcrafted pipe cleaner piece made with love.',
       description: 'Handmade with ultra-soft milk cotton and velvet chenille. Perfect for thoughtful gifting and forever home decor.',
       images: ['/images/aanu-blooms-signature-set.jpeg'],
       featured: true,
@@ -667,7 +667,7 @@ export const AdminDashboard = ({ onNavigate }) => {
       total: grand,
       bags: grand > 0 ? Math.round(((totals['wearables'] || 0) / grand) * 100) : 0,
       flowers: grand > 0 ? Math.round(((totals['forever-blooms'] || 0) / grand) * 100) : 0,
-      amigurumi: grand > 0 ? Math.round(((totals['amigurumi'] || 0) / grand) * 100) : 0,
+      flower pots: grand > 0 ? Math.round(((totals['flower pots'] || 0) / grand) * 100) : 0,
       accessories: grand > 0 ? Math.round(((totals['accessories'] || 0) / grand) * 100) : 0,
       home: grand > 0 ? Math.round(((totals['home-decor'] || 0) / grand) * 100) : 0
     };
@@ -1123,7 +1123,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                   <div className="divide-y divide-[#E9E2DC]/60 space-y-1 mt-1">
                     <p className="py-2 text-[#3E2B25]">🛍️ <strong>New order received</strong>: #SL1024 has been placed (2m ago)</p>
                     <p className="py-2 text-[#3E2B25]">🎨 <strong>New custom order</strong>: #CO1023 requires your review (15m ago)</p>
-                    <p className="py-2 text-[#3E2B25]">⚠️ <strong>Low stock alert</strong>: Pink Yarn is running low (1h ago)</p>
+                    <p className="py-2 text-[#3E2B25]">⚠️ <strong>Low stock alert</strong>: Pink pipe cleaners is running low (1h ago)</p>
                     <p className="py-2 text-[#3E2B25]">💬 <strong>New enquiry</strong>: Riya sent a message (2h ago)</p>
                   </div>
                 </div>
@@ -1499,7 +1499,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-[#3E2B25]">Low stock alert</p>
-                      <p className="text-[11px] text-[#756A65]">Pink Yarn is running low</p>
+                      <p className="text-[11px] text-[#756A65]">Pink pipe cleaners is running low</p>
                     </div>
                     <span className="text-[10px] text-[#756A65]">1h ago</span>
                   </div>
@@ -1549,9 +1549,9 @@ export const AdminDashboard = ({ onNavigate }) => {
                     </thead>
                     <tbody className="divide-y divide-[#E9E2DC]/50">
                       {[
-                        { id: '#SL1024', name: 'Priya Sharma', product: 'Daisy Crochet Bag', amount: '₹1,299', payment: 'Paid', status: 'Processing', statusColor: 'bg-[#D99A35]/15 text-[#D99A35]', date: '25 May', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80' },
+                        { id: '#SL1024', name: 'Priya Sharma', product: 'Daisy handmade Bag', amount: '₹1,299', payment: 'Paid', status: 'Processing', statusColor: 'bg-[#D99A35]/15 text-[#D99A35]', date: '25 May', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80' },
                         { id: '#SL1023', name: 'Ananya Joshi', product: 'Tulip Flower Bouquet', amount: '₹1,199', payment: 'Paid', status: 'Shipped', statusColor: 'bg-[#3B82F6]/15 text-[#3B82F6]', date: '25 May', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80' },
-                        { id: '#SL1022', name: 'Riya Patel', product: 'Cute Bunny (Amigurumi)', amount: '₹899', payment: 'Paid', status: 'Delivered', statusColor: 'bg-[#4F9D69]/15 text-[#4F9D69]', date: '24 May', avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=100&q=80' },
+                        { id: '#SL1022', name: 'Riya Patel', product: 'Cute Bunny (flower pots)', amount: '₹899', payment: 'Paid', status: 'Delivered', statusColor: 'bg-[#4F9D69]/15 text-[#4F9D69]', date: '24 May', avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=100&q=80' },
                         { id: '#SL1021', name: 'Meera Iyer', product: 'Sunflower Keychain', amount: '₹349', payment: 'Paid', status: 'Confirmed', statusColor: 'bg-[#4F9D69]/15 text-[#4F9D69]', date: '24 May', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80' },
                         { id: '#SL1020', name: 'Kavya Singh', product: 'Heart Coaster Set', amount: '₹299', payment: 'COD', status: 'Pending', statusColor: 'bg-[#D65C5C]/15 text-[#D65C5C]', date: '23 May', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80' }
                       ].map(order => (
@@ -1615,7 +1615,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                   <div className="space-y-1 text-[11px] flex-1">
                     <div className="flex items-center justify-between"><span className="flex items-center gap-1.5 text-[#756A65]"><span className="w-2 h-2 rounded-full bg-[#D96C65]"></span>Bags</span><span className="font-bold text-[#3E2B25]">35%</span></div>
                     <div className="flex items-center justify-between"><span className="flex items-center gap-1.5 text-[#756A65]"><span className="w-2 h-2 rounded-full bg-[#D99A35]"></span>Flowers</span><span className="font-bold text-[#3E2B25]">25%</span></div>
-                    <div className="flex items-center justify-between"><span className="flex items-center gap-1.5 text-[#756A65]"><span className="w-2 h-2 rounded-full bg-[#81B29A]"></span>Amigurumi</span><span className="font-bold text-[#3E2B25]">20%</span></div>
+                    <div className="flex items-center justify-between"><span className="flex items-center gap-1.5 text-[#756A65]"><span className="w-2 h-2 rounded-full bg-[#81B29A]"></span>flower pots</span><span className="font-bold text-[#3E2B25]">20%</span></div>
                     <div className="flex items-center justify-between"><span className="flex items-center gap-1.5 text-[#756A65]"><span className="w-2 h-2 rounded-full bg-[#9B5DE5]"></span>Accessories</span><span className="font-bold text-[#3E2B25]">10%</span></div>
                     <div className="flex items-center justify-between"><span className="flex items-center gap-1.5 text-[#756A65]"><span className="w-2 h-2 rounded-full bg-[#756A65]/40"></span>Home Decor</span><span className="font-bold text-[#3E2B25]">7%</span></div>
                   </div>
@@ -1757,7 +1757,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                     Products Management ({products.length})
                   </h2>
                   <p className="text-xs text-[#756A65] mt-0.5">
-                    View, add, edit, adjust stock, and manage your handcrafted crochet inventory.
+                    View, add, edit, adjust stock, and manage your handcrafted pipe cleaner inventory.
                   </p>
                 </div>
 
@@ -1806,7 +1806,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                 </div>
 
                 <div className="flex gap-1.5 overflow-x-auto pb-1">
-                  {['all', 'forever-blooms', 'amigurumi-plushies', 'hair-accessories', 'home-living', 'bags-accessories'].map(cat => (
+                  {['all', 'forever-blooms', 'flower pots-plushies', 'hair-accessories', 'home-living', 'bags-accessories'].map(cat => (
                     <button
                       key={cat}
                       onClick={() => setProductCategoryFilter(cat)}
@@ -1953,7 +1953,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                         >
                           <Edit2 className="w-4 h-4" />
                         </button>
-                        {!['forever-blooms', 'amigurumi-plushies'].includes(cat.id) && (
+                        {!['forever-blooms', 'flower pots-plushies'].includes(cat.id) && (
                           <button
                             onClick={() => handleDeleteCategory(cat.id)}
                             className="p-2 rounded-xl text-red-500 hover:bg-red-50 transition-colors"
@@ -1991,7 +1991,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                   Inventory Management
                 </h2>
                 <p className="text-xs text-[#756A65] mt-0.5">
-                  Track raw materials, packaging, and yarn stock levels.
+                  Track raw materials, packaging, and pipe cleaners stock levels.
                 </p>
               </div>
 
@@ -2347,7 +2347,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                   Custom Orders & Bespoke Inquiries ({customRequests.length})
                 </h2>
                 <p className="text-xs text-[#756A65] mt-0.5">
-                  Manage personalized crochet commissions, custom bouquets, and special event quotes.
+                  Manage personalized handmade commissions, custom bouquets, and special event quotes.
                 </p>
               </div>
 
@@ -2685,7 +2685,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                   {editingProduct ? 'Update Product' : 'New Catalog Item'}
                 </span>
                 <h3 className="font-serif font-bold text-lg text-[#3E2B25]">
-                  {editingProduct ? 'Edit Handcrafted Piece' : 'Add New Crochet Product'}
+                  {editingProduct ? 'Edit Handcrafted Piece' : 'Add New handmade Product'}
                 </h3>
               </div>
               
@@ -3015,7 +3015,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                   rows={2}
                   value={categoryForm.description}
                   onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })}
-                  placeholder="Handcrafted crochet floral bouquets..."
+                  placeholder="handcrafted pipe cleaner floral bouquets..."
                   className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]"
                 />
               </div>

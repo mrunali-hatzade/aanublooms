@@ -240,7 +240,7 @@ export const ReviewsSection = ({ product, onReviewAdded }) => {
                 <textarea
                   required
                   rows={4}
-                  placeholder="Describe the yarn quality, stitches, gift packaging..."
+                  placeholder="Describe the pipe cleaners quality, creations, gift packaging..."
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   className="w-full text-xs p-3 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 focus:ring-1 focus:ring-bloom-400 text-warmgray-900 dark:text-white"

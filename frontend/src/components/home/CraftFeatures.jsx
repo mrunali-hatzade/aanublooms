@@ -6,7 +6,7 @@ export const CraftFeatures = () => {
     {
       icon: Clock,
       title: 'Slow Artisan Handcraft',
-      desc: '100% hand-crocheted with meticulous stitch care.'
+      desc: '100% hand-crafted with meticulous stitch care.'
     },
     {
       icon: Flower2,
@@ -15,8 +15,8 @@ export const CraftFeatures = () => {
     },
     {
       icon: Heart,
-      title: 'Premium Eco-Yarn',
-      desc: 'Combed organic milk cotton & velvet yarn.'
+      title: 'Premium materials',
+      desc: 'Premium colourful pipe cleaners pipe cleaners.'
     },
     {
       icon: Gift,
