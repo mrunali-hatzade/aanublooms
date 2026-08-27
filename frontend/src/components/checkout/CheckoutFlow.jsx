@@ -277,7 +277,6 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
           Complete Your Order
         </h1>
         <p className="text-sm sm:text-base text-warmgray-600 dark:text-warmgray-400 mt-2 max-w-3xl">
-          Handcrafted with love by artisan Aanu. Free delivery across Pune on orders over ₹999.
         </p>
       </div>
 
