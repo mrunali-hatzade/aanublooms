@@ -97,30 +97,6 @@ export const CartDrawer = ({ onNavigate }) => {
             </button>
           </div>
 
-          {/* Free Shipping Progress Meter */}
-          <div className="px-4 py-2.5 bg-rosewood-50/70 dark:bg-warmgray-800/80 border-b border-rosewood-100 dark:border-warmgray-700">
-            <div className="flex items-center justify-between text-xs font-semibold text-warmgray-800 dark:text-warmgray-200 mb-1">
-              <span className="flex items-center gap-1.5">
-                <Truck className="w-3.5 h-3.5 text-bloom-600 dark:text-bloom-400" />
-                {isFreeShipping ? (
-                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">
-                    🎉 You unlocked FREE Delivery across Pune!
-                  </span>
-                ) : (
-                  <span>
-                    Add <strong className="text-bloom-600 dark:text-bloom-400">₹{freeShippingRemaining.toLocaleString('en-IN')}</strong> more for FREE Delivery!
-                  </span>
-                )}
-              </span>
-              <span>{Math.round(freeShippingProgress)}%</span>
-            </div>
-            <div className="w-full bg-warmgray-200 dark:bg-warmgray-700 h-1.5 rounded-full overflow-hidden">
-              <div
-                className="bg-gradient-to-r from-bloom-400 to-rosewood-500 h-full rounded-full transition-all duration-500"
-                style={{ width: `${freeShippingProgress}%` }}
-              />
-            </div>
-          </div>
 
           {/* Cart Item List */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
