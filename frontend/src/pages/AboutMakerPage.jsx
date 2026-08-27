@@ -9,10 +9,10 @@ export const AboutMakerPage = ({ onNavigate }) => {
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rosewood-100 dark:bg-rosewood-950 text-rosewood-800 dark:text-rosewood-300 text-xs font-bold uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5" />
-          The Story Behind The Stitches
+          The Story Behind AanuBlooms
         </span>
         <h1 className="text-4xl sm:text-5xl font-serif font-bold text-warmgray-900 dark:text-white leading-tight">
-          Handcrafted with Love, Cotton & Endless Patience
+          Handcrafted with Love, Creativity & Endless Patience
         </h1>
         <p className="text-base text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
           Welcome to AanuBlooms! We create everlasting floral bouquets, cuddly amigurumi plushies, and cozy wearables that bring warmth into everyday life.
@@ -23,16 +23,31 @@ export const AboutMakerPage = ({ onNavigate }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div className="space-y-4 text-sm text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
           <h2 className="font-serif font-bold text-2xl text-warmgray-900 dark:text-white">
-            From Childhood Skeins to an Artisan Studio
+            Meet The Artisan
           </h2>
           <p>
-            Aanu learned to crochet at age eight from her grandmother, who taught her that each stitch carries intention and love. What began as gifting small floral coasters to friends blossomed into an obsession with creating forever botanicals that never wither.
+            AanuBlooms is more than just a handmade brand. It is a small part of a beautiful story that began at home, inspired by a mother and carried forward by her daughter.
           </p>
           <p>
-            Every tulip petal, chamomile center, and amigurumi cheek you see in our shop is shaped entirely by hand with ergonomic crochet hooks and premium combed milk cotton yarn.
+            Aanu's journey with handmade art began at the age of 11, when her mother taught her how to make handcrafted woollen products at home. Watching her mother create beautiful things with patience and creativity, Aanu developed a love for handmade art. Her mother always encouraged her to explore her creativity and participate in different activities and competitions. For Aanu, those little moments became beautiful childhood memories.
           </p>
           <p>
-            Unlike mass-produced factory decor, each creation is unique, imbued with personality, and finished with satin ribbon packaging and fragrant French lavender sachets.
+            As she grew older, studies and life took her in different directions. Yet, the memories of watching her mother create things at home never truly disappeared. Years later, remembering those special moments, Aanu decided to bring handmade creativity back into her life—but with an idea of her own. And so, AanuBlooms was born, creating beautiful handmade flowers, flower pots, keychains, and more using colourful pipe cleaners. 🌷
+          </p>
+          <h3 className="font-serif font-bold text-lg text-warmgray-900 dark:text-white pt-2">
+            Why "AanuBlooms"?
+          </h3>
+          <p>
+            The name AanuBlooms has a very special meaning. Aanu's original name is Aanurvi Ghatole. Her mother thoughtfully chose the name Aanurvi with love and care, and it also carries a part of her father's name, Anandrao. At home, her parents lovingly call her "Aanu."
+          </p>
+          <p>
+            When Aanu decided to start her own handmade brand, she wanted to make this little name grow into something bigger—while carrying with it the love, thought, and identity given to her by her parents. That's why she chose "Aanu" as the heart of her brand. And "Blooms" represents flowers, creativity, growth, and the beautiful journey of turning a childhood inspiration into something of her own.
+          </p>
+          <p className="font-bold text-bloom-600 dark:text-bloom-400">
+            Made by Hand. Inspired by Love. 🌷
+          </p>
+          <p>
+            Every AanuBlooms creation carries a little piece of Aanu's journey—from watching her mother create handmade products as a child to finding her own creative path years later. What began with a mother's inspiration has now blossomed into AanuBlooms.
           </p>
         </div>
 

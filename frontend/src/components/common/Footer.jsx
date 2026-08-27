@@ -41,7 +41,7 @@ export const Footer = ({ onNavigate }) => {
               </div>
             </button>
             <p className="text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed max-w-sm">
-              Handcrafted crochet forever flowers, charming flower pots, bouquets, and unique artisan gifts made with love in Pune.
+              Handcrafted forever flowers, charming flower pots, bouquets, and unique artisan gifts made with love in Pune.
             </p>
             <div className="flex items-center gap-3 pt-2 text-warmgray-600 dark:text-warmgray-400">
               <a href="#" className="p-3 rounded-full bg-warmgray-200/70 dark:bg-warmgray-800 hover:text-bloom-600 dark:hover:text-bloom-400 hover:bg-white transition-all shadow-xs" title="Global Community">
