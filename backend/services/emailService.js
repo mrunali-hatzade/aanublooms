@@ -61,7 +61,7 @@ const sendMailHelper = async ({ to, subject, html }) => {
 
 
 // Helper to get founder email
-const getFounderEmail = () => process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
+const getFounderEmail = () => process.env.FOUNDER_EMAIL || 'aanublooms@gmail.com';
 
 
 // 1. Send Order Confirmation Email to Customer
@@ -69,7 +69,7 @@ export const sendOrderConfirmationToCustomer = async (order) => {
   const customerEmail = order.customer?.email;
   if (!customerEmail) return { success: false, message: 'No customer email provided' };
 
-  const founderEmail = process.env.FOUNDER_EMAIL || 'mrunalithatzade20@gmail.com';
+  const founderEmail = process.env.FOUNDER_EMAIL || 'aanublooms@gmail.com';
   const itemsHtml = (order.items || []).map(item => `
     <tr style="border-bottom: 1px solid #f0ebe6;">
       <td style="padding: 10px 0; color: #3E2B25; font-size: 14px;">
