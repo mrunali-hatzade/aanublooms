@@ -79,7 +79,7 @@ export const GiftMoodMatcher = ({ onNavigate }) => {
       name: currentBundle.title,
       price: currentBundle.price,
       originalPrice: currentBundle.originalPrice,
-      pipe cleanersMaterial: 'Premium colourful pipe cleaners',
+      material: 'Premium colourful pipe cleaners',
       rating: 5.0,
       image: currentBundle.image,
       isBestseller: true

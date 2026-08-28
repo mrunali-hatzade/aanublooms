@@ -15,7 +15,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
   // Filters state
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [priceRange, setPriceRange] = useState(10000);
-  const [selectedpipe cleaners, setSelectedpipe cleaners] = useState('all');
+  const [selectedMaterial, setSelectedMaterial] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortOption, setSortOption] = useState('featured');
@@ -37,7 +37,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
             category: selectedCategory,
             search: searchQuery,
             maxPrice: priceRange,
-            pipe cleanersMaterial: selectedpipe cleaners,
+            material: selectedMaterial,
             difficulty: selectedDifficulty,
             inStock: inStockOnly,
             sort: sortOption
@@ -60,12 +60,12 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
       window.removeEventListener('aanublooms_data_updated', handleUpdate);
       window.removeEventListener('storage', handleUpdate);
     };
-  }, [selectedCategory, searchQuery, priceRange, selectedpipe cleaners, selectedDifficulty, inStockOnly, sortOption]);
+  }, [selectedCategory, searchQuery, priceRange, selectedMaterial, selectedDifficulty, inStockOnly, sortOption]);
 
   const handleResetFilters = () => {
     setSelectedCategory('all');
     setPriceRange(10000);
-    setSelectedpipe cleaners('all');
+    setSelectedMaterial('all');
     setSelectedDifficulty('all');
     setInStockOnly(false);
     setSortOption('featured');
@@ -174,8 +174,8 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
             onSelectCategory={setSelectedCategory}
             priceRange={priceRange}
             onPriceChange={setPriceRange}
-            selectedpipe cleaners={selectedpipe cleaners}
-            onSelectpipe cleaners={setSelectedpipe cleaners}
+            selectedMaterial={selectedMaterial}
+            onSelectMaterial={setSelectedMaterial}
             selectedDifficulty={selectedDifficulty}
             onSelectDifficulty={setSelectedDifficulty}
             inStockOnly={inStockOnly}
@@ -200,8 +200,8 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
                 onSelectCategory={(cat) => { setSelectedCategory(cat); setMobileFilterOpen(false); }}
                 priceRange={priceRange}
                 onPriceChange={setPriceRange}
-                selectedpipe cleaners={selectedpipe cleaners}
-                onSelectpipe cleaners={setSelectedpipe cleaners}
+                selectedMaterial={selectedMaterial}
+                onSelectMaterial={setSelectedMaterial}
                 selectedDifficulty={selectedDifficulty}
                 onSelectDifficulty={setSelectedDifficulty}
                 inStockOnly={inStockOnly}

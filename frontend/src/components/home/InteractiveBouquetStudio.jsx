@@ -69,7 +69,7 @@ export const InteractiveBouquetStudio = ({ onNavigate }) => {
       id: `custom-bouquet-${Date.now()}`,
       name: `Bespoke Bouquet (${totalStems} Handcrafted Stems)`,
       price: totalCost,
-      pipe cleanersMaterial: 'premium colourful pipe cleaners',
+      material: 'premium colourful pipe cleaners',
       rating: 5.0,
       image: '/images/pink-tulip-stem.jpeg',
       customDetails: {

@@ -10,7 +10,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
 
   const [step, setStep] = useState(1);
   const [creationType, setCreationType] = useState('Custom Forever Flower Bouquet');
-  const [pipe cleanersPreference, setpipe cleanersPreference] = useState('100% Combed Milk Cotton');
+  const [materialPreference, setmaterialPreference] = useState('100% Combed Milk Cotton');
   const [selectedColors, setSelectedColors] = useState(['#F4B6C2', '#FFFFFF', '#9EB29C']);
   const [selectedFlowers, setSelectedFlowers] = useState(['Pink Tulips', 'White Daisies', 'Eucalyptus Leaves']);
   const [stemCount, setStemCount] = useState('Classic 9 Stems');
@@ -128,7 +128,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       images: photoPreview ? [photoPreview, currentTypeObj.image] : [currentTypeObj.image],
       category: 'custom-orders',
       craftTimeHours: 10,
-      pipe cleanersMaterial: pipe cleanersPreference,
+      material: materialPreference,
       colors: selectedColors.map(c => ({ name: c, hex: c })),
       sizes: [stemCount],
       referenceImage: photoPreview || null,
@@ -138,7 +138,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
     addToCart(customProduct, 1, {
       selectedColor: `Palette of ${selectedColors.length} pipe cleaners Tones`,
       selectedSize: stemCount,
-      customNotes: `Ribbon: "${ribbonMessage}" | Flowers: ${selectedFlowers.join(', ')} | pipe cleaners: ${pipe cleanersPreference}${photoPreview ? ' | [Reference Photo Attached]' : ''} | Notes: ${specialNotes}`
+      customNotes: `Ribbon: "${ribbonMessage}" | Flowers: ${selectedFlowers.join(', ')} | pipe cleaners: ${materialPreference}${photoPreview ? ' | [Reference Photo Attached]' : ''} | Notes: ${specialNotes}`
     });
 
     addToast('🌸 Custom order added to your basket!', 'success');
@@ -160,7 +160,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
         customerPhone,
         itemType: creationType,
         colorPalette: selectedColors,
-        pipe cleanersPreference,
+        materialPreference,
         specialNotes: `Flowers: ${selectedFlowers.join(', ')} | Stems: ${stemCount} | Ribbon: "${ribbonMessage}" | Notes: ${specialNotes}`,
         estimatedBudget: `₹${estimatedPrice.toLocaleString('en-IN')}`,
         referenceImage: photoPreview || null
@@ -337,18 +337,18 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
               pipe cleaners Preference
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              {['100% Combed Milk Cotton', 'Super-Soft Chenille Velvet', 'Organic Bamboo Cotton'].map(pipe cleaners => (
+              {['100% Combed Milk Cotton', 'Super-Soft Chenille Velvet', 'Organic Bamboo Cotton'].map(material => (
                 <button
-                  key={pipe cleaners}
+                  key={material}
                   type="button"
-                  onClick={() => setpipe cleanersPreference(pipe cleaners)}
+                  onClick={() => setmaterialPreference(material)}
                   className={`p-3 rounded-2xl text-xs font-semibold border text-center transition-all ${
-                    pipe cleanersPreference === pipe cleaners
+                    materialPreference === material
                       ? 'border-bloom-500 bg-bloom-50 dark:bg-warmgray-800 text-bloom-800 dark:text-bloom-300 shadow-xs font-bold'
                       : 'border-warmgray-200 dark:border-warmgray-800 text-warmgray-700 dark:text-warmgray-300'
                   }`}
                 >
-                  {pipe cleaners}
+                  {material}
                 </button>
               ))}
             </div>
@@ -486,7 +486,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
                   {creationType}
                 </h4>
                 <p className="text-xs text-bloom-600 dark:text-bloom-400 font-semibold mt-0.5">
-                  {stemCount} · {pipe cleanersPreference}
+                  {stemCount} · {materialPreference}
                 </p>
                 <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5">
                   Ribbon: "{ribbonMessage || 'None'}"

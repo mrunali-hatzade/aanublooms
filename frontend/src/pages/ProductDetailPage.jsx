@@ -143,7 +143,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="px-3 py-1 rounded-full bg-bloom-100 dark:bg-bloom-950 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider">
-                {product.pipe cleanersMaterial}
+                {product.material}
               </span>
               <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
@@ -361,7 +361,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
             <div className="max-w-xl bg-white dark:bg-warmgray-900 rounded-3xl p-6 border border-warmgray-200 dark:border-warmgray-800 text-sm space-y-3.5">
               <div className="flex justify-between py-2 border-b border-warmgray-100 dark:border-warmgray-800">
                 <span className="font-bold text-warmgray-500">material</span>
-                <span className="font-semibold text-warmgray-900 dark:text-white">{product.pipe cleanersMaterial}</span>
+                <span className="font-semibold text-warmgray-900 dark:text-white">{product.material}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-warmgray-100 dark:border-warmgray-800">
                 <span className="font-bold text-warmgray-500">Handcraft Duration</span>

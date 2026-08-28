@@ -19,15 +19,15 @@ export const ProductFilters = ({
   onSelectCategory,
   priceRange,
   onPriceChange,
-  selectedpipe cleaners,
-  onSelectpipe cleaners,
+  selectedMaterial,
+  onSelectMaterial,
   selectedDifficulty,
   onSelectDifficulty,
   inStockOnly,
   onToggleInStock,
   onResetFilters
 }) => {
-  const pipe cleanersMaterials = [
+  const materials = [
     { label: 'All pipe cleaners Types', value: 'all' },
     { label: '100% Milk Cotton', value: 'Milk Cotton' },
     { label: 'Chenille Velvet', value: 'Chenille' },
@@ -137,19 +137,19 @@ export const ProductFilters = ({
           pipe cleaners & Material
         </h4>
         <div className="space-y-2">
-          {pipe cleanersMaterials.map(pipe cleaners => (
+          {materials.map(material => (
             <label
-              key={pipe cleaners.value}
+              key={material.value}
               className="flex items-center gap-2.5 text-sm text-warmgray-700 dark:text-warmgray-300 cursor-pointer hover:text-bloom-600 transition-colors"
             >
               <input
                 type="radio"
-                name="pipe cleanersMaterial"
-                checked={selectedpipe cleaners === pipe cleaners.value}
-                onChange={() => onSelectpipe cleaners(pipe cleaners.value)}
+                name="material"
+                checked={selectedMaterial === material.value}
+                onChange={() => onSelectMaterial(material.value)}
                 className="w-4 h-4 text-bloom-500 focus:ring-bloom-400"
               />
-              <span>{pipe cleaners.label}</span>
+              <span>{material.label}</span>
             </label>
           ))}
         </div>

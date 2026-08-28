@@ -90,7 +90,7 @@ export const WishlistPage = ({ onNavigate }) => {
                   </button>
                 </div>
                 <div className="p-4">
-                  <span className="text-[11px] text-warmgray-500 block truncate">{item.pipe cleanersMaterial}</span>
+                  <span className="text-[11px] text-warmgray-500 block truncate">{item.material}</span>
                   <h3 className="font-serif font-bold text-sm text-warmgray-900 dark:text-white line-clamp-1 mt-0.5">
                     {item.name}
                   </h3>
