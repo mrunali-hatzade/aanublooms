@@ -3,24 +3,24 @@ import { Flower2, Heart, Sparkles, Clock, ShieldCheck, ArrowRight, Quote } from 
 
 export const AboutMakerPage = ({ onNavigate }) => {
   return (
-    <div className="py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <div className="py-12 sm:py-16 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-20">
       
       {/* Hero Header */}
-      <div className="text-center max-w-3xl mx-auto space-y-4">
-        <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rosewood-100 dark:bg-rosewood-950 text-rosewood-800 dark:text-rosewood-300 text-xs font-bold uppercase tracking-wider">
+      <div className="text-center max-w-4xl lg:max-w-5xl mx-auto space-y-5">
+        <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-rosewood-100 dark:bg-rosewood-950 text-rosewood-800 dark:text-rosewood-300 text-xs font-bold uppercase tracking-wider shadow-2xs">
           <Sparkles className="w-3.5 h-3.5" />
           The Story Behind AanuBlooms
         </span>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-warmgray-900 dark:text-white leading-tight">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-warmgray-900 dark:text-white leading-[1.15] tracking-tight">
           Handcrafted with Love, Creativity & Endless Patience
         </h1>
-        <p className="text-base sm:text-lg text-warmgray-600 dark:text-warmgray-300 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg md:text-xl text-warmgray-600 dark:text-warmgray-300 leading-relaxed max-w-3xl mx-auto font-normal">
           Welcome to AanuBlooms! We create handmade flowers, bouquets and keepsakes using colorful pipe cleaners bringing creativity and warmth into everyday life.
         </p>
       </div>
 
       {/* Top Story Section: Photo Aligned Upward + Opening Story */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
         
         {/* Story Intro (7 Cols) */}
         <div className="lg:col-span-7 space-y-6 text-base sm:text-lg text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
@@ -29,7 +29,7 @@ export const AboutMakerPage = ({ onNavigate }) => {
             Meet The Artisan
           </div>
           
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white leading-snug">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-warmgray-900 dark:text-white leading-snug">
             A story that began at home, inspired by a mother and carried forward by her daughter.
           </h2>
 
@@ -79,7 +79,7 @@ export const AboutMakerPage = ({ onNavigate }) => {
       </div>
 
       {/* Spacious Full-Width Continuation of Story Below Photo */}
-      <div className="max-w-4xl mx-auto space-y-10 pt-4">
+      <div className="max-w-5xl mx-auto space-y-12 pt-6">
         
         {/* Chapter 1: The Rediscovery */}
         <div className="space-y-4 text-base sm:text-lg text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
