@@ -18,6 +18,7 @@ export const FeedbackPage = ({ onNavigate }) => {
   const { addToast } = useToast();
 
   const [feedbacks, setFeedbacks] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRatingFilter, setSelectedRatingFilter] = useState('all');
 
@@ -35,22 +36,33 @@ export const FeedbackPage = ({ onNavigate }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const fetchFeedbacks = async () => {
+  const fetchFeedbackData = async () => {
     setIsLoading(true);
     try {
-      const res = await api.getFeedbacks();
-      setFeedbacks(res.data || []);
+      const [feedbacksRes, catsRes] = await Promise.all([
+        api.getFeedbacks(),
+        api.getCategories()
+      ]);
+      setFeedbacks(feedbacksRes.data || []);
+      const loadedCats = catsRes.data || [];
+      setCategories(loadedCats);
+      if (loadedCats.length > 0) {
+        setForm(prev => ({
+          ...prev,
+          productCategory: prev.productCategory || loadedCats[0].name
+        }));
+      }
     } catch (err) {
-      console.error('Error loading feedbacks:', err);
+      console.error('Error loading feedback data:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchFeedbacks();
+    fetchFeedbackData();
 
-    const handleUpdate = () => fetchFeedbacks();
+    const handleUpdate = () => fetchFeedbackData();
     window.addEventListener('aanublooms_data_updated', handleUpdate);
     window.addEventListener('storage', handleUpdate);
     return () => {
@@ -243,13 +255,21 @@ export const FeedbackPage = ({ onNavigate }) => {
                     onChange={(e) => setForm({ ...form, productCategory: e.target.value })}
                     className="w-full text-xs p-3 rounded-xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
                   >
-                    <option value="Forever Blooms & Pots">Forever Blooms & Pots</option>
-                    <option value="flower pots">flower pots</option>
-                    <option value="Bags & Accessories">Bags & Accessories</option>
-                    <option value="Wearables & Cardigans">Wearables & Cardigans</option>
-                    <option value="Cozy Home & Living">Cozy Home & Living</option>
-                    <option value="DIY Kits & Patterns">DIY Kits & Patterns</option>
-                    <option value="Custom Bespoke Order">Custom Bespoke Order</option>
+                    {categories.length > 0 ? (
+                      categories.map((cat) => (
+                        <option key={cat.id || cat._id} value={cat.name}>
+                          {cat.name}
+                        </option>
+                      ))
+                    ) : (
+                      <>
+                        <option value="Forever Blooms & Pots">Forever Blooms & Pots</option>
+                        <option value="Flower Pots">Flower Pots</option>
+                        <option value="Keychains & Charms">Keychains & Charms</option>
+                        <option value="Handmade Gifts">Handmade Gifts</option>
+                        <option value="Custom Bespoke Order">Custom Bespoke Order</option>
+                      </>
+                    )}
                   </select>
                 </div>
 

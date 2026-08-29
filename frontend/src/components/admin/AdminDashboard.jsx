@@ -1806,17 +1806,17 @@ export const AdminDashboard = ({ onNavigate }) => {
                 </div>
 
                 <div className="flex gap-1.5 overflow-x-auto pb-1">
-                  {['all', 'forever-blooms', 'flower pots-plushies', 'hair-accessories', 'home-living', 'bags-accessories'].map(cat => (
+                  {[{ id: 'all', name: 'All' }, ...categories].map(cat => (
                     <button
-                      key={cat}
-                      onClick={() => setProductCategoryFilter(cat)}
+                      key={cat.id}
+                      onClick={() => setProductCategoryFilter(cat.id)}
                       className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-                        productCategoryFilter === cat
+                        productCategoryFilter === cat.id
                           ? 'bg-[#3E2B25] text-white font-bold'
                           : 'bg-[#F8F6F3] text-[#756A65] hover:text-[#3E2B25]'
                       }`}
                     >
-                      {cat.replace('-', ' ')}
+                      {cat.name}
                     </button>
                   ))}
                 </div>

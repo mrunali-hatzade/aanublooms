@@ -121,7 +121,7 @@ export const StudioVideoGallery = ({ onNavigate }) => {
 
   const [videos, setVideos] = useState(() => {
     try {
-      const saved = localStorage.getItem('aanublooms_studio_videos');
+      const saved = localStorage.getItem('aanublooms_studio_videos_v3');
       const parsed = saved ? JSON.parse(saved) : [];
       return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultVideos;
     } catch {
@@ -136,7 +136,7 @@ export const StudioVideoGallery = ({ onNavigate }) => {
     title: '',
     caption: '',
     url: '',
-    tag: '🧶 Behind The creations'
+    tag: '🌸 Studio Reel'
   });
 
   useEffect(() => {
