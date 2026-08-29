@@ -109,7 +109,7 @@ export const CartDrawer = ({ onNavigate }) => {
                   Your basket is empty
                 </h3>
                 <p className="text-xs text-warmgray-500 dark:text-warmgray-400 max-w-xs mx-auto mb-5">
-                  Explore our everlasting flower bouquets, squishy plushies, and handmade accessories!
+                  Explore our everlasting flower bouquets, squishy items and personalized gifts!
                 </p>
                 <button
                   onClick={() => {

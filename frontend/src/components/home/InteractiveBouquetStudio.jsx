@@ -265,7 +265,7 @@ export const InteractiveBouquetStudio = ({ onNavigate }) => {
               </div>
               <div className="flex justify-between text-warmgray-600 dark:text-warmgray-300">
                 <span>Pune Region Delivery:</span>
-                <span className="text-emerald-600 font-semibold">{totalCost >= 999 ? 'FREE' : '₹79'}</span>
+                <span className="text-warmgray-700 dark:text-warmgray-200 font-semibold">Standard Delivery</span>
               </div>
             </div>
 

@@ -11,7 +11,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
   const [step, setStep] = useState(1);
   const [creationType, setCreationType] = useState('Custom Forever Flower Bouquet');
   const [materialPreference, setmaterialPreference] = useState('Matte Standard');
-  const [selectedColors, setSelectedColors] = useState(['#F4B6C2', '#FFFFFF', '#9EB29C']);
+  const [selectedColors, setSelectedColors] = useState(['#F4B6C2', '#FFFFFF', '#A8D5BA']);
   const [selectedFlowers, setSelectedFlowers] = useState([]);
   const [stemCount, setStemCount] = useState('Classic 9 Stems');
   const [ribbonMessage, setRibbonMessage] = useState('Forever In Bloom');
@@ -27,28 +27,28 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
     {
       id: 'bouquet',
       name: 'Custom Forever Flower Bouquet',
-      priceBase: 1499,
+      priceBase: 299,
       image: '/images/category/4th_category_bouquet.jpeg',
       desc: 'Handcrafted bouquet with your choice of floral stems, custom color palette & silk ribbon text.'
     },
     {
       id: 'photo-frame',
       name: 'Customized Photo Frame',
-      priceBase: 1199,
+      priceBase: 149,
       image: '/images/category/5th_category_handmadegifts.jpeg',
       desc: 'A handcrafted photo/name frame decorated with pipe cleaner flowers, personalized with your choice of colors and a custom name or message.'
     },
     {
       id: 'flower-pots',
       name: 'Custom Flower Pots',
-      priceBase: 899,
+      priceBase: 349,
       image: '/images/category/3rd_category_flowerpot.jpeg',
       desc: 'A mini bunch of your chosen pipe cleaner flowers, tied with ribbon — great for desks or small gifts.'
     },
     {
       id: 'single-flower',
       name: 'Custom Single Flower',
-      priceBase: 299,
+      priceBase: 149,
       image: '/images/category/1st_category_flower.jpeg',
       desc: 'A handcrafted single flower made from pipe cleaners in your choice of color — perfect as a small gift, bookmark, or desk accent.'
     }
@@ -56,13 +56,13 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
 
   const colorPaletteOptions = [
     { name: 'Blush Pink', hex: '#F4B6C2' },
-    { name: 'Warm Cream White', hex: '#FAF8F5' },
-    { name: 'Sage Green', hex: '#9EB29C' },
-    { name: 'Golden Honey Yellow', hex: '#F5B025' },
+    { name: 'Pastel Green', hex: '#A8D5BA' },
+    { name: 'Yellow', hex: '#FFD166' },
+    { name: 'Classic Red', hex: '#E63946' },
+    { name: 'Dark Pink (Magenta)', hex: '#D81B60' },
     { name: 'French Lavender', hex: '#D8BFD8' },
-    { name: 'Terracotta Coral', hex: '#E38D6F' },
-    { name: 'Sky Blue Pastel', hex: '#A7C7E7' },
-    { name: 'Mocha Earth Brown', hex: '#B59E8C' }
+    { name: 'Sky Blue', hex: '#7EC8E3' },
+    { name: 'White', hex: '#FFFFFF' }
   ];
 
   const currentTypeObj = creationOptions.find(o => o.name === creationType) || creationOptions[0];

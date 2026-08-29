@@ -32,37 +32,70 @@ export const LocationModal = () => {
 
   if (!isLocationModalOpen) return null;
 
-  // Common Indian PIN Code / Metro Lookup Table
-  const pinDatabase = {
-    '560': { city: 'Bengaluru', state: 'Karnataka', days: '1 - 2 Days' },
-    '400': { city: 'Mumbai', state: 'Maharashtra', days: '2 - 3 Days' },
-    '110': { city: 'New Delhi', state: 'Delhi NCR', days: '2 - 3 Days' },
-    '500': { city: 'Hyderabad', state: 'Telangana', days: '2 - 3 Days' },
-    '600': { city: 'Chennai', state: 'Tamil Nadu', days: '2 - 3 Days' },
-    '700': { city: 'Kolkata', state: 'West Bengal', days: '3 - 4 Days' },
-    '411': { city: 'Pune', state: 'Maharashtra', days: '2 - 3 Days' },
-    '380': { city: 'Ahmedabad', state: 'Gujarat', days: '2 - 3 Days' },
-    '302': { city: 'Jaipur', state: 'Rajasthan', days: '2 - 4 Days' },
-    '226': { city: 'Lucknow', state: 'Uttar Pradesh', days: '3 - 4 Days' }
-  };
+  const [isSearchingPin, setIsSearchingPin] = useState(false);
 
-  const handleApplyPin = (e) => {
+  const handleApplyPin = async (e) => {
     e.preventDefault();
-    if (pincode.length !== 6 || !/^\d+$/.test(pincode)) {
+    const cleanPin = pincode.trim();
+    if (cleanPin.length !== 6 || !/^\d{6}$/.test(cleanPin)) {
       setErrorMsg('Please enter a valid 6-digit Indian PIN code.');
       return;
     }
 
-    const prefix = pincode.substring(0, 3);
-    const match = pinDatabase[prefix] || { city: cityInput || 'India Metro', state: 'India', days: '2 - 4 Days' };
-
-    setManualLocation({
-      city: cityInput || match.city,
-      state: match.state,
-      zip: pincode
-    });
-    setPincode('');
+    setIsSearchingPin(true);
     setErrorMsg('');
+
+    try {
+      // 1. Fetch exact post office & district from Postal PIN Code API
+      const res = await fetch(`https://api.postalpincode.in/pincode/${cleanPin}`);
+      const data = await res.json();
+
+      if (data && Array.isArray(data) && data[0]?.Status === 'Success' && data[0]?.PostOffice?.length > 0) {
+        const poList = data[0].PostOffice;
+        const firstPo = poList[0];
+        const district = firstPo.District || firstPo.Division || firstPo.Block || '';
+        const state = firstPo.State || 'India';
+        const poName = firstPo.Name || '';
+
+        // Generate precise city / locality name
+        const city = poName && district && poName !== district
+          ? `${poName}, ${district}`
+          : (district || poName || 'India');
+
+        setManualLocation({
+          city,
+          state,
+          zip: cleanPin
+        });
+        setPincode('');
+        setErrorMsg('');
+      } else {
+        // 2. Fallback to OpenStreetMap Nominatim for Indian postal code search
+        const osmRes = await fetch(`https://nominatim.openstreetmap.org/search?postalcode=${cleanPin}&country=India&format=json&addressdetails=1`);
+        const osmData = await osmRes.json();
+
+        if (osmData && osmData.length > 0) {
+          const addr = osmData[0].address || {};
+          const city = addr.city || addr.town || addr.village || addr.county || addr.state_district || 'India';
+          const state = addr.state || 'India';
+
+          setManualLocation({
+            city,
+            state,
+            zip: cleanPin
+          });
+          setPincode('');
+          setErrorMsg('');
+        } else {
+          setErrorMsg(`Could not find real location for PIN "${cleanPin}". Please check and try again.`);
+        }
+      }
+    } catch (err) {
+      console.error('PIN lookup error:', err);
+      setErrorMsg('Network error while checking PIN code. Please try again.');
+    } finally {
+      setIsSearchingPin(false);
+    }
   };
 
   return (
@@ -160,9 +193,17 @@ export const LocationModal = () => {
             <div className="col-span-1 flex items-end">
               <button
                 type="submit"
-                className="w-full py-2.5 bg-warmgray-900 hover:bg-black dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors"
+                disabled={isSearchingPin || pincode.length !== 6}
+                className="w-full py-2.5 bg-warmgray-900 hover:bg-black dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50"
               >
-                Apply
+                {isSearchingPin ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Checking...</span>
+                  </>
+                ) : (
+                  <span>Apply</span>
+                )}
               </button>
             </div>
           </div>

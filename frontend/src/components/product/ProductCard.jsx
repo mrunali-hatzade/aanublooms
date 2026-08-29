@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Heart, Star, ShoppingBag, Eye, Check } from 'lucide-react';
+import { Heart, Star, ShoppingBag, Eye, Check, Share2 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import { useToast } from '../../context/ToastContext';
 
 export const ProductCard = ({ product, onNavigate, onQuickView }) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { addToast } = useToast();
 
   const [isHovered, setIsHovered] = useState(false);
   const [isAddedAnim, setIsAddedAnim] = useState(false);
@@ -21,6 +23,32 @@ export const ProductCard = ({ product, onNavigate, onQuickView }) => {
     });
     setIsAddedAnim(true);
     setTimeout(() => setIsAddedAnim(false), 1600);
+  };
+
+  const handleShareProduct = async (e) => {
+    e.stopPropagation();
+    const productUrl = `${window.location.origin}/product/${product.id}`;
+    if (navigator.share && typeof navigator.share === 'function') {
+      try {
+        await navigator.share({
+          title: `${product.name} | AanuBlooms`,
+          text: `Check out "${product.name}" on AanuBlooms!`,
+          url: productUrl
+        });
+        addToast('🌸 Shared successfully!', 'success');
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(productUrl);
+        addToast(`🌸 Link to ${product.name} copied to clipboard!`, 'success');
+      } catch {
+        addToast('Unable to copy link.', 'info');
+      }
+    }
   };
 
   return (
@@ -47,17 +75,28 @@ export const ProductCard = ({ product, onNavigate, onQuickView }) => {
             </span>
           )}
 
-          {/* Top-Right Wishlist Heart */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleWishlist(product);
-            }}
-            className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-white/85 dark:bg-warmgray-900/85 backdrop-blur-xs text-warmgray-600 hover:text-rosewood-500 dark:text-warmgray-300 transition-transform active:scale-90 shadow-2xs"
-            aria-label="Save to wishlist"
-          >
-            <Heart className={`w-3.5 h-3.5 ${inWishlist ? 'fill-bloom-600 text-bloom-600' : ''}`} />
-          </button>
+          {/* Top-Right Action Group: Wishlist & Share */}
+          <div className="absolute top-2 right-2 z-10 flex items-center gap-1">
+            <button
+              onClick={handleShareProduct}
+              className="p-1.5 rounded-full bg-white/85 dark:bg-warmgray-900/85 backdrop-blur-xs text-warmgray-600 hover:text-bloom-600 dark:text-warmgray-300 transition-transform active:scale-90 shadow-2xs"
+              title="Share product link"
+              aria-label="Share product"
+            >
+              <Share2 className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleWishlist(product);
+              }}
+              className="p-1.5 rounded-full bg-white/85 dark:bg-warmgray-900/85 backdrop-blur-xs text-warmgray-600 hover:text-rosewood-500 dark:text-warmgray-300 transition-transform active:scale-90 shadow-2xs"
+              aria-label="Save to wishlist"
+              title="Save to Wishlist"
+            >
+              <Heart className={`w-3.5 h-3.5 ${inWishlist ? 'fill-bloom-600 text-bloom-600' : ''}`} />
+            </button>
+          </div>
 
           {/* Quick View Button on Hover */}
           {onQuickView && (

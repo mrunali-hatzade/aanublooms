@@ -99,17 +99,48 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
     onNavigate('checkout');
   };
 
-  const handleShare = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href);
-      addToast('🌸 Link copied to clipboard to share!', 'success');
+  const handleShare = async () => {
+    const productUrl = `${window.location.origin}/product/${product.id}`;
+    const shareData = {
+      title: `${product.name} | AanuBlooms`,
+      text: `Check out this beautiful handcrafted "${product.name}" from AanuBlooms!`,
+      url: productUrl
+    };
+
+    if (navigator.share && typeof navigator.share === 'function') {
+      try {
+        await navigator.share(shareData);
+        addToast('🌸 Shared successfully!', 'success');
+        return;
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.warn('Native share failed, copying link:', err);
+        } else {
+          return;
+        }
+      }
     }
+
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(productUrl);
+        addToast('🌸 Product link copied to clipboard! Share with friends.', 'success');
+      } catch {
+        addToast('Could not copy link automatically.', 'info');
+      }
+    }
+  };
+
+  const handleWhatsAppShare = () => {
+    const productUrl = `${window.location.origin}/product/${product.id}`;
+    const text = encodeURIComponent(`🌸 Hey! Check out this handcrafted "${product.name}" from AanuBlooms:\n${productUrl}`);
+    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
   };
 
   return (
     <div className="py-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
       
-      {/* Breadcrumb / Back button */}
+      {/* Breadcrumb / Back button & Share */}
       <div className="flex items-center justify-between text-xs text-warmgray-500 dark:text-warmgray-400">
         <button
           onClick={() => onNavigate('shop')}
@@ -119,13 +150,23 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           <span>Back to Handcrafted Catalog</span>
         </button>
 
-        <button
-          onClick={handleShare}
-          className="flex items-center gap-1.5 hover:text-bloom-600 transition-colors p-1"
-        >
-          <Share2 className="w-3.5 h-3.5" />
-          <span>Share Piece</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleWhatsAppShare}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900 text-emerald-700 dark:text-emerald-300 font-bold transition-colors border border-emerald-200 dark:border-emerald-800 text-[11px]"
+            title="Share on WhatsApp"
+          >
+            <span>WhatsApp</span>
+          </button>
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-warmgray-100 hover:bg-warmgray-200 dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 font-semibold transition-colors border border-warmgray-200 dark:border-warmgray-700 text-[11px]"
+            title="Copy Product Link"
+          >
+            <Share2 className="w-3.5 h-3.5 text-bloom-600 dark:text-bloom-400" />
+            <span>Share Link</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Showcase Grid */}
@@ -289,8 +330,18 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
               <button
                 onClick={() => toggleWishlist(product)}
                 className="p-3.5 rounded-2xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 transition-colors"
+                title="Save to Wishlist"
               >
                 <Heart className={`w-5 h-5 ${inWishlist ? 'fill-rosewood-500 text-rosewood-500' : ''}`} />
+              </button>
+
+              {/* Share button */}
+              <button
+                onClick={handleShare}
+                className="p-3.5 rounded-2xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 transition-colors"
+                title="Share this product link"
+              >
+                <Share2 className="w-5 h-5 text-bloom-600 dark:text-bloom-400" />
               </button>
             </div>
 
@@ -307,7 +358,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           <div className="pt-4 border-t border-warmgray-100 dark:border-warmgray-800 space-y-2.5 text-sm text-warmgray-600 dark:text-warmgray-300">
             <div className="flex items-center gap-2.5">
               <Truck className="w-4 h-4 text-bloom-500 shrink-0" />
-              <span>Free delivery across Pune on orders over ₹999</span>
+              <span>Handcrafted & delivered with care across Pune region</span>
             </div>
             <div className="flex items-center gap-2.5">
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />

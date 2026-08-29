@@ -73,8 +73,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
   }, [formData]);
 
   // Shipping method
-  const isFreeEligible = true;
-  const [shippingMethod, setShippingMethod] = useState('Free Handcrafted Delivery');
+  const [shippingMethod, setShippingMethod] = useState('Standard Handcrafted Delivery');
   const [shippingSpeedFee, setShippingSpeedFee] = useState(0);
 
   // Payment method
@@ -464,7 +463,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
 
             <div className="space-y-3">
               <label
-                onClick={() => handleShippingSelect('Free Handcrafted Delivery', 0)}
+                onClick={() => handleShippingSelect('Standard Handcrafted Delivery', 0)}
                 className={`flex items-start sm:items-center justify-between p-4.5 rounded-2xl border cursor-pointer transition-all ${
                   shippingSpeedFee === 0
                     ? 'border-bloom-500 bg-bloom-50/40 dark:bg-bloom-950/20'
@@ -481,7 +480,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm sm:text-base font-bold text-warmgray-900 dark:text-white truncate whitespace-normal">
-                      🌸 Free Handcrafted Delivery
+                      🌸 Standard Handcrafted Delivery
                     </p>
                     <p className="text-xs text-warmgray-500 dark:text-warmgray-400 mt-0.5 whitespace-normal">
                       Delivered carefully in 3–6 business days with protective box packaging.
@@ -489,7 +488,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
                   </div>
                 </div>
                 <span className="text-sm sm:text-base font-bold text-bloom-600 shrink-0 mt-1 sm:mt-0">
-                  FREE
+                  Included
                 </span>
               </label>
             </div>
@@ -622,8 +621,8 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
 
               <div className="flex justify-between text-warmgray-600 dark:text-warmgray-300">
                 <span>Shipping ({shippingMethod.split(' ')[0]})</span>
-                <span className="font-bold text-bloom-600">
-                  {shippingSpeedFee === 0 ? 'FREE' : `₹${shippingSpeedFee}`}
+                <span className="font-semibold text-warmgray-900 dark:text-white">
+                  {shippingSpeedFee === 0 ? 'Included' : `₹${shippingSpeedFee}`}
                 </span>
               </div>
 

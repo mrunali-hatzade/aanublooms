@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { X, Star, ShoppingBag, Heart, Clock, Sparkles, Check, ArrowRight } from 'lucide-react';
+import { X, Star, ShoppingBag, Heart, Clock, Sparkles, Check, ArrowRight, Share2 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import { useToast } from '../../context/ToastContext';
 
 export const QuickViewModal = ({ product, onClose, onNavigate }) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { addToast } = useToast();
 
   const [selectedImage, setSelectedImage] = useState(product?.images?.[0] || product?.image);
   const [selectedColor, setSelectedColor] = useState(product?.colors?.[0]?.name || '');
@@ -21,6 +23,31 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
     addToCart(product, quantity, { selectedColor, selectedSize });
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
+  };
+
+  const handleShare = async () => {
+    const productUrl = `${window.location.origin}/product/${product.id}`;
+    if (navigator.share && typeof navigator.share === 'function') {
+      try {
+        await navigator.share({
+          title: `${product.name} | AanuBlooms`,
+          text: `Check out "${product.name}" on AanuBlooms!`,
+          url: productUrl
+        });
+        addToast('🌸 Shared successfully!', 'success');
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(productUrl);
+        addToast(`🌸 Link to ${product.name} copied to clipboard!`, 'success');
+      } catch {
+        addToast('Unable to copy link.', 'info');
+      }
+    }
   };
 
   return (
@@ -172,8 +199,17 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
               <button
                 onClick={() => toggleWishlist(product)}
                 className="p-2.5 rounded-xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 transition-colors"
+                title="Save to Wishlist"
               >
                 <Heart className={`w-4 h-4 ${inWishlist ? 'fill-rosewood-500 text-rosewood-500' : ''}`} />
+              </button>
+
+              <button
+                onClick={handleShare}
+                className="p-2.5 rounded-xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 transition-colors"
+                title="Share Product Link"
+              >
+                <Share2 className="w-4 h-4 text-bloom-600 dark:text-bloom-400" />
               </button>
             </div>
 

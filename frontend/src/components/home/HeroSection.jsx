@@ -53,7 +53,7 @@ export const HeroSection = ({ onNavigate }) => {
 
             {/* Simple 1-Line Trust Note */}
             <p className="text-xs text-warmgray-500 dark:text-warmgray-400 pt-1">
-              ✨ 100% Handmade · Free Delivery across Pune Region on orders over ₹999
+              ✨ 100% Handmade · Delivered with Care across Pune Region
             </p>
 
           </div>
