@@ -633,10 +633,10 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
             <Heart className="w-7 h-7 fill-rosewood-500" />
           </div>
           <h2 className="text-xl sm:text-2xl font-serif font-bold text-warmgray-900 dark:text-white">
-            Commission Inquiry Received!
+            Custom Order Request Received!
           </h2>
           <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
-            Thank you, {customerName}! Artisan Aanu has received your palette and stitch specifications and will reach out to <strong>{customerEmail}</strong> within 24 hours.
+            Thank you, {customerName}! Artisan Aanu has received your custom floral and color specifications and will reach out to <strong>{customerEmail}</strong> within 24 hours.
           </p>
           <button
             onClick={() => onNavigate('home')}

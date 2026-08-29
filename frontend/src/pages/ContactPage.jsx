@@ -35,20 +35,20 @@ export const ContactPage = ({ onNavigate }) => {
 
   const faqs = [
     {
-      q: 'How long does it take to craft my order?',
-      a: 'Since each piece is 100% hand-crafted without machinery, creation time ranges between 2 to 5 business days for plushies and bouquets, and 5 to 9 business days for larger custom cardigans. Once shipped, standard delivery takes 3-5 business days.'
+      q: 'How long does it take to make my order?',
+      a: 'Each AanuBlooms creation is handmade with care. Small items usually take 1–2 days, while flower pots, bouquets, and larger/custom orders may take 2–5 days depending on the design and quantity.'
     },
     {
-      q: 'Do forever blooms really last forever?',
-      a: 'Yes! Handcrafted from 100% combed milk cotton and framed with flexible floral wire stems, our flowers will never wither, droop, or lose their vibrant color. They require zero watering or sunlight.'
+      q: 'Can I choose the colours or customize my order?',
+      a: 'Yes! You can request specific flower colours, combinations, sizes, or arrangements. Custom orders are welcome, subject to material availability.'
     },
     {
-      q: 'Can I request specific color palettes for weddings or gifts?',
-      a: 'Absolutely! You can use our interactive Custom Order Builder or send a note through this contact form with your event color scheme, flower preferences, and custom ribbon messages.'
+      q: 'How do I care for my handmade pipe-cleaner flowers?',
+      a: "Our flowers don't need water or sunlight. Keep them indoors, away from excessive moisture and dust. Gently clean them with a soft brush or a light blow of air to keep them looking fresh."
     },
     {
-      q: 'How do I clean or dust my handmade flowers & keychains?',
-      a: 'We recommend gently dusting with a soft blush makeup brush or a hairdryer on its cool/low setting. For spot cleaning, dab lightly with cold water and gentle wool soap, then lay flat on a dry towel to air dry.'
+      q: 'Are the flowers suitable for gifting?',
+      a: "Absolutely! AanuBlooms creations make thoughtful gifts for birthdays, anniversaries, Valentine's Day, housewarmings, and other special occasions. You can also request a customized colour combination or arrangement to make your gift more personal."
     }
   ];
 
@@ -309,7 +309,7 @@ export const ContactPage = ({ onNavigate }) => {
               <span>Looking for Custom Colors?</span>
             </h4>
             <p className="text-xs text-warmgray-300 leading-relaxed">
-              Use our interactive commission builder to choose your own palette, select flower varieties, and add personalized ribbon text with live pricing.
+              Use our interactive commission builder to choose your own custom pipe cleaner color combinations, select flower varieties and stem lengths, and add personalized ribbon text with live pricing.
             </p>
             <button
               onClick={() => onNavigate('custom-order')}

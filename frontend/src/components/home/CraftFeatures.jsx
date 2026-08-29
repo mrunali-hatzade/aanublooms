@@ -5,8 +5,8 @@ export const CraftFeatures = () => {
   const features = [
     {
       icon: Clock,
-      title: 'Slow Artisan Handcraft',
-      desc: '100% hand-crafted with meticulous stitch care.'
+      title: 'Handcrafted With Care',
+      desc: 'From individual petals to the final arrangement, every piece takes 1–4 hours of careful handmade work.'
     },
     {
       icon: Flower2,
@@ -15,8 +15,8 @@ export const CraftFeatures = () => {
     },
     {
       icon: Heart,
-      title: 'Premium materials',
-      desc: 'Premium colourful pipe cleaners pipe cleaners.'
+      title: 'Premium Materials',
+      desc: 'Soft, vibrant, high-quality pipe cleaners & sturdy floral stems.'
     },
     {
       icon: Gift,

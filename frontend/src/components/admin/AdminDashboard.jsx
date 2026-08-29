@@ -147,6 +147,84 @@ export const AdminDashboard = ({ onNavigate }) => {
   const [customerSortBy, setCustomerSortBy] = useState('recent'); // 'recent' | 'spend' | 'orders'
   const [selectedCustomerDetails, setSelectedCustomerDetails] = useState(null);
 
+  // Global Search State
+  const [showGlobalSearchResults, setShowGlobalSearchResults] = useState(false);
+
+  const globalSearchResults = React.useMemo(() => {
+    if (!globalSearchQuery.trim()) return [];
+    const query = globalSearchQuery.toLowerCase().trim();
+    const results = [];
+
+    // Search Products
+    products.forEach(p => {
+      if (p.name?.toLowerCase().includes(query) || p.id?.toLowerCase().includes(query)) {
+        results.push({ type: 'product', label: `📦 Product: ${p.name}`, id: p.id, data: p });
+      }
+    });
+
+    // Search Orders
+    orders.forEach(o => {
+      if (o.id?.toLowerCase().includes(query) || o.customer?.name?.toLowerCase().includes(query) || o.customer?.email?.toLowerCase().includes(query) || o.customer?.phone?.includes(query)) {
+        results.push({ type: 'order', label: `🛍️ Order #${o.id} - ${o.customer?.name || ''}`, id: o.id, data: o });
+      }
+    });
+
+    // Search Custom Requests
+    customRequests.forEach(cr => {
+      if (cr.id?.toLowerCase().includes(query) || cr.customerName?.toLowerCase().includes(query) || cr.customerEmail?.toLowerCase().includes(query) || cr.itemType?.toLowerCase().includes(query)) {
+        results.push({ type: 'customRequest', label: `🎨 Custom: ${cr.itemType} for ${cr.customerName}`, id: cr.id, data: cr });
+      }
+    });
+
+    // Search Customers (derived from orders)
+    const uniqueCustomers = Array.from(new Set(orders.map(o => o.customer?.email).filter(Boolean)))
+      .map(email => orders.find(o => o.customer?.email === email)?.customer)
+      .filter(Boolean);
+    uniqueCustomers.forEach(c => {
+      if (c.name?.toLowerCase().includes(query) || c.email?.toLowerCase().includes(query) || c.phone?.includes(query)) {
+        results.push({ type: 'customer', label: `👤 Customer: ${c.name} (${c.email})`, id: c.email, data: c });
+      }
+    });
+
+    return results.slice(0, 8); // Max 8 results
+  }, [globalSearchQuery, products, orders, customRequests]);
+
+  const handleGlobalSearchResultClick = (res) => {
+    setShowGlobalSearchResults(false);
+    setGlobalSearchQuery('');
+    
+    if (res.type === 'product') {
+      setActiveTab('products');
+      setEditingProduct(res.data);
+      setProductForm(res.data);
+      setShowProductModal(true);
+    } else if (res.type === 'order') {
+      setActiveTab('all-orders');
+      setSelectedOrderDetails(res.data);
+    } else if (res.type === 'customRequest') {
+      setActiveTab('custom-orders');
+      setSelectedCustomRequest(res.data);
+    } else if (res.type === 'customer') {
+      setActiveTab('customers');
+      // For customers, we need to construct the full customer details object
+      const customerOrders = orders.filter(o => o.customer?.email === res.data.email);
+      const custObj = {
+        name: res.data.name,
+        email: res.data.email,
+        phone: res.data.phone,
+        fullAddress: `${res.data.address || ''}, ${res.data.city || ''}, ${res.data.state || ''} - ${res.data.zip || ''}`,
+        totalOrders: customerOrders.length,
+        totalSpent: customerOrders.reduce((sum, o) => sum + (o.total || 0), 0),
+        ordersList: customerOrders
+      };
+      setSelectedCustomerDetails(custObj);
+    }
+  };
+
+  // Selected Custom Request Modal View
+  const [selectedCustomRequest, setSelectedCustomRequest] = useState(null);
+
+
   // Selected Order for Modal View
   const [selectedOrderDetails, setSelectedOrderDetails] = useState(null);
 
@@ -1094,13 +1172,41 @@ export const AdminDashboard = ({ onNavigate }) => {
 
           <div className="flex items-center gap-3 sm:gap-4">
             {/* Search Input */}
-            <div className="relative hidden md:block w-64">
+            <div className="relative hidden md:block w-64 z-50">
               <Search className="w-3.5 h-3.5 text-[#756A65] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search anything..."
+                value={globalSearchQuery}
+                onChange={(e) => {
+                  setGlobalSearchQuery(e.target.value);
+                  setShowGlobalSearchResults(true);
+                }}
+                onFocus={() => setShowGlobalSearchResults(true)}
                 className="w-full text-xs py-2 pl-9 pr-3 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] placeholder-[#756A65]/70 focus:outline-none focus:border-[#D96C65]"
               />
+              
+              {showGlobalSearchResults && globalSearchQuery.trim() !== '' && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-[#E9E2DC] p-2 max-h-80 overflow-y-auto">
+                  {globalSearchResults.length > 0 ? (
+                    <div className="space-y-1">
+                      {globalSearchResults.map((res, idx) => (
+                        <div 
+                          key={`${res.type}-${res.id}-${idx}`}
+                          onClick={() => handleGlobalSearchResultClick(res)}
+                          className="px-3 py-2 hover:bg-[#F8F6F3] rounded-lg cursor-pointer transition-colors"
+                        >
+                          <p className="text-xs text-[#3E2B25] font-semibold truncate">{res.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center">
+                      <p className="text-xs text-[#756A65]">No matching records found for "{globalSearchQuery}"</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Notifications Bell */}
@@ -3352,45 +3458,7 @@ export const AdminDashboard = ({ onNavigate }) => {
         </div>
       )}
 
-      {/* Customer Details Modal */}
-      {selectedCustomerDetails && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="relative bg-white rounded-3xl max-w-md w-full border border-[#E9E2DC] shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E9E2DC]">
-              <h3 className="font-serif font-bold text-lg text-[#3E2B25]">
-                Customer Details 👤
-              </h3>
-              <button onClick={() => setSelectedCustomerDetails(null)} className="p-1 text-[#756A65] hover:text-[#3E2B25]">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="p-4 bg-[#F8F6F3] rounded-2xl text-sm border border-[#E9E2DC] space-y-2">
-                <p><strong className="text-[#3E2B25]">Name:</strong> {selectedCustomerDetails.name || 'N/A'}</p>
-                <p><strong className="text-[#3E2B25]">Email:</strong> {selectedCustomerDetails.email || 'N/A'}</p>
-                <p><strong className="text-[#3E2B25]">Phone:</strong> {selectedCustomerDetails.phone || 'N/A'}</p>
-              </div>
-              
-              <div className="p-4 bg-[#F8F6F3] rounded-2xl text-sm border border-[#E9E2DC]">
-                <strong className="text-[#3E2B25] block mb-2 border-b border-[#E9E2DC] pb-1">Shipping Address</strong>
-                <p className="text-[#5C4D46]">{selectedCustomerDetails.address || 'No address provided'}</p>
-                <p className="text-[#5C4D46]">
-                  {selectedCustomerDetails.city || ''}{selectedCustomerDetails.state ? `, ${selectedCustomerDetails.state}` : ''} {selectedCustomerDetails.pincode || ''}
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-end pt-2">
-              <button
-                onClick={() => setSelectedCustomerDetails(null)}
-                className="px-5 py-2 bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#3E2B25] rounded-xl text-xs font-bold transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
     </div>
   );

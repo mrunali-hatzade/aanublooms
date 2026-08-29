@@ -286,3 +286,71 @@ export const sendFeedbackThankYouToCustomer = async (feedbackData) => {
     html: htmlContent
   });
 };
+
+// 8. Send Custom Order Alert to Founder
+export const sendCustomOrderAlertToFounder = async (customOrder) => {
+  const founderEmail = getFounderEmail();
+  const htmlContent = `
+    <div style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 25px; color: #333;">
+      <div style="max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0;">
+        <h2 style="color: #D96C65; margin-top: 0;">🎨 New Custom Order Request!</h2>
+        <p style="font-size: 15px;">A new custom request has been submitted by <strong>${customOrder.customerName}</strong>.</p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;"/>
+        <h3 style="font-size: 14px; text-transform: uppercase; color: #666; margin-bottom: 8px;">👤 Customer Details:</h3>
+        <p style="font-size: 14px; line-height: 1.5; margin: 0;">
+          <strong>Name:</strong> ${customOrder.customerName}<br/>
+          <strong>Email:</strong> ${customOrder.customerEmail}<br/>
+          <strong>Phone:</strong> ${customOrder.customerPhone || 'N/A'}<br/>
+        </p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;"/>
+        <h3 style="font-size: 14px; text-transform: uppercase; color: #666; margin-bottom: 8px;">🌸 Request Details:</h3>
+        <p style="font-size: 14px; line-height: 1.5; margin: 0;">
+          <strong>Item Type:</strong> ${customOrder.itemType}<br/>
+          <strong>Budget:</strong> ${customOrder.estimatedBudget || 'Not specified'}<br/>
+          <strong>Color Palette:</strong> ${(customOrder.colorPalette || []).join(', ') || 'N/A'}<br/>
+          <strong>Notes:</strong> ${customOrder.specialNotes || 'None'}
+        </p>
+      </div>
+    </div>
+  `;
+
+  return sendMailHelper({
+    to: founderEmail,
+    subject: `🎨 New Custom Order Request from ${customOrder.customerName}`,
+    html: htmlContent
+  });
+};
+
+// 9. Send Custom Order Confirmation to Customer
+export const sendCustomOrderConfirmationToCustomer = async (customOrder) => {
+  const customerEmail = 'aanublooms@gmail.com'; // Temporary redirect for Resend testing
+  if (!customerEmail) return { success: false, message: 'No customer email provided' };
+
+  const htmlContent = `
+    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; background-color: #FAF8F5; padding: 30px 15px; color: #3E2B25;">
+      <div style="max-width: 560px; margin: 0 auto; background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #EDE8E2; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+        <div style="background: linear-gradient(135deg, #D96C65, #C45750); padding: 25px 20px; text-align: center; color: #ffffff;">
+          <div style="font-size: 28px; margin-bottom: 5px;">🌸</div>
+          <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">AanuBlooms</h1>
+        </div>
+        <div style="padding: 25px 25px 15px;">
+          <h2 style="font-size: 18px; color: #3E2B25; margin-top: 0;">Custom Order Request Received! ✨</h2>
+          <p style="font-size: 14px; line-height: 1.6; color: #5C4D46;">
+            Hi <strong>${customOrder.customerName}</strong>,<br/><br/>
+            Thank you for bringing your creative vision to AanuBlooms! We have successfully received your custom floral and color specifications for a <strong>${customOrder.itemType}</strong>.
+          </p>
+          <p style="font-size: 14px; line-height: 1.6; color: #5C4D46;">
+            Artisan Aanu will review your request and reach out to you within 24 hours to discuss the details and provide a quote.
+          </p>
+          <p style="font-size: 14px; line-height: 1.6; color: #5C4D46;">Thank you for supporting handmade!</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  return sendMailHelper({
+    to: customerEmail,
+    subject: `🌸 Custom Order Request Received!`,
+    html: htmlContent
+  });
+};

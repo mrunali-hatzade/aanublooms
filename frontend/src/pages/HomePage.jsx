@@ -119,6 +119,33 @@ export const HomePage = ({ onNavigate }) => {
         <MeetTheMaker onNavigate={onNavigate} />
       </div>
 
+      {/* 9. Instagram CTA Section */}
+      <section className="py-6 sm:py-8 bg-gradient-to-r from-bloom-400 via-rosewood-500 to-amber-500 text-white shadow-soft relative overflow-hidden">
+        <div className="absolute top-0 right-0 opacity-10 pointer-events-none">
+          <Flower2 className="w-64 h-64 -translate-y-1/2 translate-x-1/4" />
+        </div>
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <div className="space-y-2">
+            <h3 className="font-serif font-bold text-xl sm:text-2xl flex items-center justify-center sm:justify-start gap-2">
+              <Sparkles className="w-5 h-5 text-amber-200" />
+              Follow Our Studio Journey
+            </h3>
+            <p className="text-sm text-rose-100 max-w-xl">
+              See the latest pipe cleaner creations, studio behind-the-scenes, and upcoming exclusive drops. 
+            </p>
+          </div>
+          <a
+            href="https://instagram.com/aanublooms"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-2.5 bg-white text-rosewood-600 hover:bg-rosewood-50 rounded-full font-bold text-sm shadow-lg transition-transform hover:scale-105 inline-flex items-center gap-2 shrink-0"
+          >
+            <span>Follow @aanublooms</span>
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
+      </section>
+
       {/* 11. Custom Commission Banner Teaser */}
       <section className="py-4 sm:py-6 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-r from-bloom-500 via-rosewood-500 to-amber-500 rounded-3xl p-6 sm:p-10 text-white shadow-soft-lg flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">

@@ -3,6 +3,7 @@ import { CustomRequest } from '../models/CustomRequest.js';
 import { Notification } from '../models/Notification.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { sendWhatsAppTemplate } from '../services/whatsappService.js';
+import { sendCustomOrderAlertToFounder, sendCustomOrderConfirmationToCustomer } from '../services/emailService.js';
 
 const router = express.Router();
 
@@ -57,6 +58,10 @@ router.post('/', async (req, res) => {
       itemType,
       estimatedBudget || 'N/A'
     ]);
+
+    // Send Emails
+    await sendCustomOrderAlertToFounder(newRequest);
+    await sendCustomOrderConfirmationToCustomer(newRequest);
 
     res.status(201).json({
       success: true,
