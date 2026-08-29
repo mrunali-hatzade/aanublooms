@@ -11,22 +11,6 @@ const defaultVideos = [
     url: '/images/whatsapp-craft-video.mp4',
     poster: '/images/aanu-blooms-signature-set.jpeg',
     tag: '🌸 Studio Reel'
-  },
-  {
-    id: 'vid-2',
-    title: 'Floral Crafting Process',
-    caption: 'See how our forever blooms come to life.',
-    url: '/images/flower video.mp4',
-    poster: '/images/flower pots.jpeg',
-    tag: '✨ Behind the Scenes'
-  },
-  {
-    id: 'vid-3',
-    title: 'Artisan Creations Showcase',
-    caption: 'A glimpse into our daily artisan craft.',
-    url: '/images/artisan-craft-video.mp4',
-    poster: '/images/1st_category_flower.jpeg',
-    tag: '🪴 Showcase'
   }
 ];
 
@@ -140,8 +124,24 @@ export const StudioVideoGallery = ({ onNavigate }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem('aanublooms_studio_videos', JSON.stringify(videos));
+    localStorage.setItem('aanublooms_studio_videos_v3', JSON.stringify(videos));
   }, [videos]);
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        const saved = localStorage.getItem('aanublooms_studio_videos_v3');
+        const parsed = saved ? JSON.parse(saved) : [];
+        setVideos(Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultVideos);
+      } catch {
+        setVideos(defaultVideos);
+      }
+    };
+    window.addEventListener('aanublooms_data_updated', handleUpdate);
+    return () => {
+      window.removeEventListener('aanublooms_data_updated', handleUpdate);
+    };
+  }, []);
 
   const handleTogglePlay = (vidId) => {
     setActivePlayingId((prev) => (prev === vidId ? null : vidId));

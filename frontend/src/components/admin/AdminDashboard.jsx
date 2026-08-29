@@ -62,6 +62,17 @@ import { MediaLibraryManager } from './MediaLibraryManager';
 import { CollectionsManager } from './CollectionsManager';
 import { StoreSettingsModule } from './settings/StoreSettingsModule';
 
+const defaultVideos = [
+  {
+    id: 'vid-1',
+    title: 'Creating Beautiful Handmade Creations',
+    caption: 'Watch how we carefully shape and assemble handmade flowers and pots, one creation at a time.',
+    url: '/images/whatsapp-craft-video.mp4',
+    poster: '/images/aanu-blooms-signature-set.jpeg',
+    tag: '🌸 Studio Reel'
+  }
+];
+
 export const AdminDashboard = ({ onNavigate }) => {
   const { user, login, isLoadingAuth } = useAuth();
   const { addToast } = useToast();
@@ -117,8 +128,100 @@ export const AdminDashboard = ({ onNavigate }) => {
   };
 
   const isAdmin = isAdminUnlocked;
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'products' | 'categories' | 'collections' | 'inventory' | 'orders' | 'custom-orders' | 'enquiries' | 'customers' | 'media' | 'coupons' | 'settings' | 'reports'
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'products' | 'categories' | 'collections' | 'inventory' | 'orders' | 'custom-orders' | 'enquiries' | 'customers' | 'media' | 'coupons' | 'settings' | 'reports' | 'studio-videos'
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
+
+  // Studio Videos Manager State
+  const [studioVideos, setStudioVideos] = useState(() => {
+    try {
+      const saved = localStorage.getItem('aanublooms_studio_videos_v3');
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultVideos;
+    } catch {
+      return defaultVideos;
+    }
+  });
+
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [editingVideo, setEditingVideo] = useState(null);
+  const [videoForm, setVideoForm] = useState({
+    title: '',
+    caption: '',
+    url: '',
+    tag: '🌸 Studio Reel',
+    poster: '/images/aanu-blooms-signature-set.jpeg'
+  });
+
+  const handleSaveVideo = (e) => {
+    e.preventDefault();
+    if (!videoForm.title || !videoForm.url) {
+      addToast('Title and Video URL are required', 'error');
+      return;
+    }
+
+    let updated;
+    if (editingVideo) {
+      updated = studioVideos.map(v => v.id === editingVideo.id ? { ...v, ...videoForm } : v);
+      addToast('Video updated successfully! 🎥', 'success');
+    } else {
+      const newVideo = {
+        id: `vid-${Date.now()}`,
+        ...videoForm
+      };
+      updated = [newVideo, ...studioVideos];
+      addToast('New video added successfully! 🎥', 'success');
+    }
+
+    setStudioVideos(updated);
+    localStorage.setItem('aanublooms_studio_videos_v3', JSON.stringify(updated));
+    window.dispatchEvent(new Event('aanublooms_data_updated'));
+    setShowVideoModal(false);
+    setEditingVideo(null);
+    setVideoForm({
+      title: '',
+      caption: '',
+      url: '',
+      tag: '🌸 Studio Reel',
+      poster: '/images/aanu-blooms-signature-set.jpeg'
+    });
+  };
+
+  const handleDeleteVideo = (id) => {
+    if (window.confirm('Are you sure you want to remove this video from the website?')) {
+      const updated = studioVideos.filter(v => v.id !== id);
+      setStudioVideos(updated);
+      localStorage.setItem('aanublooms_studio_videos_v3', JSON.stringify(updated));
+      window.dispatchEvent(new Event('aanublooms_data_updated'));
+      addToast('Video removed successfully! 🗑️', 'info');
+    }
+  };
+
+  const handleVideoFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('video/')) {
+      addToast('Please select a valid video file', 'error');
+      return;
+    }
+
+    if (file.size > 50 * 1024 * 1024) {
+      addToast('Video file should be under 50MB', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setVideoForm(prev => ({
+        ...prev,
+        url: event.target.result,
+        title: prev.title || file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ')
+      }));
+      addToast('🎥 Video file uploaded and ready!', 'success');
+    };
+    reader.readAsDataURL(file);
+  };
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [salesTimeframe, setSalesTimeframe] = useState('7-days'); // 'today' | '7-days' | '30-days' | '3-months' | '1-year'
   const [selectedDateRange, setSelectedDateRange] = useState('Today');
@@ -1073,6 +1176,17 @@ export const AdminDashboard = ({ onNavigate }) => {
             >
               <ImageIcon className="w-4 h-4" />
               <span>Media Library</span>
+            </button>
+            <button
+              onClick={() => { setActiveTab('studio-videos'); setSidebarOpen(false); }}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
+                activeTab === 'studio-videos'
+                  ? 'bg-[#D96C65] text-white font-semibold'
+                  : 'text-white/80 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              <Video className="w-4 h-4" />
+              <span>Studio Videos</span>
             </button>
           </div>
 
@@ -2737,6 +2851,106 @@ export const AdminDashboard = ({ onNavigate }) => {
         )}
 
         {/* ========================================================= */}
+        {/* TAB: STUDIO VIDEOS */}
+        {/* ========================================================= */}
+        {activeTab === 'studio-videos' && (
+          <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
+            <div className="bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-serif font-bold text-[#3E2B25]">
+                    Studio Video Gallery Manager
+                  </h2>
+                  <p className="text-xs text-[#756A65] mt-0.5">
+                    Manage the reels and videos displayed in the "Behind the Creations" section of the homepage.
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    setEditingVideo(null);
+                    setVideoForm({
+                      title: '',
+                      caption: '',
+                      url: '',
+                      tag: '🌸 Studio Reel',
+                      poster: '/images/aanu-blooms-signature-set.jpeg'
+                    });
+                    setShowVideoModal(true);
+                  }}
+                  className="px-4 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-semibold shadow-2xs flex items-center gap-1.5 transition-colors self-start sm:self-auto"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add Video</span>
+                </button>
+              </div>
+
+              {studioVideos.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                  {studioVideos.map((vid) => (
+                    <div key={vid.id} className="rounded-2xl border border-[#E9E2DC] bg-[#F8F6F3] overflow-hidden flex flex-col justify-between">
+                      {/* Video Preview or Poster */}
+                      <div className="aspect-[9/13] bg-black relative flex items-center justify-center overflow-hidden max-h-[300px]">
+                        <video
+                          src={vid.url}
+                          poster={vid.poster}
+                          controls
+                          className="w-full h-full object-cover"
+                        />
+                        <span className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-black/65 text-white text-[10px] font-bold">
+                          {vid.tag}
+                        </span>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                        <div className="space-y-1">
+                          <h4 className="font-bold text-sm text-[#3E2B25] line-clamp-1">{vid.title}</h4>
+                          <p className="text-xs text-[#756A65] line-clamp-2 leading-relaxed">{vid.caption || 'No caption provided.'}</p>
+                          <p className="text-[10px] text-[#756A65]/70 font-mono truncate" title={vid.url}>URL: {vid.url.substring(0, 50)}...</p>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex gap-2 pt-2 border-t border-[#E9E2DC]/50 mt-2">
+                          <button
+                            onClick={() => {
+                              setEditingVideo(vid);
+                              setVideoForm({
+                                title: vid.title,
+                                caption: vid.caption,
+                                url: vid.url,
+                                tag: vid.tag || '🌸 Studio Reel',
+                                poster: vid.poster || '/images/aanu-blooms-signature-set.jpeg'
+                              });
+                              setShowVideoModal(true);
+                            }}
+                            className="flex-1 py-1.5 bg-white border border-[#E9E2DC] hover:bg-[#E9E2DC] text-[#3E2B25] text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-1"
+                          >
+                            <Edit2 className="w-3.5 h-3.5 text-[#D96C65]" />
+                            <span>Edit</span>
+                          </button>
+                          <button
+                            onClick={() => handleDeleteVideo(vid.id)}
+                            className="p-1.5 bg-red-50 hover:bg-red-100 text-red-500 rounded-lg transition-colors"
+                            title="Delete Video"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-12 text-center text-xs text-[#756A65] space-y-2 bg-[#F8F6F3] rounded-xl border border-dashed border-[#E9E2DC]">
+                  <Video className="w-8 h-8 text-[#756A65]/40 mx-auto" />
+                  <p>No studio videos found. Click "Add Video" to get started!</p>
+                </div>
+              )}
+            </div>
+          </main>
+        )}
+
+        {/* ========================================================= */}
         {/* TAB: REPORTS */}
         {/* ========================================================= */}
         {activeTab === 'reports' && (
@@ -3459,6 +3673,147 @@ export const AdminDashboard = ({ onNavigate }) => {
       )}
 
 
+
+    {/* Video Manage Modal */}
+      {showVideoModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowVideoModal(false);
+          }}
+        >
+          <div className="relative bg-white rounded-3xl max-w-md w-full border border-[#E9E2DC] shadow-2xl p-6 space-y-4 animate-in zoom-in-95">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E9E2DC]">
+              <h3 className="font-serif font-bold text-lg text-[#3E2B25]">
+                {editingVideo ? 'Edit Studio Video 🎥' : 'Add Studio Video 🎥'}
+              </h3>
+              <button
+                onClick={() => {
+                  setShowVideoModal(false);
+                  setEditingVideo(null);
+                }}
+                className="p-1 text-[#756A65] hover:text-[#3E2B25]"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveVideo} className="space-y-4">
+              {/* File Uploader */}
+              <div className="p-4 rounded-2xl border-2 border-dashed border-[#D96C65]/30 bg-[#F8F6F3] space-y-2">
+                <span className="text-xs font-bold text-[#3E2B25] flex items-center gap-1.5">
+                  <Upload className="w-4 h-4 text-[#D96C65]" />
+                  <span>Choose Video from Device</span>
+                </span>
+                <p className="text-[11px] text-[#756A65]">
+                  Select any MP4, WEBM, or MOV video clip from your device.
+                </p>
+
+                <label className="cursor-pointer inline-flex items-center gap-1.5 px-4 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-bold shadow-cozy mt-1 transition-colors">
+                  <Video className="w-3.5 h-3.5" />
+                  <span>Browse Device Files</span>
+                  <input
+                    type="file"
+                    accept="video/*"
+                    onChange={handleVideoFileUpload}
+                    className="hidden"
+                  />
+                </label>
+
+                {videoForm.url && videoForm.url.startsWith('data:') && (
+                  <div className="mt-2 p-2 bg-white rounded-xl border border-[#E9E2DC] flex items-center gap-2">
+                    <span className="text-xs font-semibold text-[#4F9D69] truncate">
+                      ✓ Video file loaded successfully!
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Or Video URL */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-[#3E2B25]">
+                  Or Paste Video URL / Path
+                </label>
+                <input
+                  type="text"
+                  value={videoForm.url}
+                  onChange={(e) => setVideoForm({ ...videoForm, url: e.target.value })}
+                  placeholder="e.g. /images/artisan-craft-video.mp4 or https://..."
+                  className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:border-[#D96C65]"
+                />
+              </div>
+
+              {/* Title */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-[#3E2B25]">
+                  Video Title *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={videoForm.title}
+                  onChange={(e) => setVideoForm({ ...videoForm, title: e.target.value })}
+                  placeholder="e.g. Crafting Pink Velvet Tulip Petals"
+                  className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:border-[#D96C65]"
+                />
+              </div>
+
+              {/* Caption */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-[#3E2B25]">
+                  Short Caption
+                </label>
+                <input
+                  type="text"
+                  value={videoForm.caption}
+                  onChange={(e) => setVideoForm({ ...videoForm, caption: e.target.value })}
+                  placeholder="e.g. Step-by-step slow handmade loop stitch."
+                  className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:border-[#D96C65]"
+                />
+              </div>
+
+              {/* Tag */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-[#3E2B25]">
+                  Video Badge Tag
+                </label>
+                <select
+                  value={videoForm.tag}
+                  onChange={(e) => setVideoForm({ ...videoForm, tag: e.target.value })}
+                  className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] focus:outline-none focus:border-[#D96C65]"
+                >
+                  <option value="🌸 Studio Reel">🌸 Studio Reel</option>
+                  <option value="🧶 Behind The creations">🧶 Behind The creations</option>
+                  <option value="🎀 Gift Packaging">🎀 Gift Packaging</option>
+                  <option value="✨ Flower Assembly">✨ Flower Assembly</option>
+                  <option value="🪴 Showcase">🪴 Showcase</option>
+                </select>
+              </div>
+
+              {/* Submit Buttons */}
+              <div className="flex justify-end gap-2 pt-3 border-t border-[#E9E2DC]">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowVideoModal(false);
+                    setEditingVideo(null);
+                  }}
+                  className="px-4 py-2 text-xs font-bold text-[#756A65] hover:text-[#3E2B25]"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-full font-bold text-xs shadow-md transition-all hover:scale-[1.02]"
+                >
+                  {editingVideo ? 'Update Video' : 'Publish Video 🎥'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
     </div>
   );
