@@ -3,11 +3,14 @@ dotenv.config();
 
 const PHONE_NUMBER_ID = process.env.META_WA_PHONE_NUMBER_ID;
 const ACCESS_TOKEN = process.env.META_WA_ACCESS_TOKEN;
-let rawNumber = process.env.OWNER_WA_NUMBER || '919579162154';
-let OWNER_WA_NUMBER = rawNumber.replace(/\D/g, '');
-if (OWNER_WA_NUMBER.length === 10) {
-  OWNER_WA_NUMBER = '91' + OWNER_WA_NUMBER;
-}
+const getOwnerNumber = () => {
+  let rawNumber = process.env.OWNER_WA_NUMBER || '919767355347';
+  let num = rawNumber.replace(/\D/g, '');
+  if (num.length === 10) {
+    num = '91' + num;
+  }
+  return num;
+};
 
 /**
  * Sends a WhatsApp template message using Meta's Official Cloud API
@@ -30,7 +33,7 @@ export const sendWhatsAppTemplate = async (templateName, languageCode = 'en_US',
       },
       body: JSON.stringify({
         messaging_product: 'whatsapp',
-        to: OWNER_WA_NUMBER,
+        to: getOwnerNumber(),
         type: 'template',
         template: {
           name: templateName,
