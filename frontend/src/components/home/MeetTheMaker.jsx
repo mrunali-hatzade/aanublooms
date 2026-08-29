@@ -14,7 +14,7 @@ export const MeetTheMaker = ({ onNavigate }) => {
                 <img
                   src="/images/founder.jpeg"
                   alt="Maker Aanu in Studio"
-                  className="w-full h-64 sm:h-80 object-cover"
+                  className="w-full h-72 sm:h-88 object-cover object-bottom"
                 />
               </div>
 

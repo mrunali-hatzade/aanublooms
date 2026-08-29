@@ -50,7 +50,7 @@ export const AboutMakerPage = ({ onNavigate }) => {
                 <img
                   src="/images/founder.jpeg"
                   alt="Artisan Aanu - Founder of AanuBlooms"
-                  className="w-full h-80 sm:h-96 object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-80 sm:h-[420px] object-cover object-bottom group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-gradient-to-r from-bloom-600 to-rosewood-600 text-white text-xs font-bold shadow-lg flex items-center gap-1.5">
                   <Heart className="w-3 h-3 fill-white" />
