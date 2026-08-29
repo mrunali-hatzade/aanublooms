@@ -10,9 +10,9 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
 
   const [step, setStep] = useState(1);
   const [creationType, setCreationType] = useState('Custom Forever Flower Bouquet');
-  const [materialPreference, setmaterialPreference] = useState('100% Combed Milk Cotton');
+  const [materialPreference, setmaterialPreference] = useState('Matte Standard');
   const [selectedColors, setSelectedColors] = useState(['#F4B6C2', '#FFFFFF', '#9EB29C']);
-  const [selectedFlowers, setSelectedFlowers] = useState(['Pink Tulips', 'White Daisies', 'Eucalyptus Leaves']);
+  const [selectedFlowers, setSelectedFlowers] = useState([]);
   const [stemCount, setStemCount] = useState('Classic 9 Stems');
   const [ribbonMessage, setRibbonMessage] = useState('Forever In Bloom');
   const [specialNotes, setSpecialNotes] = useState('');
@@ -31,20 +31,26 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       image: '/images/category/4th_category_bouquet.jpeg',
       desc: 'Handcrafted bouquet with your choice of floral stems, custom color palette & silk ribbon text.'
     },
-
     {
-      id: 'pot',
-      name: 'Custom Handmade Flower Pot',
-      priceBase: 899,
-      image: '/images/category/3rd_category_flowerpot.jpeg',
-      desc: 'Beautiful pipe cleaner flowers planted in a miniature rustic pot for your desk or home.'
+      id: 'photo-frame',
+      name: 'Customized Photo Frame',
+      priceBase: 1199,
+      image: '/images/category/5th_category_handmadegifts.jpeg',
+      desc: 'A handcrafted photo/name frame decorated with pipe cleaner flowers, personalized with your choice of colors and a custom name or message.'
     },
     {
-      id: 'keychain',
-      name: 'Custom Floral Keychain',
-      priceBase: 399,
+      id: 'flower-pots',
+      name: 'Custom Flower Pots',
+      priceBase: 899,
+      image: '/images/category/3rd_category_flowerpot.jpeg',
+      desc: 'A mini bunch of your chosen pipe cleaner flowers, tied with ribbon — great for desks or small gifts.'
+    },
+    {
+      id: 'single-flower',
+      name: 'Custom Single Flower',
+      priceBase: 299,
       image: '/images/category/1st_category_flower.jpeg',
-      desc: 'Miniature forever flower keychain to carry your favorite blooms everywhere you go.'
+      desc: 'A handcrafted single flower made from pipe cleaners in your choice of color — perfect as a small gift, bookmark, or desk accent.'
     }
   ];
 
@@ -57,17 +63,6 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
     { name: 'Terracotta Coral', hex: '#E38D6F' },
     { name: 'Sky Blue Pastel', hex: '#A7C7E7' },
     { name: 'Mocha Earth Brown', hex: '#B59E8C' }
-  ];
-
-  const flowerOptions = [
-    'Pink Tulips',
-    'White Chamomile Daisies',
-    'Sunflowers',
-    'French Lavender Stems',
-    'Red & Cream Roses',
-    'Eucalyptus Leaves',
-    'Baby’s Breath Sprigs',
-    'Forget-Me-Nots'
   ];
 
   const currentTypeObj = creationOptions.find(o => o.name === creationType) || creationOptions[0];
@@ -108,16 +103,6 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
     }
   };
 
-  const toggleFlower = (flower) => {
-    if (selectedFlowers.includes(flower)) {
-      if (selectedFlowers.length > 1) {
-        setSelectedFlowers(selectedFlowers.filter(f => f !== flower));
-      }
-    } else {
-      setSelectedFlowers([...selectedFlowers, flower]);
-    }
-  };
-
   const handleAddToCart = () => {
     const customProduct = {
       id: `custom-${Date.now()}`,
@@ -132,13 +117,13 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       colors: selectedColors.map(c => ({ name: c, hex: c })),
       sizes: [stemCount],
       referenceImage: photoPreview || null,
-      description: `Custom Order with palette [${selectedColors.join(', ')}], flowers: [${selectedFlowers.join(', ')}], ribbon message: "${ribbonMessage}".${photoPreview ? ' [Reference Photo Attached]' : ''} Notes: ${specialNotes}`
+      description: `Custom Order with palette [${selectedColors.join(', ')}], ribbon message: "${ribbonMessage}".${photoPreview ? ' [Reference Photo Attached]' : ''} Notes: ${specialNotes}`
     };
 
     addToCart(customProduct, 1, {
-      selectedColor: `Palette of ${selectedColors.length} pipe cleaners Tones`,
+      selectedColor: `Palette of ${selectedColors.length} Colors`,
       selectedSize: stemCount,
-      customNotes: `Ribbon: "${ribbonMessage}" | Flowers: ${selectedFlowers.join(', ')} | pipe cleaners: ${materialPreference}${photoPreview ? ' | [Reference Photo Attached]' : ''} | Notes: ${specialNotes}`
+      customNotes: `Ribbon: "${ribbonMessage}" | Pipe Cleaner Type: ${materialPreference}${photoPreview ? ' | [Reference Photo Attached]' : ''} | Notes: ${specialNotes}`
     });
 
     addToast('🌸 Custom order added to your basket!', 'success');
@@ -161,7 +146,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
         itemType: creationType,
         colorPalette: selectedColors,
         materialPreference,
-        specialNotes: `Flowers: ${selectedFlowers.join(', ')} | Stems: ${stemCount} | Ribbon: "${ribbonMessage}" | Notes: ${specialNotes}`,
+        specialNotes: `Stems/Size: ${stemCount} | Ribbon: "${ribbonMessage}" | Pipe Cleaner Type: ${materialPreference} | Notes: ${specialNotes}`,
         estimatedBudget: `₹${estimatedPrice.toLocaleString('en-IN')}`,
         referenceImage: photoPreview || null
       });
@@ -193,7 +178,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
       <div className="flex items-center justify-center gap-2 sm:gap-4 mb-8 text-xs font-bold">
         {[
           { num: 1, label: '1. Select Piece' },
-          { num: 2, label: '2. Palette & Details' },
+          { num: 2, label: '2. Colors & Details' },
           { num: 3, label: '3. Preview & Order' }
         ].map(s => (
           <div
@@ -255,13 +240,13 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
               onClick={() => setStep(2)}
               className="px-6 py-3 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-xs shadow-cozy transition-all"
             >
-              Continue to Palette & creations →
+              Continue to Colors & Details →
             </button>
           </div>
         </div>
       )}
 
-      {/* Step 2: Palette, Flowers, pipe cleaners */}
+      {/* Step 2: Colors & Details */}
       {step === 2 && (
         <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-5 sm:p-7 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft space-y-6 animate-in fade-in">
           
@@ -269,7 +254,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
           <div>
             <div className="flex justify-between items-center mb-2.5">
               <label className="font-serif font-bold text-sm sm:text-base text-warmgray-900 dark:text-white">
-                Choose pipe cleaners Color Palette (Pick 1 to 4 Colors)
+                Choose Color Palette (Pick 1 to 4 Colors)
               </label>
               <span className="text-xs text-bloom-600 dark:text-bloom-400 font-semibold">
                 {selectedColors.length} selected
@@ -302,42 +287,13 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* Floral Stems (if bouquet) or accessories */}
-          {creationType.includes('Bouquet') && (
-            <div>
-              <label className="font-serif font-bold text-sm sm:text-base text-warmgray-900 dark:text-white block mb-2.5">
-                Include Flower Stem Types
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {flowerOptions.map(flower => {
-                  const isSelected = selectedFlowers.includes(flower);
-                  return (
-                    <button
-                      key={flower}
-                      type="button"
-                      onClick={() => toggleFlower(flower)}
-                      className={`px-3 py-1.5 rounded-2xl text-xs font-semibold border transition-all flex items-center gap-1.5 ${
-                        isSelected
-                          ? 'bg-rosewood-500 text-white border-rosewood-500 shadow-xs'
-                          : 'bg-warmgray-50 dark:bg-warmgray-800 text-warmgray-700 dark:text-warmgray-300 border-warmgray-200 dark:border-warmgray-700'
-                      }`}
-                    >
-                      <Flower2 className="w-3 h-3" />
-                      <span>{flower}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* material Selection */}
+          {/* Pipe Cleaner Type Selection */}
           <div>
             <label className="font-serif font-bold text-sm sm:text-base text-warmgray-900 dark:text-white block mb-2.5">
-              pipe cleaners Preference
+              Pipe Cleaner Type
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              {['100% Combed Milk Cotton', 'Super-Soft Chenille Velvet', 'Organic Bamboo Cotton'].map(material => (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {['Matte Standard', 'Fluffy Stems', 'Soft Chenille Stems', '100% Original'].map(material => (
                 <button
                   key={material}
                   type="button"
@@ -345,7 +301,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
                   className={`p-3 rounded-2xl text-xs font-semibold border text-center transition-all ${
                     materialPreference === material
                       ? 'border-bloom-500 bg-bloom-50 dark:bg-warmgray-800 text-bloom-800 dark:text-bloom-300 shadow-xs font-bold'
-                      : 'border-warmgray-200 dark:border-warmgray-800 text-warmgray-700 dark:text-warmgray-300'
+                      : 'border-warmgray-200 dark:border-warmgray-800 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-50 dark:hover:bg-warmgray-800/50'
                   }`}
                 >
                   {material}

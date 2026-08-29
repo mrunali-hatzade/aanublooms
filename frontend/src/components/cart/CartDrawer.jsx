@@ -86,7 +86,7 @@ export const CartDrawer = ({ onNavigate }) => {
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-5 h-5 text-bloom-600 dark:text-bloom-400" />
               <h2 className="font-serif font-bold text-base sm:text-lg text-warmgray-900 dark:text-white">
-                Your pipe cleaners Basket ({totalItemCount})
+                Your Bloom Basket ({totalItemCount})
               </h2>
             </div>
             <button
