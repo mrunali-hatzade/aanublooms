@@ -3,33 +3,33 @@ import { Flower2, Heart, Sparkles, Clock, ShieldCheck, ArrowRight, Quote } from 
 
 export const AboutMakerPage = ({ onNavigate }) => {
   return (
-    <div className="py-12 sm:py-16 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-20">
+    <div className="py-10 sm:py-12 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14">
       
-      {/* Hero Header */}
-      <div className="text-center max-w-4xl lg:max-w-5xl mx-auto space-y-5">
-        <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-rosewood-100 dark:bg-rosewood-950 text-rosewood-800 dark:text-rosewood-300 text-xs font-bold uppercase tracking-wider shadow-2xs">
+      {/* Hero Header: Left Aligned as in Footer/Image 2 */}
+      <div className="text-left max-w-4xl space-y-3">
+        <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rosewood-100 dark:bg-rosewood-950 text-rosewood-800 dark:text-rosewood-300 text-xs font-bold uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5" />
           The Story Behind AanuBlooms
         </span>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-warmgray-900 dark:text-white leading-[1.15] tracking-tight">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-warmgray-900 dark:text-white leading-tight">
           Handcrafted with Love, Creativity & Endless Patience
         </h1>
-        <p className="text-base sm:text-lg md:text-xl text-warmgray-600 dark:text-warmgray-300 leading-relaxed max-w-3xl mx-auto font-normal">
+        <p className="text-base text-warmgray-600 dark:text-warmgray-300 leading-relaxed max-w-2xl">
           Welcome to AanuBlooms! We create handmade flowers, bouquets and keepsakes using colorful pipe cleaners bringing creativity and warmth into everyday life.
         </p>
       </div>
 
       {/* Top Story Section: Photo Aligned Upward + Opening Story */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         
         {/* Story Intro (7 Cols) */}
-        <div className="lg:col-span-7 space-y-6 text-base sm:text-lg text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
+        <div className="lg:col-span-7 space-y-4 text-sm text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
           <div className="inline-flex items-center gap-2 text-bloom-600 dark:text-bloom-400 font-bold text-xs uppercase tracking-widest">
-            <span className="w-8 h-px bg-bloom-400" />
+            <span className="w-6 h-px bg-bloom-400" />
             Meet The Artisan
           </div>
           
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-warmgray-900 dark:text-white leading-snug">
+          <h2 className="text-2xl font-serif font-bold text-warmgray-900 dark:text-white leading-snug">
             A story that began at home, inspired by a mother and carried forward by her daughter.
           </h2>
 
@@ -59,7 +59,7 @@ export const AboutMakerPage = ({ onNavigate }) => {
               </div>
               <div className="p-4 sm:p-5 bg-white dark:bg-warmgray-900 border-t border-warmgray-100 dark:border-warmgray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                 <div>
-                  <h4 className="font-serif font-bold text-base sm:text-lg text-warmgray-900 dark:text-white">
+                  <h4 className="font-serif font-bold text-sm sm:text-base text-warmgray-900 dark:text-white">
                     Aanurvi Ghatole (Aanu)
                   </h4>
                   <p className="text-xs text-warmgray-500 dark:text-warmgray-400">
@@ -79,12 +79,12 @@ export const AboutMakerPage = ({ onNavigate }) => {
       </div>
 
       {/* Spacious Full-Width Continuation of Story Below Photo */}
-      <div className="max-w-5xl mx-auto space-y-12 pt-6">
+      <div className="space-y-8 pt-2">
         
         {/* Chapter 1: The Rediscovery */}
-        <div className="space-y-4 text-base sm:text-lg text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
-          <h3 className="text-xl sm:text-2xl font-serif font-bold text-warmgray-900 dark:text-white flex items-center gap-2.5">
-            <Sparkles className="w-5 h-5 text-bloom-500 shrink-0" />
+        <div className="space-y-3 text-sm text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
+          <h3 className="text-xl font-serif font-bold text-warmgray-900 dark:text-white flex items-center gap-2.5">
+            <Sparkles className="w-4 h-4 text-bloom-500 shrink-0" />
             The Rediscovery & The Spark of Pipe Cleaners
           </h3>
           <p>
@@ -96,32 +96,32 @@ export const AboutMakerPage = ({ onNavigate }) => {
         </div>
 
         {/* Chapter 2: Why "AanuBlooms"? Card */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-rosewood-50 via-warmgray-50 to-bloom-50 dark:from-warmgray-900 dark:via-warmgray-900 dark:to-warmgray-850 border border-warmgray-200/80 dark:border-warmgray-700 shadow-sm space-y-4">
+        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-rosewood-50 via-warmgray-50 to-bloom-50 dark:from-warmgray-900 dark:via-warmgray-900 dark:to-warmgray-850 border border-warmgray-200/80 dark:border-warmgray-700 shadow-sm space-y-3">
           <div className="flex items-center gap-2 text-rosewood-600 dark:text-rosewood-400 font-bold text-xs uppercase tracking-wider">
-            <Heart className="w-4 h-4 fill-current" />
+            <Heart className="w-3.5 h-3.5 fill-current" />
             The Name & Its Meaning
           </div>
-          <h3 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
+          <h3 className="text-xl sm:text-2xl font-serif font-bold text-warmgray-900 dark:text-white">
             Why "AanuBlooms"?
           </h3>
-          <p className="text-base sm:text-lg text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
+          <p className="text-sm text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
             The name AanuBlooms has a very special meaning. Aanu's original name is <strong>Aanurvi Ghatole</strong>. Her mother thoughtfully chose the name Aanurvi with love and care, and it also carries a part of her father's name, <strong>Anandrao</strong>. At home, her parents lovingly call her <strong>"Aanu."</strong>
           </p>
-          <p className="text-base sm:text-lg text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
+          <p className="text-sm text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
             When Aanu decided to start her own handmade brand, she wanted to make this little name grow into something bigger—while carrying with it the love, thought, and identity given to her by her parents. That's why she chose "Aanu" as the heart of her brand. And "Blooms" represents flowers, creativity, growth, and the beautiful journey of turning a childhood inspiration into something of her own.
           </p>
         </div>
 
         {/* Chapter 3: Slow Craft Promise */}
-        <div className="space-y-4 text-base sm:text-lg text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
-          <h3 className="text-xl sm:text-2xl font-serif font-bold text-warmgray-900 dark:text-white flex items-center gap-2.5">
-            <Flower2 className="w-5 h-5 text-bloom-500 shrink-0" />
+        <div className="space-y-3 text-sm text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
+          <h3 className="text-xl font-serif font-bold text-warmgray-900 dark:text-white flex items-center gap-2.5">
+            <Flower2 className="w-4 h-4 text-bloom-500 shrink-0" />
             Every Piece Tells a Story
           </h3>
           <p>
             Every single AanuBlooms creation carries a little piece of Aanu's journey—from watching her mother create handmade products as a child to finding her own creative path years later. What began with a mother's inspiration has now blossomed into AanuBlooms.
           </p>
-          <p className="font-bold text-bloom-600 dark:text-bloom-400 text-lg">
+          <p className="font-bold text-bloom-600 dark:text-bloom-400 text-base">
             Made by Hand. Inspired by Love. 🌷
           </p>
         </div>
