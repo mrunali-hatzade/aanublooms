@@ -3,7 +3,11 @@ dotenv.config();
 
 const PHONE_NUMBER_ID = process.env.META_WA_PHONE_NUMBER_ID;
 const ACCESS_TOKEN = process.env.META_WA_ACCESS_TOKEN;
-const OWNER_WA_NUMBER = process.env.OWNER_WA_NUMBER || '919579162154'; // Fallback to provided owner number
+let rawNumber = process.env.OWNER_WA_NUMBER || '919579162154';
+let OWNER_WA_NUMBER = rawNumber.replace(/\D/g, '');
+if (OWNER_WA_NUMBER.length === 10) {
+  OWNER_WA_NUMBER = '91' + OWNER_WA_NUMBER;
+}
 
 /**
  * Sends a WhatsApp template message using Meta's Official Cloud API
@@ -11,7 +15,7 @@ const OWNER_WA_NUMBER = process.env.OWNER_WA_NUMBER || '919579162154'; // Fallba
  * @param {string} languageCode - Language code (e.g., 'en_US' or 'en')
  * @param {Array<string>} parameters - Array of strings to fill the variables {{1}}, {{2}}, etc.
  */
-export const sendWhatsAppTemplate = async (templateName, languageCode, parameters) => {
+export const sendWhatsAppTemplate = async (templateName, languageCode = 'en_US', parameters = []) => {
   if (!PHONE_NUMBER_ID || !ACCESS_TOKEN) {
     console.warn('WhatsApp API credentials not configured. Skipping WhatsApp template notification.');
     return;
