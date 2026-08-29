@@ -46,26 +46,32 @@ export const AboutMakerPage = ({ onNavigate }) => {
         <div className="lg:col-span-5 relative">
           <div className="relative mx-auto max-w-md">
             <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-warmgray-800 bg-white dark:bg-warmgray-900 group">
-              <img
-                src="/images/founder.jpeg"
-                alt="Artisan Aanu - Founder of AanuBlooms"
-                className="w-full h-80 sm:h-96 object-cover object-top group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="p-4 bg-white/95 dark:bg-warmgray-900/95 backdrop-blur-xs border-t border-warmgray-100 dark:border-warmgray-800">
-                <p className="font-serif font-bold text-sm text-warmgray-900 dark:text-white">
-                  Aanurvi Ghatole (Aanu)
-                </p>
-                <p className="text-xs text-warmgray-500 dark:text-warmgray-400">
-                  Founder & Lead Artisan, AanuBlooms
-                </p>
+              <div className="relative">
+                <img
+                  src="/images/founder.jpeg"
+                  alt="Artisan Aanu - Founder of AanuBlooms"
+                  className="w-full h-80 sm:h-96 object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-gradient-to-r from-bloom-600 to-rosewood-600 text-white text-xs font-bold shadow-lg flex items-center gap-1.5">
+                  <Heart className="w-3 h-3 fill-white" />
+                  <span>Lead Artisan</span>
+                </div>
               </div>
-            </div>
-
-            {/* Decorative Floating Quote Badge */}
-            <div className="absolute -bottom-4 -left-3 sm:-left-4 bg-gradient-to-r from-bloom-600 to-rosewood-600 text-white p-3 rounded-2xl shadow-xl max-w-[220px]">
-              <p className="font-serif text-xs font-bold leading-tight">
-                "Made by Hand. Inspired by Love." 🌷
-              </p>
+              <div className="p-4 sm:p-5 bg-white dark:bg-warmgray-900 border-t border-warmgray-100 dark:border-warmgray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div>
+                  <h4 className="font-serif font-bold text-base sm:text-lg text-warmgray-900 dark:text-white">
+                    Aanurvi Ghatole (Aanu)
+                  </h4>
+                  <p className="text-xs text-warmgray-500 dark:text-warmgray-400">
+                    Founder & Lead Artisan, AanuBlooms
+                  </p>
+                </div>
+                <div className="px-3 py-1.5 rounded-xl bg-bloom-50 dark:bg-warmgray-800 border border-bloom-100 dark:border-warmgray-700">
+                  <span className="text-xs font-bold text-bloom-600 dark:text-bloom-400 block font-handwritten">
+                    "Made by Hand. Inspired by Love." 🌷
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
