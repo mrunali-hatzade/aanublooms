@@ -176,7 +176,7 @@ export const Footer = ({ onNavigate }) => {
         <div className="pt-6 border-t border-warmgray-200 dark:border-warmgray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-warmgray-500 dark:text-warmgray-400">
           <div>
             <p>
-              © {new Date().getFullYear()} AanuBlooms Studio. All creations handcrafted with love & care. | <span className="text-[#E07A5F] font-medium">Designed by Simplified Works-9767355347</span>
+              © {new Date().getFullYear()} AanuBlooms Studio. All creations handcrafted with love & care. | <a href="https://wa.me/919767355347?text=Hi%20Simplified%20Works%2C%20I%20saw%20your%20design%20on%20AanuBlooms%20and%20would%20like%20to%20connect%21" target="_blank" rel="noopener noreferrer" className="text-[#E07A5F] hover:text-[#C8644A] hover:underline font-medium transition-colors inline-flex items-center gap-1" title="Chat with Simplified Works on WhatsApp">Designed by Simplified Works-9767355347</a>
             </p>
           </div>
           <div className="flex items-center gap-4 sm:gap-6">
