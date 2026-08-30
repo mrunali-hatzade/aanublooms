@@ -24,37 +24,55 @@ export const sendWhatsAppTemplate = async (templateName, languageCode = 'en_US',
     return;
   }
 
-  try {
+  const sendWithLang = async (lang) => {
+    const payload = {
+      messaging_product: 'whatsapp',
+      to: getOwnerNumber(),
+      type: 'template',
+      template: {
+        name: templateName,
+        language: {
+          code: lang
+        }
+      }
+    };
+
+    if (parameters && parameters.length > 0) {
+      payload.template.components = [
+        {
+          type: 'body',
+          parameters: parameters.map(p => ({ type: 'text', text: String(p) }))
+        }
+      ];
+    }
+
     const response = await fetch(`https://graph.facebook.com/v17.0/${PHONE_NUMBER_ID}/messages`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${ACCESS_TOKEN}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        messaging_product: 'whatsapp',
-        to: getOwnerNumber(),
-        type: 'template',
-        template: {
-          name: templateName,
-          language: {
-            code: languageCode
-          },
-          components: [
-            {
-              type: 'body',
-              parameters: parameters.map(p => ({ type: 'text', text: String(p) }))
-            }
-          ]
-        }
-      })
+      body: JSON.stringify(payload)
     });
 
     const data = await response.json();
-    if (!response.ok) {
-      console.error(`Meta WhatsApp API Error [${templateName}]:`, data);
+    return { ok: response.ok, status: response.status, data };
+  };
+
+  try {
+    let result = await sendWithLang(languageCode);
+
+    // If Meta returns language or template code mismatch, retry with alternative language code
+    if (!result.ok && (result.data?.error?.code === 132000 || result.data?.error?.message?.includes('language') || result.data?.error?.message?.includes('template'))) {
+      const fallbackLang = (languageCode === 'en' || languageCode === 'en_GB') ? 'en_US' : 'en';
+      console.warn(`Meta template '${templateName}' failed with '${languageCode}', retrying with '${fallbackLang}'...`);
+      result = await sendWithLang(fallbackLang);
+    }
+
+    if (!result.ok) {
+      console.error(`Meta WhatsApp API Error [${templateName} to ${getOwnerNumber()}]:`, result.data);
     } else {
-      console.log(`WhatsApp template notification '${templateName}' sent successfully.`);
+      console.log(`✅ WhatsApp template notification '${templateName}' delivered to ${getOwnerNumber()} successfully.`);
     }
   } catch (error) {
     console.error(`Failed to send WhatsApp template '${templateName}':`, error);

@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
       await Promise.allSettled([
         sendContactFormAlert(newMessage),
         sendContactThankYouToCustomer(newMessage),
-        sendWhatsAppTemplate('new_contact_query', 'en_US', [
+        sendWhatsAppTemplate('new_contact_query', 'en', [
           name.trim(),
           phone?.trim() || 'N/A',
           subject?.trim() || 'N/A',
