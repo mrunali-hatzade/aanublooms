@@ -176,7 +176,7 @@ export const Footer = ({ onNavigate }) => {
         <div className="pt-6 border-t border-warmgray-200 dark:border-warmgray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-warmgray-500 dark:text-warmgray-400">
           <div>
             <p>
-              © {new Date().getFullYear()} AanuBlooms Studio. All creations handcrafted with love & care. | <span className="text-[#E07A5F] font-medium">Designed by Simplified Works-9767355347</span>
+              © {new Date().getFullYear()} AanuBlooms Studio. All creations handcrafted with love & care. | <span className="text-[#E07A5F] font-medium">Designed by Simplified Works-95791 62154</span>
             </p>
           </div>
           <div className="flex items-center gap-4 sm:gap-6">

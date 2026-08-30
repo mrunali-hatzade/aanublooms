@@ -4,7 +4,7 @@ dotenv.config();
 const PHONE_NUMBER_ID = process.env.META_WA_PHONE_NUMBER_ID;
 const ACCESS_TOKEN = process.env.META_WA_ACCESS_TOKEN;
 const getOwnerNumber = () => {
-  let rawNumber = process.env.OWNER_WA_NUMBER || '919767355347';
+  let rawNumber = process.env.OWNER_WA_NUMBER || '919579162154';
   let num = rawNumber.replace(/\D/g, '');
   if (num.length === 10) {
     num = '91' + num;
