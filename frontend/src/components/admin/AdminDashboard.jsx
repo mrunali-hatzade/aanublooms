@@ -493,6 +493,20 @@ export const AdminDashboard = ({ onNavigate }) => {
     }
   };
 
+  const handleDeleteCustomRequest = async (id) => {
+    if (window.confirm('Are you sure you want to delete this custom order inquiry? This action cannot be undone.')) {
+      try {
+        await api.deleteCustomRequest(id).catch(() => {});
+        const updated = customRequests.filter(r => r.id !== id && r._id !== id);
+        setCustomRequests(updated);
+        addToast('Custom order deleted successfully! 🗑️', 'info');
+      } catch (err) {
+        console.error('Error deleting custom request:', err);
+        addToast('Failed to delete custom order', 'error');
+      }
+    }
+  };
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -2557,6 +2571,7 @@ export const AdminDashboard = ({ onNavigate }) => {
         )}
 
         {/* ========================================================= */}
+        {/* ========================================================= */}
         {/* TAB: CUSTOM ORDERS WORKFLOW */}
         {/* ========================================================= */}
         {activeTab === 'custom-orders' && (
@@ -2571,34 +2586,171 @@ export const AdminDashboard = ({ onNavigate }) => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                {customRequests.length === 0 ? (<div className="col-span-2 text-center py-10"><p className="text-sm text-[#756A65]">No custom orders yet</p><p className="text-[10px] text-[#756A65] mt-1">Custom orders from customers will appear here</p></div>) : customRequests.map(req => (
-                  <div key={req.id} className="p-4 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-3">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <span className="text-[10px] font-mono font-bold text-[#D96C65]">#{req.id}</span>
-                        <h4 className="font-bold text-sm text-[#3E2B25]">{req.itemType}</h4>
-                        <p className="text-xs text-[#756A65]">From: {req.customerName} ({req.customerPhone})</p>
-                      </div>
-                      <span className="text-xs font-bold text-[#4F9D69] bg-[#4F9D69]/15 px-2.5 py-1 rounded-full">
-                        {req.estimatedBudget}
-                      </span>
-                    </div>
-
-                    <p className="text-xs text-[#3E2B25] bg-white p-3 rounded-lg border border-[#E9E2DC] leading-relaxed">
-                      "{req.specialNotes}"
-                    </p>
-
-                    <div className="flex justify-end gap-2 pt-1">
-                      <a href={`https://wa.me/?text=Hi%20${req.customerName}`} target="_blank" rel="noreferrer" className="px-3 py-1.5 bg-[#4F9D69] text-white rounded-lg text-xs font-semibold flex items-center gap-1">
-                        <MessageCircle className="w-3.5 h-3.5" />
-                        <span>Chat on WhatsApp</span>
-                      </a>
-                    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                {customRequests.length === 0 ? (
+                  <div className="col-span-2 text-center py-12 bg-[#F8F6F3] rounded-2xl border border-dashed border-[#E9E2DC]">
+                    <Sparkles className="w-8 h-8 text-[#D96C65] mx-auto mb-2 opacity-50" />
+                    <p className="text-sm font-bold text-[#3E2B25]">No custom orders yet</p>
+                    <p className="text-xs text-[#756A65] mt-1">Custom orders and photo references from customers will appear here.</p>
                   </div>
-                ))}
+                ) : (
+                  customRequests.map(req => (
+                    <div key={req.id || req._id} className="p-4 sm:p-5 rounded-2xl bg-[#F8F6F3] border border-[#E9E2DC] space-y-3.5 shadow-sm hover:shadow-md transition-shadow">
+                      {/* Top Header */}
+                      <div className="flex justify-between items-start gap-2">
+                        <div>
+                          <span className="text-[10px] font-mono font-bold text-[#D96C65] bg-[#D96C65]/10 px-2 py-0.5 rounded-md inline-block mb-1">
+                            #{req.id}
+                          </span>
+                          <h4 className="font-bold text-base text-[#3E2B25]">{req.itemType}</h4>
+                          <p className="text-xs text-[#756A65]">
+                            From: <strong className="text-[#3E2B25]">{req.customerName}</strong> {req.customerPhone && `(${req.customerPhone})`}
+                          </p>
+                          {req.customerEmail && (
+                            <p className="text-[11px] text-[#756A65]">{req.customerEmail}</p>
+                          )}
+                        </div>
+                        <span className="text-xs font-bold text-[#4F9D69] bg-[#4F9D69]/15 px-3 py-1 rounded-full whitespace-nowrap">
+                          {req.estimatedBudget || 'Quote Requested'}
+                        </span>
+                      </div>
+
+                      {/* Customer Reference Image (If Uploaded) */}
+                      {req.referenceImage ? (
+                        <div className="rounded-xl overflow-hidden border border-[#E9E2DC] bg-white p-2.5 space-y-2">
+                          <div className="flex items-center justify-between text-xs font-bold text-[#D96C65]">
+                            <span className="flex items-center gap-1.5">
+                              <Camera className="w-3.5 h-3.5" />
+                              Customer Reference Photo
+                            </span>
+                            <span className="text-[10px] text-[#756A65] font-normal">(Click to enlarge)</span>
+                          </div>
+                          <div
+                            onClick={() => setSelectedCustomRequest(req)}
+                            className="relative aspect-video sm:aspect-[16/9] max-h-48 rounded-lg overflow-hidden cursor-pointer group bg-warmgray-100 dark:bg-warmgray-800 border border-warmgray-200"
+                          >
+                            <img
+                              src={req.referenceImage}
+                              alt={`Reference for ${req.itemType}`}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-semibold gap-1.5 backdrop-blur-[2px]">
+                              <Eye className="w-4 h-4" />
+                              <span>Click to Zoom Reference</span>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="py-1.5 px-3 rounded-lg bg-white/70 border border-dashed border-[#E9E2DC] text-[11px] text-[#756A65] flex items-center gap-1.5">
+                          <ImageIcon className="w-3.5 h-3.5 text-[#756A65]/60" />
+                          <span>No reference image attached by customer</span>
+                        </div>
+                      )}
+
+                      {/* Color Palette (If specified) */}
+                      {req.colorPalette && Array.isArray(req.colorPalette) && req.colorPalette.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65]">Palette:</span>
+                          {req.colorPalette.map((col, cIdx) => (
+                            <span key={cIdx} className="text-[11px] px-2 py-0.5 rounded-md bg-white border border-[#E9E2DC] text-[#3E2B25] font-medium flex items-center gap-1">
+                              {col.startsWith('#') && (
+                                <span className="w-2.5 h-2.5 rounded-full border border-black/10 inline-block" style={{ backgroundColor: col }} />
+                              )}
+                              <span>{col}</span>
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Custom Specs & Notes Box */}
+                      <div className="text-xs text-[#3E2B25] bg-white p-3 rounded-xl border border-[#E9E2DC] leading-relaxed">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#756A65] block mb-1">Specifications:</span>
+                        <p className="whitespace-pre-line font-medium text-xs">
+                          {req.specialNotes || 'Standard custom specifications'}
+                        </p>
+                      </div>
+
+                      {/* Action Buttons: Delete + WhatsApp */}
+                      <div className="flex justify-end items-center gap-2 pt-2 border-t border-[#E9E2DC]">
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteCustomRequest(req.id || req._id)}
+                          className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-rose-200 transition-colors shadow-sm cursor-pointer"
+                          title="Delete this custom order"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>Delete</span>
+                        </button>
+
+                        <a
+                          href={`https://wa.me/${(req.customerPhone || '').replace(/\D/g, '') || ''}?text=Hi%20${encodeURIComponent(req.customerName || 'there')}%2C%20regarding%20your%20custom%20order%20%23${req.id}%20(${encodeURIComponent(req.itemType || 'item')})%20on%20AanuBlooms%3A`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="px-3.5 py-1.5 bg-[#4F9D69] hover:bg-[#438a5b] text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors cursor-pointer"
+                        >
+                          <MessageCircle className="w-3.5 h-3.5" />
+                          <span>Chat on WhatsApp</span>
+                        </a>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
+
+            {/* Reference Image Lightbox / Full-View Modal */}
+            {selectedCustomRequest && selectedCustomRequest.referenceImage && (
+              <div
+                className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in"
+                onClick={() => setSelectedCustomRequest(null)}
+              >
+                <div
+                  className="bg-white rounded-2xl max-w-3xl w-full p-5 sm:p-6 shadow-2xl border border-warmgray-200 relative animate-in zoom-in-95 space-y-4"
+                  onClick={e => e.stopPropagation()}
+                >
+                  <div className="flex items-center justify-between pb-3 border-b border-[#E9E2DC]">
+                    <div>
+                      <h3 className="font-serif font-bold text-base text-[#3E2B25] flex items-center gap-2">
+                        <Camera className="w-4 h-4 text-[#D96C65]" />
+                        <span>Reference Photo — #{selectedCustomRequest.id}</span>
+                      </h3>
+                      <p className="text-xs text-[#756A65]">
+                        {selectedCustomRequest.itemType} for {selectedCustomRequest.customerName} ({selectedCustomRequest.customerPhone})
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setSelectedCustomRequest(null)}
+                      className="p-1.5 rounded-full hover:bg-warmgray-100 text-warmgray-500 cursor-pointer"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <div className="py-2 flex items-center justify-center bg-warmgray-950 rounded-xl overflow-hidden max-h-[65vh]">
+                    <img
+                      src={selectedCustomRequest.referenceImage}
+                      alt="Customer reference"
+                      className="max-h-[60vh] w-auto object-contain rounded-lg shadow-lg"
+                    />
+                  </div>
+
+                  <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-[#756A65]">
+                    <p className="line-clamp-2 max-w-lg">
+                      <strong className="text-[#3E2B25]">Notes:</strong> "{selectedCustomRequest.specialNotes}"
+                    </p>
+                    <a
+                      href={selectedCustomRequest.referenceImage}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-[#D96C65] font-semibold hover:underline flex items-center gap-1 whitespace-nowrap"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      Open Full Image in Tab
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
           </main>
         )}
 

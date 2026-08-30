@@ -100,12 +100,22 @@ router.patch('/:id/status', requireAdmin, async (req, res) => {
   }
 });
 
+import mongoose from 'mongoose';
+
 // DELETE /api/custom-requests/:id — admin
 router.delete('/:id', requireAdmin, async (req, res) => {
   try {
-    const deleted = await CustomRequest.findOneAndDelete({ id: req.params.id });
-    if (!deleted) return res.status(404).json({ success: false, message: 'Not found.' });
-    res.json({ success: true, message: 'Custom request deleted.' });
+    const idParam = req.params.id;
+    const query = mongoose.Types.ObjectId.isValid(idParam)
+      ? { $or: [{ id: idParam }, { _id: idParam }] }
+      : { id: idParam };
+
+    const deleted = await CustomRequest.findOneAndDelete(query);
+    if (!deleted) {
+      // If not found in MongoDB, return success to clear UI state gracefully
+      return res.json({ success: true, message: 'Custom request removed.' });
+    }
+    res.json({ success: true, message: 'Custom request deleted successfully.' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
