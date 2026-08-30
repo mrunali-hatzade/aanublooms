@@ -102,9 +102,9 @@ export const HeroSection = ({ onNavigate }) => {
                   </div>
                   <div className="text-right">
                     <span className="text-base font-serif font-bold text-bloom-600 dark:text-bloom-400 block">
-                      ₹2,499
+                      ₹349
                     </span>
-                    <span className="text-[10px] text-warmgray-400 line-through">₹2,999</span>
+                    <span className="text-[10px] text-warmgray-400 line-through">₹499</span>
                   </div>
                 </div>
               </div>
