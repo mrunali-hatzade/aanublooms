@@ -8,7 +8,7 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-6">
+        <div className="text-center max-w-xl mx-auto mb-6 animate-reveal-up delay-150">
           <div className="flex items-center justify-center gap-2 text-[#D96C65] mb-1">
             <span className="h-px w-8 bg-[#D96C65]/30"></span>
             <span className="text-[10px] font-bold uppercase tracking-widest text-[#D96C65]">
@@ -21,9 +21,9 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
           </h2>
         </div>
 
-        {/* Dynamic Category Row */}
+        {/* Dynamic Category Row with Staggered Refresh Entrance */}
         {displayCategories.length === 0 ? (
-          <div className="text-center py-6 text-xs text-warmgray-500">
+          <div className="text-center py-6 text-xs text-warmgray-500 animate-reveal-up">
             No categories available. Add categories in the Admin Dashboard to feature them here!
           </div>
         ) : (
@@ -32,7 +32,8 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
               <div
                 key={cat.id || idx}
                 onClick={() => onNavigate('shop', { category: cat.id })}
-                className="group cursor-pointer flex flex-col items-center text-center transition-all duration-300 transform hover:-translate-y-1.5"
+                style={{ animationDelay: `${(idx * 80) + 150}ms` }}
+                className="group cursor-pointer flex flex-col items-center text-center transition-all duration-300 transform hover:-translate-y-1.5 animate-reveal-scale"
               >
                 {/* Rounded Square Image Container with Glow Hover */}
                 <div className="w-full aspect-square rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-warmgray-800 border border-warmgray-200/70 dark:border-warmgray-700/80 shadow-xs group-hover:shadow-md group-hover:border-bloom-300 dark:group-hover:border-bloom-600 transition-all duration-300 relative">

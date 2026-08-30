@@ -63,7 +63,7 @@ export const HomePage = ({ onNavigate }) => {
       </div>
 
       {/* 5. Centered "Best Sellers" Section (Matching Reference Design) */}
-      <section id="home-bestsellers" className="py-4 sm:py-6 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="home-bestsellers" className="py-4 sm:py-6 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 animate-reveal-up delay-200">
         <div className="text-center max-w-md mx-auto mb-6">
           <div className="flex items-center justify-center gap-2 text-[#E07A5F] mb-1">
             <span className="h-px w-10 bg-[#E07A5F]/40"></span>
@@ -75,25 +75,30 @@ export const HomePage = ({ onNavigate }) => {
           </h2>
         </div>
 
-        {/* 6-Column Compact Product Cards Grid */}
+        {/* 6-Column Compact Product Cards Grid with Staggered Entrance */}
         {filteredItems.length === 0 ? (
-          <div className="text-center py-12 text-xs text-warmgray-500">
+          <div className="text-center py-12 text-xs text-warmgray-500 animate-reveal-up">
             Loading handcrafted creations...
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
-            {filteredItems.slice(0, 12).map(product => (
-              <ProductCard
+            {filteredItems.slice(0, 12).map((product, pIdx) => (
+              <div
                 key={product.id}
-                product={product}
-                onNavigate={onNavigate}
-                onQuickView={(prod) => setQuickViewProduct(prod)}
-              />
+                style={{ animationDelay: `${(pIdx * 50) + 200}ms` }}
+                className="animate-reveal-scale"
+              >
+                <ProductCard
+                  product={product}
+                  onNavigate={onNavigate}
+                  onQuickView={(prod) => setQuickViewProduct(prod)}
+                />
+              </div>
             ))}
           </div>
         )}
 
-        <div className="mt-8 text-center">
+        <div className="mt-8 text-center animate-reveal-up delay-400">
           <button
             onClick={() => onNavigate('shop')}
             className="px-7 py-2.5 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-full font-bold text-xs shadow-xs transition-all inline-flex items-center gap-2"
@@ -105,22 +110,22 @@ export const HomePage = ({ onNavigate }) => {
       </section>
 
       {/* 6. Customer Feedback Section */}
-      <div id="home-feedback">
+      <div id="home-feedback" className="animate-reveal-up delay-250">
         <CustomerFeedbackSection onNavigate={onNavigate} />
       </div>
 
       {/* 7. Artisan Craft Videos & Reels Gallery (With Add Video Button) */}
-      <div id="home-videos">
+      <div id="home-videos" className="animate-reveal-up delay-300">
         <StudioVideoGallery onNavigate={onNavigate} />
       </div>
 
       {/* 8. Meet the Maker Artisan Section */}
-      <div id="home-story">
+      <div id="home-story" className="animate-reveal-up delay-350">
         <MeetTheMaker onNavigate={onNavigate} />
       </div>
 
       {/* 9. Instagram CTA Section */}
-      <section className="py-6 sm:py-8 bg-gradient-to-r from-bloom-400 via-rosewood-500 to-amber-500 text-white shadow-soft relative overflow-hidden">
+      <section className="py-6 sm:py-8 bg-gradient-to-r from-bloom-400 via-rosewood-500 to-amber-500 text-white shadow-soft relative overflow-hidden animate-reveal-up delay-400">
         <div className="absolute top-0 right-0 opacity-15 pointer-events-none animate-spin-slow">
           <Flower2 className="w-72 h-72 -translate-y-1/3 translate-x-1/4" />
         </div>
@@ -150,7 +155,7 @@ export const HomePage = ({ onNavigate }) => {
       </section>
 
       {/* 11. Custom Commission Banner Teaser */}
-      <section className="py-4 sm:py-6 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-4 sm:py-6 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 animate-reveal-up delay-450">
         <div className="bg-gradient-to-r from-bloom-500 via-rosewood-500 to-amber-500 rounded-3xl p-6 sm:p-10 text-white shadow-soft-lg flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
           
           {/* Animated Background Flora */}
@@ -189,7 +194,7 @@ export const HomePage = ({ onNavigate }) => {
       </section>
 
       {/* 12. Contact Us Form Section */}
-      <div id="footer-contact">
+      <div id="footer-contact" className="animate-reveal-up delay-500">
         <ContactFormSection />
       </div>
 
