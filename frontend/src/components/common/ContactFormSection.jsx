@@ -187,17 +187,17 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 bg-gradient-to-r from-bloom-500 via-bloom-600 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-xl font-bold text-xs shadow-cozy transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-3.5 bg-gradient-to-r from-bloom-500 via-bloom-600 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-xl font-bold text-xs shadow-cozy btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50"
                 >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>{isSubmitting ? 'Sending...' : 'Send Message to Studio'}</span>
+                  <Send className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  <span>{isSubmitting ? 'Sending Message...' : 'Send Message to Studio'}</span>
                 </button>
               </form>
             )}
           </div>
 
           {/* Quick Studio Info Sidebar */}
-          <div className="lg:col-span-5 bg-[#FAF7F2] dark:bg-warmgray-800 rounded-2xl p-6 border border-warmgray-200/70 dark:border-warmgray-700 space-y-4">
+          <div className="lg:col-span-5 bg-[#FAF7F2] dark:bg-warmgray-800 rounded-2xl p-6 border border-warmgray-200/70 dark:border-warmgray-700 space-y-4 hover:shadow-md card-hover-3d transition-all duration-300">
             <h4 className="font-serif font-bold text-base text-warmgray-900 dark:text-white flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-bloom-500" />
               <span>Direct Studio Contact</span>

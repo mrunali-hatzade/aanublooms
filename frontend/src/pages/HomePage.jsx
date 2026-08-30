@@ -121,14 +121,17 @@ export const HomePage = ({ onNavigate }) => {
 
       {/* 9. Instagram CTA Section */}
       <section className="py-6 sm:py-8 bg-gradient-to-r from-bloom-400 via-rosewood-500 to-amber-500 text-white shadow-soft relative overflow-hidden">
-        <div className="absolute top-0 right-0 opacity-10 pointer-events-none">
-          <Flower2 className="w-64 h-64 -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute top-0 right-0 opacity-15 pointer-events-none animate-spin-slow">
+          <Flower2 className="w-72 h-72 -translate-y-1/3 translate-x-1/4" />
+        </div>
+        <div className="absolute -bottom-10 left-10 opacity-10 pointer-events-none animate-float-slow">
+          <Sparkles className="w-40 h-40" />
         </div>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div className="space-y-2">
             <h3 className="font-serif font-bold text-xl sm:text-2xl flex items-center justify-center sm:justify-start gap-2">
-              <Sparkles className="w-5 h-5 text-amber-200" />
-              Follow Our Studio Journey
+              <Sparkles className="w-5 h-5 text-amber-200 animate-spin-slow" />
+              <span>Follow Our Studio Journey</span>
             </h3>
             <p className="text-sm text-rose-100 max-w-xl">
               See the latest pipe cleaner creations, studio behind-the-scenes, and upcoming exclusive drops. 
@@ -138,41 +141,48 @@ export const HomePage = ({ onNavigate }) => {
             href="https://instagram.com/aanublooms"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-2.5 bg-white text-rosewood-600 hover:bg-rosewood-50 rounded-full font-bold text-sm shadow-lg transition-transform hover:scale-105 inline-flex items-center gap-2 shrink-0"
+            className="px-6 py-3 bg-white text-rosewood-600 hover:bg-rosewood-50 rounded-full font-bold text-sm shadow-lg btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 active:scale-95 inline-flex items-center gap-2 shrink-0 group"
           >
             <span>Follow @aanublooms</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </a>
         </div>
       </section>
 
       {/* 11. Custom Commission Banner Teaser */}
       <section className="py-4 sm:py-6 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-bloom-500 via-rosewood-500 to-amber-500 rounded-3xl p-6 sm:p-10 text-white shadow-soft-lg flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-bloom-500 via-rosewood-500 to-amber-500 rounded-3xl p-6 sm:p-10 text-white shadow-soft-lg flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
+          
+          {/* Animated Background Flora */}
+          <div className="absolute -bottom-12 -right-12 opacity-15 pointer-events-none animate-spin-slow">
+            <Flower2 className="w-64 h-64" />
+          </div>
+          
           <div className="max-w-xl relative z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-xs font-bold uppercase tracking-wider mb-2">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-xs text-xs font-bold uppercase tracking-wider mb-2 animate-bounce-subtle">
               <Flower2 className="w-3.5 h-3.5" />
-              Custom Orders
+              <span>Custom Orders</span>
             </span>
-            <h3 className="text-2xl sm:text-3xl font-serif font-bold mb-2">
-              Need a personalized floral bouquet or plushie?
+            <h3 className="text-2xl sm:text-3xl font-serif font-bold mb-2 leading-snug">
+              Need a personalized floral bouquet or pot?
             </h3>
-            <p className="text-rose-100 text-sm sm:text-base leading-relaxed mb-4">
-              Pick your favorite flower stems, color palette & embroidered ribbon messages.
+            <p className="text-rose-100 text-sm sm:text-base leading-relaxed mb-5">
+              Pick your favorite flower stems, color palette & personalized ribbon messages.
             </p>
             <button
               onClick={() => onNavigate('custom-order')}
-              className="px-6 py-3 bg-white hover:bg-rosewood-50 text-warmgray-900 rounded-full font-bold text-sm shadow-md transition-transform hover:scale-105"
+              className="px-7 py-3 bg-white hover:bg-rosewood-50 text-warmgray-900 rounded-full font-bold text-sm shadow-md btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 active:scale-95 inline-flex items-center gap-2 group"
             >
-              Start Custom Order ✨
+              <span>Start Custom Order ✨</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
 
-          <div className="relative shrink-0">
+          <div className="relative shrink-0 card-hover-3d">
             <img
               src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=400&q=80"
               alt="Custom bouquet"
-              className="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl object-cover border-4 border-white/30 shadow-xl rotate-1 hover:rotate-0 transition-transform duration-300"
+              className="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl object-cover border-4 border-white/40 shadow-2xl rotate-1 group-hover:rotate-0 transition-all duration-500"
             />
           </div>
         </div>

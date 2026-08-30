@@ -204,16 +204,18 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
               <div
                 key={option.id}
                 onClick={() => setCreationType(option.name)}
-                className={`p-4 rounded-3xl border-2 cursor-pointer transition-all flex gap-3.5 ${
+                className={`p-4 rounded-3xl border-2 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 flex gap-3.5 card-hover-3d group ${
                   creationType === option.name
                     ? 'border-bloom-500 bg-white dark:bg-warmgray-900 shadow-soft-lg ring-2 ring-bloom-300 dark:ring-bloom-800'
-                    : 'border-warmgray-200/80 dark:border-warmgray-800 bg-white dark:bg-warmgray-900/60 hover:border-warmgray-300'
+                    : 'border-warmgray-200/80 dark:border-warmgray-800 bg-white dark:bg-warmgray-900/60 hover:border-warmgray-300 hover:shadow-md'
                 }`}
               >
-                <img src={option.image} alt={option.name} className="w-20 h-20 rounded-2xl object-cover shrink-0" />
-                <div className="flex flex-col justify-between">
+                <div className="w-20 h-20 rounded-2xl overflow-hidden shrink-0 bg-warmgray-100 dark:bg-warmgray-800">
+                  <img src={option.image} alt={option.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <div className="flex flex-col justify-between min-w-0 flex-1">
                   <div>
-                    <h3 className="font-serif font-bold text-sm sm:text-base text-warmgray-900 dark:text-white leading-snug">
+                    <h3 className="font-serif font-bold text-sm sm:text-base text-warmgray-900 dark:text-white leading-snug group-hover:text-bloom-600 dark:group-hover:text-bloom-400 transition-colors">
                       {option.name}
                     </h3>
                     <p className="text-[11px] text-warmgray-500 dark:text-warmgray-400 line-clamp-2 mt-0.5">
@@ -225,7 +227,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
                       Starting at ₹{option.priceBase.toLocaleString('en-IN')}
                     </span>
                     {creationType === option.name && (
-                      <div className="w-5 h-5 rounded-full bg-bloom-500 text-white flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full bg-bloom-500 text-white flex items-center justify-center animate-pop-in shadow-xs">
                         <Check className="w-3 h-3" />
                       </div>
                     )}
@@ -238,9 +240,10 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
           <div className="flex justify-end pt-3">
             <button
               onClick={() => setStep(2)}
-              className="px-6 py-3 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-xs shadow-cozy transition-all"
+              className="px-7 py-3 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-xs shadow-cozy btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg active:scale-95 flex items-center gap-1.5 group"
             >
-              Continue to Colors & Details →
+              <span>Continue to Colors & Details</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
             </button>
           </div>
         </div>
@@ -268,15 +271,17 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
                     key={color.hex}
                     type="button"
                     onClick={() => toggleColor(color.hex)}
-                    className={`flex items-center gap-2 p-2.5 rounded-2xl border transition-all text-left ${
+                    className={`flex items-center gap-2 p-2.5 rounded-2xl border transition-all duration-200 transform active:scale-95 text-left ${
                       isSelected
-                        ? 'border-bloom-500 bg-bloom-50/50 dark:bg-bloom-950/40 ring-1 ring-bloom-400'
-                        : 'border-warmgray-200 dark:border-warmgray-800 hover:bg-warmgray-50 dark:hover:bg-warmgray-800'
+                        ? 'border-bloom-500 bg-bloom-50/70 dark:bg-bloom-950/40 ring-2 ring-bloom-400 scale-[1.02] shadow-xs'
+                        : 'border-warmgray-200 dark:border-warmgray-800 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 hover:border-warmgray-300'
                     }`}
                   >
                     <span
                       style={{ backgroundColor: color.hex }}
-                      className="w-5 h-5 rounded-full border border-warmgray-300 dark:border-warmgray-600 shrink-0 shadow-xs"
+                      className={`w-5 h-5 rounded-full border border-warmgray-300 dark:border-warmgray-600 shrink-0 shadow-xs transition-transform ${
+                        isSelected ? 'scale-110 ring-2 ring-bloom-500' : ''
+                      }`}
                     />
                     <span className="text-xs font-semibold text-warmgray-800 dark:text-warmgray-200 truncate">
                       {color.name}
@@ -298,10 +303,10 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
                   key={material}
                   type="button"
                   onClick={() => setmaterialPreference(material)}
-                  className={`p-3 rounded-2xl text-xs font-semibold border text-center transition-all ${
+                  className={`p-3 rounded-2xl text-xs font-semibold border text-center transition-all duration-200 transform active:scale-95 ${
                     materialPreference === material
-                      ? 'border-bloom-500 bg-bloom-50 dark:bg-warmgray-800 text-bloom-800 dark:text-bloom-300 shadow-xs font-bold'
-                      : 'border-warmgray-200 dark:border-warmgray-800 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-50 dark:hover:bg-warmgray-800/50'
+                      ? 'border-bloom-500 bg-bloom-50 dark:bg-warmgray-800 text-bloom-800 dark:text-bloom-300 shadow-xs font-bold ring-2 ring-bloom-400 scale-[1.02]'
+                      : 'border-warmgray-200 dark:border-warmgray-800 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-50 dark:hover:bg-warmgray-800/50 hover:border-warmgray-300'
                   }`}
                 >
                   {material}

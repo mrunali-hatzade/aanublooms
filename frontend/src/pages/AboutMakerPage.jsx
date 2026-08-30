@@ -130,55 +130,58 @@ export const AboutMakerPage = ({ onNavigate }) => {
 
       {/* Studio Ethos / Pillars */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4">
-        <div className="p-6 rounded-3xl bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft text-center space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-bloom-100 dark:bg-warmgray-800 text-bloom-600 mx-auto flex items-center justify-center">
+        <div className="p-6 rounded-3xl bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft text-center space-y-3 card-hover-3d hover:shadow-lg transition-all duration-300 group">
+          <div className="w-12 h-12 rounded-2xl bg-bloom-100 dark:bg-warmgray-800 text-bloom-600 mx-auto flex items-center justify-center group-hover:scale-110 transition-transform">
             <Clock className="w-6 h-6" />
           </div>
           <h3 className="font-serif font-bold text-base text-warmgray-900 dark:text-white">Slow Craft Devotion</h3>
-          <p className="text-xs text-warmgray-500 dark:text-warmgray-400">
+          <p className="text-xs text-warmgray-500 dark:text-warmgray-400 leading-relaxed">
             We spend between 2 to 8 hours on each stem and pot to ensure tight, flawless pipe cleaner sculpting.
           </p>
         </div>
 
-        <div className="p-6 rounded-3xl bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft text-center space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-rosewood-100 dark:bg-warmgray-800 text-rosewood-600 mx-auto flex items-center justify-center">
+        <div className="p-6 rounded-3xl bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft text-center space-y-3 card-hover-3d hover:shadow-lg transition-all duration-300 group">
+          <div className="w-12 h-12 rounded-2xl bg-rosewood-100 dark:bg-warmgray-800 text-rosewood-600 mx-auto flex items-center justify-center group-hover:scale-110 transition-transform">
             <Heart className="w-6 h-6" />
           </div>
           <h3 className="font-serif font-bold text-base text-warmgray-900 dark:text-white">Eco & Hypoallergenic</h3>
-          <p className="text-xs text-warmgray-500 dark:text-warmgray-400">
+          <p className="text-xs text-warmgray-500 dark:text-warmgray-400 leading-relaxed">
             Soft chenille pipe cleaners that are gentle to touch, dust-free, and safe for all homes.
           </p>
         </div>
 
-        <div className="p-6 rounded-3xl bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft text-center space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-warmgray-800 text-amber-600 mx-auto flex items-center justify-center">
+        <div className="p-6 rounded-3xl bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft text-center space-y-3 card-hover-3d hover:shadow-lg transition-all duration-300 group">
+          <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-warmgray-800 text-amber-600 mx-auto flex items-center justify-center group-hover:scale-110 transition-transform">
             <Flower2 className="w-6 h-6" />
           </div>
           <h3 className="font-serif font-bold text-base text-warmgray-900 dark:text-white">Everlasting Keepsake</h3>
-          <p className="text-xs text-warmgray-500 dark:text-warmgray-400">
+          <p className="text-xs text-warmgray-500 dark:text-warmgray-400 leading-relaxed">
             Never needs watering or sunlight. Stays vibrant and cherished forever on desks and nightstands.
           </p>
         </div>
       </div>
 
       {/* CTA Box */}
-      <div className="bg-gradient-to-r from-bloom-500 to-rosewood-500 rounded-3xl p-8 sm:p-12 text-white text-center space-y-4 shadow-cozy">
-        <h3 className="text-2xl sm:text-3xl font-serif font-bold">
+      <div className="bg-gradient-to-r from-bloom-500 to-rosewood-500 rounded-3xl p-8 sm:p-12 text-white text-center space-y-4 shadow-cozy relative overflow-hidden group">
+        <div className="absolute top-0 right-0 opacity-10 pointer-events-none animate-spin-slow">
+          <Flower2 className="w-64 h-64 -translate-y-1/3 translate-x-1/4" />
+        </div>
+        <h3 className="text-2xl sm:text-3xl font-serif font-bold relative z-10">
           Ready to bring a handmade bloom into your home?
         </h3>
-        <p className="text-xs sm:text-sm text-rose-100 max-w-md mx-auto">
+        <p className="text-xs sm:text-sm text-rose-100 max-w-md mx-auto relative z-10">
           Explore our handcrafted flower bouquets, flower pots, photo frames, or commission your own bespoke palette.
         </p>
-        <div className="flex flex-wrap justify-center gap-3 pt-2">
+        <div className="flex flex-wrap justify-center gap-3 pt-2 relative z-10">
           <button
             onClick={() => onNavigate('shop')}
-            className="px-8 py-3.5 bg-white text-warmgray-900 rounded-full font-bold text-xs shadow-lg hover:bg-rosewood-50 transition-colors"
+            className="px-8 py-3.5 bg-white text-warmgray-900 rounded-full font-bold text-xs shadow-lg btn-shimmer hover:bg-rosewood-50 transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 active:scale-95"
           >
             Shop Handcrafted Blooms
           </button>
           <button
             onClick={() => onNavigate('custom-order')}
-            className="px-7 py-3.5 bg-warmgray-900 hover:bg-black text-white rounded-full font-bold text-xs transition-colors"
+            className="px-7 py-3.5 bg-warmgray-900 hover:bg-black text-white rounded-full font-bold text-xs shadow-md transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 active:scale-95"
           >
             Commission Custom Piece ✨
           </button>

@@ -73,27 +73,27 @@ export const CustomerFeedbackSection = ({ onNavigate }) => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {feedbacks.slice(0, 6).map((item) => (
+          {feedbacks.slice(0, 6).map((item, idx) => (
             <div
-              key={item.id}
-              className="p-5 rounded-3xl bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft flex flex-col justify-between space-y-4 hover:shadow-soft-lg transition-all"
+              key={item.id || idx}
+              className="p-5 rounded-3xl bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft flex flex-col justify-between space-y-4 hover:shadow-xl card-hover-3d transition-all duration-300 group"
             >
               <div className="space-y-2.5">
                 {/* Stars & Category */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-0.5 text-amber-400">
                     {[...Array(item.rating || 5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400" />
+                      <Star key={i} className="w-4 h-4 fill-amber-400 group-hover:scale-110 transition-transform duration-300" />
                     ))}
                   </div>
-                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-warmgray-100 dark:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300">
+                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-warmgray-100 dark:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 group-hover:bg-bloom-50 dark:group-hover:bg-warmgray-700 transition-colors">
                     {item.productCategory || 'Handcrafted Blooms'}
                   </span>
                 </div>
 
                 {/* Highlight Pill */}
                 {item.highlight && (
-                  <span className="inline-block text-xs sm:text-sm font-bold text-bloom-600 dark:text-bloom-400">
+                  <span className="inline-block text-xs sm:text-sm font-bold text-bloom-600 dark:text-bloom-400 group-hover:translate-x-1 transition-transform">
                     ✨ “{item.highlight}”
                   </span>
                 )}
@@ -106,7 +106,7 @@ export const CustomerFeedbackSection = ({ onNavigate }) => {
 
               {/* Author details */}
               <div className="flex items-center gap-3 pt-3 border-t border-warmgray-100 dark:border-warmgray-800">
-                <div className="w-10 h-10 rounded-full bg-bloom-100 dark:bg-warmgray-800 text-bloom-700 dark:text-bloom-300 font-serif font-bold text-base flex items-center justify-center border-2 border-bloom-200 dark:border-warmgray-700 shrink-0">
+                <div className="w-10 h-10 rounded-full bg-bloom-100 dark:bg-warmgray-800 text-bloom-700 dark:text-bloom-300 font-serif font-bold text-base flex items-center justify-center border-2 border-bloom-200 dark:border-warmgray-700 shrink-0 group-hover:border-bloom-400 transition-colors">
                   {item.author?.[0]?.toUpperCase() || 'C'}
                 </div>
                 <div className="min-w-0 flex-1">

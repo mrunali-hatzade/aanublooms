@@ -32,20 +32,21 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
               <div
                 key={cat.id || idx}
                 onClick={() => onNavigate('shop', { category: cat.id })}
-                className="group cursor-pointer flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-1"
+                className="group cursor-pointer flex flex-col items-center text-center transition-all duration-300 transform hover:-translate-y-1.5"
               >
-                {/* Rounded Square Image Container */}
-                <div className="w-full aspect-square rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-warmgray-800 border border-warmgray-200/70 dark:border-warmgray-700/80 shadow-xs group-hover:shadow-md transition-shadow relative">
+                {/* Rounded Square Image Container with Glow Hover */}
+                <div className="w-full aspect-square rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-warmgray-800 border border-warmgray-200/70 dark:border-warmgray-700/80 shadow-xs group-hover:shadow-md group-hover:border-bloom-300 dark:group-hover:border-bloom-600 transition-all duration-300 relative">
                   <img
                     src={cat.image || '/images/category/1st_category_flower.jpeg'}
                     alt={cat.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                   />
+                  <div className="absolute inset-0 bg-bloom-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                 </div>
 
                 {/* Bottom White/Cream Pill Name Tag */}
-                <div className="w-full mt-2 py-1.5 px-2 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700/80 shadow-2xs group-hover:border-bloom-400 dark:group-hover:border-bloom-500 transition-colors">
-                  <span className="text-xs font-serif font-bold text-warmgray-900 dark:text-white truncate block">
+                <div className="w-full mt-2 py-1.5 px-2 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200/80 dark:border-warmgray-700/80 shadow-2xs group-hover:border-bloom-400 dark:group-hover:border-bloom-500 group-hover:shadow-xs transition-all duration-300">
+                  <span className="text-xs font-serif font-bold text-warmgray-900 dark:text-white truncate block group-hover:text-bloom-600 dark:group-hover:text-bloom-400 transition-colors">
                     {cat.name}
                   </span>
                 </div>

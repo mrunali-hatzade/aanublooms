@@ -56,7 +56,7 @@ export const ProductCard = ({ product, onNavigate, onQuickView }) => {
       onClick={() => onNavigate('product-detail', { id: product.id })}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group cursor-pointer flex flex-col justify-between bg-white dark:bg-warmgray-900 rounded-2xl p-2 sm:p-2.5 border border-warmgray-200/80 dark:border-warmgray-800 shadow-2xs hover:shadow-md transition-all duration-300"
+      className="group cursor-pointer flex flex-col justify-between bg-white dark:bg-warmgray-900 rounded-2xl p-2 sm:p-2.5 border border-warmgray-200/80 dark:border-warmgray-800 shadow-2xs hover:shadow-lg card-hover-3d transition-all duration-300"
     >
       <div>
         {/* 1. Square Image Box */}
@@ -64,14 +64,14 @@ export const ProductCard = ({ product, onNavigate, onQuickView }) => {
           <img
             src={currentImage}
             alt={product.name}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
             loading="lazy"
           />
 
           {/* Top-Left Bestseller Pill Badge */}
           {product.isBestseller && (
-            <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full bg-bloom-600 text-white font-bold text-[9px] tracking-wide shadow-2xs">
-              Bestseller
+            <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full bg-bloom-600 text-white font-bold text-[9px] tracking-wide shadow-2xs animate-pulse-subtle">
+              ✨ Bestseller
             </span>
           )}
 
@@ -79,7 +79,7 @@ export const ProductCard = ({ product, onNavigate, onQuickView }) => {
           <div className="absolute top-2 right-2 z-10 flex items-center gap-1">
             <button
               onClick={handleShareProduct}
-              className="p-1.5 rounded-full bg-white/85 dark:bg-warmgray-900/85 backdrop-blur-xs text-warmgray-600 hover:text-bloom-600 dark:text-warmgray-300 transition-transform active:scale-90 shadow-2xs"
+              className="p-1.5 rounded-full bg-white/90 dark:bg-warmgray-900/90 backdrop-blur-xs text-warmgray-600 hover:text-bloom-600 dark:text-warmgray-300 hover:scale-110 transition-all active:scale-90 shadow-2xs"
               title="Share product link"
               aria-label="Share product"
             >
@@ -90,7 +90,7 @@ export const ProductCard = ({ product, onNavigate, onQuickView }) => {
                 e.stopPropagation();
                 toggleWishlist(product);
               }}
-              className="p-1.5 rounded-full bg-white/85 dark:bg-warmgray-900/85 backdrop-blur-xs text-warmgray-600 hover:text-rosewood-500 dark:text-warmgray-300 transition-transform active:scale-90 shadow-2xs"
+              className="p-1.5 rounded-full bg-white/90 dark:bg-warmgray-900/90 backdrop-blur-xs text-warmgray-600 hover:text-rosewood-500 dark:text-warmgray-300 hover:scale-110 transition-all active:scale-90 shadow-2xs"
               aria-label="Save to wishlist"
               title="Save to Wishlist"
             >
@@ -105,7 +105,7 @@ export const ProductCard = ({ product, onNavigate, onQuickView }) => {
                 e.stopPropagation();
                 onQuickView(product);
               }}
-              className="hidden md:flex absolute bottom-2 right-2 px-2 py-1 rounded-lg bg-white/95 dark:bg-warmgray-900/95 backdrop-blur-xs text-warmgray-800 dark:text-white shadow-xs opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white dark:hover:bg-warmgray-800 items-center gap-1 text-[10px] font-semibold"
+              className="hidden md:flex absolute bottom-2 right-2 px-2 py-1 rounded-lg bg-white/95 dark:bg-warmgray-900/95 backdrop-blur-xs text-warmgray-800 dark:text-white shadow-xs opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white dark:hover:bg-warmgray-800 items-center gap-1 text-[10px] font-semibold transform translate-y-1 group-hover:translate-y-0"
             >
               <Eye className="w-3 h-3" />
               <span>Quick View</span>
@@ -126,7 +126,7 @@ export const ProductCard = ({ product, onNavigate, onQuickView }) => {
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className={`w-2.5 h-2.5 ${i < Math.round(product.rating || 5) ? 'fill-amber-400' : 'opacity-30'}`}
+                  className={`w-2.5 h-2.5 transition-transform group-hover:scale-110 ${i < Math.round(product.rating || 5) ? 'fill-amber-400' : 'opacity-30'}`}
                 />
               ))}
             </div>
@@ -135,7 +135,7 @@ export const ProductCard = ({ product, onNavigate, onQuickView }) => {
 
           {/* Price */}
           <div className="pt-0.5">
-            <span className="font-serif font-extrabold text-sm sm:text-base text-warmgray-900 dark:text-white">
+            <span className="font-serif font-extrabold text-sm sm:text-base text-warmgray-900 dark:text-white group-hover:text-bloom-600 dark:group-hover:text-bloom-400 transition-colors">
               ₹{product.price?.toLocaleString('en-IN')}
             </span>
           </div>
@@ -148,14 +148,14 @@ export const ProductCard = ({ product, onNavigate, onQuickView }) => {
           onClick={handleQuickAdd}
           className={`w-full py-2 px-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all transform active:scale-95 shadow-xs ${
             isAddedAnim
-              ? 'bg-emerald-600 text-white'
-              : 'bg-bloom-500 hover:bg-bloom-600 text-white'
+              ? 'bg-emerald-600 text-white scale-105'
+              : 'bg-bloom-500 hover:bg-bloom-600 text-white btn-shimmer hover:shadow-cozy'
           }`}
           title="Add to Basket"
         >
           {isAddedAnim ? (
             <>
-              <Check className="w-3.5 h-3.5" />
+              <Check className="w-3.5 h-3.5 animate-bounce-subtle" />
               <span>Added!</span>
             </>
           ) : (

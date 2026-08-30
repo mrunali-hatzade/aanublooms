@@ -40,7 +40,7 @@ const VideoCard = ({ vid, isPlaying, onTogglePlay, isMuted, onToggleMute, isAdmi
   return (
     <div
       onClick={onTogglePlay}
-      className="group relative rounded-3xl overflow-hidden bg-black aspect-[9/14] sm:aspect-[9/13] max-h-[480px] shadow-lg border border-warmgray-200/80 dark:border-warmgray-800 flex flex-col justify-between p-4 cursor-pointer select-none"
+      className="group relative rounded-3xl overflow-hidden bg-black aspect-[9/14] sm:aspect-[9/13] max-h-[480px] shadow-lg border border-warmgray-200/80 dark:border-warmgray-800 flex flex-col justify-between p-4 cursor-pointer select-none card-hover-3d transition-all duration-300"
     >
       {/* Background Video */}
       <video
@@ -51,7 +51,7 @@ const VideoCard = ({ vid, isPlaying, onTogglePlay, isMuted, onToggleMute, isAdmi
         playsInline
         preload="metadata"
         muted={isMuted}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
       />
 
       {/* Dark Gradient Overlay */}
@@ -59,14 +59,15 @@ const VideoCard = ({ vid, isPlaying, onTogglePlay, isMuted, onToggleMute, isAdmi
 
       {/* Top Bar: Tag & Audio / Delete */}
       <div className="relative z-10 flex items-center justify-between pointer-events-auto">
-        <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-xs text-white text-[11px] font-bold">
-          {vid.tag}
+        <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-xs text-white text-[11px] font-bold border border-white/10 shadow-xs flex items-center gap-1">
+          <Sparkles className="w-3 h-3 text-amber-300 animate-spin-slow" />
+          <span>{vid.tag}</span>
         </span>
 
         <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
           <button
             onClick={onToggleMute}
-            className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-xs text-white flex items-center justify-center hover:bg-black/90 transition-colors"
+            className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-xs text-white flex items-center justify-center hover:bg-black/90 hover:scale-110 transition-all active:scale-95 border border-white/10"
             title={isMuted ? 'Unmute' : 'Mute'}
           >
             {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -74,20 +75,25 @@ const VideoCard = ({ vid, isPlaying, onTogglePlay, isMuted, onToggleMute, isAdmi
         </div>
       </div>
 
-      {/* Center Play / Pause Button */}
+      {/* Center Play / Pause Button with Ripple Effect */}
       <div className="relative z-10 flex justify-center items-center pointer-events-none my-auto">
-        <div
-          className={`w-14 h-14 rounded-full bg-bloom-500 hover:bg-bloom-600 text-white flex items-center justify-center shadow-xl transform transition-all ${
-            isPlaying ? 'opacity-0 group-hover:opacity-100 scale-90' : 'opacity-100 scale-100'
-          }`}
-        >
-          {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-0.5" />}
+        <div className="relative flex items-center justify-center">
+          {!isPlaying && (
+            <div className="absolute inset-0 rounded-full bg-bloom-500/40 ripple-ring pointer-events-none" />
+          )}
+          <div
+            className={`w-14 h-14 rounded-full bg-bloom-500 hover:bg-bloom-600 text-white flex items-center justify-center shadow-glow-pink transform transition-all duration-300 ${
+              isPlaying ? 'opacity-0 group-hover:opacity-100 scale-90' : 'opacity-100 scale-100 group-hover:scale-110'
+            }`}
+          >
+            {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-0.5" />}
+          </div>
         </div>
       </div>
 
       {/* Bottom Title & Caption */}
       <div className="relative z-10 text-white space-y-1">
-        <h3 className="font-serif font-bold text-sm sm:text-base leading-tight drop-shadow">
+        <h3 className="font-serif font-bold text-sm sm:text-base leading-tight drop-shadow group-hover:text-bloom-200 transition-colors">
           {vid.title}
         </h3>
         <p className="text-[11px] text-white/80 line-clamp-2 leading-relaxed">
