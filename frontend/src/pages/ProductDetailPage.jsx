@@ -307,15 +307,15 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
               {/* Add to Cart */}
               <button
                 onClick={handleAddToCart}
-                className={`flex-1 py-3.5 px-6 rounded-2xl font-bold text-sm sm:text-base shadow-cozy transition-all flex items-center justify-center gap-2 ${
+                className={`flex-1 py-3.5 px-6 rounded-2xl font-bold text-sm sm:text-base shadow-cozy btn-shimmer transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 ${
                   isAddedAnim
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-bloom-500 hover:bg-bloom-600 text-white transform hover:scale-[1.02]'
+                    ? 'bg-emerald-600 text-white scale-[1.02]'
+                    : 'bg-bloom-500 hover:bg-bloom-600 text-white hover:-translate-y-0.5 hover:shadow-lg'
                 }`}
               >
                 {isAddedAnim ? (
                   <>
-                    <Check className="w-4 h-4" />
+                    <Check className="w-4 h-4 animate-bounce-subtle" />
                     <span>Added to Basket!</span>
                   </>
                 ) : (
@@ -329,16 +329,16 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
               {/* Wishlist button */}
               <button
                 onClick={() => toggleWishlist(product)}
-                className="p-3.5 rounded-2xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 transition-colors"
+                className="p-3.5 rounded-2xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 hover:scale-105 active:scale-95 transition-all shadow-2xs"
                 title="Save to Wishlist"
               >
-                <Heart className={`w-5 h-5 ${inWishlist ? 'fill-rosewood-500 text-rosewood-500' : ''}`} />
+                <Heart className={`w-5 h-5 ${inWishlist ? 'fill-rosewood-500 text-rosewood-500 animate-pop-in' : ''}`} />
               </button>
 
               {/* Share button */}
               <button
                 onClick={handleShare}
-                className="p-3.5 rounded-2xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 transition-colors"
+                className="p-3.5 rounded-2xl border border-warmgray-200 dark:border-warmgray-700 hover:bg-warmgray-50 dark:hover:bg-warmgray-800 text-warmgray-600 dark:text-warmgray-300 hover:scale-105 active:scale-95 transition-all shadow-2xs"
                 title="Share this product link"
               >
                 <Share2 className="w-5 h-5 text-bloom-600 dark:text-bloom-400" />
@@ -348,9 +348,9 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
             {/* Instant Buy Now */}
             <button
               onClick={handleBuyNow}
-              className="w-full py-3.5 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-2xl font-bold text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-2xl font-bold text-sm sm:text-base shadow-md btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2"
             >
-              <span>Instant Buy Now with Express Checkout</span>
+              <span>Instant Buy Now with Express Checkout ⚡</span>
             </button>
           </div>
 

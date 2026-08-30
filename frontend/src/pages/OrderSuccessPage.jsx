@@ -79,16 +79,16 @@ export const OrderSuccessPage = ({ order, onNavigate }) => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
           <button
             onClick={() => onNavigate('track-order', { orderId: order.id })}
-            className="w-full sm:w-auto px-7 py-3 bg-gradient-to-r from-bloom-500 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-full font-bold text-xs shadow-cozy flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-7 py-3 bg-gradient-to-r from-bloom-500 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-full font-bold text-xs shadow-cozy btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group"
           >
             <Truck className="w-4 h-4" />
             <span>Track My Order</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
 
           <button
             onClick={() => setShowPrintModal(true)}
-            className="w-full sm:w-auto px-4 py-3 bg-warmgray-100 hover:bg-warmgray-200 dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 rounded-full font-bold text-xs flex items-center justify-center gap-1.5"
+            className="w-full sm:w-auto px-5 py-3 bg-warmgray-100 hover:bg-warmgray-200 dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 rounded-full font-bold text-xs transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center gap-1.5 shadow-2xs"
           >
             <Printer className="w-4 h-4" />
             <span>Print Receipt</span>
@@ -98,9 +98,9 @@ export const OrderSuccessPage = ({ order, onNavigate }) => {
         {/* Back to shop */}
         <button
           onClick={() => onNavigate('shop')}
-          className="text-xs text-warmgray-500 hover:text-bloom-600 dark:text-warmgray-400 font-semibold block mx-auto pt-2"
+          className="text-xs text-warmgray-500 dark:text-warmgray-400 hover:text-warmgray-900 dark:hover:text-white underline pt-2 block mx-auto transition-colors"
         >
-          ← Continue Browsing AanuBlooms
+          Continue Shopping Handmade Blooms
         </button>
 
       </div>

@@ -85,10 +85,13 @@ export const ContactPage = ({ onNavigate }) => {
     <div className="py-12 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
       
       {/* Page Hero Header */}
-      <div className="text-center max-w-3xl mx-auto space-y-3">
-        <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rosewood-100 dark:bg-rosewood-950 text-rosewood-800 dark:text-rosewood-300 text-xs font-bold uppercase tracking-wider">
+      <div className="text-center max-w-3xl mx-auto space-y-3 relative">
+        {/* Ambient Subtle Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-bloom-100/40 dark:bg-bloom-950/20 rounded-full blur-3xl pointer-events-none animate-blob-drift" />
+        
+        <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rosewood-100 dark:bg-rosewood-950 text-rosewood-800 dark:text-rosewood-300 text-xs font-bold uppercase tracking-wider animate-bounce-subtle">
           <MessageSquare className="w-3.5 h-3.5" />
-          Get In Touch With Artisan Aanu
+          <span>Get In Touch With Artisan Aanu</span>
         </span>
         <h1 className="text-4xl sm:text-5xl font-serif font-bold text-warmgray-900 dark:text-white leading-tight">
           We’d Love to Hear From You
@@ -102,10 +105,10 @@ export const ContactPage = ({ onNavigate }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         
         {/* Left: Contact Form */}
-        <div className="lg:col-span-7 bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-10 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft">
+        <div className="lg:col-span-7 bg-white dark:bg-warmgray-900 rounded-3xl p-6 sm:p-10 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft card-hover-3d transition-all duration-300">
           {isSubmitted ? (
             <div className="text-center py-12 space-y-4 animate-in zoom-in-95">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 mx-auto flex items-center justify-center shadow-cozy">
+              <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 mx-auto flex items-center justify-center shadow-cozy animate-bounce-subtle">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h3 className="font-serif font-bold text-2xl text-warmgray-900 dark:text-white">
@@ -116,7 +119,7 @@ export const ContactPage = ({ onNavigate }) => {
               </p>
               <button
                 onClick={() => setIsSubmitted(false)}
-                className="px-6 py-2.5 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-xs shadow-cozy mt-4 transition-all"
+                className="px-6 py-2.5 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-xs shadow-cozy mt-4 btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95"
               >
                 Send Another Message
               </button>
@@ -138,7 +141,7 @@ export const ContactPage = ({ onNavigate }) => {
                     placeholder="e.g. Pooja Sharma"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
+                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400 transition-all"
                   />
                 </div>
 
@@ -152,7 +155,7 @@ export const ContactPage = ({ onNavigate }) => {
                     placeholder="e.g. pooja@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
+                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400 transition-all"
                   />
                 </div>
               </div>
@@ -160,15 +163,14 @@ export const ContactPage = ({ onNavigate }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
-                    Phone Number *
+                    Phone Number (Optional)
                   </label>
                   <input
                     type="tel"
-                    required
-                    placeholder="e.g. +91 9876543210"
+                    placeholder="e.g. +91 98765 43210"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
+                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400 transition-all"
                   />
                 </div>
 
@@ -179,48 +181,17 @@ export const ContactPage = ({ onNavigate }) => {
                   <select
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
+                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400 transition-all"
                   >
                     <option value="Custom Order Question">Custom Order Question</option>
                     <option value="Order Status / Tracking Inquiry">Order Status / Tracking Inquiry</option>
                     <option value="Wholesale / Wedding Bulk Orders">Wholesale / Wedding Bulk Orders</option>
                     <option value="Pattern & DIY Kit Help">Pattern & DIY Kit Help</option>
                     <option value="General Maker Question">General Maker Question</option>
-                    <option value="Other (Please specify)">Other (Please specify)</option>
                   </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
-                    Order ID (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. AANU-89421"
-                    value={formData.orderId}
-                    onChange={(e) => setFormData({ ...formData, orderId: e.target.value.toUpperCase() })}
-                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white font-mono placeholder:font-sans focus:outline-none focus:ring-2 focus:ring-bloom-400"
-                  />
                 </div>
               </div>
 
-              {formData.subject === 'Other (Please specify)' && (
-                <div className="mt-4">
-                  <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
-                    Please Specify *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Collaboration Request"
-                    value={formData.otherSubject}
-                    onChange={(e) => setFormData({ ...formData, otherSubject: e.target.value })}
-                    className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400"
-                  />
-                </div>
-              )}
-
-              
               <div className="w-full">
                 <label className="block text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                   How can we help? *
@@ -231,16 +202,16 @@ export const ContactPage = ({ onNavigate }) => {
                   placeholder="Share your custom flower preferences or any other questions here..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400 resize-y"
+                  className="w-full text-xs p-3.5 rounded-2xl bg-warmgray-50 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400 resize-y transition-all"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 bg-gradient-to-r from-bloom-500 via-bloom-600 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-2xl font-bold text-sm shadow-cozy transition-all flex items-center justify-center gap-2 group disabled:opacity-50"
+                className="w-full py-4 bg-gradient-to-r from-bloom-500 via-bloom-600 to-rosewood-500 hover:from-bloom-600 hover:to-rosewood-600 text-white rounded-2xl font-bold text-sm shadow-cozy btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 group disabled:opacity-50"
               >
-                <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 <span>{isSubmitting ? 'Sending to Aanu...' : 'Send Message to Studio'}</span>
               </button>
             </form>
@@ -251,7 +222,7 @@ export const ContactPage = ({ onNavigate }) => {
         <div className="lg:col-span-5 space-y-6">
           
           {/* Info Card */}
-          <div className="bg-gradient-to-br from-bloom-50 via-rosewood-50/50 to-warmgray-50 dark:from-warmgray-900 dark:via-warmgray-900 dark:to-warmgray-850 rounded-3xl p-6 sm:p-8 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft space-y-6">
+          <div className="bg-gradient-to-br from-bloom-50 via-rosewood-50/50 to-warmgray-50 dark:from-warmgray-900 dark:via-warmgray-900 dark:to-warmgray-850 rounded-3xl p-6 sm:p-8 border border-warmgray-200/80 dark:border-warmgray-800 shadow-soft space-y-6 card-hover-3d hover:shadow-lg transition-all duration-300">
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-2xl bg-bloom-500 text-white flex items-center justify-center shadow-cozy">
                 <Flower2 className="w-6 h-6" />

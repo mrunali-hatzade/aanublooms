@@ -15,6 +15,7 @@ export const LocationModal = () => {
   const [pincode, setPincode] = useState('');
   const [cityInput, setCityInput] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [isSearchingPin, setIsSearchingPin] = useState(false);
 
   React.useEffect(() => {
     if (!isLocationModalOpen) return;
@@ -31,8 +32,6 @@ export const LocationModal = () => {
   }, [isLocationModalOpen]);
 
   if (!isLocationModalOpen) return null;
-
-  const [isSearchingPin, setIsSearchingPin] = useState(false);
 
   const handleApplyPin = async (e) => {
     e.preventDefault();

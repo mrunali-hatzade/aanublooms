@@ -64,10 +64,13 @@ export const OrderTrackingPage = ({ orderId, onNavigate }) => {
     <div className="py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 min-h-[75vh]">
       
       {/* Search Header */}
-      <div className="text-center max-w-2xl mx-auto space-y-3">
-        <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-bloom-100 dark:bg-bloom-950/80 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider">
-          <Truck className="w-3.5 h-3.5" />
-          Handmade Order & Crafting Tracker
+      <div className="text-center max-w-2xl mx-auto space-y-3 relative">
+        {/* Ambient Glow */}
+        <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-64 h-64 bg-bloom-100/40 dark:bg-bloom-950/20 rounded-full blur-3xl pointer-events-none animate-blob-drift" />
+        
+        <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-bloom-100 dark:bg-bloom-950/80 text-bloom-800 dark:text-bloom-300 text-xs font-bold uppercase tracking-wider animate-bounce-subtle">
+          <Truck className="w-3.5 h-3.5 animate-wiggle" />
+          <span>Handmade Order & Crafting Tracker</span>
         </span>
         <h1 className="text-3xl sm:text-4xl font-serif font-bold text-warmgray-900 dark:text-white">
           Track Your Order 🧶
@@ -77,7 +80,7 @@ export const OrderTrackingPage = ({ orderId, onNavigate }) => {
         </p>
 
         {/* Search Bar Form */}
-        <form onSubmit={handleTrackSubmit} className="bg-white dark:bg-warmgray-800 p-4 rounded-3xl border border-warmgray-200 dark:border-warmgray-700 shadow-soft-lg space-y-3 mt-4 text-left max-w-lg mx-auto">
+        <form onSubmit={handleTrackSubmit} className="bg-white dark:bg-warmgray-800 p-5 rounded-3xl border border-warmgray-200 dark:border-warmgray-700 shadow-soft-lg space-y-3 mt-4 text-left max-w-lg mx-auto card-hover-3d hover:shadow-xl transition-all duration-300 relative z-10">
           <div>
             <label className="block text-[11px] font-bold uppercase text-warmgray-500 dark:text-warmgray-400 mb-1">
               Order ID *
@@ -90,7 +93,7 @@ export const OrderTrackingPage = ({ orderId, onNavigate }) => {
                 value={orderIdInput}
                 onChange={(e) => setOrderIdInput(e.target.value)}
                 required
-                className="w-full text-xs py-2.5 pl-10 pr-4 rounded-xl bg-warmgray-50 dark:bg-warmgray-900 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white font-mono uppercase focus:ring-2 focus:ring-bloom-400"
+                className="w-full text-xs py-2.5 pl-10 pr-4 rounded-xl bg-warmgray-50 dark:bg-warmgray-900 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white font-mono uppercase focus:ring-2 focus:ring-bloom-400 transition-all"
               />
             </div>
           </div>
@@ -106,7 +109,7 @@ export const OrderTrackingPage = ({ orderId, onNavigate }) => {
                 placeholder="e.g. 9876543210"
                 value={phoneInput}
                 onChange={(e) => setPhoneInput(e.target.value)}
-                className="w-full text-xs py-2.5 pl-10 pr-4 rounded-xl bg-warmgray-50 dark:bg-warmgray-900 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:ring-2 focus:ring-bloom-400"
+                className="w-full text-xs py-2.5 pl-10 pr-4 rounded-xl bg-warmgray-50 dark:bg-warmgray-900 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:ring-2 focus:ring-bloom-400 transition-all"
               />
             </div>
           </div>
@@ -114,7 +117,7 @@ export const OrderTrackingPage = ({ orderId, onNavigate }) => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 bg-bloom-500 hover:bg-bloom-600 text-white rounded-xl font-bold text-xs shadow-cozy transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-3.5 bg-bloom-500 hover:bg-bloom-600 text-white rounded-xl font-bold text-xs shadow-cozy btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
           >
             <Search className="w-4 h-4" />
             <span>{isLoading ? 'Verifying Order...' : 'Track My Order'}</span>
@@ -131,7 +134,7 @@ export const OrderTrackingPage = ({ orderId, onNavigate }) => {
               setPhoneInput('9876543210');
               fetchOrder('AANU-89421', '9876543210');
             }}
-            className="text-bloom-600 dark:text-bloom-400 font-mono font-bold underline"
+            className="text-bloom-600 dark:text-bloom-400 font-mono font-bold underline hover:scale-105 transition-transform"
           >
             AANU-89421
           </button>

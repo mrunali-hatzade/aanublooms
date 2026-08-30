@@ -77,11 +77,15 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
     <div className="py-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
       
       {/* Header Title */}
-      <div className="mb-8 pb-6 border-b border-warmgray-200 dark:border-warmgray-800">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-8 pb-6 border-b border-warmgray-200 dark:border-warmgray-800 relative">
+        {/* Ambient Subtle Glow */}
+        <div className="absolute top-0 right-10 w-48 h-48 bg-bloom-100/40 dark:bg-bloom-950/20 rounded-full blur-3xl pointer-events-none animate-float-slow" />
+        
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-bloom-600 dark:text-bloom-400 block mb-1">
-              Handmade Collections
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-bloom-600 dark:text-bloom-400 mb-1">
+              <Sparkles className="w-3.5 h-3.5 animate-spin-slow" />
+              <span>Handmade Collections</span>
             </span>
             <h1 className="text-3xl sm:text-4xl font-serif font-bold text-warmgray-900 dark:text-white">
               {activeCategoryObj ? activeCategoryObj.name : 'All Handmade Creations'}
@@ -93,7 +97,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
             {/* Mobile Filter Button */}
             <button
               onClick={() => setMobileFilterOpen(true)}
-              className="lg:hidden px-4 py-2 bg-warmgray-100 dark:bg-warmgray-800 rounded-xl text-xs font-bold text-warmgray-800 dark:text-warmgray-200 flex items-center gap-1.5"
+              className="lg:hidden px-4 py-2 bg-warmgray-100 dark:bg-warmgray-800 hover:bg-warmgray-200 dark:hover:bg-warmgray-700 rounded-xl text-xs font-bold text-warmgray-800 dark:text-warmgray-200 flex items-center gap-1.5 transition-all transform active:scale-95 shadow-xs"
             >
               <SlidersHorizontal className="w-4 h-4" />
               <span>Filters</span>
@@ -103,7 +107,7 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
             <select
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
-              className="text-xs font-semibold py-2 px-3.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-bloom-400"
+              className="text-xs font-semibold py-2 px-3.5 rounded-xl bg-white dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 text-warmgray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-bloom-400 transition-all cursor-pointer shadow-2xs"
             >
               <option value="featured">Featured Blooms</option>
               <option value="price-low">Price: Low to High</option>
@@ -113,11 +117,11 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
             </select>
 
             {/* View Mode Grid/List */}
-            <div className="hidden sm:flex bg-warmgray-100 dark:bg-warmgray-800 p-1 rounded-xl">
+            <div className="hidden sm:flex bg-warmgray-100 dark:bg-warmgray-800 p-1 rounded-xl shadow-2xs">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-lg transition-colors ${
-                  viewMode === 'grid' ? 'bg-white dark:bg-warmgray-900 text-bloom-600 shadow-xs' : 'text-warmgray-400'
+                className={`p-1.5 rounded-lg transition-all ${
+                  viewMode === 'grid' ? 'bg-white dark:bg-warmgray-900 text-bloom-600 shadow-xs scale-105' : 'text-warmgray-400 hover:text-warmgray-600'
                 }`}
                 title="Grid View"
               >
@@ -125,8 +129,8 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-lg transition-colors ${
-                  viewMode === 'list' ? 'bg-white dark:bg-warmgray-900 text-bloom-600 shadow-xs' : 'text-warmgray-400'
+                className={`p-1.5 rounded-lg transition-all ${
+                  viewMode === 'list' ? 'bg-white dark:bg-warmgray-900 text-bloom-600 shadow-xs scale-105' : 'text-warmgray-400 hover:text-warmgray-600'
                 }`}
                 title="List View"
               >
@@ -137,14 +141,14 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
         </div>
       </div>
 
-      {/* Quick Category Filter Pills */}
+      {/* Quick Category Filter Pills with Smooth Hover & Active Feedback */}
       <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
         <button
           onClick={() => setSelectedCategory('all')}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+          className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 transform active:scale-95 ${
             selectedCategory === 'all'
-              ? 'bg-warmgray-900 text-white dark:bg-white dark:text-warmgray-900 shadow-sm'
-              : 'bg-warmgray-100 dark:bg-warmgray-800 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-200'
+              ? 'bg-warmgray-900 text-white dark:bg-white dark:text-warmgray-900 shadow-md scale-105'
+              : 'bg-warmgray-100 dark:bg-warmgray-800 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-200 dark:hover:bg-warmgray-700 hover:scale-102'
           }`}
         >
           All Items ({products.length})
@@ -153,10 +157,10 @@ export const ShopPage = ({ onNavigate, initialCategory = 'all', searchQuery = ''
           <button
             key={cat.id}
             onClick={() => setSelectedCategory(cat.id)}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+            className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 transform active:scale-95 ${
               selectedCategory === cat.id
-                ? 'bg-bloom-500 text-white shadow-cozy'
-                : 'bg-warmgray-100 dark:bg-warmgray-800 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-200'
+                ? 'bg-bloom-500 text-white shadow-cozy scale-105'
+                : 'bg-warmgray-100 dark:bg-warmgray-800 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-200 dark:hover:bg-warmgray-700 hover:scale-102'
             }`}
           >
             {cat.icon || '🌸'} {cat.name}

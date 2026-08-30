@@ -348,23 +348,23 @@ export const FeedbackPage = ({ onNavigate }) => {
 
           {/* Feedback Cards List */}
           <div className="space-y-3.5 max-h-[700px] overflow-y-auto pr-1">
-            {filteredFeedbacks.map((item) => (
+            {filteredFeedbacks.map((item, idx) => (
               <div
-                key={item.id}
-                className="p-5 rounded-2xl bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-xs space-y-3"
+                key={item.id || idx}
+                className="p-5 rounded-2xl bg-white dark:bg-warmgray-900 border border-warmgray-200/80 dark:border-warmgray-800 shadow-xs space-y-3 card-hover-3d hover:shadow-md transition-all duration-300 group"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <img
                       src={item.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80'}
                       alt={item.author}
-                      className="w-10 h-10 rounded-full object-cover border-2 border-bloom-200 dark:border-bloom-700"
+                      className="w-10 h-10 rounded-full object-cover border-2 border-bloom-200 dark:border-bloom-700 group-hover:scale-105 transition-transform"
                     />
                     <div>
                       <h4 className="font-bold text-xs sm:text-sm text-warmgray-900 dark:text-white flex items-center gap-1.5">
                         <span>{item.author}</span>
                         {item.verified && (
-                          <span className="inline-flex items-center gap-0.5 text-[10px] text-emerald-600 font-bold bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded-full">
+                          <span className="inline-flex items-center gap-0.5 text-[10px] text-emerald-600 font-bold bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded-full animate-pulse-subtle">
                             <CheckCircle2 className="w-2.5 h-2.5" />
                             Verified
                           </span>
@@ -378,14 +378,14 @@ export const FeedbackPage = ({ onNavigate }) => {
 
                   <div className="flex items-center gap-0.5 text-amber-400">
                     {[...Array(item.rating || 5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-amber-400 group-hover:scale-115 transition-transform" />
                     ))}
                   </div>
                 </div>
 
                 <div className="space-y-1">
                   {item.highlight && (
-                    <span className="text-xs font-bold text-bloom-600 dark:text-bloom-400 block">
+                    <span className="text-xs font-bold text-bloom-600 dark:text-bloom-400 block group-hover:translate-x-1 transition-transform">
                       ✨ “{item.highlight}”
                     </span>
                   )}
@@ -407,11 +407,11 @@ export const FeedbackPage = ({ onNavigate }) => {
                 )}
 
                 <div className="pt-2 flex items-center justify-between text-[11px] text-warmgray-400">
-                  <span className="bg-warmgray-100 dark:bg-warmgray-800 px-2 py-0.5 rounded-md">
+                  <span className="bg-warmgray-100 dark:bg-warmgray-800 px-2 py-0.5 rounded-md group-hover:bg-bloom-50 dark:group-hover:bg-warmgray-700 transition-colors">
                     {item.productCategory}
                   </span>
                   <span className="flex items-center gap-1 text-rosewood-500 font-medium">
-                    <Heart className="w-3 h-3 fill-rosewood-500" />
+                    <Heart className="w-3 h-3 fill-rosewood-500 group-hover:scale-125 transition-transform" />
                     Handcrafted with love
                   </span>
                 </div>

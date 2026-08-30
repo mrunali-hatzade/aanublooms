@@ -15,6 +15,15 @@ export const QuickViewModal = ({ product, onClose, onNavigate }) => {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
 
+  React.useEffect(() => {
+    if (product) {
+      setSelectedImage(product.images?.[0] || product.image);
+      setSelectedColor(product.colors?.[0]?.name || '');
+      setSelectedSize(product.sizes?.[0] || 'Standard');
+      setQuantity(1);
+    }
+  }, [product]);
+
   if (!product) return null;
 
   const inWishlist = isInWishlist(product.id);

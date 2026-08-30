@@ -504,11 +504,14 @@ export const CustomerDashboardPage = ({ onNavigate, initialTab = 'overview' }) =
             <div className="space-y-6 animate-in fade-in">
               
               {/* Welcome Banner */}
-              <div className="bg-gradient-to-r from-bloom-500 via-bloom-600 to-rosewood-500 rounded-3xl p-6 sm:p-8 text-white shadow-soft relative overflow-hidden">
+              <div className="bg-gradient-to-r from-bloom-500 via-bloom-600 to-rosewood-500 rounded-3xl p-6 sm:p-8 text-white shadow-soft relative overflow-hidden group">
+                <div className="absolute top-0 right-0 opacity-15 pointer-events-none animate-spin-slow">
+                  <Flower2 className="w-64 h-64 -translate-y-1/3 translate-x-1/4" />
+                </div>
                 <div className="relative z-10 max-w-xl">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-xs font-bold tracking-wider uppercase mb-2 backdrop-blur-sm">
+                  <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 text-xs font-bold tracking-wider uppercase mb-2 backdrop-blur-xs animate-bounce-subtle">
                     <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-                    Handcrafted Boutique Hub
+                    <span>Handcrafted Boutique Hub</span>
                   </span>
                   <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white leading-tight">
                     Welcome back, {user.name ? user.name.split(' ')[0] : 'Customer'} ♡
@@ -522,8 +525,8 @@ export const CustomerDashboardPage = ({ onNavigate, initialTab = 'overview' }) =
               {/* 4 Clean Account Summary Cards */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 {/* 1. Total Orders */}
-                <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-4 sm:p-5 border border-warmgray-200 dark:border-warmgray-800 shadow-soft text-center space-y-2 hover:shadow-md transition-shadow">
-                  <div className="w-9 h-9 rounded-2xl bg-bloom-50 dark:bg-warmgray-800 text-bloom-600 dark:text-bloom-400 mx-auto flex items-center justify-center">
+                <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-4 sm:p-5 border border-warmgray-200 dark:border-warmgray-800 shadow-soft text-center space-y-2 card-hover-3d hover:shadow-md transition-all duration-300 group">
+                  <div className="w-9 h-9 rounded-2xl bg-bloom-50 dark:bg-warmgray-800 text-bloom-600 dark:text-bloom-400 mx-auto flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Package className="w-4 h-4" />
                   </div>
                   <div>
@@ -542,8 +545,8 @@ export const CustomerDashboardPage = ({ onNavigate, initialTab = 'overview' }) =
                 </div>
 
                 {/* 2. In Progress */}
-                <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-4 sm:p-5 border border-warmgray-200 dark:border-warmgray-800 shadow-soft text-center space-y-2 hover:shadow-md transition-shadow">
-                  <div className="w-9 h-9 rounded-2xl bg-amber-50 dark:bg-warmgray-800 text-amber-600 dark:text-amber-400 mx-auto flex items-center justify-center">
+                <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-4 sm:p-5 border border-warmgray-200 dark:border-warmgray-800 shadow-soft text-center space-y-2 card-hover-3d hover:shadow-md transition-all duration-300 group">
+                  <div className="w-9 h-9 rounded-2xl bg-amber-50 dark:bg-warmgray-800 text-amber-600 dark:text-amber-400 mx-auto flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Truck className="w-4 h-4" />
                   </div>
                   <div>
@@ -565,15 +568,15 @@ export const CustomerDashboardPage = ({ onNavigate, initialTab = 'overview' }) =
                 </div>
 
                 {/* 3. Wishlist */}
-                <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-4 sm:p-5 border border-warmgray-200 dark:border-warmgray-800 shadow-soft text-center space-y-2 hover:shadow-md transition-shadow">
-                  <div className="w-9 h-9 rounded-2xl bg-rose-50 dark:bg-warmgray-800 text-rosewood-500 mx-auto flex items-center justify-center">
+                <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-4 sm:p-5 border border-warmgray-200 dark:border-warmgray-800 shadow-soft text-center space-y-2 card-hover-3d hover:shadow-md transition-all duration-300 group">
+                  <div className="w-9 h-9 rounded-2xl bg-rose-50 dark:bg-warmgray-800 text-rosewood-500 mx-auto flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Heart className="w-4 h-4" />
                   </div>
                   <div>
                     <span className="text-2xl font-serif font-bold text-warmgray-900 dark:text-white block">
                       {wishlistItems.length}
                     </span>
-                    <span className="text-[11px] text-warmgray-500 font-semibold block">Wishlist</span>
+                    <span className="text-[11px] text-warmgray-500 font-semibold block">Saved Items</span>
                   </div>
                   <button
                     onClick={() => setActiveTab('wishlist')}
@@ -584,9 +587,9 @@ export const CustomerDashboardPage = ({ onNavigate, initialTab = 'overview' }) =
                   </button>
                 </div>
 
-                {/* 4. Custom Orders */}
-                <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-4 sm:p-5 border border-warmgray-200 dark:border-warmgray-800 shadow-soft text-center space-y-2 hover:shadow-md transition-shadow">
-                  <div className="w-9 h-9 rounded-2xl bg-purple-50 dark:bg-warmgray-800 text-purple-600 dark:text-purple-400 mx-auto flex items-center justify-center">
+                {/* 4. Custom Requests */}
+                <div className="bg-white dark:bg-warmgray-900 rounded-3xl p-4 sm:p-5 border border-warmgray-200 dark:border-warmgray-800 shadow-soft text-center space-y-2 card-hover-3d hover:shadow-md transition-all duration-300 group">
+                  <div className="w-9 h-9 rounded-2xl bg-purple-50 dark:bg-warmgray-800 text-purple-600 dark:text-purple-400 mx-auto flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Palette className="w-4 h-4" />
                   </div>
                   <div>
