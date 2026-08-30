@@ -2,7 +2,7 @@
   {
     "id": "forever-blooms",
     "name": "Forever Blooms & Pots",
-    "description": "Never-wilting hand-crocheted floral bouquets and aesthetic potted plants.",
+    "description": "Never-wilting handcrafted floral bouquets and aesthetic potted plants.",
     "icon": "Flower2",
     "image": "/images/category/3rd_category_flowerpot.jpeg",
     "itemCount": 18
@@ -10,15 +10,15 @@
   {
     "id": "hair-accessories",
     "name": "Hair Bows & Parandis",
-    "description": "Handmade crochet floral parandis, velvet hair scrunchies, and dainty clips.",
+    "description": "Handmade floral parandis, velvet hair scrunchies, and dainty clips.",
     "icon": "Heart",
     "image": "/images/category/1st_category_flower.jpeg",
     "itemCount": 9
   },
   {
     "id": "amigurumi-plushies",
-    "name": "Amigurumi Plushies",
-    "description": "Squishy, cuddly, handcrafted crochet plush companions in velvet & chenille.",
+    "name": "Plushies & Keepsakes",
+    "description": "Squishy, cuddly, handcrafted plush companions in velvet & chenille.",
     "icon": "Heart",
     "image": "/images/category/5th_category_handmadegifts.jpeg",
     "itemCount": 24
@@ -26,7 +26,7 @@
   {
     "id": "bookmarks",
     "name": "Botanical Bookmarks",
-    "description": "Dainty hand-crocheted floral sprout & leaf page savers for book lovers.",
+    "description": "Dainty handcrafted floral sprout & leaf page savers for book lovers.",
     "icon": "BookOpen",
     "image": "/images/category/1st_category_flower.jpeg",
     "itemCount": 7
@@ -34,7 +34,7 @@
   {
     "id": "keychains",
     "name": "Keychains & Bag Charms",
-    "description": "Pocket-sized crochet strawberries, daisies, and lucky charms.",
+    "description": "Pocket-sized handcrafted strawberries, daisies, and lucky charms.",
     "icon": "Sparkles",
     "image": "/images/category/2nd_category_keychain.jpeg",
     "itemCount": 6
@@ -49,8 +49,8 @@
   },
   {
     "id": "wearables-apparel",
-    "name": "Wearables & Cardigans",
-    "description": "Artisan hexagon cardigans, wildflower bucket hats, and cozy wearables.",
+    "name": "Wearables & Apparel",
+    "description": "Artisan wildflower bucket hats and cozy wearables.",
     "icon": "Sparkles",
     "image": "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=600&q=80",
     "itemCount": 12
@@ -58,15 +58,15 @@
   {
     "id": "home-living",
     "name": "Cozy Home & Living",
-    "description": "Botanical coaster sets, mug rugs, and plant hangers.",
+    "description": "Botanical coaster sets, floral rugs, and keepsake decor.",
     "icon": "Home",
     "image": "/images/category/5th_category_homedecor.jpeg",
     "itemCount": 16
   },
   {
     "id": "diy-kits-patterns",
-    "name": "DIY Kits & Patterns",
-    "description": "Beginner friendly crochet starter boxes and instant PDF patterns.",
+    "name": "DIY Kits & Guides",
+    "description": "Beginner friendly craft starter boxes and creative step-by-step guides.",
     "icon": "BookOpen",
     "image": "https://images.unsplash.com/photo-1606103836293-0a0bf1220a25?auto=format&fit=crop&w=600&q=80",
     "itemCount": 10

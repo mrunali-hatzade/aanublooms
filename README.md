@@ -1,6 +1,6 @@
-# 🌸 AanuBlooms - Handcrafted Crochet & Floral Boutique
+# 🌸 AanuBlooms - Handcrafted Blooms & Everlasting Floral Boutique
 
-A boutique, full-stack handmade crochet e-commerce web application tailored specifically for selling handcrafted forever floral bouquets, squishy amigurumi plushies, wearable cardigans & bucket hats, home decor, custom commissions, and DIY beginner starter kits.
+A boutique, full-stack handmade forever floral and keepsake e-commerce web application tailored specifically for selling handcrafted forever floral bouquets, blossom pots, plush companions, home decor, custom commissions, and artisan gift pieces.
 
 ---
 
@@ -54,7 +54,7 @@ A boutique, full-stack handmade crochet e-commerce web application tailored spec
 8. **Maker Studio Admin Dashboard**:
    - Total Revenue, Total Orders, Average Order Value, and Low Stock metrics.
    - **Order Manager**: Live update customer crafting stages (e.g. from *Placed* $\rightarrow$ *Handcrafting* $\rightarrow$ *Packaging* $\rightarrow$ *Shipped*), updating the customer's live tracking view in real time.
-   - **Catalog CRUD**: Add new crochet piece with custom photos/pricing/inventory, edit existing items, and delete products.
+   - **Catalog CRUD**: Add new handcrafted piece with custom photos/pricing/inventory, edit existing items, and delete products.
    - **Bespoke Commission Inquiries**: View custom customer commission requests.
    - **Quick Role Switcher** in user dropdown to toggle between Customer and Artisan Admin instantly.
 

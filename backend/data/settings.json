@@ -1,8 +1,8 @@
 {
   "general": {
-    "storeName": "AanuBloom",
-    "tagline": "Handmade with Love, One Stitch at a Time.",
-    "description": "Beautiful handmade crochet creations crafted with care, forever floral bouquets, cuddly amigurumi, and bespoke gifts.",
+    "storeName": "AanuBlooms",
+    "tagline": "Handmade with Love, One Petal at a Time.",
+    "description": "Beautiful handcrafted floral creations crafted with care, forever floral bouquets, blossom pots, and bespoke gifts.",
     "storeOpen": true,
     "closedMessage": "We're taking a short break to craft more creations and will be back soon.",
     "currency": "INR",
@@ -132,9 +132,9 @@
     }
   },
   "seo": {
-    "metaTitle": "Stitch & Love | Handmade Crochet Creations & Forever Blooms",
-    "metaDescription": "Discover beautiful handmade crochet flowers, bags, amigurumi, accessories and personalized gifts crafted with love in India.",
-    "keywords": "crochet flowers, handmade bouquet, amigurumi plushies, crochet bags, gifts india",
+    "metaTitle": "AanuBlooms | Handcrafted Blooms & Everlasting Floral Creations",
+    "metaDescription": "Discover beautiful handcrafted forever bouquets, blossom pots, floral charms, and personalized gifts crafted with love in Pune, India.",
+    "keywords": "handmade flowers, forever bouquet, blossom pots, floral gifts, handcrafted blooms india",
     "ogImage": "/images/blossom-pots-collection.jpeg",
     "allowIndexing": true,
     "sitemapStatus": "Active & Auto-Generated"

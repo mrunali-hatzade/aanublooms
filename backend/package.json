@@ -1,7 +1,7 @@
 {
   "name": "aanublooms-backend",
   "version": "1.0.0",
-  "description": "Backend API for AanuBlooms Handcrafted Crochet & Floral Creations",
+  "description": "Backend API for AanuBlooms Handcrafted Blooms & Everlasting Floral Creations",
   "main": "server.js",
   "type": "module",
   "scripts": {
