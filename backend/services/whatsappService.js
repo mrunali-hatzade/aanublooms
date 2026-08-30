@@ -62,8 +62,15 @@ export const sendWhatsAppTemplate = async (templateName, languageCode = 'en_US',
   try {
     let result = await sendWithLang(languageCode);
 
-    // If Meta returns language or template code mismatch, retry with alternative language code
-    if (!result.ok && (result.data?.error?.code === 132000 || result.data?.error?.message?.includes('language') || result.data?.error?.message?.includes('template'))) {
+    // If Meta returns language code mismatch (e.g. 132001 "does not exist in translation"), retry with alternative language code
+    const isLangOrTemplateError = !result.ok && (
+      [132000, 132001, 132005, 132015, 132016].includes(result.data?.error?.code) ||
+      result.data?.error?.message?.toLowerCase().includes('translation') ||
+      result.data?.error?.message?.toLowerCase().includes('language') ||
+      result.data?.error?.error_data?.details?.toLowerCase().includes('does not exist')
+    );
+
+    if (isLangOrTemplateError) {
       const fallbackLang = (languageCode === 'en' || languageCode === 'en_GB') ? 'en_US' : 'en';
       console.warn(`Meta template '${templateName}' failed with '${languageCode}', retrying with '${fallbackLang}'...`);
       result = await sendWithLang(fallbackLang);

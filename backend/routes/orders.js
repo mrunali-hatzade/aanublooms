@@ -169,7 +169,7 @@ router.post('/', async (req, res) => {
       await Promise.allSettled([
         sendOrderConfirmationToCustomer(newOrder.toObject()),
         sendNewOrderAlertToFounder(newOrder.toObject()),
-        sendWhatsAppTemplate('new_order_placed', 'en_US', [
+        sendWhatsAppTemplate('new_order_placed', 'en', [
           newOrder.id,
           customer.name,
           total,
