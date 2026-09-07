@@ -550,7 +550,7 @@ export const AdminDashboard = ({ onNavigate }) => {
   }, []);
 
   // Device file upload from PC / Laptop / Mobile Phone
-  const handleDeviceFileUpload = (e) => {
+  const handleDeviceFileUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
