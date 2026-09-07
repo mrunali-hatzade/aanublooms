@@ -13,8 +13,8 @@ export const MeetTheMaker = ({ onNavigate }) => {
               <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-warmgray-800 rotate-1 transform hover:rotate-0 hover:scale-[1.02] transition-all duration-500 group">
                 <img
                   src="/images/founder.jpeg"
-                  alt="Maker Aanu in Studio"
-                  className="w-full h-72 sm:h-88 object-cover object-bottom group-hover:scale-105 transition-transform duration-700 ease-out"
+                  alt="Maker Aanu - Founder of AanuBlooms"
+                  className="w-full h-80 sm:h-96 object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
               </div>
 
