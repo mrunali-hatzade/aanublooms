@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ success: false, message: 'An account with this email already exists. Please sign in.' });
     }
 
-    const isMakerAdmin = cleanEmail === 'admin@aanublooms.com' || cleanEmail === 'maker@aanublooms.com';
+    const isMakerAdmin = cleanEmail === 'admin@aanublooms.com' || cleanEmail === 'maker@aanublooms.com' || cleanEmail === 'aanublooms@gmail.com';
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
@@ -183,7 +183,7 @@ router.post('/google', async (req, res) => {
         await user.save();
       }
     } else {
-      const isMakerAdmin = cleanEmail === 'admin@aanublooms.com' || cleanEmail === 'maker@aanublooms.com';
+      const isMakerAdmin = cleanEmail === 'admin@aanublooms.com' || cleanEmail === 'maker@aanublooms.com' || cleanEmail === 'aanublooms@gmail.com';
       user = new User({
         id: `usr-${Date.now()}`,
         name: name?.trim() || cleanEmail.split('@')[0],
