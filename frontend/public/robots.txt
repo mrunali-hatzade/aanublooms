@@ -1,0 +1,17 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Allow: /shop
+Allow: /about
+Allow: /custom-order
+Allow: /contact
+Allow: /feedback
+Allow: /track-order
+Allow: /product/
+
+# Disallow private and administrative endpoints
+Disallow: /admin
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://www.aanublooms.in/sitemap.xml

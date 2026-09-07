@@ -22,6 +22,7 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useToast } from '../context/ToastContext';
 import { useAuth } from '../context/AuthContext';
+import { updateSEO, injectProductSchema, removeProductSchema } from '../utils/seo';
 
 export const ProductDetailPage = ({ productId, onNavigate }) => {
   const [product, setProduct] = useState(null);
@@ -58,6 +59,23 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
       window.scrollTo(0, 0);
     }
   }, [productId]);
+
+  // Dynamic Product SEO & Schema.org Structured Data
+  useEffect(() => {
+    if (product) {
+      updateSEO({
+        title: `${product.name} · Handcrafted Forever Bloom`,
+        description: product.shortDescription || product.description || `Handcrafted ${product.name} from AanuBlooms Studio in Pune.`,
+        path: `/product/${product.id}`,
+        image: product.images?.[0] || '/images/aanu-blooms-signature-set.jpeg',
+        type: 'product'
+      });
+      injectProductSchema(product);
+    }
+    return () => {
+      removeProductSchema();
+    };
+  }, [product]);
 
   if (isLoading) {
     return (

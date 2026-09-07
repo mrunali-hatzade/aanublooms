@@ -31,6 +31,7 @@ import { SparkleClickEffect } from './components/common/SparkleClickEffect';
 import { ScrollToTopButton } from './components/common/ScrollToTopButton';
 import { FloatingWhatsAppButton } from './components/common/FloatingWhatsAppButton';
 import { safeStorage, safeSessionStorage } from './utils/storage';
+import { updateSEO, removeProductSchema } from './utils/seo';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -226,6 +227,67 @@ function AppContent() {
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  // Dynamic Route-Aware SEO
+  useEffect(() => {
+    if (currentPage === 'product-detail') {
+      // ProductDetailPage manages its own product SEO and JSON-LD schema
+      return;
+    }
+
+    removeProductSchema();
+
+    const seoMap = {
+      home: {
+        title: 'Handcrafted Blooms & Everlasting Floral Creations · Pune',
+        description: 'Discover boutique handcrafted forever flower bouquets, blossom cupcake pots, floral charms, and bespoke keepsakes crafted with love by Aanu in Pune, India.',
+        path: '/'
+      },
+      shop: {
+        title: 'Shop Handcrafted Floral Bouquets & Blossom Pots',
+        description: 'Explore the full AanuBlooms catalog: everlasting flower bouquets, mini potted blossoms, and bespoke floral gifts handcrafted in Pune.',
+        path: '/shop'
+      },
+      'custom-order': {
+        title: 'Custom Floral Order Builder & Personalized Keepsakes',
+        description: 'Design your own custom handcrafted floral bouquet or photo frame with your choice of color palette, stem counts, and custom ribbon message.',
+        path: '/custom-order'
+      },
+      about: {
+        title: 'Meet Artisan Aanu | Our Story & Handcrafted Floral Studio',
+        description: 'Learn the story of AanuBlooms Studio in Pune, founded by Artisan Aanu, inspired by her mother to craft everlasting floral creations with patience and love.',
+        path: '/about'
+      },
+      contact: {
+        title: 'Contact AanuBlooms Studio | Pune & WhatsApp Support',
+        description: 'Have a question or custom floral inquiry? Reach Artisan Aanu on WhatsApp at +91 95791 62154 or send a message to our Pune studio.',
+        path: '/contact'
+      },
+      feedback: {
+        title: 'Customer Stories & Reviews',
+        description: 'Read reviews and heartfelt stories from customers who received AanuBlooms handcrafted forever flowers and bespoke gifts.',
+        path: '/feedback'
+      },
+      'track-order': {
+        title: 'Track Your Handcrafted Order Live',
+        description: 'Track the delivery and dispatch status of your AanuBlooms handcrafted flowers and bespoke gift orders.',
+        path: '/track-order'
+      },
+      wishlist: {
+        title: 'My Floral Wishlist',
+        description: 'View your saved handcrafted blooms and favorite floral creations on AanuBlooms.',
+        path: '/wishlist'
+      },
+      checkout: {
+        title: 'Express Checkout',
+        description: 'Complete your order for handcrafted blooms from AanuBlooms with safe online payment or Cash on Delivery.',
+        path: '/checkout'
+      }
+    };
+
+    const currentSeo = seoMap[currentPage] || seoMap.home;
+    updateSEO(currentSeo);
+  }, [currentPage]);
 
   const handleOrderPlaced = (orderData) => {
     setLastPlacedOrder(orderData);
