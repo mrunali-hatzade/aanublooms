@@ -2,17 +2,13 @@ import React, { createContext, useContext, useState, useEffect, useMemo } from '
 import { useToast } from './ToastContext';
 import { api } from '../services/api';
 import { useSettings } from './SettingsContext';
+import { safeStorage } from '../utils/storage';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [items, setItems] = useState(() => {
-    try {
-      const saved = localStorage.getItem('aanublooms_cart');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
+    return safeStorage.getJSON('aanublooms_cart', []);
   });
 
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -25,7 +21,7 @@ export const CartProvider = ({ children }) => {
   const { settings } = useSettings();
 
   useEffect(() => {
-    localStorage.setItem('aanublooms_cart', JSON.stringify(items));
+    safeStorage.setItem('aanublooms_cart', items);
   }, [items]);
 
   const addToCart = (product, quantity = 1, options = {}) => {

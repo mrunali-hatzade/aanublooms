@@ -104,19 +104,16 @@ const VideoCard = ({ vid, isPlaying, onTogglePlay, isMuted, onToggleMute, isAdmi
   );
 };
 
+import { safeStorage } from '../../utils/storage';
+
 export const StudioVideoGallery = ({ onNavigate }) => {
   const { addToast } = useToast();
   const { user } = useAuth();
   const isAdmin = user && (user.role === 'admin' || user.email === 'aanu@aanublooms.com' || user.name?.toLowerCase().includes('aanu') || user.name?.toLowerCase().includes('admin'));
 
   const [videos, setVideos] = useState(() => {
-    try {
-      const saved = localStorage.getItem('aanublooms_studio_videos_v3');
-      const parsed = saved ? JSON.parse(saved) : [];
-      return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultVideos;
-    } catch {
-      return defaultVideos;
-    }
+    const parsed = safeStorage.getJSON('aanublooms_studio_videos_v3', null);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultVideos;
   });
 
   const [activePlayingId, setActivePlayingId] = useState(null);
@@ -130,18 +127,13 @@ export const StudioVideoGallery = ({ onNavigate }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem('aanublooms_studio_videos_v3', JSON.stringify(videos));
+    safeStorage.setItem('aanublooms_studio_videos_v3', videos);
   }, [videos]);
 
   useEffect(() => {
     const handleUpdate = () => {
-      try {
-        const saved = localStorage.getItem('aanublooms_studio_videos_v3');
-        const parsed = saved ? JSON.parse(saved) : [];
-        setVideos(Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultVideos);
-      } catch {
-        setVideos(defaultVideos);
-      }
+      const parsed = safeStorage.getJSON('aanublooms_studio_videos_v3', null);
+      setVideos(Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultVideos);
     };
     window.addEventListener('aanublooms_data_updated', handleUpdate);
     return () => {

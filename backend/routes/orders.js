@@ -3,7 +3,7 @@ import { Order } from '../models/Order.js';
 import { Product } from '../models/Product.js';
 import { Notification } from '../models/Notification.js';
 import { requireAdmin } from '../middleware/auth.js';
-import { sendOrderConfirmationToCustomer, sendNewOrderAlertToFounder, sendOrderStatusUpdateAlert } from '../services/emailService.js';
+import { sendOrderConfirmationToCustomer, sendNewOrderAlertToFounder, sendOrderStatusUpdateAlert, sendOrderStatusUpdateToCustomer } from '../services/emailService.js';
 import { sendWhatsAppTemplate } from '../services/whatsappService.js';
 
 const router = express.Router();
@@ -105,6 +105,24 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Order items and customer details are required.' });
     }
 
+    const cleanEmail = customer?.email ? customer.email.trim().toLowerCase() : '';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
+      return res.status(400).json({ success: false, message: 'A valid customer email address is required for order confirmation & tracking.' });
+    }
+
+    const cleanCustomer = {
+      ...customer,
+      name: customer.name ? customer.name.trim() : 'Customer',
+      email: cleanEmail,
+      phone: customer.phone ? customer.phone.trim() : '',
+      address: customer.address ? customer.address.trim() : '',
+      landmark: customer.landmark ? customer.landmark.trim() : '',
+      city: customer.city ? customer.city.trim() : 'Pune',
+      state: customer.state ? customer.state.trim() : 'Maharashtra',
+      zip: customer.zip ? customer.zip.trim() : ''
+    };
+
     // Validate and decrement stock
     for (const item of items) {
       const product = await Product.findOne({ id: item.id || item.productId });
@@ -135,7 +153,7 @@ router.post('/', async (req, res) => {
     const newOrder = new Order({
       id: orderId,
       isGuestOrder: true,
-      customer,
+      customer: cleanCustomer,
       items,
       subtotal: Number(subtotal),
       discountAmount: Number(discount),
@@ -221,8 +239,15 @@ router.patch('/:id/status', requireAdmin, async (req, res) => {
       });
     }
 
-    // Send email alert to founder for status update
-    await sendOrderStatusUpdateAlert(order, status, note);
+    // Send email alert to founder and update to customer for status change
+    try {
+      await Promise.allSettled([
+        sendOrderStatusUpdateAlert(order, status, note),
+        sendOrderStatusUpdateToCustomer(order.toObject ? order.toObject() : order, status, note)
+      ]);
+    } catch (emailErr) {
+      console.warn('Status update email notice (non-fatal):', emailErr.message);
+    }
 
     res.json({ success: true, message: `Order status updated to ${status}`, data: order });
   } catch (err) {

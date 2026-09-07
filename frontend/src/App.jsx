@@ -29,6 +29,7 @@ import { FeedbackPage } from './pages/FeedbackPage';
 import { Floating3DBackground } from './components/common/Floating3DBackground';
 import { SparkleClickEffect } from './components/common/SparkleClickEffect';
 import { ScrollToTopButton } from './components/common/ScrollToTopButton';
+import { safeStorage, safeSessionStorage } from './utils/storage';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -42,39 +43,53 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('App ErrorBoundary caught error:', error, errorInfo);
+    // If quota exceeded error, automatically clear bulky storage caches
+    if (error && (error.name === 'QuotaExceededError' || error.message?.includes('QuotaExceeded') || error.message?.includes('quota'))) {
+      try {
+        safeStorage.clearNonEssential();
+        safeSessionStorage.removeItem('aanublooms_active_page');
+      } catch {}
+    }
   }
+
+  handleRecoverAndReload = () => {
+    try {
+      safeStorage.clearNonEssential();
+      safeSessionStorage.removeItem('aanublooms_active_page');
+      localStorage.removeItem('aanublooms_studio_videos_v3');
+      localStorage.removeItem('aanublooms_products_v2');
+      localStorage.removeItem('aanublooms_categories_v2');
+      localStorage.removeItem('stitch_and_love_settings');
+    } catch {}
+    window.location.href = '/';
+  };
 
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-[#F8F6F3] flex items-center justify-center p-6 text-center font-sans">
+        <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center p-6 text-center font-sans">
           <div className="max-w-md bg-white rounded-3xl p-8 border border-[#E9E2DC] shadow-xl space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-[#D96C65]/15 text-[#D96C65] mx-auto flex items-center justify-center font-serif text-2xl font-bold">
+            <div className="w-16 h-16 rounded-2xl bg-[#D96C65]/15 text-[#D96C65] mx-auto flex items-center justify-center font-serif text-3xl font-bold">
               🌸
             </div>
             <h1 className="text-2xl font-serif font-bold text-[#3E2B25]">
               AanuBlooms Studio
             </h1>
             <p className="text-xs text-[#756A65] leading-relaxed">
-              We encountered a temporary display issue. Click below to refresh the storefront.
+              We encountered a temporary cache/display issue. Click below to clear cache and reload cleanly.
             </p>
             {this.state.error && (
-              <pre className="text-[10px] text-red-500 bg-red-50 p-2 rounded text-left overflow-auto max-h-32">
+              <pre className="text-[10px] text-red-500 bg-red-50 p-2 rounded-xl text-left overflow-auto max-h-28 font-mono">
                 {this.state.error.toString()}
               </pre>
             )}
             <div className="pt-2 flex flex-col gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  try {
-                    sessionStorage.removeItem('aanublooms_active_page');
-                  } catch {}
-                  window.location.href = '/';
-                }}
-                className="w-full py-2.5 px-4 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl font-bold text-xs shadow-sm transition-all"
+                onClick={this.handleRecoverAndReload}
+                className="w-full py-3 px-4 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl font-bold text-xs shadow-sm transition-all"
               >
-                Reload Home Page 🌸
+                Clear Cache &amp; Reload Home Page 🌸
               </button>
               <button
                 type="button"
@@ -153,7 +168,7 @@ function AppContent() {
     setNavParams(params);
 
     try {
-      sessionStorage.setItem('aanublooms_active_page', JSON.stringify({ page, params }));
+      safeSessionStorage.setItem('aanublooms_active_page', { page, params });
 
       let path = '/';
       if (page === 'shop') {
@@ -201,7 +216,7 @@ function AppContent() {
       const route = parseRouteFromLocation();
       setCurrentPage(route.page);
       setNavParams(route.params);
-      sessionStorage.setItem('aanublooms_active_page', JSON.stringify(route));
+      safeSessionStorage.setItem('aanublooms_active_page', route);
     };
 
     window.addEventListener('popstate', handlePopState);

@@ -132,17 +132,23 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
 
   const handleInquirySubmit = async (e) => {
     e.preventDefault();
-    if (!customerName || !customerEmail || !customerPhone) {
+    if (!customerName.trim() || !customerEmail.trim() || !customerPhone.trim()) {
       addToast('Please enter your name, email and phone number', 'error');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(customerEmail.trim())) {
+      addToast('Please enter a valid email address format (e.g. name@example.com)', 'error');
       return;
     }
 
     setIsSubmitting(true);
     try {
       await api.submitCustomRequest({
-        customerName,
-        customerEmail,
-        customerPhone,
+        customerName: customerName.trim(),
+        customerEmail: customerEmail.trim().toLowerCase(),
+        customerPhone: customerPhone.trim(),
         itemType: creationType,
         colorPalette: selectedColors,
         materialPreference,
@@ -151,7 +157,7 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
         referenceImage: photoPreview || null
       });
 
-      addToast('🌸 Custom order inquiry sent to Aanu! She will contact you within 24 hours.', 'success');
+      addToast('🌸 Custom order inquiry sent! A confirmation email has been sent to you.', 'success');
       setStep(4);
     } catch (err) {
       addToast(err.message || 'Could not submit inquiry', 'error');

@@ -1,22 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from './ToastContext';
+import { safeStorage } from '../utils/storage';
 
 const WishlistContext = createContext();
 
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState(() => {
-    try {
-      const saved = localStorage.getItem('aanublooms_wishlist');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
+    return safeStorage.getJSON('aanublooms_wishlist', []);
   });
 
   const { addToast } = useToast();
 
   useEffect(() => {
-    localStorage.setItem('aanublooms_wishlist', JSON.stringify(wishlist));
+    safeStorage.setItem('aanublooms_wishlist', wishlist);
   }, [wishlist]);
 
   const toggleWishlist = (product) => {

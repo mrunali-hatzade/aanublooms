@@ -11,14 +11,14 @@
     "country": "India"
   },
   "business": {
-    "businessName": "Stitch & Love Handcrafted Studio",
-    "ownerName": "Aanu (Priya Sharma)",
-    "businessType": "Handmade Boutique & Studio",
+    "businessName": "AanuBlooms Handcrafted Studio",
+    "ownerName": "Aanu",
+    "businessType": "Handmade Floral Boutique & Studio",
     "yearStarted": "2024",
-    "address": "402, Lotus Residency, Indiranagar",
-    "city": "Bengaluru",
-    "state": "Karnataka",
-    "zip": "560038",
+    "address": "Baner - Balewadi Road",
+    "city": "Pune",
+    "state": "Maharashtra",
+    "zip": "411045",
     "country": "India",
     "gstin": "",
     "pan": ""
@@ -34,8 +34,8 @@
   "contact": {
     "whatsappNumber": "+919579162154",
     "phoneNumber": "+91 95791 62154",
-    "businessEmail": "hello@stitchandlove.com",
-    "supportEmail": "support@stitchandlove.com",
+    "businessEmail": "hello@aanublooms.in",
+    "supportEmail": "support@aanublooms.in",
     "instagramUrl": "https://instagram.com/aanublooms",
     "facebookUrl": "https://facebook.com/aanublooms",
     "pinterestUrl": "https://pinterest.com/aanublooms",
@@ -88,12 +88,12 @@
       "bankTransfer": false
     },
     "razorpay": {
-      "keyId": "rzp_test_StitchAndLove2026",
+      "keyId": "rzp_live_TUlMQPBRNulPVu",
       "keySecretMasked": "••••••••••••••••",
       "status": "connected"
     },
     "upi": {
-      "vpa": "stitchandlove@upi"
+      "vpa": "aanublooms@upi"
     }
   },
   "taxes": {

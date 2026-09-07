@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from './ToastContext';
 import { api } from '../services/api';
+import { safeStorage } from '../utils/storage';
 
 const AuthContext = createContext();
 
@@ -16,17 +17,17 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const validateStoredSession = async () => {
       try {
-        const token = localStorage.getItem('aanublooms_token');
+        const token = safeStorage.getItem('aanublooms_token');
         if (token) {
           const res = await api.getMe(token);
           if (res.success && res.user) {
             setUser(res.user);
           } else {
-            localStorage.removeItem('aanublooms_token');
+            safeStorage.removeItem('aanublooms_token');
           }
         }
       } catch {
-        localStorage.removeItem('aanublooms_token');
+        safeStorage.removeItem('aanublooms_token');
       } finally {
         setIsLoadingAuth(false);
       }
@@ -48,7 +49,7 @@ export const AuthProvider = ({ children }) => {
       const res = await api.login(email.trim().toLowerCase(), password);
       if (res.success && res.user) {
         setUser(res.user);
-        if (res.token) localStorage.setItem('aanublooms_token', res.token);
+        if (res.token) safeStorage.setItem('aanublooms_token', res.token);
         addToast(`Welcome back, ${res.user.name}! 🌸`, 'success');
         closeAuthModal();
         setIsLoadingAuth(false);
@@ -70,7 +71,7 @@ export const AuthProvider = ({ children }) => {
       const res = await api.register({ name: name.trim(), email: email.trim().toLowerCase(), password, phone, city, state, zip, address });
       if (res.success && res.user) {
         setUser(res.user);
-        if (res.token) localStorage.setItem('aanublooms_token', res.token);
+        if (res.token) safeStorage.setItem('aanublooms_token', res.token);
         addToast(`🌸 Welcome to AanuBlooms, ${res.user.name}!`, 'success');
         closeAuthModal();
         setIsLoadingAuth(false);
@@ -97,7 +98,7 @@ export const AuthProvider = ({ children }) => {
       });
       if (res.success && res.user) {
         setUser(res.user);
-        if (res.token) localStorage.setItem('aanublooms_token', res.token);
+        if (res.token) safeStorage.setItem('aanublooms_token', res.token);
         addToast(`🌸 Welcome, ${res.user.name}!`, 'success');
         closeAuthModal();
         setIsLoadingAuth(false);
@@ -114,7 +115,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('aanublooms_token');
+    safeStorage.removeItem('aanublooms_token');
     addToast('Signed out successfully', 'info');
   };
 

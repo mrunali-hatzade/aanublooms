@@ -20,17 +20,30 @@ export const ContactFormSection = ({ title = "Get In Touch With Artisan Aanu", s
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.phone || !formData.message) {
+    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.message.trim()) {
       addToast('Please fill in your name, email, phone number, and message', 'error');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      addToast('Please enter a valid email address format (e.g. name@example.com)', 'error');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const res = await api.sendContactMessage(formData);
+      const cleanPayload = {
+        ...formData,
+        name: formData.name.trim(),
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim(),
+        message: formData.message.trim()
+      };
+      const res = await api.sendContactMessage(cleanPayload);
       if (res.success) {
         setIsSubmitted(true);
-        addToast(res.message || 'Message sent to Artisan Aanu!', 'success');
+        addToast(res.message || 'Message sent! A confirmation has been emailed to you.', 'success');
         setFormData({
           name: '',
           email: '',

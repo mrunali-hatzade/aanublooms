@@ -21,7 +21,9 @@ import confetti from 'canvas-confetti';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
 import { useLocation } from '../../context/LocationContext';
+import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
+import { safeStorage } from '../../utils/storage';
 
 export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
   const {
@@ -40,36 +42,48 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
   } = useCart();
 
   const { addToast } = useToast();
+  const { user } = useAuth();
   const { location: savedLocation, isDetecting, detectCurrentLocation } = useLocation();
 
   const [isProcessing, setIsProcessing] = useState(false);
 
   const defaultFormData = {
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    address: user?.address || '',
     landmark: '',
-    city: 'Pune',
-    state: 'Maharashtra',
-    zip: '411038',
+    city: user?.city || 'Pune',
+    state: user?.state || 'Maharashtra',
+    zip: user?.zip || '411038',
     country: 'India'
   };
 
   // Guest Contact & Address form with auto-save across page refresh
   const [formData, setFormData] = useState(() => {
-    try {
-      const saved = localStorage.getItem('aanublooms_guest_checkout_data');
-      return saved ? { ...defaultFormData, ...JSON.parse(saved) } : defaultFormData;
-    } catch {
-      return defaultFormData;
-    }
+    const saved = safeStorage.getJSON('aanublooms_guest_checkout_data', null);
+    if (saved) return { ...defaultFormData, ...saved };
+    return defaultFormData;
   });
 
+  // Auto-fill logged in user email / name if empty
   React.useEffect(() => {
-    try {
-      localStorage.setItem('aanublooms_guest_checkout_data', JSON.stringify(formData));
-    } catch {}
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        name: prev.name || user.name || '',
+        email: prev.email || user.email || '',
+        phone: prev.phone || user.phone || '',
+        address: prev.address || user.address || '',
+        city: prev.city || user.city || 'Pune',
+        state: prev.state || user.state || 'Maharashtra',
+        zip: prev.zip || user.zip || '411038'
+      }));
+    }
+  }, [user]);
+
+  React.useEffect(() => {
+    safeStorage.setItem('aanublooms_guest_checkout_data', formData);
   }, [formData]);
 
   // Shipping method
@@ -121,10 +135,11 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
         console.log(e);
       }
 
+      const cleanEmail = formData.email.trim().toLowerCase();
       const orderPayload = {
         customer: {
           name: formData.name.trim(),
-          email: formData.email.trim() || `${formData.phone.trim()}@guest.aanublooms.com`,
+          email: cleanEmail,
           phone: formData.phone.trim(),
           address: formData.landmark.trim() ? `${formData.address.trim()}, Near ${formData.landmark.trim()}` : formData.address.trim(),
           city: formData.city.trim(),
@@ -149,7 +164,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
       const res = await api.createOrder(orderPayload);
       if (res.success && res.data) {
         clearCart();
-        addToast('🌸 Order Placed Successfully! Artisan Aanu is preparing your pipe cleaners creations.', 'success');
+        addToast('🌸 Order Placed Successfully! Artisan Aanu is preparing your creations.', 'success');
         if (onOrderPlaced) {
           onOrderPlaced(res.data);
         }
@@ -166,6 +181,12 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
 
     if (!formData.name.trim() || !formData.phone.trim()) {
       addToast('Please provide your Full Name and Mobile Number.', 'error');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim() || !emailRegex.test(formData.email.trim())) {
+      addToast('Please enter a valid email address to receive your order confirmation & tracking updates.', 'error');
       return;
     }
 
@@ -195,7 +216,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
         amount: rzpOrder.amount,
         currency: rzpOrder.currency,
         name: 'AanuBlooms Boutique',
-        description: 'handcrafted pipe cleaner Order',
+        description: 'Handcrafted Blooms Order',
         order_id: rzpOrder.orderId,
         handler: async function (response) {
           try {
@@ -213,7 +234,7 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
         },
         prefill: {
           name: formData.name.trim(),
-          email: formData.email.trim() || `${formData.phone.trim()}@guest.aanublooms.com`,
+          email: formData.email.trim().toLowerCase(),
           contact: formData.phone.trim()
         },
         theme: {
@@ -338,13 +359,14 @@ export const CheckoutFlow = ({ onOrderPlaced, onNavigate }) => {
 
               <div className="sm:col-span-2">
                 <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-1.5">
-                  Email Address (Optional — for Digital Receipt)
+                  Email Address (for Order Confirmation &amp; Tracking) *
                 </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-warmgray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="email"
                     name="email"
+                    required
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="pooja@example.com"

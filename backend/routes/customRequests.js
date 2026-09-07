@@ -20,19 +20,19 @@ router.get('/', requireAdmin, async (req, res) => {
 // POST /api/custom-requests — public (customer submits)
 router.post('/', async (req, res) => {
   try {
-    const { customerName, customerEmail, customerPhone, itemType, colorPalette, yarnPreference, specialNotes, estimatedBudget, referenceImage } = req.body;
-
-    if (!customerName || !customerEmail || !customerPhone || !itemType) {
-      return res.status(400).json({ success: false, message: 'Please provide your name, email, phone number, and item type.' });
+    const cleanEmail = (customerEmail || '').trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
+      return res.status(400).json({ success: false, message: 'Please provide a valid email address.' });
     }
 
     const id = `COMM-${Date.now()}`;
     const newRequest = new CustomRequest({
       id,
-      customerName,
-      customerEmail,
-      customerPhone: customerPhone || '',
-      itemType,
+      customerName: customerName.trim(),
+      customerEmail: cleanEmail,
+      customerPhone: customerPhone?.trim() || '',
+      itemType: itemType.trim(),
       colorPalette: colorPalette || [],
       yarnPreference: yarnPreference || 'Artisan Choice',
       specialNotes: specialNotes || '',
@@ -52,16 +52,21 @@ router.post('/', async (req, res) => {
       relatedEntityId: id
     });
 
-    sendWhatsAppTemplate('new_custom_request', 'en_US', [
-      customerName,
-      customerPhone || 'N/A',
-      itemType,
-      estimatedBudget || 'N/A'
-    ]);
-
-    // Send Emails
-    await sendCustomOrderAlertToFounder(newRequest);
-    await sendCustomOrderConfirmationToCustomer(newRequest);
+    // Send WhatsApp & Emails (awaited for serverless compatibility)
+    try {
+      await Promise.allSettled([
+        sendWhatsAppTemplate('new_custom_request', 'en_US', [
+          customerName.trim(),
+          customerPhone?.trim() || 'N/A',
+          itemType.trim(),
+          estimatedBudget || 'N/A'
+        ]),
+        sendCustomOrderAlertToFounder(newRequest),
+        sendCustomOrderConfirmationToCustomer(newRequest)
+      ]);
+    } catch (emailErr) {
+      console.error('Custom request notification error:', emailErr.message);
+    }
 
     res.status(201).json({
       success: true,

@@ -61,6 +61,8 @@ import { useToast } from '../../context/ToastContext';
 import { MediaLibraryManager } from './MediaLibraryManager';
 import { CollectionsManager } from './CollectionsManager';
 import { StoreSettingsModule } from './settings/StoreSettingsModule';
+import { safeStorage } from '../../utils/storage';
+import { compressImageFile } from '../../utils/imageCompressor';
 
 const defaultVideos = [
   {
@@ -98,7 +100,7 @@ export const AdminDashboard = ({ onNavigate }) => {
     setAuthError('');
     const cleanEmail = adminEmail.trim().toLowerCase();
     const cleanPass = adminPassword.trim();
-    
+
     if (!cleanEmail || !cleanPass) {
       setAuthError('Please enter both email and passcode.');
       return;
@@ -131,15 +133,14 @@ export const AdminDashboard = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'products' | 'categories' | 'collections' | 'inventory' | 'orders' | 'custom-orders' | 'enquiries' | 'customers' | 'media' | 'coupons' | 'settings' | 'reports' | 'studio-videos'
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
 
+  const [isSavingProduct, setIsSavingProduct] = useState(false);
+  const [isSavingCategory, setIsSavingCategory] = useState(false);
+  const [isCompressingImage, setIsCompressingImage] = useState(false);
+
   // Studio Videos Manager State
   const [studioVideos, setStudioVideos] = useState(() => {
-    try {
-      const saved = localStorage.getItem('aanublooms_studio_videos_v3');
-      const parsed = saved ? JSON.parse(saved) : [];
-      return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultVideos;
-    } catch {
-      return defaultVideos;
-    }
+    const parsed = safeStorage.getJSON('aanublooms_studio_videos_v3', null);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultVideos;
   });
 
   const [showVideoModal, setShowVideoModal] = useState(false);
@@ -173,7 +174,7 @@ export const AdminDashboard = ({ onNavigate }) => {
     }
 
     setStudioVideos(updated);
-    localStorage.setItem('aanublooms_studio_videos_v3', JSON.stringify(updated));
+    safeStorage.setItem('aanublooms_studio_videos_v3', updated);
     window.dispatchEvent(new Event('aanublooms_data_updated'));
     setShowVideoModal(false);
     setEditingVideo(null);
@@ -190,7 +191,7 @@ export const AdminDashboard = ({ onNavigate }) => {
     if (window.confirm('Are you sure you want to remove this video from the website?')) {
       const updated = studioVideos.filter(v => v.id !== id);
       setStudioVideos(updated);
-      localStorage.setItem('aanublooms_studio_videos_v3', JSON.stringify(updated));
+      safeStorage.setItem('aanublooms_studio_videos_v3', updated);
       window.dispatchEvent(new Event('aanublooms_data_updated'));
       addToast('Video removed successfully! 🗑️', 'info');
     }
@@ -227,7 +228,7 @@ export const AdminDashboard = ({ onNavigate }) => {
   const [selectedDateRange, setSelectedDateRange] = useState('Today');
 
   const [analytics, setAnalytics] = useState(null);
-  
+
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -295,7 +296,7 @@ export const AdminDashboard = ({ onNavigate }) => {
   const handleGlobalSearchResultClick = (res) => {
     setShowGlobalSearchResults(false);
     setGlobalSearchQuery('');
-    
+
     if (res.type === 'product') {
       setActiveTab('products');
       setEditingProduct(res.data);
@@ -367,7 +368,7 @@ export const AdminDashboard = ({ onNavigate }) => {
     image: '/images/category/1st_category_flower.jpeg'
   });
 
-  
+
   const dashboardStats = React.useMemo(() => {
     const totalSales = orders.reduce((sum, o) => sum + (o.total || 0), 0);
     const totalOrders = orders.length;
@@ -393,36 +394,39 @@ export const AdminDashboard = ({ onNavigate }) => {
       itemCount: editingCategory ? editingCategory.itemCount : 0
     };
 
+    setIsSavingCategory(true);
     let updated;
     try {
       if (editingCategory) {
-        await api.updateCategory(editingCategory.id, newCat).catch(() => {});
+        await api.updateCategory(editingCategory.id, newCat).catch(() => { });
         updated = categories.map(c => c.id === editingCategory.id ? newCat : c);
         addToast('Category updated successfully', 'success');
       } else {
-        await api.addCategory(newCat).catch(() => {});
+        await api.addCategory(newCat).catch(() => { });
         updated = [...categories, newCat];
         addToast('Category added successfully', 'success');
       }
-      
+
       setCategories(updated);
-      localStorage.setItem('aanublooms_categories_v2', JSON.stringify(updated));
+      safeStorage.setItem('aanublooms_categories_v2', updated);
       window.dispatchEvent(new Event('aanublooms_data_updated'));
       setShowCategoryModal(false);
       setCategoryForm({ name: '', slug: '', description: '', image: '/images/category/1st_category_flower.jpeg' });
       setEditingCategory(null);
     } catch (error) {
       addToast('Failed to save category', 'error');
+    } finally {
+      setIsSavingCategory(false);
     }
   };
 
   const handleDeleteCategory = async (catId) => {
     if (window.confirm('Are you sure you want to remove this category?')) {
       try {
-        await api.deleteCategory(catId).catch(() => {});
+        await api.deleteCategory(catId).catch(() => { });
         const updated = categories.filter(c => c.id !== catId);
         setCategories(updated);
-        localStorage.setItem('aanublooms_categories_v2', JSON.stringify(updated));
+        safeStorage.setItem('aanublooms_categories_v2', updated);
         window.dispatchEvent(new Event('aanublooms_data_updated'));
         addToast('Category removed from website', 'info');
       } catch (error) {
@@ -431,15 +435,21 @@ export const AdminDashboard = ({ onNavigate }) => {
     }
   };
 
-  const handleCategoryPhotoUpload = (e) => {
+  const handleCategoryPhotoUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setCategoryForm(prev => ({ ...prev, image: event.target.result }));
-      addToast('Category photo uploaded!', 'success');
-    };
-    reader.readAsDataURL(file);
+    setIsCompressingImage(true);
+    try {
+      const compressed = await compressImageFile(file, 800, 800, 0.82);
+      if (compressed) {
+        setCategoryForm(prev => ({ ...prev, image: compressed }));
+        addToast('Category photo optimized & ready!', 'success');
+      }
+    } catch (err) {
+      addToast('Failed to load category photo', 'error');
+    } finally {
+      setIsCompressingImage(false);
+    }
   };
 
   // Notifications dropdown toggle
@@ -496,7 +506,7 @@ export const AdminDashboard = ({ onNavigate }) => {
   const handleDeleteCustomRequest = async (id) => {
     if (window.confirm('Are you sure you want to delete this custom order inquiry? This action cannot be undone.')) {
       try {
-        await api.deleteCustomRequest(id).catch(() => {});
+        await api.deleteCustomRequest(id).catch(() => { });
         const updated = customRequests.filter(r => r.id !== id && r._id !== id);
         setCustomRequests(updated);
         addToast('Custom order deleted successfully! 🗑️', 'info');
@@ -554,20 +564,26 @@ export const AdminDashboard = ({ onNavigate }) => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target.result;
-      setProductForm(prev => ({
-        ...prev,
-        images: [dataUrl, ...(prev.images?.filter(img => !img.startsWith('data:')) || [])]
-      }));
-      addToast('📸 Photo selected from device!', 'success');
-    };
-    reader.readAsDataURL(file);
+    setIsCompressingImage(true);
+    try {
+      const compressedUrl = await compressImageFile(file, 1200, 1200, 0.82);
+      if (compressedUrl) {
+        setProductForm(prev => ({
+          ...prev,
+          images: [compressedUrl, ...(prev.images?.filter(img => !img.startsWith('data:')) || [])]
+        }));
+        addToast('📸 Photo optimized & ready for all devices!', 'success');
+      }
+    } catch (err) {
+      console.error('Image compression error:', err);
+      addToast('Could not load image', 'error');
+    } finally {
+      setIsCompressingImage(false);
+    }
   };
 
   // Fast direct photo launch from header
-  const handleDirectPhotoLaunch = (e) => {
+  const handleDirectPhotoLaunch = async (e) => {
     if (!isAdmin) {
       addToast('Admin access required to add products', 'error');
       return;
@@ -575,33 +591,38 @@ export const AdminDashboard = ({ onNavigate }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target.result;
-      setEditingProduct(null);
-      setProductForm({
-        name: file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '),
-        category: '',
-        price: 599,
-        originalPrice: 799,
-        material: '100% Combed Milk Cotton',
-        craftTimeHours: 4,
-        difficulty: 'Intermediate',
-        stock: 10,
-        shortDescription: 'Slow-crafted handcrafted pipe cleaner piece made with love.',
-        description: 'Handmade with ultra-soft milk cotton and velvet chenille. Perfect for thoughtful gifting and forever home decor.',
-        images: [dataUrl],
-        featured: true,
-        isBestseller: false
-      });
-      setShowProductModal(true);
-      addToast('📸 Photo loaded! Enter details and publish.', 'success');
-    };
-    reader.readAsDataURL(file);
+    setIsCompressingImage(true);
+    try {
+      const compressedUrl = await compressImageFile(file, 1200, 1200, 0.82);
+      if (compressedUrl) {
+        setEditingProduct(null);
+        setProductForm({
+          name: file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '),
+          category: '',
+          price: 599,
+          originalPrice: 799,
+          material: '100% Combed Milk Cotton',
+          craftTimeHours: 4,
+          difficulty: 'Intermediate',
+          stock: 10,
+          shortDescription: 'Slow-crafted handcrafted floral piece made with love.',
+          description: 'Handmade with ultra-soft milk cotton and velvet chenille. Perfect for thoughtful gifting and forever home decor.',
+          images: [compressedUrl],
+          featured: true,
+          isBestseller: false
+        });
+        setShowProductModal(true);
+        addToast('📸 Photo loaded & optimized! Enter details and publish.', 'success');
+      }
+    } catch (err) {
+      console.error('Image compression error:', err);
+    } finally {
+      setIsCompressingImage(false);
+    }
   };
 
   // Update order stage
-  const handleDeleteOrder = async (id, e) => { if(e) e.stopPropagation(); if(window.confirm("Delete order?")) { await api.deleteOrder(id); setOrders(prev => prev.filter(o => o.id !== id)); addToast("Order deleted", "info"); } }; const handleDeleteCustom = async (id, e) => { if(e) e.stopPropagation(); if(window.confirm("Delete custom request?")) { await api.deleteCustomRequest(id); setCustomRequests(prev => prev.filter(r => r.id !== id)); addToast("Request deleted", "info"); } }; const handleDeleteEnquiry = async (id, e) => { if(e) e.stopPropagation(); if(window.confirm("Delete enquiry?")) { await api.deleteContactMessage(id); setContactMessages(prev => prev.filter(m => m.id !== id)); addToast("Enquiry deleted", "info"); } }; const handleDeleteFeedback = async (id, e) => { if(e) e.stopPropagation(); if(window.confirm("Delete feedback?")) { await api.deleteFeedback(id); setFeedbacks(prev => prev.filter(f => f.id !== id)); addToast("Feedback deleted", "info"); } };
+  const handleDeleteOrder = async (id, e) => { if (e) e.stopPropagation(); if (window.confirm("Delete order?")) { await api.deleteOrder(id); setOrders(prev => prev.filter(o => o.id !== id)); addToast("Order deleted", "info"); } }; const handleDeleteCustom = async (id, e) => { if (e) e.stopPropagation(); if (window.confirm("Delete custom request?")) { await api.deleteCustomRequest(id); setCustomRequests(prev => prev.filter(r => r.id !== id)); addToast("Request deleted", "info"); } }; const handleDeleteEnquiry = async (id, e) => { if (e) e.stopPropagation(); if (window.confirm("Delete enquiry?")) { await api.deleteContactMessage(id); setContactMessages(prev => prev.filter(m => m.id !== id)); addToast("Enquiry deleted", "info"); } }; const handleDeleteFeedback = async (id, e) => { if (e) e.stopPropagation(); if (window.confirm("Delete feedback?")) { await api.deleteFeedback(id); setFeedbacks(prev => prev.filter(f => f.id !== id)); addToast("Feedback deleted", "info"); } };
   const handleUpdateStatus = async (orderId, newStatus) => {
     if (!isAdmin) {
       addToast('Admin access required to update orders', 'error');
@@ -679,7 +700,7 @@ export const AdminDashboard = ({ onNavigate }) => {
     // Apply Search
     if (customerSearchQuery.trim()) {
       const q = customerSearchQuery.toLowerCase().trim();
-      list = list.filter(c => 
+      list = list.filter(c =>
         c.name.toLowerCase().includes(q) ||
         c.email.toLowerCase().includes(q) ||
         c.phone.toLowerCase().includes(q) ||
@@ -750,6 +771,7 @@ export const AdminDashboard = ({ onNavigate }) => {
       return;
     }
 
+    setIsSavingProduct(true);
     try {
       let updatedProducts = [];
       const finalProductForm = {
@@ -775,15 +797,17 @@ export const AdminDashboard = ({ onNavigate }) => {
         const res = await api.createProduct(newProduct);
         const savedProduct = res.data || newProduct;
         updatedProducts = [savedProduct, ...products];
-        addToast(`"${finalProductForm.name}" added to store catalog! 🛍️`, 'success');
+        addToast(`"${finalProductForm.name}" published to store! 🛍️`, 'success');
       }
       setProducts(updatedProducts);
-      localStorage.setItem('aanublooms_products_v2', JSON.stringify(updatedProducts));
+      safeStorage.setItem('aanublooms_products_v2', updatedProducts);
       window.dispatchEvent(new Event('aanublooms_data_updated'));
       setShowProductModal(false);
       setEditingProduct(null);
     } catch (err) {
       addToast(err.message || 'Could not save product', 'error');
+    } finally {
+      setIsSavingProduct(false);
     }
   };
 
@@ -795,10 +819,10 @@ export const AdminDashboard = ({ onNavigate }) => {
     }
     if (window.confirm(`Are you sure you want to remove "${productName}" from the store catalog?`)) {
       try {
-        await api.deleteProduct(productId).catch(() => {});
+        await api.deleteProduct(productId).catch(() => { });
         const updated = products.filter(p => p.id !== productId);
         setProducts(updated);
-        localStorage.setItem('aanublooms_products_v2', JSON.stringify(updated));
+        safeStorage.setItem('aanublooms_products_v2', updated);
         window.dispatchEvent(new Event('aanublooms_data_updated'));
         addToast(`"${productName}" removed from store`, 'info');
       } catch (err) {
@@ -829,7 +853,7 @@ export const AdminDashboard = ({ onNavigate }) => {
   });
 
   // Top Products Ranked List (01 to 05)
-  
+
   const customOrderStats = React.useMemo(() => {
     const stats = { new: 0, discuss: 0, quoted: 0, approved: 0, making: 0, ready: 0, done: 0 };
     customRequests.forEach(req => {
@@ -976,13 +1000,12 @@ export const AdminDashboard = ({ onNavigate }) => {
   // =========================================================================
   return (
     <div className="min-h-screen bg-[#F8F6F3] text-[#3E2B25] flex antialiased font-sans">
-      
+
       {/* 1. FIXED / STICKY DARK COCOA SIDEBAR (Width: 250px, Color: #3E2B25) */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-[250px] bg-[#3E2B25] text-white flex flex-col justify-between p-4 shadow-xl transition-transform duration-300 lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-[250px] bg-[#3E2B25] text-white flex flex-col justify-between p-4 shadow-xl transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}>
         <div className="space-y-5 overflow-y-auto pr-1 scrollbar-none">
-          
+
           {/* Brand Logo & Studio Mark */}
           <div className="flex items-center justify-between px-2 pt-2 pb-1 border-b border-white/10">
             <div>
@@ -996,7 +1019,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                 ADMIN STUDIO
               </span>
             </div>
-            
+
             <button
               onClick={() => setSidebarOpen(false)}
               className="lg:hidden p-1 text-white/60 hover:text-white"
@@ -1012,11 +1035,10 @@ export const AdminDashboard = ({ onNavigate }) => {
             </span>
             <button
               onClick={() => { setActiveTab('dashboard'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors text-left ${
-                activeTab === 'dashboard'
-                  ? 'bg-[#D96C65] text-white shadow-sm'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors text-left ${activeTab === 'dashboard'
+                ? 'bg-[#D96C65] text-white shadow-sm'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <Home className="w-4 h-4" />
               <span>Dashboard</span>
@@ -1030,44 +1052,40 @@ export const AdminDashboard = ({ onNavigate }) => {
             </span>
             <button
               onClick={() => { setActiveTab('products'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'products'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'products'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <Package className="w-4 h-4" />
               <span>Products ({products.length})</span>
             </button>
             <button
               onClick={() => { setActiveTab('categories'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'categories'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'categories'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <Layers className="w-4 h-4" />
               <span>Categories</span>
             </button>
             <button
               onClick={() => { setActiveTab('collections'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'collections'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'collections'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <FolderPlus className="w-4 h-4" />
               <span>Collections</span>
             </button>
             <button
               onClick={() => { setActiveTab('inventory'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'inventory'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'inventory'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <BarChart3 className="w-4 h-4" />
               <span>Inventory</span>
@@ -1081,11 +1099,10 @@ export const AdminDashboard = ({ onNavigate }) => {
             </span>
             <button
               onClick={() => { setActiveTab('orders'); setSidebarOpen(false); }}
-              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'orders'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'orders'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-4 h-4" />
@@ -1098,11 +1115,10 @@ export const AdminDashboard = ({ onNavigate }) => {
 
             <button
               onClick={() => { setActiveTab('custom-orders'); setSidebarOpen(false); }}
-              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'custom-orders'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'custom-orders'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <Palette className="w-4 h-4" />
@@ -1116,11 +1132,10 @@ export const AdminDashboard = ({ onNavigate }) => {
             {/* Contact Us Enquiries Tab */}
             <button
               onClick={() => { setActiveTab('contact-messages'); setSidebarOpen(false); }}
-              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'contact-messages'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'contact-messages'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4" />
@@ -1134,11 +1149,10 @@ export const AdminDashboard = ({ onNavigate }) => {
             {/* Customer Feedbacks Tab */}
             <button
               onClick={() => { setActiveTab('customer-feedbacks'); setSidebarOpen(false); }}
-              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'customer-feedbacks'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'customer-feedbacks'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <Star className="w-4 h-4 text-amber-400" />
@@ -1157,11 +1171,10 @@ export const AdminDashboard = ({ onNavigate }) => {
             </span>
             <button
               onClick={() => { setActiveTab('customers'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'customers'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'customers'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <Users className="w-4 h-4" />
               <span>Customers</span>
@@ -1182,22 +1195,20 @@ export const AdminDashboard = ({ onNavigate }) => {
             </button>
             <button
               onClick={() => { setActiveTab('media'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'media'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'media'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <ImageIcon className="w-4 h-4" />
               <span>Media Library</span>
             </button>
             <button
               onClick={() => { setActiveTab('studio-videos'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'studio-videos'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'studio-videos'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <Video className="w-4 h-4" />
               <span>Studio Videos</span>
@@ -1211,11 +1222,10 @@ export const AdminDashboard = ({ onNavigate }) => {
             </span>
             <button
               onClick={() => { setActiveTab('coupons'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'coupons'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'coupons'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <Ticket className="w-4 h-4" />
               <span>Coupons & Offers</span>
@@ -1229,11 +1239,10 @@ export const AdminDashboard = ({ onNavigate }) => {
             </span>
             <button
               onClick={() => { setActiveTab('reports'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'reports'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'reports'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <BarChart3 className="w-4 h-4" />
               <span>Reports</span>
@@ -1247,11 +1256,10 @@ export const AdminDashboard = ({ onNavigate }) => {
             </span>
             <button
               onClick={() => { setActiveTab('settings'); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${
-                activeTab === 'settings'
-                  ? 'bg-[#D96C65] text-white font-semibold'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors text-left ${activeTab === 'settings'
+                ? 'bg-[#D96C65] text-white font-semibold'
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
             >
               <Settings className="w-4 h-4" />
               <span>Store Settings</span>
@@ -1282,7 +1290,7 @@ export const AdminDashboard = ({ onNavigate }) => {
 
       {/* 2. DEDICATED ADMIN CONTENT AREA */}
       <div className="flex-1 lg:ml-[250px] flex flex-col min-h-screen">
-        
+
         {/* DEDICATED ADMIN TOPBAR (64px) */}
         <header className="sticky top-0 z-30 bg-white border-b border-[#E9E2DC] h-16 px-5 sm:px-8 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -1313,13 +1321,13 @@ export const AdminDashboard = ({ onNavigate }) => {
                 onFocus={() => setShowGlobalSearchResults(true)}
                 className="w-full text-xs py-2 pl-9 pr-3 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25] placeholder-[#756A65]/70 focus:outline-none focus:border-[#D96C65]"
               />
-              
+
               {showGlobalSearchResults && globalSearchQuery.trim() !== '' && (
                 <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-[#E9E2DC] p-2 max-h-80 overflow-y-auto">
                   {globalSearchResults.length > 0 ? (
                     <div className="space-y-1">
                       {globalSearchResults.map((res, idx) => (
-                        <div 
+                        <div
                           key={`${res.type}-${res.id}-${idx}`}
                           onClick={() => handleGlobalSearchResultClick(res)}
                           className="px-3 py-2 hover:bg-[#F8F6F3] rounded-lg cursor-pointer transition-colors"
@@ -1421,7 +1429,7 @@ export const AdminDashboard = ({ onNavigate }) => {
         {/* ========================================================= */}
         {activeTab === 'dashboard' && (
           <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full">
-            
+
             {/* PAGE HEADER & DATE SELECTOR */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1">
               <div>
@@ -1434,31 +1442,31 @@ export const AdminDashboard = ({ onNavigate }) => {
               </div>
 
               {/* Date Range Selector */}
-              
-  <div className="flex items-center gap-2 self-start sm:self-auto">
-    <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[#E9E2DC] rounded-xl text-xs font-semibold text-[#3E2B25] shadow-2xs relative">
-      <Calendar className="w-3.5 h-3.5 text-[#756A65] pointer-events-none" />
-      <select 
-        value={selectedDateRange}
-        onChange={(e) => setSelectedDateRange(e.target.value)}
-        className="appearance-none bg-transparent outline-none cursor-pointer pr-4"
-      >
-        <option value="Today">Today</option>
-        <option value="Last 7 Days">Last 7 Days</option>
-        <option value="Last 30 Days">Last 30 Days</option>
-        <option value="This Month">This Month</option>
-        <option value="This Year">This Year</option>
-        <option value="19 May – 25 May 2026">19 May – 25 May 2026</option>
-      </select>
-      <ChevronDown className="w-3 h-3 text-[#756A65] absolute right-3 pointer-events-none" />
-    </div>
-  </div>
+
+              <div className="flex items-center gap-2 self-start sm:self-auto">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[#E9E2DC] rounded-xl text-xs font-semibold text-[#3E2B25] shadow-2xs relative">
+                  <Calendar className="w-3.5 h-3.5 text-[#756A65] pointer-events-none" />
+                  <select
+                    value={selectedDateRange}
+                    onChange={(e) => setSelectedDateRange(e.target.value)}
+                    className="appearance-none bg-transparent outline-none cursor-pointer pr-4"
+                  >
+                    <option value="Today">Today</option>
+                    <option value="Last 7 Days">Last 7 Days</option>
+                    <option value="Last 30 Days">Last 30 Days</option>
+                    <option value="This Month">This Month</option>
+                    <option value="This Year">This Year</option>
+                    <option value="19 May – 25 May 2026">19 May – 25 May 2026</option>
+                  </select>
+                  <ChevronDown className="w-3 h-3 text-[#756A65] absolute right-3 pointer-events-none" />
+                </div>
+              </div>
 
             </div>
 
             {/* ROW 1: 6 KPI CARDS */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
-              
+
               {/* 1. Total Sales */}
               <div className="bg-white rounded-2xl p-4 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-2">
                 <div className="flex items-center justify-between">
@@ -1559,7 +1567,7 @@ export const AdminDashboard = ({ onNavigate }) => {
 
             {/* ROW 2: Sales Overview Chart + Top Products + Recent Notifications */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
-              
+
               {/* Sales Overview Line/Area Chart (6 cols) */}
               <div className="lg:col-span-6 bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -1591,11 +1599,10 @@ export const AdminDashboard = ({ onNavigate }) => {
                       <button
                         key={tf.id}
                         onClick={() => setSalesTimeframe(tf.id)}
-                        className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all ${
-                          salesTimeframe === tf.id
-                            ? 'bg-white text-[#3E2B25] font-bold shadow-2xs'
-                            : 'text-[#756A65] hover:text-[#3E2B25]'
-                        }`}
+                        className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all ${salesTimeframe === tf.id
+                          ? 'bg-white text-[#3E2B25] font-bold shadow-2xs'
+                          : 'text-[#756A65] hover:text-[#3E2B25]'
+                          }`}
                       >
                         {tf.label}
                       </button>
@@ -1755,7 +1762,7 @@ export const AdminDashboard = ({ onNavigate }) => {
 
             {/* ROW 3: Recent Orders Table + Sales by Category */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
-              
+
               {/* Recent Orders Table (8 cols) */}
               <div className="lg:col-span-8 bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-4">
                 <div className="flex items-center justify-between">
@@ -1860,7 +1867,7 @@ export const AdminDashboard = ({ onNavigate }) => {
 
             {/* ROW 4: Low Stock Alerts + Custom Order Pipeline + Quick Actions */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
-              
+
               {/* Low Stock Alerts (4 cols) */}
               <div className="lg:col-span-4 bg-white rounded-2xl p-5 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-3.5">
                 <div className="flex items-center justify-between">
@@ -2044,11 +2051,10 @@ export const AdminDashboard = ({ onNavigate }) => {
                     <button
                       key={cat.id}
                       onClick={() => setProductCategoryFilter(cat.id)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-                        productCategoryFilter === cat.id
-                          ? 'bg-[#3E2B25] text-white font-bold'
-                          : 'bg-[#F8F6F3] text-[#756A65] hover:text-[#3E2B25]'
-                      }`}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${productCategoryFilter === cat.id
+                        ? 'bg-[#3E2B25] text-white font-bold'
+                        : 'bg-[#F8F6F3] text-[#756A65] hover:text-[#3E2B25]'
+                        }`}
                     >
                       {cat.name}
                     </button>
@@ -2095,9 +2101,8 @@ export const AdminDashboard = ({ onNavigate }) => {
                           </div>
                         </td>
                         <td className="py-2.5 px-2">
-                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
-                            prod.stock > 0 ? 'bg-[#4F9D69]/15 text-[#4F9D69]' : 'bg-[#D65C5C]/15 text-[#D65C5C]'
-                          }`}>
+                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${prod.stock > 0 ? 'bg-[#4F9D69]/15 text-[#4F9D69]' : 'bg-[#D65C5C]/15 text-[#D65C5C]'
+                            }`}>
                             {prod.stock > 0 ? 'Active' : 'Out of Stock'}
                           </span>
                         </td>
@@ -2262,11 +2267,10 @@ export const AdminDashboard = ({ onNavigate }) => {
                   <button
                     key={st}
                     onClick={() => setOrderStatusFilter(st)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-                      orderStatusFilter === st
-                        ? 'bg-[#3E2B25] text-white font-bold'
-                        : 'bg-[#F8F6F3] text-[#756A65] hover:text-[#3E2B25]'
-                    }`}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${orderStatusFilter === st
+                      ? 'bg-[#3E2B25] text-white font-bold'
+                      : 'bg-[#F8F6F3] text-[#756A65] hover:text-[#3E2B25]'
+                      }`}
                   >
                     {st.charAt(0).toUpperCase() + st.slice(1)}
                   </button>
@@ -2299,7 +2303,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                           </button>
                         </td>
                         <td className="py-3 px-3">
-                          <div 
+                          <div
                             onClick={() => setSelectedOrderDetails(order)}
                             className="cursor-pointer hover:bg-[#F8F6F3] p-1.5 -ml-1.5 rounded-lg transition-colors border border-transparent hover:border-[#E9E2DC]"
                             title="Click to view order & customer details"
@@ -2309,7 +2313,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                           </div>
                         </td>
                         <td className="py-3 px-3 max-w-[220px]">
-                          <div 
+                          <div
                             onClick={() => setSelectedOrderDetails(order)}
                             className="cursor-pointer group"
                             title="Click to view items to craft"
@@ -2760,7 +2764,7 @@ export const AdminDashboard = ({ onNavigate }) => {
         {activeTab === 'customers' && (
           <main className="p-5 sm:p-7 space-y-6 max-w-7xl w-full animate-in fade-in">
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#E9E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.03)] space-y-5">
-              
+
               {/* Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E9E2DC]">
                 <div>
@@ -3142,14 +3146,14 @@ export const AdminDashboard = ({ onNavigate }) => {
       {/* PRODUCT ADD / EDIT MODAL POP-UP */}
       {/* ========================================================= */}
       {showProductModal && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowProductModal(false);
           }}
         >
           <div className="relative bg-white rounded-2xl max-w-xl w-full border border-[#E9E2DC] shadow-2xl z-10 flex flex-col max-h-[88vh] overflow-hidden animate-in zoom-in-95">
-            
+
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-[#E9E2DC] flex items-center justify-between bg-white z-10 shrink-0">
               <div>
@@ -3160,10 +3164,10 @@ export const AdminDashboard = ({ onNavigate }) => {
                   {editingProduct ? 'Edit Handcrafted Piece' : 'Add New handmade Product'}
                 </h3>
               </div>
-              
-              <button 
+
+              <button
                 type="button"
-                onClick={() => setShowProductModal(false)} 
+                onClick={() => setShowProductModal(false)}
                 className="p-1.5 rounded-lg bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#756A65] transition-colors"
                 title="Close modal"
               >
@@ -3174,7 +3178,7 @@ export const AdminDashboard = ({ onNavigate }) => {
             {/* Scrollable Form Body */}
             <form onSubmit={handleSaveProduct} className="flex flex-col flex-1 overflow-hidden">
               <div className="overflow-y-auto px-6 py-4 space-y-4 flex-1">
-                
+
                 <div>
                   <label className="block text-xs font-bold text-[#3E2B25] mb-1">
                     Product Name *
@@ -3309,12 +3313,13 @@ export const AdminDashboard = ({ onNavigate }) => {
                 >
                   Cancel
                 </button>
-                
+
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl font-semibold text-xs transition-colors shadow-sm"
+                  disabled={isSavingProduct || isCompressingImage}
+                  className="px-5 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl font-semibold text-xs transition-all shadow-sm disabled:opacity-50 flex items-center gap-1.5"
                 >
-                  {editingProduct ? 'Save Changes' : 'Publish Product 🌸'}
+                  {isCompressingImage ? 'Optimizing photo...' : isSavingProduct ? 'Publishing...' : (editingProduct ? 'Save Changes' : 'Publish Product 🌸')}
                 </button>
               </div>
             </form>
@@ -3327,14 +3332,14 @@ export const AdminDashboard = ({ onNavigate }) => {
       {/* CUSTOMER ORDER HISTORY MODAL POP-UP */}
       {/* ========================================================= */}
       {selectedCustomerDetails && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in"
           onClick={(e) => {
             if (e.target === e.currentTarget) setSelectedCustomerDetails(null);
           }}
         >
           <div className="bg-white rounded-2xl max-w-2xl w-full p-6 border border-[#E9E2DC] shadow-2xl space-y-5 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto">
-            
+
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-3.5 border-b border-[#E9E2DC]">
               <div className="flex items-center gap-3">
@@ -3528,9 +3533,11 @@ export const AdminDashboard = ({ onNavigate }) => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-bold shadow-xs transition-colors"
+                  disabled={isSavingCategory || isCompressingImage}
+                  className="px-5 py-2 bg-[#D96C65] hover:bg-[#C95B55] text-white rounded-xl text-xs font-bold shadow-xs transition-all disabled:opacity-50"
                 >
-                  {editingCategory ? 'Update Category 🌸' : 'Add Category 🌸'}
+                  {isSavingCategory ? 'Saving...' : (editingCategory ? 'Update Category 🌸' : 'Add Category 🌸')}
+
                 </button>
               </div>
             </form>
@@ -3618,14 +3625,14 @@ export const AdminDashboard = ({ onNavigate }) => {
       {/* ORDER & CRAFTING DETAILS MODAL POP-UP */}
       {/* ========================================================= */}
       {selectedOrderDetails && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
           onClick={(e) => {
             if (e.target === e.currentTarget) setSelectedOrderDetails(null);
           }}
         >
           <div className="relative bg-white rounded-3xl max-w-2xl w-full border border-[#E9E2DC] shadow-2xl z-10 flex flex-col max-h-[90vh] overflow-hidden animate-in zoom-in-95">
-            
+
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-[#E9E2DC] flex items-center justify-between bg-white shrink-0">
               <div className="flex items-center gap-3">
@@ -3645,8 +3652,8 @@ export const AdminDashboard = ({ onNavigate }) => {
                 </div>
               </div>
 
-              <button 
-                onClick={() => setSelectedOrderDetails(null)} 
+              <button
+                onClick={() => setSelectedOrderDetails(null)}
                 className="p-2 rounded-xl bg-[#F8F6F3] hover:bg-[#E9E2DC] text-[#756A65] transition-colors"
                 title="Close modal"
               >
@@ -3656,7 +3663,7 @@ export const AdminDashboard = ({ onNavigate }) => {
 
             {/* Scrollable Content */}
             <div className="overflow-y-auto px-6 py-5 space-y-5 flex-1 text-xs">
-              
+
               {/* Crafting Requirements Banner */}
               <div className="p-4 rounded-2xl bg-[#FDF8F5] border border-[#F3E5DC] space-y-3">
                 <div className="flex items-center justify-between">
@@ -3715,7 +3722,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                   <h5 className="font-bold text-xs text-[#3E2B25]">{selectedOrderDetails.customer?.name || 'N/A'}</h5>
                   <p className="text-[11px] text-[#756A65]">{selectedOrderDetails.customer?.email || 'N/A'}</p>
                   <p className="text-[11px] text-[#756A65] font-mono">📞 {selectedOrderDetails.customer?.phone || 'N/A'}</p>
-                  
+
                   {selectedOrderDetails.customer?.phone && (
                     <a
                       href={`https://wa.me/${selectedOrderDetails.customer.phone.replace(/[^0-9]/g, '')}?text=Hi%20${encodeURIComponent(selectedOrderDetails.customer.name || '')}%2C%20regarding%20your%20AanuBlooms%20order%20%23${selectedOrderDetails.id}...`}
@@ -3789,11 +3796,10 @@ export const AdminDashboard = ({ onNavigate }) => {
                         handleUpdateStatus(selectedOrderDetails.id, st.id);
                         setSelectedOrderDetails(prev => ({ ...prev, status: st.id }));
                       }}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                        selectedOrderDetails.status === st.id
-                          ? 'bg-[#D96C65] text-white font-bold shadow-xs'
-                          : 'bg-[#F8F6F3] text-[#756A65] hover:bg-[#E9E2DC] hover:text-[#3E2B25]'
-                      }`}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${selectedOrderDetails.status === st.id
+                        ? 'bg-[#D96C65] text-white font-bold shadow-xs'
+                        : 'bg-[#F8F6F3] text-[#756A65] hover:bg-[#E9E2DC] hover:text-[#3E2B25]'
+                        }`}
                     >
                       {st.label}
                     </button>
@@ -3826,7 +3832,7 @@ export const AdminDashboard = ({ onNavigate }) => {
 
 
 
-    {/* Video Manage Modal */}
+      {/* Video Manage Modal */}
       {showVideoModal && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"

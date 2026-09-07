@@ -144,7 +144,7 @@ export const PrintableInvoice = ({ order, onClose }) => {
         {/* Footer */}
         <div className="mt-8 pt-4 border-t border-warmgray-200 text-center text-xs text-warmgray-500 space-y-1">
           <p className="font-serif font-bold text-warmgray-800">Thank you for supporting slow artisan craft!</p>
-          <p>Questions? Reach Artisan Aanu at <span className="underline">maker@aanublooms.com</span></p>
+          <p>Questions? Reach Artisan Aanu at <span className="underline font-semibold">orders@aanublooms.in</span> · <a href="https://aanublooms.in" className="text-bloom-600 font-semibold hover:underline">aanublooms.in</a></p>
         </div>
 
       </div>

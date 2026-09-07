@@ -73,17 +73,33 @@ export const FeedbackPage = ({ onNavigate }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.author || !form.comment) {
+    if (!form.author.trim() || !form.comment.trim()) {
       addToast('Please enter your name and feedback comments', 'error');
       return;
     }
 
+    if (form.email && form.email.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(form.email.trim())) {
+        addToast('Please enter a valid email address format (e.g. name@example.com)', 'error');
+        return;
+      }
+    }
+
     setIsSubmitting(true);
     try {
-      const res = await api.sendFeedback(form);
+      const cleanPayload = {
+        ...form,
+        author: form.author.trim(),
+        email: form.email ? form.email.trim().toLowerCase() : '',
+        city: form.city?.trim() || 'India',
+        comment: form.comment.trim(),
+        highlight: form.highlight?.trim() || ''
+      };
+      const res = await api.sendFeedback(cleanPayload);
       if (res.success) {
         setIsSubmitted(true);
-        addToast(res.message, 'success');
+        addToast(res.message || 'Thank you for your feedback! 🌸', 'success');
         confetti({
           particleCount: 80,
           spread: 60,

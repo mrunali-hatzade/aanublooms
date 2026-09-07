@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect } from 'react';
+import { safeStorage } from '../utils/storage';
 
 const ThemeContext = createContext();
 
@@ -6,7 +7,7 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     // Keep light cozy boutique theme active
     document.documentElement.classList.remove('dark');
-    localStorage.setItem('aanublooms_theme', 'light');
+    safeStorage.setItem('aanublooms_theme', 'light');
   }, []);
 
   return (

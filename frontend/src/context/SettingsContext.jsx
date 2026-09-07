@@ -6,9 +6,9 @@ const SettingsContext = createContext();
 
 export const DEFAULT_SETTINGS = {
   general: {
-    storeName: 'Stitch & Love',
-    tagline: 'Handmade with Love, One Stitch at a Time.',
-    description: 'Beautiful handmade creations crafted with care, forever floral bouquets, flower pots, keychains, and bespoke gifts.',
+    storeName: 'AanuBlooms',
+    tagline: 'Handmade with Love, One Petal at a Time.',
+    description: 'Beautiful handcrafted floral creations crafted with care, forever floral bouquets, blossom pots, and bespoke gifts.',
     storeOpen: true,
     closedMessage: "We're taking a short break to craft more creations and will be back soon.",
     currency: 'INR',
@@ -17,14 +17,14 @@ export const DEFAULT_SETTINGS = {
     country: 'India'
   },
   business: {
-    businessName: 'Stitch & Love Handcrafted Studio',
-    ownerName: 'Aanu (Priya Sharma)',
-    businessType: 'Handmade Boutique & Studio',
-    yearStarted: '2026',
-    address: '402, Lotus Residency, Indiranagar',
-    city: 'Bengaluru',
-    state: 'Karnataka',
-    zip: '560038',
+    businessName: 'AanuBlooms Handcrafted Studio',
+    ownerName: 'Aanu',
+    businessType: 'Handmade Floral Boutique & Studio',
+    yearStarted: '2024',
+    address: 'Baner - Balewadi Road',
+    city: 'Pune',
+    state: 'Maharashtra',
+    zip: '411045',
     country: 'India',
     gstin: '',
     pan: ''
@@ -40,8 +40,8 @@ export const DEFAULT_SETTINGS = {
   contact: {
     whatsappNumber: '+919579162154',
     phoneNumber: '+91 95791 62154',
-    businessEmail: 'hello@stitchandlove.com',
-    supportEmail: 'support@stitchandlove.com',
+    businessEmail: 'hello@aanublooms.in',
+    supportEmail: 'support@aanublooms.in',
     instagramUrl: 'https://instagram.com/aanublooms',
     facebookUrl: 'https://facebook.com/aanublooms',
     pinterestUrl: 'https://pinterest.com/aanublooms',
@@ -49,7 +49,7 @@ export const DEFAULT_SETTINGS = {
     googleBusinessUrl: ''
   },
   orders: {
-    orderIdPrefix: 'SL-',
+    orderIdPrefix: 'AB-',
     startingOrderNumber: 1001,
     defaultProcessingTime: '3–5 business days',
     allowGuestCheckout: true,
@@ -94,12 +94,12 @@ export const DEFAULT_SETTINGS = {
       bankTransfer: false
     },
     razorpay: {
-      keyId: 'rzp_test_StitchAndLove2026',
+      keyId: 'rzp_live_TUlMQPBRNulPVu',
       keySecretMasked: '••••••••••••••••',
       status: 'connected'
     },
     upi: {
-      vpa: 'stitchandlove@upi'
+      vpa: 'aanublooms@upi'
     }
   },
   taxes: {
@@ -168,14 +168,11 @@ export const DEFAULT_SETTINGS = {
   }
 };
 
+import { safeStorage } from '../utils/storage';
+
 export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useState(() => {
-    try {
-      const saved = localStorage.getItem('stitch_and_love_settings');
-      return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
-    } catch {
-      return DEFAULT_SETTINGS;
-    }
+    return safeStorage.getJSON('stitch_and_love_settings', DEFAULT_SETTINGS);
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -189,7 +186,7 @@ export const SettingsProvider = ({ children }) => {
         const res = await api.getSettings();
         if (res.success && res.data) {
           setSettings(res.data);
-          localStorage.setItem('stitch_and_love_settings', JSON.stringify(res.data));
+          safeStorage.setItem('stitch_and_love_settings', res.data);
         }
       } catch (err) {
         // Fallback to local storage
@@ -205,7 +202,7 @@ export const SettingsProvider = ({ children }) => {
       const res = await api.updateSettings(newSettings);
       if (res.success) {
         setSettings(res.data || newSettings);
-        localStorage.setItem('stitch_and_love_settings', JSON.stringify(res.data || newSettings));
+        safeStorage.setItem('stitch_and_love_settings', res.data || newSettings);
         setHasUnsavedChanges(false);
         addToast('Store settings saved successfully. ✨', 'success');
         setIsLoading(false);
@@ -214,7 +211,7 @@ export const SettingsProvider = ({ children }) => {
     } catch (err) {
       // Local fallback
       setSettings(newSettings);
-      localStorage.setItem('stitch_and_love_settings', JSON.stringify(newSettings));
+      safeStorage.setItem('stitch_and_love_settings', newSettings);
       setHasUnsavedChanges(false);
       addToast('Store settings saved locally.', 'success');
       setIsLoading(false);

@@ -820,7 +820,7 @@ export const StoreSettingsModule = () => {
                       type="email"
                       value={formData.contact?.businessEmail || ''}
                       onChange={(e) => handleFieldChange('contact', 'businessEmail', e.target.value)}
-                      placeholder="hello@stitchandlove.com"
+                      placeholder="hello@aanublooms.in"
                       className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]"
                     />
                   </div>
@@ -831,7 +831,7 @@ export const StoreSettingsModule = () => {
                       type="email"
                       value={formData.contact?.supportEmail || ''}
                       onChange={(e) => handleFieldChange('contact', 'supportEmail', e.target.value)}
-                      placeholder="support@stitchandlove.com"
+                      placeholder="support@aanublooms.in"
                       className="w-full text-xs p-2.5 rounded-xl bg-[#F8F6F3] border border-[#E9E2DC] text-[#3E2B25]"
                     />
                   </div>
@@ -1311,9 +1311,9 @@ export const StoreSettingsModule = () => {
                   <span className="text-xs font-bold text-[#3E2B25] block">Direct UPI VPA ID</span>
                   <input
                     type="text"
-                    value={formData.payments?.upi?.vpa || 'stitchandlove@upi'}
+                    value={formData.payments?.upi?.vpa || 'aanublooms@upi'}
                     onChange={(e) => handleNestedFieldChange('payments', 'upi', 'vpa', e.target.value)}
-                    placeholder="e.g. yourstore@okaxis"
+                    placeholder="e.g. aanublooms@okaxis"
                     className="w-full text-xs font-mono p-2.5 rounded-xl bg-white border border-[#E9E2DC]"
                   />
                 </div>
@@ -1576,7 +1576,7 @@ export const StoreSettingsModule = () => {
                       className="w-full h-36 object-cover"
                     />
                     <div className="p-3">
-                      <span className="text-[10px] uppercase font-bold text-[#756A65] block">stitchandlove.com</span>
+                      <span className="text-[10px] uppercase font-bold text-[#756A65] block">aanublooms.in</span>
                       <h4 className="text-xs font-bold text-[#3E2B25] mt-0.5 line-clamp-1">{formData.seo?.metaTitle}</h4>
                       <p className="text-[11px] text-[#756A65] line-clamp-2 mt-0.5">{formData.seo?.metaDescription}</p>
                     </div>

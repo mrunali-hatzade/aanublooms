@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from './ToastContext';
+import { safeStorage } from '../utils/storage';
 
 const LocationContext = createContext();
 
@@ -7,35 +8,22 @@ export const LocationProvider = ({ children }) => {
   const { addToast } = useToast();
 
   const [location, setLocation] = useState(() => {
-    try {
-      const saved = localStorage.getItem('aanublooms_delivery_location');
-      return saved ? JSON.parse(saved) : {
-        city: 'Pune',
-        state: 'Maharashtra',
-        zip: '411038',
-        country: 'India',
-        address: 'Kothrud, Pune',
-        estimatedDays: 'Same Day / Next Day',
-        isDetected: false
-      };
-    } catch {
-      return {
-        city: 'Pune',
-        state: 'Maharashtra',
-        zip: '411038',
-        country: 'India',
-        address: 'Kothrud, Pune',
-        estimatedDays: 'Same Day / Next Day',
-        isDetected: false
-      };
-    }
+    return safeStorage.getJSON('aanublooms_delivery_location', {
+      city: 'Pune',
+      state: 'Maharashtra',
+      zip: '411038',
+      country: 'India',
+      address: 'Kothrud, Pune',
+      estimatedDays: 'Same Day / Next Day',
+      isDetected: false
+    });
   });
 
   const [isDetecting, setIsDetecting] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('aanublooms_delivery_location', JSON.stringify(location));
+    safeStorage.setItem('aanublooms_delivery_location', location);
   }, [location]);
 
   // Request Browser GPS Geolocation Permission
