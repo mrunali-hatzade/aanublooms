@@ -14,7 +14,8 @@ import {
   ArrowLeft,
   Share2,
   Check,
-  Info
+  Info,
+  MessageCircle
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useCart } from '../context/CartContext';
@@ -132,9 +133,9 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
   };
 
   const handleWhatsAppShare = () => {
-    const productUrl = `${window.location.origin}/product/${product.id}`;
-    const text = encodeURIComponent(`🌸 Hey! Check out this handcrafted "${product.name}" from AanuBlooms:\n${productUrl}`);
-    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    const productUrl = typeof window !== 'undefined' ? `${window.location.origin}/product/${product.id}` : '';
+    const text = encodeURIComponent(`🌸 Hi Aanu, I am interested in ordering "${product.name}" (₹${product.price}) from AanuBlooms:\n${productUrl}\n\nCould you please assist me?`);
+    window.open(`https://wa.me/919579162154?text=${text}`, '_blank');
   };
 
   return (
@@ -154,8 +155,9 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
           <button
             onClick={handleWhatsAppShare}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900 text-emerald-700 dark:text-emerald-300 font-bold transition-colors border border-emerald-200 dark:border-emerald-800 text-[11px]"
-            title="Share on WhatsApp"
+            title="Chat / Order on WhatsApp +91 95791 62154"
           >
+            <MessageCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
             <span>WhatsApp</span>
           </button>
           <button
@@ -351,6 +353,16 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
               className="w-full py-3.5 bg-warmgray-900 hover:bg-black text-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 rounded-2xl font-bold text-sm sm:text-base shadow-md btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2"
             >
               <span>Instant Buy Now with Express Checkout ⚡</span>
+            </button>
+
+            {/* Direct Order on WhatsApp */}
+            <button
+              onClick={handleWhatsAppShare}
+              className="w-full py-3 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/80 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700 rounded-2xl font-bold text-sm transition-all duration-200 transform active:scale-95 flex items-center justify-center gap-2 shadow-xs"
+              title="Chat directly with Artisan Aanu on WhatsApp"
+            >
+              <MessageCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span>Order / Inquire on WhatsApp (+91 95791 62154)</span>
             </button>
           </div>
 

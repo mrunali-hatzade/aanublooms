@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Truck, Printer, ArrowRight, Flower2, User } from 'lucide-react';
+import { Sparkles, Truck, Printer, ArrowRight, Flower2, User, MessageCircle } from 'lucide-react';
 import { PrintableInvoice } from '../components/orders/PrintableInvoice';
 
 export const OrderSuccessPage = ({ order, onNavigate }) => {
@@ -93,6 +93,17 @@ export const OrderSuccessPage = ({ order, onNavigate }) => {
             <Printer className="w-4 h-4" />
             <span>Print Receipt</span>
           </button>
+
+          <a
+            href={`https://wa.me/919579162154?text=${encodeURIComponent(`Hi Aanu! I just placed Order #${order.id} on AanuBlooms. Name: ${order.customer?.name || ''}, Total: ₹${order.total}. Could you please share the tracking updates?`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto px-5 py-3 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700 rounded-full font-bold text-xs transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center gap-1.5 shadow-2xs"
+            title="Chat with maker on WhatsApp"
+          >
+            <MessageCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>WhatsApp Support</span>
+          </a>
         </div>
 
         {/* Back to shop */}

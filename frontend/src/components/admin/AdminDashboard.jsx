@@ -1818,7 +1818,7 @@ export const AdminDashboard = ({ onNavigate }) => {
                               <button onClick={() => setActiveTab('orders')} className="p-1 rounded-md hover:bg-[#E9E2DC] text-[#756A65]" title="View Details">
                                 <Eye className="w-3.5 h-3.5" />
                               </button>
-                              <a href="https://wa.me/" target="_blank" rel="noreferrer" className="p-1 rounded-md hover:bg-emerald-50 text-[#4F9D69]" title="WhatsApp Customer">
+                              <a href={order.customer?.phone ? `https://wa.me/${order.customer.phone.replace(/\D/g, '')}` : 'https://wa.me/919579162154'} target="_blank" rel="noreferrer" className="p-1 rounded-md hover:bg-emerald-50 text-[#4F9D69]" title="WhatsApp Customer">
                                 <MessageCircle className="w-3.5 h-3.5" />
                               </a>
                             </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Palette, Sparkles, Check, Heart, Flower2, Gift, Send, ShoppingBag, Upload, X, Image as ImageIcon } from 'lucide-react';
+import { Palette, Sparkles, Check, Heart, Flower2, Gift, Send, ShoppingBag, Upload, X, Image as ImageIcon, MessageCircle } from 'lucide-react';
 import { api } from '../../services/api';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
@@ -605,12 +605,23 @@ export const CustomOrderBuilder = ({ onNavigate }) => {
           <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-300 leading-relaxed">
             Thank you, {customerName}! Artisan Aanu has received your custom floral and color specifications and will reach out to <strong>{customerEmail}</strong> within 24 hours.
           </p>
-          <button
-            onClick={() => onNavigate('home')}
-            className="px-5 py-2.5 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-xs shadow-cozy mt-3"
-          >
-            Return to Storefront
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 pt-2">
+            <a
+              href={`https://wa.me/919579162154?text=${encodeURIComponent(`Hi Aanu! I just submitted a custom order request for "${creationType}" on AanuBlooms. Name: ${customerName}. Could we discuss details?`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold text-xs shadow-cozy transition-all"
+            >
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span>Chat with Aanu on WhatsApp (+91 95791 62154)</span>
+            </a>
+            <button
+              onClick={() => onNavigate('home')}
+              className="px-5 py-2.5 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-xs shadow-cozy transition-all"
+            >
+              Return to Storefront
+            </button>
+          </div>
         </div>
       )}
 

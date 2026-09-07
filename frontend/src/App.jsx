@@ -29,6 +29,7 @@ import { FeedbackPage } from './pages/FeedbackPage';
 import { Floating3DBackground } from './components/common/Floating3DBackground';
 import { SparkleClickEffect } from './components/common/SparkleClickEffect';
 import { ScrollToTopButton } from './components/common/ScrollToTopButton';
+import { FloatingWhatsAppButton } from './components/common/FloatingWhatsAppButton';
 import { safeStorage, safeSessionStorage } from './utils/storage';
 
 class ErrorBoundary extends React.Component {
@@ -364,7 +365,8 @@ function AppContent() {
       {/* Delivery Location & GPS Modal */}
       <LocationModal />
 
-      {/* Floating Go To Top Button */}
+      {/* Floating Support & Navigation Buttons */}
+      <FloatingWhatsAppButton />
       <ScrollToTopButton />
 
       {/* Artisan Footer */}
