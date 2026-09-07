@@ -1,5 +1,49 @@
 // Safe Storage Utility with Quota Management and Fallbacks
 
+// Defensive interceptor for Storage.prototype.setItem to guarantee QuotaExceededError NEVER crashes React
+if (typeof window !== 'undefined' && window.Storage) {
+  try {
+    const originalSetItem = window.Storage.prototype.setItem;
+    window.Storage.prototype.setItem = function (key, value) {
+      try {
+        return originalSetItem.call(this, key, value);
+      } catch (err) {
+        if (
+          err &&
+          (err.name === 'QuotaExceededError' ||
+            err.code === 22 ||
+            err.code === 1014 ||
+            (err.message && (err.message.includes('quota') || err.message.includes('QuotaExceeded') || err.message.includes('Storage'))))
+        ) {
+          console.warn(`[Storage] Auto-mitigating QuotaExceededError for key "${key}"`);
+          try {
+            // Prune bulky non-essential cached media & datasets
+            const bulkyKeys = [
+              'aanublooms_studio_videos_v3',
+              'aanublooms_products_v2',
+              'aanublooms_categories_v2',
+              'stitch_and_love_settings',
+              'aanublooms_guest_checkout_data'
+            ];
+            bulkyKeys.forEach(k => {
+              if (k !== key) {
+                try { this.removeItem(k); } catch {}
+              }
+            });
+            return originalSetItem.call(this, key, value);
+          } catch (retryErr) {
+            console.warn(`[Storage] Storage quota exhausted, skipping save for "${key}"`);
+            return;
+          }
+        }
+        throw err;
+      }
+    };
+  } catch (patchErr) {
+    console.warn('[Storage] Could not attach storage safety patch:', patchErr);
+  }
+}
+
 export const safeStorage = {
   getItem: (key, fallback = null) => {
     try {

@@ -55,11 +55,14 @@ class ErrorBoundary extends React.Component {
   handleRecoverAndReload = () => {
     try {
       safeStorage.clearNonEssential();
-      safeSessionStorage.removeItem('aanublooms_active_page');
-      localStorage.removeItem('aanublooms_studio_videos_v3');
-      localStorage.removeItem('aanublooms_products_v2');
-      localStorage.removeItem('aanublooms_categories_v2');
-      localStorage.removeItem('stitch_and_love_settings');
+      try {
+        window.localStorage.removeItem('aanublooms_studio_videos_v3');
+        window.localStorage.removeItem('aanublooms_products_v2');
+        window.localStorage.removeItem('aanublooms_categories_v2');
+        window.localStorage.removeItem('stitch_and_love_settings');
+        window.localStorage.removeItem('aanublooms_guest_checkout_data');
+        window.sessionStorage.clear();
+      } catch {}
     } catch {}
     window.location.href = '/';
   };
