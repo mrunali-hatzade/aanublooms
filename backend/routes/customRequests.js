@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import { CustomRequest } from '../models/CustomRequest.js';
 import { Notification } from '../models/Notification.js';
 import { requireAdmin } from '../middleware/auth.js';
@@ -20,10 +21,20 @@ router.get('/', requireAdmin, async (req, res) => {
 // POST /api/custom-requests — public (customer submits)
 router.post('/', async (req, res) => {
   try {
+    const {
+      customerName, customerEmail, customerPhone,
+      itemType, colorPalette, yarnPreference,
+      specialNotes, estimatedBudget, referenceImage
+    } = req.body;
+
     const cleanEmail = (customerEmail || '').trim().toLowerCase();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!cleanEmail || !emailRegex.test(cleanEmail)) {
       return res.status(400).json({ success: false, message: 'Please provide a valid email address.' });
+    }
+
+    if (!customerName || !itemType) {
+      return res.status(400).json({ success: false, message: 'Customer name and item type are required.' });
     }
 
     const id = `COMM-${Date.now()}`;
@@ -104,8 +115,6 @@ router.patch('/:id/status', requireAdmin, async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
-
-import mongoose from 'mongoose';
 
 // DELETE /api/custom-requests/:id — admin
 router.delete('/:id', requireAdmin, async (req, res) => {
