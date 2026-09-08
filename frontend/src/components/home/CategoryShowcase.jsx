@@ -9,14 +9,14 @@ export const CategoryShowcase = ({ categories = [], onNavigate }) => {
         
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-6 animate-reveal-up delay-150">
-          <div className="flex items-center justify-center gap-2 text-[#D96C65] mb-1">
-            <span className="h-px w-8 bg-[#D96C65]/30"></span>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[#D96C65]">
+          <div className="flex items-center justify-center gap-2 text-bloom-700 mb-1">
+            <span className="h-px w-8 bg-bloom-700/30"></span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-bloom-700">
               Handcrafted Collections
             </span>
-            <span className="h-px w-8 bg-[#D96C65]/30"></span>
+            <span className="h-px w-8 bg-bloom-700/30"></span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-warmgray-900 dark:text-white">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-bloom-900 dark:text-white">
             Explore by Category
           </h2>
         </div>

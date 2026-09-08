@@ -154,7 +154,7 @@ export const Navbar = ({ onNavigate, currentPage }) => {
   };
 
   return (
-    <header className="relative z-40 bg-white/95 dark:bg-warmgray-900/95 backdrop-blur-md border-b border-warmgray-200/80 dark:border-warmgray-800 transition-colors shadow-xs">
+    <header className="relative z-40 bg-[#ECC5C1]/95 dark:bg-[#3D252C]/95 backdrop-blur-md border-b border-[#DFC0BC] dark:border-bloom-900/60 transition-colors shadow-xs">
       {/* Main Bar */}
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-3">
@@ -163,7 +163,7 @@ export const Navbar = ({ onNavigate, currentPage }) => {
           <div className="flex items-center lg:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors"
+              className="p-2 rounded-xl text-bloom-900 dark:text-bloom-100 hover:bg-white/60 dark:hover:bg-warmgray-800 transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -179,12 +179,12 @@ export const Navbar = ({ onNavigate, currentPage }) => {
               <img
                 src="/images/logo.png"
                 alt="AanuBlooms Logo"
-                className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl object-cover shadow-cozy group-hover:scale-105 transition-transform duration-300 border border-bloom-100 dark:border-warmgray-700 bg-white"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl object-cover shadow-cozy group-hover:scale-105 transition-transform duration-300 border border-bloom-200 dark:border-warmgray-700 bg-white"
               />
               <div>
-                <span className="text-xl sm:text-2xl font-bold font-serif tracking-tight text-warmgray-900 dark:text-white flex items-center gap-1">
+                <span className="text-xl sm:text-2xl font-bold font-serif tracking-tight text-bloom-900 dark:text-white flex items-center gap-1">
                   AanuBlooms
-                  <Sparkles className="w-3.5 h-3.5 text-bloom-500 fill-bloom-300" />
+                  <Sparkles className="w-3.5 h-3.5 text-honey-500 fill-honey-300" />
                 </span>
               </div>
             </button>
@@ -192,13 +192,13 @@ export const Navbar = ({ onNavigate, currentPage }) => {
             {/* GPS Delivery Location Pill */}
             <button
               onClick={openLocationModal}
-              className="hidden sm:flex items-center gap-1.5 ml-4 px-3 py-1.5 rounded-full bg-warmgray-50 hover:bg-warmgray-100 dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-warmgray-800 dark:text-warmgray-200 border border-warmgray-200 dark:border-warmgray-700 text-xs transition-colors group shrink-0"
+              className="hidden sm:flex items-center gap-1.5 ml-4 px-3 py-1.5 rounded-full bg-white/80 hover:bg-white dark:bg-warmgray-800 dark:hover:bg-warmgray-700 text-bloom-900 dark:text-warmgray-200 border border-bloom-200/80 dark:border-warmgray-700 text-xs transition-colors group shrink-0 shadow-2xs"
               title="Click to detect GPS location or change PIN code"
             >
-              <MapPin className="w-3.5 h-3.5 text-bloom-600 dark:text-bloom-400 shrink-0 group-hover:animate-bounce" />
+              <MapPin className="w-3.5 h-3.5 text-bloom-700 dark:text-bloom-400 shrink-0 group-hover:animate-bounce" />
               <div className="text-left text-[11px] leading-tight">
-                <span className="text-[9px] text-warmgray-400 block font-semibold">Deliver to</span>
-                <span className="font-bold text-warmgray-900 dark:text-white truncate max-w-[100px] block">
+                <span className="text-[9px] text-bloom-900/70 dark:text-warmgray-400 block font-semibold">Deliver to</span>
+                <span className="font-bold text-bloom-900 dark:text-white truncate max-w-[100px] block">
                   {location.city} {location.zip ? `(${location.zip})` : ''}
                 </span>
               </div>
@@ -210,13 +210,13 @@ export const Navbar = ({ onNavigate, currentPage }) => {
             <form onSubmit={handleSearchSubmit} className="w-full relative">
               <input
                 type="text"
-                placeholder="Search bouquets, plushies, cardigans..."
+                placeholder="Search bouquets, plushies, gift sets..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => searchQuery.trim() && setShowSearchDropdown(true)}
-                className="w-full bg-warmgray-100/80 dark:bg-warmgray-800 border border-warmgray-200 dark:border-warmgray-700 rounded-full py-2 pl-10 pr-9 text-xs focus:outline-none focus:ring-2 focus:ring-bloom-400 focus:bg-white dark:focus:bg-warmgray-900 text-warmgray-900 dark:text-warmgray-100 transition-all"
+                className="w-full bg-white/95 dark:bg-warmgray-800 border border-bloom-200 dark:border-warmgray-700 rounded-full py-2 pl-10 pr-9 text-xs focus:outline-none focus:ring-2 focus:ring-honey-400 text-bloom-900 dark:text-warmgray-100 placeholder:text-warmgray-400 transition-all shadow-2xs"
               />
-              <Search className="w-4 h-4 text-warmgray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-honey-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
               {searchQuery && (
                 <button
                   type="button"
@@ -295,12 +295,12 @@ export const Navbar = ({ onNavigate, currentPage }) => {
             {/* Wishlist Button */}
             <button
               onClick={() => onNavigate('wishlist')}
-              className="p-2 rounded-xl text-warmgray-600 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-warmgray-800 transition-colors relative"
+              className="p-2 rounded-xl text-bloom-900 dark:text-bloom-100 hover:bg-white/60 dark:hover:bg-warmgray-800 transition-colors relative"
               aria-label="Wishlist"
             >
               <Heart className="w-5 h-5" />
               {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-bloom-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-honey-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
                   {wishlistCount}
                 </span>
               )}
@@ -309,13 +309,13 @@ export const Navbar = ({ onNavigate, currentPage }) => {
             {/* Shopping Cart Pill */}
             <button
               onClick={openCart}
-              className="px-4 py-2 rounded-full bg-bloom-500 hover:bg-bloom-600 text-white font-bold text-xs transition-all shadow-cozy flex items-center gap-2 transform active:scale-95"
+              className="px-4 py-2 rounded-full bg-honey-500 hover:bg-honey-600 text-white font-bold text-xs transition-all shadow-md flex items-center gap-2 transform active:scale-95 btn-shimmer"
               aria-label="Shopping Cart"
             >
               <div className="relative">
                 <ShoppingBag className="w-4.5 h-4.5" />
                 {totalItemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-white text-bloom-600 text-[10px] font-extrabold rounded-full flex items-center justify-center shadow">
+                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-white text-bloom-900 text-[10px] font-extrabold rounded-full flex items-center justify-center shadow">
                     {totalItemCount}
                   </span>
                 )}
@@ -328,7 +328,7 @@ export const Navbar = ({ onNavigate, currentPage }) => {
         </div>
 
         {/* Desktop Category Bar with Scrollspy Highlighting */}
-        <nav className="hidden lg:flex items-center justify-start py-2.5 border-t border-warmgray-100 dark:border-warmgray-800/80 text-sm font-semibold">
+        <nav className="hidden lg:flex items-center justify-start py-2.5 border-t border-bloom-200/60 dark:border-bloom-900/60 text-sm font-semibold">
           <div className="flex items-center gap-7">
             {navLinks.map((link, idx) => {
               const active = isLinkActive(link.page);
@@ -336,10 +336,10 @@ export const Navbar = ({ onNavigate, currentPage }) => {
                 <button
                   key={idx}
                   onClick={() => handleNavClick(link)}
-                  className={`hover:text-bloom-600 dark:hover:text-bloom-400 transition-all py-1 relative text-sm ${
+                  className={`transition-all py-1 relative text-sm ${
                     active
-                      ? 'text-bloom-600 dark:text-bloom-400 font-extrabold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-bloom-500 after:rounded-full'
-                      : 'text-warmgray-700 dark:text-warmgray-300 font-semibold'
+                      ? 'text-bloom-900 dark:text-white font-extrabold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-bloom-900 dark:after:bg-honey-400 after:rounded-full'
+                      : 'text-bloom-900/80 dark:text-bloom-200/80 hover:text-bloom-900 dark:hover:text-white font-medium'
                   }`}
                 >
                   {link.label}

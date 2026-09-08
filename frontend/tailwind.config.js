@@ -9,17 +9,23 @@ export default {
     extend: {
       colors: {
         bloom: {
-          50: '#FDF4F6',
-          100: '#FCE7EB',
-          200: '#FAD0D9',
-          300: '#F5A7B9',
-          400: '#EE7392',
-          500: '#E14670',
-          600: '#C72F57',
-          700: '#A42144',
-          800: '#861E39',
-          900: '#521424',
-          950: '#2E0712',
+          50: '#FAF4F4',
+          100: '#F5E7E7',
+          200: '#ECD3D4',
+          300: '#E4BDC0', // soft dusty blush rose
+          400: '#CF999F',
+          500: '#B26F79', // dusty mauve rose
+          600: '#945C6C', // rich dusty mauve card tone
+          700: '#794150', // deep berry
+          800: '#5E2B38',
+          900: '#451724', // deep plum burgundy (logo & headlines)
+          950: '#2A0A13',
+        },
+        mauve: {
+          card: '#946171',
+          cardHover: '#875464',
+          border: '#7D4B5B',
+          light: '#ECC5C1',
         },
         sage: {
           50: '#F4F7F4',
@@ -33,35 +39,37 @@ export default {
           800: '#314631',
         },
         rosewood: {
-          50: '#FAF5FF',
-          100: '#F3E8FF',
-          200: '#E9D5FF',
-          300: '#D8B4FE',
-          400: '#C084FC',
-          500: '#A855F7',
-          600: '#9333EA',
-          700: '#7E22CE',
+          50: '#FAF4F5',
+          100: '#F5E8EB',
+          200: '#EBD2D7',
+          300: '#DCB0B9',
+          400: '#C78895',
+          500: '#AC6574',
+          600: '#914B5A',
+          700: '#763845',
         },
         honey: {
-          50: '#FFFDF0',
-          100: '#FFF9C2',
-          200: '#FFF085',
-          300: '#FFE247',
-          400: '#F5CB18',
-          500: '#D9AC08',
+          50: '#FDFBF4',
+          100: '#F9F2DE',
+          200: '#F2E1B5',
+          300: '#E7CC87',
+          400: '#DBB55D',
+          500: '#C99742', // warm mustard caramel gold
+          600: '#B28030',
+          700: '#8E6221',
         },
         warmgray: {
-          50: '#FAF8F9',
-          100: '#F4EFF1',
-          200: '#E8DFE3',
-          300: '#D6C8CE',
-          400: '#B09DA5',
-          500: '#8D7B83',
-          600: '#705F67',
-          700: '#55474E',
-          800: '#3A2E34',
-          900: '#20181C',
-          950: '#130C10',
+          50: '#FAF5EE',  // warm creamy linen ivory canvas
+          100: '#F4ECE1',
+          200: '#E6D9CA',
+          300: '#D2BFAD',
+          400: '#AFA092',
+          500: '#8A7A6E',
+          600: '#6C5D53',
+          700: '#50433A',
+          800: '#382D26',
+          900: '#231A15',
+          950: '#150E0B',
         }
       },
       fontFamily: {

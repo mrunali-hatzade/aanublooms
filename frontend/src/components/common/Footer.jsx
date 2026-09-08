@@ -15,11 +15,9 @@ export const Footer = ({ onNavigate }) => {
   };
 
   return (
-    <footer className="bg-warmgray-100 dark:bg-warmgray-900 border-t border-warmgray-200 dark:border-warmgray-800 transition-colors pt-10 pb-8">
+    <footer className="bg-[#FAF4EE] dark:bg-warmgray-950 border-t border-bloom-200/70 dark:border-bloom-900/60 transition-colors pt-10 pb-8">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        
-
         {/* Links Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 mb-12">
           
@@ -32,10 +30,10 @@ export const Footer = ({ onNavigate }) => {
               <img
                 src="/images/logo.png"
                 alt="AanuBlooms Logo"
-                className="w-12 h-12 rounded-2xl object-cover shadow-cozy border border-bloom-100 dark:border-warmgray-700 bg-white"
+                className="w-12 h-12 rounded-2xl object-cover shadow-cozy border border-bloom-200 dark:border-warmgray-700 bg-white"
               />
               <div>
-                <span className="text-2xl font-bold font-serif tracking-tight text-warmgray-900 dark:text-white">
+                <span className="text-2xl font-bold font-serif tracking-tight text-bloom-900 dark:text-white">
                   AanuBlooms
                 </span>
               </div>

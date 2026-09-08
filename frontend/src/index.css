@@ -15,20 +15,20 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #FAF8F9;
+  background: #FAF5EE;
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: #130C10;
+  background: #231A15;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #F5A7B9;
+  background: #CF999F;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #E14670;
+  background: #945C6C;
 }
 
 /* Shimmer Button Sweep Effect */
@@ -66,17 +66,17 @@
 
 .card-hover-3d:hover {
   transform: translateY(-6px) scale(1.015);
-  box-shadow: 0 20px 35px -10px rgba(225, 70, 112, 0.15), 0 8px 16px -6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 35px -10px rgba(148, 92, 108, 0.2), 0 8px 16px -6px rgba(0, 0, 0, 0.05);
 }
 
 /* Micro-Stitch Dotted Pattern */
 .bg-craft-pattern {
-  background-image: radial-gradient(rgba(225, 70, 112, 0.08) 1px, transparent 0);
+  background-image: radial-gradient(rgba(148, 92, 108, 0.1) 1px, transparent 0);
   background-size: 20px 20px;
 }
 
 .dark .bg-craft-pattern {
-  background-image: radial-gradient(rgba(245, 167, 185, 0.06) 1px, transparent 0);
+  background-image: radial-gradient(rgba(228, 189, 192, 0.08) 1px, transparent 0);
 }
 
 /* Glassmorphism Panel */
@@ -87,7 +87,7 @@
 }
 
 .dark .glass-panel {
-  background: rgba(32, 24, 28, 0.85);
+  background: rgba(35, 26, 21, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -111,7 +111,7 @@
   position: absolute;
   inset: -2px;
   border-radius: inherit;
-  background: linear-gradient(135deg, #E14670, #A855F7, #D9AC08);
+  background: linear-gradient(135deg, #945C6C, #C99742, #E4BDC0);
   opacity: 0;
   transition: opacity 0.4s ease;
   z-index: -1;
@@ -131,7 +131,7 @@
   position: absolute;
   inset: -6px;
   border-radius: 9999px;
-  border: 2px solid rgba(225, 70, 112, 0.6);
+  border: 2px solid rgba(148, 92, 108, 0.6);
   animation: ripple 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
 }
 

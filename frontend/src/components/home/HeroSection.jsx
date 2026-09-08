@@ -3,12 +3,12 @@ import { Sparkles, ArrowRight, Palette, Flower2, Heart } from 'lucide-react';
 
 export const HeroSection = ({ onNavigate }) => {
   return (
-    <section className="relative overflow-hidden pt-4 pb-6 sm:py-8 bg-gradient-to-b from-bloom-50/70 via-rosewood-50/30 to-warmgray-50 dark:from-warmgray-950 dark:via-warmgray-900 dark:to-warmgray-950 transition-colors">
+    <section className="relative overflow-hidden pt-4 pb-6 sm:py-8 bg-[#FAF5EE] dark:bg-warmgray-950 transition-colors">
       
       {/* Background Animated Floating Soft Glow Orbs */}
-      <div className="absolute top-2 left-1/4 w-80 h-80 bg-bloom-300/25 dark:bg-bloom-950/20 rounded-full blur-3xl pointer-events-none animate-blob-drift" />
-      <div className="absolute bottom-4 right-1/4 w-80 h-80 bg-rosewood-300/20 dark:bg-rosewood-950/20 rounded-full blur-3xl pointer-events-none animate-float-slow" />
-      <div className="absolute top-1/2 left-10 w-48 h-48 bg-amber-200/20 dark:bg-amber-950/15 rounded-full blur-2xl pointer-events-none animate-float-reverse" />
+      <div className="absolute top-2 left-1/4 w-80 h-80 bg-bloom-300/20 dark:bg-bloom-950/20 rounded-full blur-3xl pointer-events-none animate-blob-drift" />
+      <div className="absolute bottom-4 right-1/4 w-80 h-80 bg-honey-300/20 dark:bg-honey-950/20 rounded-full blur-3xl pointer-events-none animate-float-slow" />
+      <div className="absolute top-1/2 left-10 w-48 h-48 bg-bloom-200/20 dark:bg-bloom-950/15 rounded-full blur-2xl pointer-events-none animate-float-reverse" />
 
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
@@ -17,45 +17,45 @@ export const HeroSection = ({ onNavigate }) => {
           <div className="lg:col-span-6 space-y-4 text-center lg:text-left">
             
             {/* Animated Minimal Badge with on-refresh pop */}
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-warmgray-800/90 backdrop-blur-xs border border-bloom-200 dark:border-bloom-800/60 text-bloom-700 dark:text-bloom-300 text-xs font-bold shadow-xs animate-pop-badge delay-100">
-              <Sparkles className="w-3.5 h-3.5 text-bloom-500 animate-spin-slow" />
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-warmgray-800/90 backdrop-blur-xs border border-bloom-200 dark:border-bloom-800/60 text-bloom-900 dark:text-bloom-300 text-xs font-bold shadow-2xs animate-pop-badge delay-100">
+              <Sparkles className="w-3.5 h-3.5 text-honey-500 animate-spin-slow" />
               <span>Handcrafted Blooms & Keepsakes</span>
             </div>
 
             {/* Main Headline with smooth rise */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-warmgray-900 dark:text-white leading-tight tracking-tight animate-reveal-up delay-200">
-              Handcrafted Blooms & Creations that{' '}
-              <span className="text-bloom-600 dark:text-bloom-400 italic underline decoration-bloom-200 dark:decoration-bloom-800 underline-offset-4">
-                Never Wilt.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-bloom-900 dark:text-white leading-tight tracking-tight animate-reveal-up delay-200">
+              Handcrafted Elegance for{' '}
+              <span className="text-bloom-700 italic underline decoration-honey-300 underline-offset-4">
+                Every Occasion
               </span>
             </h1>
 
             {/* Simple, Short, Easy Subtitle */}
-            <p className="text-base sm:text-lg text-warmgray-600 dark:text-warmgray-300 max-w-lg mx-auto lg:mx-0 leading-relaxed animate-reveal-up delay-300">
-              Beautiful handmade flowers, flower pots, bouquets & unique creations made with love, patience, and care.
+            <p className="text-base sm:text-lg text-bloom-900/75 dark:text-warmgray-300 max-w-lg mx-auto lg:mx-0 leading-relaxed animate-reveal-up delay-300">
+              Discover boutique handcrafted forever flower bouquets, knit plushies, cupcake blossom pots & bespoke keepsakes made with love.
             </p>
 
             {/* Clean Action Buttons with Shimmer, Hover Lift, and entrance reveal */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1 animate-reveal-up delay-400">
               <button
                 onClick={() => onNavigate('shop')}
-                className="w-full sm:w-auto px-7 py-3.5 bg-bloom-500 hover:bg-bloom-600 text-white rounded-full font-bold text-sm shadow-cozy btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg active:scale-95 flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto px-7 py-3.5 bg-honey-500 hover:bg-honey-600 text-white rounded-xl font-bold text-sm shadow-md btn-shimmer transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg active:scale-95 flex items-center justify-center gap-2 group"
               >
-                <span>Shop Blooms</span>
+                <span>Shop Now</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
               </button>
 
               <button
                 onClick={() => onNavigate('custom-order')}
-                className="w-full sm:w-auto px-6 py-3.5 bg-white/90 dark:bg-warmgray-800 hover:bg-warmgray-100 dark:hover:bg-warmgray-700 text-warmgray-900 dark:text-white rounded-full font-bold text-sm border border-warmgray-200 dark:border-warmgray-700 shadow-xs transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-3.5 bg-white hover:bg-bloom-50/80 text-bloom-900 rounded-xl font-bold text-sm border border-bloom-200 shadow-2xs transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2"
               >
-                <Palette className="w-4 h-4 text-rosewood-500 animate-wiggle" />
+                <Palette className="w-4 h-4 text-honey-600 animate-wiggle" />
                 <span>Custom Order</span>
               </button>
             </div>
 
             {/* Simple 1-Line Trust Note */}
-            <p className="text-xs text-warmgray-500 dark:text-warmgray-400 pt-1 flex items-center justify-center lg:justify-start gap-1.5 animate-reveal-up delay-500">
+            <p className="text-xs text-bloom-900/70 dark:text-warmgray-400 pt-1 flex items-center justify-center lg:justify-start gap-1.5 animate-reveal-up delay-500">
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>100% Handmade · Delivered with Care across Pune Region</span>
             </p>
