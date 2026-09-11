@@ -32,7 +32,7 @@ export const HeroSection = ({ onNavigate }) => {
 
             {/* Simple, Short, Easy Subtitle */}
             <p className="text-base sm:text-lg text-bloom-900/75 dark:text-warmgray-300 max-w-lg mx-auto lg:mx-0 leading-relaxed animate-reveal-up delay-300">
-              Discover boutique handcrafted forever flower bouquets, knit plushies, cupcake blossom pots & bespoke keepsakes made with love.
+              Discover handcrafted forever blooms, floral décor and thoughtful keepsakes, lovingly created to make every moment special.
             </p>
 
             {/* Clean Action Buttons with Shimmer, Hover Lift, and entrance reveal */}
@@ -102,9 +102,9 @@ export const HeroSection = ({ onNavigate }) => {
                   </div>
                   <div className="text-right">
                     <span className="text-base font-serif font-bold text-bloom-600 dark:text-bloom-400 block">
-                      ₹349
+                      ₹699
                     </span>
-                    <span className="text-[10px] text-warmgray-400 line-through">₹499</span>
+                    <span className="text-[10px] text-warmgray-400 line-through">₹999</span>
                   </div>
                 </div>
               </div>

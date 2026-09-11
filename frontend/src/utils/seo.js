@@ -21,7 +21,7 @@ export const updateSEO = ({
     : 'AanuBlooms | Handcrafted Blooms & Everlasting Floral Creations · Pune';
 
   const fullDescription = description ||
-    'Discover boutique handcrafted forever flower bouquets, blossom cupcake pots, floral charms, and bespoke keepsakes crafted with love by Aanu in Pune, India.';
+    'Discover handcrafted forever blooms, floral décor and thoughtful keepsakes, lovingly created to make every moment special.';
 
   const fullUrl = `${BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;
 
